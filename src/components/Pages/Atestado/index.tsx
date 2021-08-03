@@ -24,6 +24,14 @@ const Atestado: React.FC = () => {
     result.setDate(result.getDate() + 1);
     setDate(result)
   }
+  function handleDay(days: string){
+    
+    if(parseInt(days) < 1){
+      setDias('1');
+    }else{
+      setDias(days.toString())
+    }
+  }
 
   return (
     <AtestadoContainer>
@@ -39,7 +47,7 @@ const Atestado: React.FC = () => {
           </Item>
           <Item>
             <Label>Dias:</Label>
-            <Input onChange={(event) => setDias(event.target.value)} type="number" min="0" />
+            <Input onChange={(event) => handleDay(event.target.value)} type="number" min="01" />
           </Item>
           <Item>
             <Label>Data:</Label>

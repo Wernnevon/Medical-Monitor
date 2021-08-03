@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+import {useExame} from '../Context/ExameContext';
 
 import { 
     Exames,
@@ -14,38 +15,13 @@ import {
 interface Params {
     type?: string;
     exames?: Array<string>;
-    setSelected?: any;
-    selected?: Array<string>;
 }
 
-const Dropdown: React.FC<Params> = ({type, exames, setSelected}: Params) => {
+const Dropdown: React.FC<Params> = ({type, exames}: Params) => {
 
   const [active, setActive] = useState(false);
-  const [exame, setExame] = useState([]);
+  const {handleSelectExame} = useExame();
 
-
-  function handleSelectExame(e: React.ChangeEvent<HTMLInputElement>){
-   let value = e.target.value;
-   let checked = e.target.checked;
-   let examesSelecionados: any = exame;
-   if(checked){
-    //  console.log(examesSelecionados);
-     if(examesSelecionados.includes(value)){
-       console.log("exite");
-       examesSelecionados = examesSelecionados.filter((e: string) => e !== value);
-     } else {
-       console.log("else")
-       examesSelecionados.push(value);
-     }
-   }else{
-    examesSelecionados = examesSelecionados!.filter((e: string) => e !== value);
-    console.log('remove');
-  }
-  setExame(examesSelecionados);
-  console.log(examesSelecionados.length);
-  console.log(exame);
-  //  setSelected(exame);
-  }
 
   return (
     <DropdownContainer active={active} >
@@ -57,7 +33,7 @@ const Dropdown: React.FC<Params> = ({type, exames, setSelected}: Params) => {
     <DropdownContent active={active}>
       {exames!.map(exame =>
         <ContainerCheckbox key={exame}>
-          <Checkbox onChange={(e) => handleSelectExame(e)} value={exame} type="checkbox"/>
+          <Checkbox onChange={(e) => handleSelectExame(e.target.value)} value={exame} type="checkbox"/>
           <LabelCheckbox>{exame}</LabelCheckbox>
         </ContainerCheckbox>
       )}

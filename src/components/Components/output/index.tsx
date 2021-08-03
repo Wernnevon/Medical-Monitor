@@ -85,6 +85,7 @@ const Output: React.FC<Params> = ({content, exames, atestado}:Params) => {
         <FooterLabel>Assinatura</FooterLabel>
       </Footer>
       </Content>
+      <button onClick={() => window.print()}>print</button>
   </ReceitaCard>
   );
 }

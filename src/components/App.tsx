@@ -1,6 +1,7 @@
 import React from "react";
 import { hot } from "react-hot-loader/root";
 import { BrowserRouter as Router } from 'react-router-dom';
+import {ExameProvider} from './Components/Context/ExameContext';
 
 import SideNav from "./Pages/SideNav";
 import Routes from "./routes";
@@ -12,7 +13,9 @@ function App() {
     <Router>
       <div className="app">
       <SideNav/>
-      <Routes/>
+      <ExameProvider>
+        <Routes/>
+      </ExameProvider>
       </div>
     </Router>
   );

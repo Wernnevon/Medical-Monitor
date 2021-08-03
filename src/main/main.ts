@@ -18,11 +18,12 @@ let mainWindow: null | BrowserWindow;
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 800,
     title : "Dr. Bertrandy Anacleto",
     resizable: true,
     icon: "../assests/icon.ico",
+    maximizable: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
