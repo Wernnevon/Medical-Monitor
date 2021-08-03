@@ -18,6 +18,7 @@ const Atestado: React.FC = () => {
   const [cid, setCID] = useState('__________________');
   const [dia, setDias] = useState('3');
   const [date, setDate] = useState(new Date());
+  const [location, setLocation] = useState('Cajazeiras');
 
   function handleDate(date: string){
     let result = new Date(date);
@@ -53,9 +54,13 @@ const Atestado: React.FC = () => {
             <Label>Data:</Label>
             <Input onChange={(event) => handleDate(event.target.value)} type="date" max={Date.now()} />
           </Item>
+          <Item>
+            <Label>Cidade:</Label>
+            <Input onChange={(event) => setLocation(event.target.value)} type="text"/>
+          </Item>
         </FormContainer>
       </AtestadoCard>
-      <AtestadoCardOutput><Output atestado={{paciente, cid, dia, date}} /></AtestadoCardOutput>
+      <AtestadoCardOutput><Output atestado={{paciente, cid, dia, date, location}} /></AtestadoCardOutput>
     </AtestadoContainer>
   );
 };

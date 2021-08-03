@@ -13,16 +13,16 @@ export const ReceitaCard = Styled.div`
   }
 `;
 export const ReceitaOutputCard = Styled.img`
-  width: 85%;
-  height: 85%;
+  height: 200px;
   opacity: 0.3;
   position: absolute;
   margin: auto;
   left: 0;
   right: 0;
+  top: 13rem;
   text-align: center;
   z-index: 10;
-  margin-top: 50px;
+  /* margin-top: 8rem; */
   background: none;
 `;
 
@@ -31,6 +31,8 @@ export const Content = Styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
+  top: 0;
+  left: 0;
   opacity: 0.99;
   z-index: 0;
   z-index: 20;
@@ -74,22 +76,22 @@ export const ReceituarioOutputContainer = Styled.div`
 `;
 
 export const ReceituarioOutput = Styled.label`
+display: flex;
+flex-direction: column;
   background: none;
-  padding: 5px 10px;
+  padding: 0;
   font-family: "Arial";
   font-size: 1rem;
   word-break: break-all;
+  line-height: 1.2rem;
 `;
 export const AtestadoOutputContainer = Styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: start;
   flex-direction: column;
-  justify-content: center
-  margin: 10px 0px;
-  height: 20rem;
+  margin: 0px;
   text-align: justify;
   z-index: 30;
-  width: 100%;
 `;
 export const AtestadoOutput = Styled.label`
   background: none;
@@ -103,7 +105,6 @@ export const AtestadoDateOutput = Styled.label`
   line-height: 2rem;
   font-family: "Arial";
   font-size: 1rem;
-  margin-top: 3rem;
   text-align: right;
 `;
 export const Footer = Styled.div`
