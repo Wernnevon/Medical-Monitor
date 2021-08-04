@@ -5,7 +5,11 @@ import html2canvas from "html2canvas";
 
 import { BTNContainer, Icon } from './styles';
 
-const PDFButton: React.FC = () => {
+interface Params {
+  copies: number;
+}
+
+const PDFButton: React.FC<Params> = ({copies}: Params) => {
 
     function handleGenPDF() {
         const input = document.getElementById("divToPrint") as HTMLElement;
@@ -16,8 +20,10 @@ const PDFButton: React.FC = () => {
             unit: "mm",
             format: [297, 210],
           });
-          pdf.addImage(imgData, "png", 2, 0, 148, 210);
-          pdf.addImage(imgData, "png", 150, 0, 148, 210);
+          if(copies > 1){
+            pdf.addImage(imgData, "png", 2, 0, 148, 210);
+            pdf.addImage(imgData, "png", 150, 0, 148, 210);
+          }else pdf.addImage(imgData, "png", 2, 0, 148, 210);
           // pdf.output('dataurlnewwindow');
           pdf.save("download.pdf");
         });

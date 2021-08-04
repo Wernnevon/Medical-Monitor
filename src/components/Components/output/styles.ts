@@ -12,6 +12,45 @@ export const ReceitaCard = Styled.div`
     height: 90vh;
   }
 `;
+
+export const Item = Styled.div`
+  display: flex;
+  align-items: center;
+  width: 80px;
+  margin-top: 2rem;
+  font-size: 1rem;
+  position: absolute;
+  left: 1rem;
+  top: -1.5rem;
+`;
+
+export const Label = Styled.label`
+  min-width: max-content;
+  font-size: inherit;
+`;
+
+export const Input = Styled.input`
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  width: 100%;
+  height: 1rem;
+  font-size: 1rem;
+  padding: 0 5px;
+  outline: none;
+  background: none;
+  border: none;
+  position: relative;
+  z-index:99;
+  text-align:right;
+  ::-webkit-inner-spin-button{
+    opacity:.5;
+    cursor: pointer;
+    margin-left: .3rem;
+    margin-right: -.3rem;
+  }
+`;
+
 export const ReceitaOutputCard = Styled.img`
   height: 200px;
   opacity: 0.3;
@@ -22,7 +61,6 @@ export const ReceitaOutputCard = Styled.img`
   top: 13rem;
   text-align: center;
   z-index: 10;
-  /* margin-top: 8rem; */
   background: none;
 `;
 

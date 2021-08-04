@@ -19,6 +19,9 @@ import {
   FooterLine,
   FooterLabel,
   AtestadoDateOutput,
+  Input,
+  Item,
+  Label
 } from "./styles";
 import PDFButton from "../Utils/PDFButton";
 
@@ -30,6 +33,8 @@ interface Params {
 
 const Output: React.FC<Params> = ({ content, exames, atestado }: Params) => {
   const [select, setSelect] = useState(exames);
+  const [copies, setCopies] = useState(1);
+
   var i = 0;
 
   useEffect(() => {
@@ -38,27 +43,27 @@ const Output: React.FC<Params> = ({ content, exames, atestado }: Params) => {
 
   return (
     <ReceitaCard>
+      <Item>
+        <Label>Cópias:</Label>
+        <Input  min="1" max="2" type="number" value={copies} onChange={(e) => setCopies(parseInt(e.target.value))}/>
+      </Item>
       <Content id="divToPrint">
       <ReceitaOutputCard src={BGLogo} />
         <Header>
           <Logo src={LogoSVG} />
           <LabelHeader>DR. BERTRANDY ANACLETO</LabelHeader>
           <LabelHeaderContent style={{ letterSpacing: "3px" }}>
-            {" "}
-            MEDICINA GERIÁTRICA{" "}
+            MEDICINA GERIÁTRICA
           </LabelHeaderContent>
           <LabelHeaderContent style={{ fontSize: ".8rem", fontWeight: "bold" }}>
-            {" "}
-            CRM/PB: 9647 | CRM/RN: 8103{" "}
+            CRM/PB: 9647 | CRM/RN: 8103
           </LabelHeaderContent>
           <LabelHeaderContent style={{ fontSize: ".9rem" }}>
-            {" "}
-            (83) 9 9929-2209 | (83) 9 9844-1379{" "}
+            (83) 9 9929-2209 | (83) 9 9844-1379
           </LabelHeaderContent>
           <LabelHeaderContent style={{ fontSize: ".8rem", fontWeight: "bold" }}>
-            {" "}
             Rua Lourival Ribeiro da Nóbrega, 11, Centro, São João do Rio do
-            Peixe - PB{" "}
+            Peixe - PB
           </LabelHeaderContent>
         </Header>
         <ReceituarioOutputContainer>
@@ -111,7 +116,7 @@ const Output: React.FC<Params> = ({ content, exames, atestado }: Params) => {
           <FooterLabel>Assinatura</FooterLabel>
         </Footer>
       </Content>
-      <PDFButton/>
+      <PDFButton copies={copies}/>
     </ReceitaCard>
   );
 };
