@@ -4,7 +4,7 @@ type PropType = {
   active?: boolean
 }
 
-export const DropdownHeader = Styled.div<PropType>`
+export const DropdownHeader = Styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0;

@@ -21,7 +21,7 @@ import {
   AtestadoDateOutput,
   Input,
   Item,
-  Label
+  Label,
 } from "./styles";
 import PDFButton from "../Utils/PDFButton";
 
@@ -41,14 +41,21 @@ const Output: React.FC<Params> = ({ content, exames, atestado }: Params) => {
     setSelect(exames);
   }, [exames]);
 
+
   return (
     <ReceitaCard>
       <Item>
         <Label>Cópias:</Label>
-        <Input  min="1" max="2" type="number" value={copies} onChange={(e) => setCopies(parseInt(e.target.value))}/>
+        <Input
+          min="1"
+          max="2"
+          type="number"
+          value={copies}
+          onChange={(e) => setCopies(parseInt(e.target.value))}
+        />
       </Item>
-      <Content id="divToPrint">
-      <ReceitaOutputCard src={BGLogo} />
+      <Content id="print">
+        <ReceitaOutputCard src={BGLogo} />
         <Header>
           <Logo src={LogoSVG} />
           <LabelHeader>DR. BERTRANDY ANACLETO</LabelHeader>
@@ -123,4 +130,6 @@ const Output: React.FC<Params> = ({ content, exames, atestado }: Params) => {
 
 export default Output;
 
-{/* <button onClick={handleGenPDF}>print</button> */}
+{
+  /* <button onClick={handleGenPDF}>print</button> */
+}

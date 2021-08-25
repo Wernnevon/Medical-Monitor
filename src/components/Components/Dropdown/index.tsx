@@ -25,7 +25,7 @@ const Dropdown: React.FC<Params> = ({type, exames}: Params) => {
 
   return (
     <DropdownContainer active={active} >
-    <DropdownHeader active={active } 
+    <DropdownHeader 
       onClick={()=>setActive(!active)}>
       <Exames>{type}:</Exames>
       <Arrow active={active} />
