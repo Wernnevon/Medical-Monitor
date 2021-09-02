@@ -18,6 +18,7 @@ interface Prescricao {
 };
 
 export default interface Patient {
+    id?: string;
     nome: string;
     idade: number;
     endereco: Endereco;

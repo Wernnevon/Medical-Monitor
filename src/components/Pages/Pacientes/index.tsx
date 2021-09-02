@@ -1,57 +1,99 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 
-import {create, index} from "../../../Infra/DAOarchive/patientDAO"
+import { create, index, findByName, remove } from "../../../Infra/DAOarchive/patientDAO";
+import Patient from "../../../Infra/DAOarchive/model";
 
-import { PacienteContainer, PacienteCard } from './styles';
+import { PacienteContainer, PacienteCard } from "./styles";
 
 const Paciente: React.FC = () => {
+  const [pacientes, setPacientes] = useState<Patient[]>([]);
+  const [pacienteNome, setPacienteNome] = useState("");
 
-  const [patient, setPaciente] = useState([]);
+  const sortByName = (array: Array<any>) =>
+    array.sort((patientA: Patient, patientB: Patient) =>
+      patientA.nome > patientB.nome
+        ? 1
+        : patientA.nome < patientB.nome
+        ? -1
+        : 0
+    );
 
   const patientPersist = {
-    nome: 'João',
+    nome: "João",
     idade: 78,
     endereco: {
-      cidade: 'cajazeiras',
-      bairro: 'centro',
-      rua: 'rua teste',
+      cidade: "cajazeiras",
+      bairro: "centro",
+      rua: "rua teste",
       numero: 100,
-      complemento: 'none'
+      complemento: "none",
     },
     exames: [
       {
-        nome: 'TSH',
+        nome: "TSH",
         data: new Date(),
         realizado: true,
-      }
+      },
     ],
     receitas: [
       {
-        medicamento: 'fsdfsdfsd',
+        medicamento: "fsdfsdfsd",
         data: new Date(),
         administrando: true,
       },
       {
-        medicamento: 'adsasda',
+        medicamento: "adsasda",
         data: new Date(),
         administrando: true,
-      }
+      },
     ],
-  }
+  };
 
   useEffect(() => {
+    setPacientes(sortByName(index()));
+  }, []);
 
-    // create(patientPersist);
-    // console.log(index());
+  function handleCreate() {
+    patientPersist.nome = pacienteNome;
+    create(patientPersist);
+    setPacientes(sortByName([patientPersist, ...pacientes]));
+    setPacienteNome("");
+  }
 
-  }, [patient])
-  
+  function handleFind() {
+    pacienteNome === '' ? setPacientes(sortByName(index())) : setPacientes(sortByName(findByName(pacienteNome)));
+    setPacienteNome('');
+  }
+  function handleDelete(pacienteId: string | undefined) {
+    remove(pacienteId);
+    let patients = pacientes.filter((patient) => patient.id !== pacienteId);
+    setPacientes(sortByName(patients));
+  }
+
   return (
     <PacienteContainer>
-      <PacienteCard>input Paciente</PacienteCard>
-      <PacienteCard>output Paciente</PacienteCard>
+      <PacienteCard>
+        Nome:
+        <input
+          onChange={(e) => setPacienteNome(e.target.value)}
+          value={pacienteNome}
+        /> <br/>
+        <button onClick={handleCreate}>Create</button>
+        <button onClick={handleFind}>Find by Name</button>
+      </PacienteCard>
+      <PacienteCard>
+        <div style={{ overflowY: "scroll", maxHeight: "100%", width: "100%" }}>
+          {pacientes.map((paciente: Patient) => (
+            <div key={paciente.id}>
+              <label>{paciente.nome}{" - - - "}</label>
+              <button onClick={() => {handleDelete(paciente.id)}}>Delete</button>
+            </div>
+          ))}
+        </div>
+        
+      </PacienteCard>
     </PacienteContainer>
   );
-}
+};
 
-export default Paciente
+export default Paciente;
