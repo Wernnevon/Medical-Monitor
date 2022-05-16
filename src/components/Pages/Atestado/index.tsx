@@ -39,19 +39,19 @@ const Atestado: React.FC = () => {
         <FormContainer>
           <Item>
             <Label>Paciente:</Label>
-            <Input onChange={(event) => setPaciente(event.target.value.toLocaleUpperCase())} />
+            <Input onChange={(event: any) => setPaciente(event.target.value.toLocaleUpperCase())} />
           </Item>
           <Item>
             <Label>Entidade Nosocológica-CID:</Label>
-            <Input onChange={(event) => setCID(event.target.value)} />
+            <Input onChange={(event: any) => setCID(event.target.value)} />
           </Item>
           <Item>
             <Label>Dias:</Label>
-            <Input onChange={(event) => handleDay(event.target.value)} type="number" min="01" />
+            <Input onChange={(event: any) => handleDay(event.target.value)} type="number" min="01" />
           </Item>
           <Item>
             <Label>Data:</Label>
-            <Input onChange={(event) => handleDate(event.target.value)} type="date" max={Date.now()} />
+            <Input onChange={(event: any) => handleDate(event.target.value)} type="date" max={Date.now()} />
           </Item>
         </FormContainer>
       </AtestadoCard>
