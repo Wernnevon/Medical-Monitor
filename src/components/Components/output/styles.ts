@@ -2,26 +2,20 @@ import Styled from "styled-components";
 
 export const ReceitaCard = Styled.div`
   background-color: rgba(255, 255, 255, 0.92);
-  border-radius: 20px;
   padding: 20px;
   font-size: 30px;
-  margin: 0 20px;
-  height: 70vh;
-  position: relative;
-  @media only screen and (max-height: 700px) {
-    height: 90vh;
-  }
+  text-align: center;
+  margin: 0 10px;
+  margin-top: -5vh;
+  height: 95vh;
 `;
 
 export const Item = Styled.div`
   display: flex;
   align-items: center;
-  width: 80px;
-  margin-top: 2rem;
+  width: 95px;
   font-size: 1rem;
-  position: absolute;
-  left: 1rem;
-  top: -1.5rem;
+  position: relative;
 `;
 
 export const Label = Styled.label`
@@ -33,7 +27,7 @@ export const Input = Styled.input`
   display: flex;
   align-items: center;
   margin-left: 5px;
-  width: 100%;
+  width: 25px;
   height: 1rem;
   font-size: 1rem;
   padding: 0 5px;
@@ -52,13 +46,13 @@ export const Input = Styled.input`
 `;
 
 export const ReceitaOutputCard = Styled.img`
-  height: 200px;
+  height: 300px;
   opacity: 0.3;
   position: absolute;
   margin: auto;
   left: 0;
   right: 0;
-  top: 13rem;
+  top: 15rem;
   text-align: center;
   z-index: 10;
   background: none;
@@ -74,7 +68,7 @@ export const Content = Styled.div`
   opacity: 0.99;
   z-index: 0;
   z-index: 20;
-  height: 103%;
+  height: 100%;
 `;
 
 export const Header = Styled.div`
@@ -86,9 +80,10 @@ export const Header = Styled.div`
 `;
 
 export const Logo = Styled.img`
-  width: 25%;
-  height: 25%;
+  width: 100px;
+  height: 65px;
   text-align: center;
+  margin-top: 10px;
 `;
 
 export const LabelHeader = Styled.label`
@@ -106,22 +101,20 @@ export const LabelHeaderContent = Styled.label`
 
 export const ReceituarioOutputContainer = Styled.div`
   display: flex;
-  justify-content: center;
+  align-items: start;
   flex-direction: column;
   margin: 10px 0px;
+  margin-top: 3rem;
   width: 85%;
+  height: 60%;
   z-index: 30;
 `;
 
-export const ReceituarioOutput = Styled.label`
-display: flex;
-flex-direction: column;
-  background: none;
-  padding: 0;
+export const ReceituarioOutput = Styled.li`
   font-family: "Arial";
   font-size: 1rem;
-  word-break: break-all;
-  line-height: 1.2rem;
+  text-align: left;
+ 
 `;
 export const AtestadoOutputContainer = Styled.div`
   display: flex;

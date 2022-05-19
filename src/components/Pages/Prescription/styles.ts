@@ -2,23 +2,19 @@ import Styled from "styled-components";
 
 export const ReceitaContainer = Styled.div`
   display: grid;
-  grid-template-columns: 41vw 41vw;
-  padding: 10px;
+  grid-template-columns: 50% 50%;
   align-items: center;
-  width: 82.3vw;
-  height: 97.8vh;
+  width: 85vw;
+  margin-left: -.7vw;
+  height: 100%;;
 `;
 export const ReceitaCard = Styled.div`
   background-color: rgba(255, 255, 255, 0.92);
-  border-radius: 20px;
   padding: 20px;
   font-size: 30px;
-  margin: 0 20px;
-  height: 70vh;
-  position: relative;
-  @media only screen and (max-height: 700px) {
-    height: 90vh;
-  }
+  text-align: center;
+  margin: 0 10px;
+  height: 100vh;
 `;
 export const ReceitaOutputCard = Styled.img`
   width: 85%;

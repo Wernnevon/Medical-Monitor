@@ -3,19 +3,18 @@ import Styled from "styled-components";
 export const AtestadoContainer = Styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
-  padding: 10px;
   align-items: center;
-  width: 82.3vw;
-  height: 97.8vh;
+  width: 85vw;
+  margin-left: -.7vw;
+  height: 100%;
 `;
 export const AtestadoCard = Styled.div`
   background-color: rgba(255, 255, 255, 0.92);
-  border-radius: 20px;
   padding: 20px;
   font-size: 30px;
   text-align: center;
-  margin: 0 20px;
-  height: 70vh;
+  margin: 0 10px;
+  height: 100vh;
 `;
 
 export const AtestadoCardOutput = Styled.div`

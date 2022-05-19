@@ -1,9 +1,9 @@
-import React from 'react';
-import Output from '../../Components/output';
-import Dropdown from '../../Components/Dropdown';
-import {useExame} from '../../Components/Context/ExameContext'
+import React from "react";
+import Output from "../../Components/output";
+import Dropdown from "../../Components/Dropdown";
+import { useExame } from "../../Components/Context/ExameContext";
 
-import { 
+import {
   ExameCard,
   ExameContainer,
   ExameContent,
@@ -11,11 +11,10 @@ import {
   InputData,
   CheckoutContent,
   ExamesContent,
-} from './styles';
+} from "./styles";
 
 const Exame: React.FC = () => {
-
-  const {exames, selected} = useExame()
+  const { exames, selected } = useExame();
 
   return (
     <ExameContainer>
@@ -24,36 +23,54 @@ const Exame: React.FC = () => {
         <ExameContent>
           <CheckoutContent>
             <LabelHeader>Paciente:</LabelHeader>
-            <InputData/>
+            <InputData />
           </CheckoutContent>
           <CheckoutContent>
             <LabelHeader>Idade:</LabelHeader>
-            <InputData/>
+            <InputData />
           </CheckoutContent>
           <CheckoutContent>
             <LabelHeader>Convênio:</LabelHeader>
-            <InputData/>
+            <InputData />
           </CheckoutContent>
           <CheckoutContent>
             <LabelHeader>Data:</LabelHeader>
-            <InputData style={{width: "max-content"}} type="date"/>
+            <InputData style={{ width: "max-content" }} type="date" />
           </CheckoutContent>
         </ExameContent>
         <ExamesContent>
-          {
-            exames.map(exame => 
-              <Dropdown key={exame.type} type={exame.type} exames={exame.exames} />  
-            )
-          }
-          <CheckoutContent style={{flexDirection: "column", alignItems: "start", width: "90%", marginTop:"10px"}}>
+          {exames.map((exame) => (
+            <Dropdown
+              key={exame.type}
+              type={exame.type}
+              exames={exame.exames}
+            />
+          ))}
+          <CheckoutContent
+            style={{
+              flexDirection: "column",
+              alignItems: "start",
+              width: "95%",
+              margin: "10px 0px 20px 0px",
+            }}
+          >
             <LabelHeader>Outros Exames:</LabelHeader>
-            <InputData as="textarea" style={{width: "95%", minHeight: "60px", margin: 0, fontSize:"1rem", marginTop:"10px"}}/>
+            <InputData
+              as="textarea"
+              style={{
+                width: "98%",
+                minHeight: "60px",
+                margin: 0,
+                fontSize: "1rem",
+                marginTop: "10px",
+              }}
+            />
           </CheckoutContent>
         </ExamesContent>
       </ExameCard>
       <Output exames={selected} />
     </ExameContainer>
   );
-}
+};
 
 export default Exame;

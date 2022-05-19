@@ -25,3 +25,7 @@ export default interface Patient {
     exames: Exame[];
     receitas: Prescricao[];
 };
+// trocar data de nascimento por idade
+// add convenio
+// add data de solicitação e de realização de exame
+// add nome pai e mae

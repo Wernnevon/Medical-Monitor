@@ -1,38 +1,46 @@
 import Styled from "styled-components";
+import { Link } from "react-router-dom";
 
 type PropType = {
-    active?: string;
-}
+  active?: string;
+};
 
 export const SideMenuContainer = Styled.div`
     display: flex;
-    background-color: #228b22;
     flex-direction: column;
     justify-content: start;
-    align-items: center;
+    align-items: start;
     width: 15vw;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding: 10px 0;
-    overflow-y: auto;
+    overflow: hidden;
 `;
-export const NavBtn = Styled.button `
+export const NavLink = Styled(Link)`
+    outline: none;
+    text-decoration: none;
+    margin: 10px 0;
+    width: ${({active}:PropType)=> active ? '98%' : 0};
+    background-color: #0000004d;
+    border-right: ${({active}:PropType)=> active ? '5px solid #fff' : '0px solid #fff'}; 
+    transition: 300ms linear;
+    :hover{
+        cursor: pointer;
+    }
+`;
+export const NavBtn = Styled.button`
     outline: none;
     border: none;
     text-transform: uppercase;
     text-decoration: none;
-    display: inline-block;
-    font-size: 3rem;
-    font-weight: 600;
-    padding: 15px 18px 5px 18px;
-    border-radius: 60%;
-    background-color: ${(props: PropType) => (props.active ? "#fff" : "transparent")};
-    color: ${(props: PropType) => (props.active ? "#228b22" : "#fff")};
-    transition: 300ms;
-    box-shadow: ${(props: PropType) => (props.active ? "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" : "none")};
-    :active, 
-    :hover {
-        background-color: #fff;
-        color: #228b22;
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: #fff;
+    height: 100%;
+    width: 20vw;
+    :hover{
+        font-weight: ${({active}:PropType)=> active? '400' : '800'};
         cursor: pointer;
     }
 `;
@@ -41,33 +49,29 @@ export const NavLabel = Styled.label`
     text-transform: uppercase;
     text-decoration: none;
     display: inline-block;  
-    font-size: 1.4rem;
-    font-weight: 400;
-    margin: 10px 0 50px 0;
+    font-size: 1.2rem;
+    margin-left: 10px;
     :hover{
-      font-weight: 700;
+        cursor: pointer;
     }
 `;
-
 export const Image = Styled.img`
-    width: 80%;
-    height: 80%;
-    border-radius: 60%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 70%;
+    height: 70%;
 `;
 
-export const NavImage = Styled.button `
+export const NavImage = Styled.button`
     outline: none;
     border: none;
-    text-transform: uppercase;
     text-decoration: none;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
     font-size: 4rem;
     font-weight: 600;
-    padding: 15px 18px 5px 18px;
-    border-radius: 60%;
+    padding: 20px 10px;
     background: none;
     margin-bottom: 20px;
+    margin-top: 20px;
     :hover,
     :active {
         cursor: pointer;

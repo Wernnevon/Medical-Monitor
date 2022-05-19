@@ -10,11 +10,11 @@ export const DropdownHeader = Styled.div<PropType>`
   margin: 0;
   padding: 0;
   width: 97%;
-  height: 40px;
+  height: 30px;
   position: absolute;
   background: #fff;
   z-index: 999;
-  top: 0;
+  top: 1px;
 `;
 
 export const DropdownContainer = Styled.div<PropType>`
@@ -22,7 +22,7 @@ export const DropdownContainer = Styled.div<PropType>`
   flex-direction: column;
   justify-content: center;
   width: 93%;
-  height: ${(props) => props.active ? "250px" : "30px"};
+  height: ${(props) => props.active ? "250px" : "20px"};
   background: #fff;
   box-shadow: 0px 3px 8px 0px rgba(0,0,0,0.2);
   padding: 10px;

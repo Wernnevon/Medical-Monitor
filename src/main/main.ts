@@ -20,9 +20,10 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 800,
-    title : "Dr. Bertrandy Anacleto",
+    title : "Medical Monitor",
+    
     resizable: true,
-    icon: "../assests/icon.ico",
+    icon: './src/assests/logo01.png',
     maximizable: true,
     webPreferences: {
       nodeIntegration: true,

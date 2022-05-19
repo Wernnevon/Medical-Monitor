@@ -39,6 +39,7 @@ const Output: React.FC<Params> = ({ content, exames, atestado }: Params) => {
 
   useEffect(() => {
     setSelect(exames);
+    console.log('Console teste');
   }, [exames]);
 
   return (
@@ -47,6 +48,7 @@ const Output: React.FC<Params> = ({ content, exames, atestado }: Params) => {
         <Label>Cópias:</Label>
         <Input  min="1" max="2" type="number" value={copies} onChange={(e) => setCopies(parseInt(e.target.value))}/>
       </Item>
+        <PDFButton copies={copies} type={content? 'Receita' : exames ? 'Exames' : 'Atestado'}/>
       <Content id="divToPrint">
       <ReceitaOutputCard src={BGLogo} />
         <Header>
@@ -78,15 +80,14 @@ const Output: React.FC<Params> = ({ content, exames, atestado }: Params) => {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "auto auto",
+                gridTemplateColumns: "50% 50%",
                 overflowY: "auto",
-                height: "300px",
+                width: "100%",
               }}
             >
               {select!.map((exame: any) => (
                 <ReceituarioOutput key={exame}>
-                  {" "}
-                  {exame} <br />{" "}
+                  {exame}
                 </ReceituarioOutput>
               ))}
             </div>
@@ -116,7 +117,6 @@ const Output: React.FC<Params> = ({ content, exames, atestado }: Params) => {
           <FooterLabel>Assinatura</FooterLabel>
         </Footer>
       </Content>
-      <PDFButton copies={copies}/>
     </ReceitaCard>
   );
 };
