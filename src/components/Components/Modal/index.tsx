@@ -1,11 +1,11 @@
-import React from "react";
-
-import {ModalContainer, ModalContent} from './styles'
+import React, { ReactElement } from "react";
+import { ModalContainer, ModalContent, ModalCloser } from "./styles";
+import { AiOutlineClose } from "react-icons/ai";
 
 interface ModalProps {
   modalState: boolean;
   closeModal: () => void;
-  component?: React.FC;
+  component?: ReactElement;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -14,9 +14,12 @@ const Modal: React.FC<ModalProps> = ({
   component,
 }: ModalProps) => {
   return (
-    <ModalContainer onClick={closeModal} show={modalState}>
-      <ModalContent onClick={(e:any)=>e.stopPropagation()}>
-        <button onClick={closeModal}>fechar</button>
+    <ModalContainer show={modalState}>
+      <ModalContent show={modalState}>
+        <ModalCloser onClick={closeModal}>
+          <AiOutlineClose color="#FFF" size={20} />
+        </ModalCloser>
+        {component}
       </ModalContent>
     </ModalContainer>
   );

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { hot } from "react-hot-loader/root";
 import { BrowserRouter as Router } from 'react-router-dom';
-import {ExameProvider} from './Components/Context/ExameContext';
 import {TestDb} from '../Infra/DB/db';
 
 import SideNav from "./Pages/SideNav";
@@ -19,9 +18,7 @@ function App() {
     <Router>
       <div className="app">
       <SideNav/>
-      <ExameProvider>
         <Routes/>
-      </ExameProvider>
       </div>
     </Router>
   );

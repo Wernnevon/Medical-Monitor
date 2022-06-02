@@ -24,7 +24,7 @@ export const DropdownContainer = Styled.div<PropType>`
   width: 93%;
   height: ${(props) => props.active ? "250px" : "20px"};
   background: #fff;
-  box-shadow: 0px 3px 8px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 3px 8px 0px #00000033;
   padding: 10px;
   margin: 5px;
   position: relative;
@@ -100,9 +100,12 @@ export const Checkbox = Styled.input`
 
 export const LabelCheckbox = Styled.label`
   font-size: 1rem;
+  font-weight: 300;
 `;
 
 export const Exames = Styled.label`
-  margin: 5px 0;
-  font-size: 1.5rem;
+  font-family: 'Akshar', sans-serif;
+  font-weight: 300;
+  margin: .4rem;
+  font-size: 1.3rem;
 `;

@@ -8,8 +8,9 @@ export const BTNContainer = Styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: 90ms linear;
     cursor: pointer;
     :active{
-        transform: translateY(4px);
+        transform: translateY(2px);
     }
 `;

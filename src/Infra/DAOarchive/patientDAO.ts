@@ -27,7 +27,7 @@ export function index() {
 
 export function findByName(name: string){
   const patients: Patient[] = LoadDB();
-  return patients.filter(patient => patient.nome.includes(name));
+  return patients.filter(patient => patient.name.includes(name));
 }
 
 function findById(id: string | undefined){

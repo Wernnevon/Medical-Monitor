@@ -20,7 +20,9 @@ export const Item = Styled.div`
 
 export const Label = Styled.label`
   min-width: max-content;
-  font-size: inherit;
+  font-size: 1rem;
+  font-weight: 300;
+  color: #333;
 `;
 
 export const Input = Styled.input`
@@ -37,6 +39,9 @@ export const Input = Styled.input`
   position: relative;
   z-index:99;
   text-align:right;
+  font-size: .9rem;
+  font-weight: 300;
+  color: #333;
   ::-webkit-inner-spin-button{
     opacity:.5;
     cursor: pointer;
@@ -103,19 +108,38 @@ export const ReceituarioOutputContainer = Styled.div`
   display: flex;
   align-items: start;
   flex-direction: column;
-  margin: 10px 0px;
-  margin-top: 3rem;
+  margin-top: .8rem;
   width: 85%;
-  height: 60%;
+  height: 58%;
   z-index: 30;
+  box-sizing: border-box;
+  overflow: hidden;
 `;
 
-export const ReceituarioOutput = Styled.li`
-  font-family: "Arial";
-  font-size: 1rem;
+export const ReceituarioOutput = Styled.label`
+  display: flex;
+  flex-direction: column;
+  font-family: 'Akshar', sans-serif;
+  font-weight: 300;
+  font-size: 1.1rem;
+  padding-bottom: 1.2rem;
+  padding-left: .8rem;
   text-align: left;
- 
+  position: relative;
+  
 `;
+
+export const ExamsList = Styled.div`
+  display: grid;
+  grid-template-columns: 50% 50%;
+  overflow-y: auto;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
+
 export const AtestadoOutputContainer = Styled.div`
   display: flex;
   justify-content: start;
@@ -166,4 +190,25 @@ export const FooterLabel = Styled.label`
   padding: 5px;
   font-family: "Arial";
   font-size: .8rem;
+`;
+
+export const ExamsContent = Styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+`;
+
+export const PatientLabel = Styled.label`
+  font-family: 'Akshar', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+`;
+
+export const PatientDataContent = Styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
 `;

@@ -1,10 +1,10 @@
 import { app, BrowserWindow, Session } from "electron";
 import path from "path";
+import os from 'os';
 
 declare global {
   const MAIN_WINDOW_WEBPACK_ENTRY: string;
 }
-
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
   // eslint-disable-line global-require
@@ -21,19 +21,19 @@ const createWindow = () => {
     width: 1000,
     height: 800,
     title : "Medical Monitor",
-    
     resizable: true,
     icon: './src/assests/logo01.png',
     maximizable: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      devTools: true
     },
   });
 
   /** Manage browser sessions, cookies, cache, proxy settings, etc */
   const ses = mainWindow.webContents.session;
-
+  mainWindow.setMenuBarVisibility(false);
   /**add chrome dev tools */
   addReactDevTools(ses);
 
@@ -76,9 +76,10 @@ app.on("activate", () => {
   }
 });
 
-function addReactDevTools(ses: Session) {
-  const devToolsModulePath = path.join(process.cwd(), "lib", "react-dev-tools");
-  ses.loadExtension(devToolsModulePath);
+async function addReactDevTools(ses: Session) {
+  const devToolsModulePath = path.join( os.homedir(),
+  '.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.24.6_0');
+  await ses.loadExtension(devToolsModulePath);
 }
 
 // In this file you can include the rest of your app's specific main process

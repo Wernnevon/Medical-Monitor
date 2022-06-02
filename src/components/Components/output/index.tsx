@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import BGLogo from "../../../assests/logo02SVG.svg";
 import LogoSVG from "../../../assests/logo02SVG.svg";
@@ -21,36 +21,59 @@ import {
   AtestadoDateOutput,
   Input,
   Item,
-  Label
+  Label,
+  ExamsList,
+  ExamsContent,
+  PatientLabel,
+  PatientDataContent,
 } from "./styles";
 import PDFButton from "../Utils/PDFButton";
+import getAge from "../Utils/getAge";
+
+interface PatientData {
+  name: string;
+  birthday: Date;
+  healthInsurance: string;
+}
 
 interface Params {
   content?: any;
   exames?: any;
   atestado?: any;
+  patientData?: PatientData;
 }
 
-const Output: React.FC<Params> = ({ content, exames, atestado }: Params) => {
+const Output: React.FC<Params> = ({
+  content,
+  exames,
+  atestado,
+  patientData,
+}: Params) => {
   const [select, setSelect] = useState(exames);
   const [copies, setCopies] = useState(1);
 
-  var i = 0;
-
   useEffect(() => {
     setSelect(exames);
-    console.log('Console teste');
   }, [exames]);
 
   return (
     <ReceitaCard>
       <Item>
         <Label>Cópias:</Label>
-        <Input  min="1" max="2" type="number" value={copies} onChange={(e) => setCopies(parseInt(e.target.value))}/>
+        <Input
+          min="1"
+          max="2"
+          type="number"
+          value={copies}
+          onChange={(e) => setCopies(parseInt(e.target.value))}
+        />
       </Item>
-        <PDFButton copies={copies} type={content? 'Receita' : exames ? 'Exames' : 'Atestado'}/>
+      <PDFButton
+        copies={copies}
+        type={content ? "Receita" : exames ? "Exames" : "Atestado"}
+      />
       <Content id="divToPrint">
-      <ReceitaOutputCard src={BGLogo} />
+        <ReceitaOutputCard src={BGLogo} />
         <Header>
           <Logo src={LogoSVG} />
           <LabelHeader>DR. BERTRANDY ANACLETO</LabelHeader>
@@ -70,27 +93,47 @@ const Output: React.FC<Params> = ({ content, exames, atestado }: Params) => {
         </Header>
         <ReceituarioOutputContainer>
           {content && (
-            <div>
+            <ExamsContent>
+              <PatientDataContent>
+                <PatientLabel>Nome: {patientData?.name}</PatientLabel>
+                <PatientLabel>
+                  Idade:{" "}
+                  {patientData?.birthday
+                    ? getAge(patientData?.birthday) + " anos"
+                    : ""}
+                </PatientLabel>
+                <PatientLabel>
+                  Convênio: {patientData?.healthInsurance}
+                </PatientLabel>
+              </PatientDataContent>
               {content!.map((receita: any) => (
-                <ReceituarioOutput key={i++}> {receita} </ReceituarioOutput>
-              ))}
-            </div>
-          )}
-          {select && (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "50% 50%",
-                overflowY: "auto",
-                width: "100%",
-              }}
-            >
-              {select!.map((exame: any) => (
-                <ReceituarioOutput key={exame}>
-                  {exame}
+                <ReceituarioOutput key={receita}>
+                  {" "}
+                  ● {receita}{" "}
                 </ReceituarioOutput>
               ))}
-            </div>
+            </ExamsContent>
+          )}
+          {select && (
+            <ExamsContent>
+              <PatientDataContent>
+                <PatientLabel>Nome: {patientData?.name}</PatientLabel>
+                <PatientLabel>
+                  Idade:{" "}
+                  {patientData?.birthday
+                    ? getAge(patientData?.birthday) + " anos"
+                    : ""}
+                </PatientLabel>
+                <PatientLabel>
+                  Convênio: {patientData?.healthInsurance}
+                </PatientLabel>
+              </PatientDataContent>
+              <ExamsList>
+                {select!.map((exame: any) => (
+                  <ReceituarioOutput key={exame}>● {exame}</ReceituarioOutput>
+                ))}
+              </ExamsList>
+            </ExamsContent>
           )}
           {atestado && (
             <div>
@@ -122,5 +165,3 @@ const Output: React.FC<Params> = ({ content, exames, atestado }: Params) => {
 };
 
 export default Output;
-
-{/* <button onClick={handleGenPDF}>print</button> */}

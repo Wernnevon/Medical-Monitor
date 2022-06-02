@@ -19,10 +19,9 @@ import {
 
 const SideNav: React.FC = () => {
   const [state, setState] = useState("home");
-
   return (
-    <SideMenuContainer>
-      <Link draggable={false} style={{ outline: "none" }} to="/main_window/">
+    <SideMenuContainer id="sidenav">
+      <Link draggable={false} style={{ outline: "none", margin: '2em 0' }} to="/main_window/">
         <NavImage style={{ margin: 0, padding: 0}} draggable={false} onClick={() => setState("home")}>
           <Image draggable={false} src={Logo} />
         </NavImage>
@@ -31,7 +30,9 @@ const SideNav: React.FC = () => {
         draggable={false}
         to="/main_window/pacientes"
         active={state === "pacientes" ? state : ""}
-        onClick={() => setState("pacientes")}
+        onClick={() => {
+          setState("pacientes");
+        }}
       >
         <NavBtn active={state === "pacientes" ? state : ""}>
           <HiUserGroup />

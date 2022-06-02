@@ -1,31 +1,31 @@
-interface Endereco {
-    cidade: string;
-    bairro: string;
-    rua: string;
-    numero: number;
-    complemento: string;
+interface Address {
+    city: string;
+    neighborhood: string;
+    street: string;
+    number: number;
+    complement?: string;
 };
 
-interface Exame {
-    nome: string;
-    data: Date;
-    realizado: boolean;
+interface Exam {
+    name: string;
+    realizationDate: Date;
+    requisitionDate: Date;
+    done: boolean;
 };
-interface Prescricao {
-    medicamento: string;
-    data: Date;
-    administrando: boolean;
+interface Prescription {
+    medicament: string;
+    date: Date;
+    administering: boolean;
 };
 
 export default interface Patient {
     id?: string;
-    nome: string;
-    idade: number;
-    endereco: Endereco;
-    exames: Exame[];
-    receitas: Prescricao[];
+    name: string;
+    birthday: Date
+    helthInsurance: string;
+    fatherName: string;
+    motherName: string;
+    adress: Address;
+    exams: Exam[];
+    medicament: Prescription[];
 };
-// trocar data de nascimento por idade
-// add convenio
-// add data de solicitação e de realização de exame
-// add nome pai e mae

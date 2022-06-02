@@ -10,6 +10,7 @@ export const SideMenuContainer = Styled.div`
     flex-direction: column;
     justify-content: start;
     align-items: start;
+    min-width: 175px;
     width: 15vw;
     padding: 10px 0;
     overflow: hidden;
