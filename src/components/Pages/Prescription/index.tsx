@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Patient from "../../../Infra/DAOarchive/model";
 import { index, update } from "../../../Infra/DAOarchive/patientDAO";
+import { useToastContext } from "../../Components/Context/Toast";
 
 import Output from "../../Components/output";
+import { patientExist, validate } from "../../Components/Utils/midlleware";
 
 import {
   ReceitaContainer,
@@ -23,6 +25,7 @@ import {
 
 const Prescription: React.FC = () => {
   const [content, setContent] = useState([]);
+  const addToast = useToastContext();
   const [medicaments, setMedicaments] = useState("");
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
@@ -52,7 +55,8 @@ const Prescription: React.FC = () => {
   }
 
   function handleAddPrecription(patientUpdate: Patient) {
-    content.map((medicament: string) =>
+    if (patientExist(patientUpdate.id) && validate(content)) {
+      content.map((medicament: string) =>
       patientUpdate.medicament.push({
         medicament: medicament,
         date: new Date(),
@@ -61,6 +65,9 @@ const Prescription: React.FC = () => {
     );
     update(patient);
     handleClear();
+    } else {
+      addToast("Escolha o paciente e prescreva algo");
+    }
   }
 
   return (

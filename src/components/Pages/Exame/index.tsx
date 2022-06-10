@@ -23,26 +23,19 @@ import {
 } from "./styles";
 import Patient from "../../../Infra/DAOarchive/model";
 import { index, update } from "../../../Infra/DAOarchive/patientDAO";
-import Modal from "../../Components/Modal";
-import AlertLabel from "../../Components/AlertLabel";
 import { patientExist, validate } from "../../Components/Utils/midlleware";
-import { warnnigMenssage } from "../../Components/Utils/messages";
-import AlertTypes from "../../Components/Utils/alertTypes";
+import { useToastContext } from "../../Components/Context/Toast";
+import { AlertTypes } from "../../Components/Utils/ToastConfigs";
 
 const Exame: React.FC = () => {
-  const [modalState, setModalState] = useState(false);
-  const [alertType, setAlertType] = useState(AlertTypes.DEFAULT);
-  const [menssage, setMenssage] = useState("");
   const { exames, selected, handleClear } = useExame();
+  const addToast = useToastContext();
   const [otherExams, setOtherExams] = useState([]);
   const [otherExamsText, setOtherExamsText] = useState("");
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
-  const [patient, setPatient] = useState({} as Patient);
 
-  function closeModal() {
-    setModalState(!modalState);
-  }
+  const [patient, setPatient] = useState({} as Patient);
 
   const sortByName = (array: Array<any>) =>
     array.sort((patientA: Patient, patientB: Patient) =>
@@ -87,22 +80,12 @@ const Exame: React.FC = () => {
       update(patient);
       handleClearAll();
     } else {
-      setAlertType(AlertTypes.WARNING);
-      setMenssage(warnnigMenssage);
-      setModalState(true);
+      addToast("Escolha o paciente e selecione ao menos um exame");
     }
   }
 
   return (
     <ExameContainer>
-      <Modal
-        modalState={modalState}
-        closeModal={closeModal}
-        component={
-          <AlertLabel options={{ fontColor: "#FFF" }} menssage={menssage} />
-        }
-        configs={{bg: alertType}}
-      />
       <ExameCard>
         <ExameContent>
           <SearchBar>

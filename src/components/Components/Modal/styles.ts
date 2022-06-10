@@ -2,7 +2,6 @@ import Styled from "styled-components";
 
 interface PropTypes {
   show: boolean;
-  bg?: string
 }
 
 export const ModalContainer = Styled.div`
@@ -21,7 +20,7 @@ export const ModalContainer = Styled.div`
 `;
 export const ModalContent = Styled.div`
     display: ${({ show }: PropTypes) => (show ? "flex" : "none")};
-    background-color:${({bg}:PropTypes)=> bg};
+    background-color: #efefef;
     justify-content: center;
     align-items: center;
     transition-delay: 120ms;
