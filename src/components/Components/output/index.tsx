@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
 import BGLogo from "../../../assests/logo02SVG.svg";
 import LogoSVG from "../../../assests/logo02SVG.svg";
 
-import { 
+import {
   ReceitaCard,
   ReceitaOutputCard,
   Content,
@@ -19,75 +19,137 @@ import {
   FooterLine,
   FooterLabel,
   AtestadoDateOutput,
-} from './styles';
+  Input,
+  Item,
+  Label,
+  ExamsList,
+  ExamsContent,
+  PatientLabel,
+  PatientDataContent,
+} from "./styles";
+import PDFButton from "../PDFButton";
 
-interface Params {
-    content?: any;
-    exames?: any;
-    atestado?: any;
+interface AtestadoData {
+  patientName: string;
+  CID: string;
+  days: number;
+  date: Date;
+  city: string;
+  state: string;
 }
 
-const Output: React.FC<Params> = ({content, exames, atestado}:Params) => {
+interface Params {
+  prescription?: any;
+  exames?: any;
+  atestado?: AtestadoData;
+  patientName?: string;
+}
 
-  const [select, setSelect] = useState(exames)
+const Output: React.FC<Params> = ({
+  prescription,
+  exames,
+  atestado,
+  patientName,
+}: Params) => {
+  const [select, setSelect] = useState(exames);
+  const [copies, setCopies] = useState(1);
 
-  useEffect(()=>{
+  useEffect(() => {
     setSelect(exames);
   }, [exames]);
 
   return (
     <ReceitaCard>
-    <ReceitaOutputCard src={BGLogo} />
-      <Content>
+      <Item>
+        <Label>Cópias:</Label>
+        <Input
+          min="1"
+          max="2"
+          type="number"
+          value={copies}
+          onChange={(e) => setCopies(parseInt(e.target.value))}
+        />
+      </Item>
+      <PDFButton
+        copies={copies}
+        type={prescription ? "Receita" : exames ? "Exames" : "Atestado"}
+      />
+      <Content id="divToPrint">
+        <ReceitaOutputCard src={BGLogo} />
         <Header>
           <Logo src={LogoSVG} />
           <LabelHeader>DR. BERTRANDY ANACLETO</LabelHeader>
-          <LabelHeaderContent style={{ letterSpacing: "3px" }} > MEDICINA GERIÁTRICA </LabelHeaderContent>
-          <LabelHeaderContent style={{ fontSize: ".8rem", fontWeight: "bold" }}> CRM/PB: 9647 | CRM/RN: 8103 </LabelHeaderContent>
-          <LabelHeaderContent style={{ fontSize: ".9rem" }}> (83) 9 9929-2209 | (83) 9 9844-1379 </LabelHeaderContent>
-          <LabelHeaderContent style={{ fontSize: ".8rem", fontWeight: "bold" }} > Rua Lourival Ribeiro da Nóbrega, 11, Centro, São João do Rio do Peixe - PB </LabelHeaderContent>
+          <LabelHeaderContent style={{ letterSpacing: "3px" }}>
+            MEDICINA GERIÁTRICA
+          </LabelHeaderContent>
+          <LabelHeaderContent style={{ fontSize: ".8rem", fontWeight: "bold" }}>
+            CRM/PB: 9647 | CRM/RN: 8103
+          </LabelHeaderContent>
+          <LabelHeaderContent style={{ fontSize: ".9rem" }}>
+            (83) 9 9929-2209 | (83) 9 9844-1379
+          </LabelHeaderContent>
+          <LabelHeaderContent style={{ fontSize: ".8rem", fontWeight: "bold" }}>
+            Rua Lourival Ribeiro da Nóbrega, 11, Centro, São João do Rio do
+            Peixe - PB
+          </LabelHeaderContent>
         </Header>
         <ReceituarioOutputContainer>
-          {
-            content && <div>
-              {
-                content!.map((receita:any) => <ReceituarioOutput key={receita} > {receita} <br/> </ReceituarioOutput>)
-              }
-            </div>
-          }
-          {
-            select && <div style={{display: "grid", gridTemplateColumns: "auto auto", overflowY: "auto", height: "300px"}}>
-              {
-                select!.map((exame:any) => <ReceituarioOutput key={exame}> {exame} <br/> </ReceituarioOutput>)
-              }
-            </div>
-          }
-          {
-            atestado && <div>
+          {prescription && (
+            <ExamsContent>
+              <PatientDataContent>
+                <PatientLabel>
+                  {patientName ? `Paciente: ${patientName}` : ""}
+                </PatientLabel>
+              </PatientDataContent>
+              {prescription!.map((receita: any) => (
+                <ReceituarioOutput key={receita}>
+                  {" "}
+                  ● {receita}{" "}
+                </ReceituarioOutput>
+              ))}
+            </ExamsContent>
+          )}
+          {select && (
+            <ExamsContent>
+              <PatientDataContent>
+                <PatientLabel>
+                  {patientName ? `Paciente: ${patientName}` : ""}
+                </PatientLabel>
+              </PatientDataContent>
+              <ExamsList>
+                {select!.map((exame: any) => (
+                  <ReceituarioOutput key={exame}>● {exame}</ReceituarioOutput>
+                ))}
+              </ExamsList>
+            </ExamsContent>
+          )}
+          {atestado && (
+            <div>
               {
                 <AtestadoOutputContainer>
                   <AtestadoOutput>
-                    ATESTO para os devidos fins de DIREITO que o (a) {atestado.paciente} foi atendido(a)
-                    neste Noscômico, portador(a) da entidade Nosológica-CID {atestado.cid} devendo 
-                    permanecer afastado (a) de suas atividades habituais pelo período de {atestado.dia} dias
+                    ATESTO para os devidos fins de DIREITO que o (a){" "}
+                    {atestado.patientName} foi atendido(a) neste Noscômico,
+                    portador(a) da entidade Nosológica-CID {atestado.CID}{" "}
+                    devendo permanecer afastado (a) de suas atividades habituais
+                    pelo período de {atestado.days} dias
                   </AtestadoOutput>
                   <AtestadoDateOutput>
-                    Cajazeiras, {atestado.date.toLocaleDateString("pt-BR")}
+                    {atestado.city}-{atestado.state},{" "}
+                    {atestado.date.toLocaleDateString("pt-BR")}
                   </AtestadoDateOutput>
                 </AtestadoOutputContainer>
               }
             </div>
-          }
-
+          )}
         </ReceituarioOutputContainer>
-        <Footer>
-        <FooterLine/>
-        <FooterLabel>Assinatura</FooterLabel>
-      </Footer>
+        <Footer style={{ marginTop: "20px" }}>
+          <FooterLine />
+          <FooterLabel>Assinatura</FooterLabel>
+        </Footer>
       </Content>
-      <button onClick={() => window.print()}>print</button>
-  </ReceitaCard>
+    </ReceitaCard>
   );
-}
+};
 
 export default Output;

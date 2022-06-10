@@ -1,6 +1,6 @@
 {
-  "name": "create-electron-ts-react",
-  "productName": "Dr. Bertrnady Anacleto",
+  "name": "medical-monitor",
+  "productName": "Monitor Medico",
   "version": "1.0 beta",
   "description": "Electron Typescript React Boilerplate / Starter",
   "repository": {
@@ -35,7 +35,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "Dr. Bertrnady Anacleto"
+            "name": "Monitor Medico"
           }
         },
         {
@@ -77,13 +77,20 @@
     "@hot-loader/react-dom": "^17.0.1",
     "@types/react-icons": "^3.0.0",
     "@types/react-router-dom": "^5.1.7",
+    "@types/yup": "^0.29.14",
+    "@unform/core": "^2.1.6",
+    "@unform/web": "^2.1.6",
+    "electron-log": "^4.4.7",
     "electron-squirrel-startup": "^1.0.0",
+    "html2canvas": "^1.1.5",
+    "jspdf": "^2.3.1",
     "node-fetch": "^2.6.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "styled-components": "^5.2.3",
-    "unzipper": "^0.10.11"
+    "unzipper": "^0.10.11",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
@@ -113,6 +120,7 @@
     "babel-plugin-styled-components": "^1.13.1",
     "css-loader": "^5.1.1",
     "electron": "^12.0.0",
+    "electron-devtools-installer": "^3.2.0",
     "eslint": "^7.21.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.1.0",
