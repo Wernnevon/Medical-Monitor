@@ -35,7 +35,7 @@ const SideNav: React.FC = () => {
         }}
       >
         <NavBtn active={state === "pacientes" ? state : ""}>
-          <HiUserGroup />
+          <HiUserGroup style={{ position: "relative", bottom: '.15rem' }} />
           <NavLabel>Pacientes</NavLabel>
         </NavBtn>
       </NavLink>

@@ -14,6 +14,7 @@ export const SideMenuContainer = Styled.div`
     width: 15vw;
     padding: 10px 0;
     overflow: hidden;
+    border: none;
 `;
 export const NavLink = Styled(Link)`
     outline: none;
@@ -28,6 +29,7 @@ export const NavLink = Styled(Link)`
     }
 `;
 export const NavBtn = Styled.button`
+    display: flex;
     outline: none;
     border: none;
     text-transform: uppercase;
@@ -37,21 +39,21 @@ export const NavBtn = Styled.button`
     font-size: 2rem;
     padding: 10px 20px;
     background-color: transparent;
+    font-weight: 400;
     color: #fff;
     height: 100%;
     width: 20vw;
     :hover{
-        font-weight: ${({active}:PropType)=> active? '400' : '800'};
+        font-weight: ${({active}:PropType)=> active? '400' : '500'};
         cursor: pointer;
     }
 `;
 export const NavLabel = Styled.label`
     color: #fff;
-    text-transform: uppercase;
-    text-decoration: none;
-    display: inline-block;  
-    font-size: 1.2rem;
+    text-transform: uppercase; 
+    font-size: 1.3rem;
     margin-left: 10px;
+    font-family: 'Akshar', sans-serif;
     :hover{
         cursor: pointer;
     }

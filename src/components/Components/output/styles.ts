@@ -5,17 +5,19 @@ export const ReceitaCard = Styled.div`
   padding: 20px;
   font-size: 30px;
   text-align: center;
-  margin: 0 10px;
-  margin-top: -5vh;
-  height: 95vh;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
 `;
 
 export const Item = Styled.div`
   display: flex;
   align-items: center;
-  width: 95px;
+  width: 5rem;
   font-size: 1rem;
-  position: relative;
+  position: absolute;
+  right: 4rem;
 `;
 
 export const Label = Styled.label`
@@ -37,7 +39,7 @@ export const Input = Styled.input`
   background: none;
   border: none;
   position: relative;
-  z-index:99;
+  z-index:30;
   text-align:right;
   font-size: .9rem;
   font-weight: 300;
@@ -71,7 +73,6 @@ export const Content = Styled.div`
   top: 0;
   left: 0;
   opacity: 0.99;
-  z-index: 0;
   z-index: 20;
   height: 100%;
 `;
@@ -108,12 +109,13 @@ export const ReceituarioOutputContainer = Styled.div`
   display: flex;
   align-items: start;
   flex-direction: column;
-  margin-top: .8rem;
+  margin: .8rem 0 1rem;
   width: 85%;
-  height: 58%;
+  height: 100%;
   z-index: 30;
   box-sizing: border-box;
   overflow: hidden;
+  position: relative;
 `;
 
 export const ReceituarioOutput = Styled.label`
@@ -126,7 +128,8 @@ export const ReceituarioOutput = Styled.label`
   padding-left: .8rem;
   text-align: left;
   position: relative;
-  
+  box-sizing: border-box;
+  word-wrap: break-word;
 `;
 
 export const ExamsList = Styled.div`
@@ -142,36 +145,37 @@ export const ExamsList = Styled.div`
 
 export const AtestadoOutputContainer = Styled.div`
   display: flex;
-  justify-content: start;
+  justify-content: center;
   flex-direction: column;
   margin: 0px;
   text-align: justify;
-  z-index: 30;
+  height: calc(100vh - 350px);
 `;
+
 export const AtestadoOutput = Styled.label`
   background: none;
   line-height: 2rem;
-  font-family: "Arial";
+  font-family: "Arial", sans-serif;
   font-size: 1rem;
   width: 100%;
 `;
+
 export const AtestadoDateOutput = Styled.label`
   background: none;
   line-height: 2rem;
-  font-family: "Arial";
+  font-family: "Arial", sans-serif;
   font-size: 1rem;
   text-align: right;
 `;
+
 export const Footer = Styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 20px 0px;
   width: 100%;
   z-index: 30;
-  position: absolute;
-  bottom: 20px;
+  position: relative;
 `;
 
 export const FooterLine = Styled.div`
@@ -210,5 +214,5 @@ export const PatientDataContent = Styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  justify-content: space-around;
+  justify-content: flex-start;
 `;

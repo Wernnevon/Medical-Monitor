@@ -27,27 +27,29 @@ import {
   PatientLabel,
   PatientDataContent,
 } from "./styles";
-import PDFButton from "../Utils/PDFButton";
-import getAge from "../Utils/getAge";
+import PDFButton from "../PDFButton";
 
-interface PatientData {
-  name: string;
-  birthday: Date;
-  healthInsurance: string;
+interface AtestadoData {
+  patientName: string;
+  CID: string;
+  days: number;
+  date: Date;
+  city: string;
+  state: string;
 }
 
 interface Params {
-  content?: any;
+  prescription?: any;
   exames?: any;
-  atestado?: any;
-  patientData?: PatientData;
+  atestado?: AtestadoData;
+  patientName?: string;
 }
 
 const Output: React.FC<Params> = ({
-  content,
+  prescription,
   exames,
   atestado,
-  patientData,
+  patientName,
 }: Params) => {
   const [select, setSelect] = useState(exames);
   const [copies, setCopies] = useState(1);
@@ -70,7 +72,7 @@ const Output: React.FC<Params> = ({
       </Item>
       <PDFButton
         copies={copies}
-        type={content ? "Receita" : exames ? "Exames" : "Atestado"}
+        type={prescription ? "Receita" : exames ? "Exames" : "Atestado"}
       />
       <Content id="divToPrint">
         <ReceitaOutputCard src={BGLogo} />
@@ -92,21 +94,14 @@ const Output: React.FC<Params> = ({
           </LabelHeaderContent>
         </Header>
         <ReceituarioOutputContainer>
-          {content && (
+          {prescription && (
             <ExamsContent>
               <PatientDataContent>
-                <PatientLabel>Nome: {patientData?.name}</PatientLabel>
                 <PatientLabel>
-                  Idade:{" "}
-                  {patientData?.birthday
-                    ? getAge(patientData?.birthday) + " anos"
-                    : ""}
-                </PatientLabel>
-                <PatientLabel>
-                  Convênio: {patientData?.healthInsurance}
+                  {patientName ? `Paciente: ${patientName}` : ""}
                 </PatientLabel>
               </PatientDataContent>
-              {content!.map((receita: any) => (
+              {prescription!.map((receita: any) => (
                 <ReceituarioOutput key={receita}>
                   {" "}
                   ● {receita}{" "}
@@ -117,15 +112,8 @@ const Output: React.FC<Params> = ({
           {select && (
             <ExamsContent>
               <PatientDataContent>
-                <PatientLabel>Nome: {patientData?.name}</PatientLabel>
                 <PatientLabel>
-                  Idade:{" "}
-                  {patientData?.birthday
-                    ? getAge(patientData?.birthday) + " anos"
-                    : ""}
-                </PatientLabel>
-                <PatientLabel>
-                  Convênio: {patientData?.healthInsurance}
+                  {patientName ? `Paciente: ${patientName}` : ""}
                 </PatientLabel>
               </PatientDataContent>
               <ExamsList>
@@ -141,13 +129,13 @@ const Output: React.FC<Params> = ({
                 <AtestadoOutputContainer>
                   <AtestadoOutput>
                     ATESTO para os devidos fins de DIREITO que o (a){" "}
-                    {atestado.paciente} foi atendido(a) neste Noscômico,
-                    portador(a) da entidade Nosológica-CID {atestado.cid}{" "}
+                    {atestado.patientName} foi atendido(a) neste Noscômico,
+                    portador(a) da entidade Nosológica-CID {atestado.CID}{" "}
                     devendo permanecer afastado (a) de suas atividades habituais
-                    pelo período de {atestado.dia} dias
+                    pelo período de {atestado.days} dias
                   </AtestadoOutput>
                   <AtestadoDateOutput>
-                    {atestado.location},{" "}
+                    {atestado.city}-{atestado.state},{" "}
                     {atestado.date.toLocaleDateString("pt-BR")}
                   </AtestadoDateOutput>
                 </AtestadoOutputContainer>

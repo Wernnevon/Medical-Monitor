@@ -5,8 +5,8 @@ export const Container = Styled.div`
     display: flex;
     box-sizing: border-box;
     flex-direction: column;
-    min-width: 100%;
-    height: 100%;
+    min-width: 60vw;
+    height: 65vh;
     position: relative;
 
 `;
@@ -22,18 +22,19 @@ export const FormContainer = Styled(Form)`
 
 export const Submit = Styled.button`
     width: 20em;
-    position: absolute;
+    position: relative;
     border: none;
     border-radius: 5em;
     outline: none;
     background-color: #03A696;
     height: 2.5rem;
     color: #fff;
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: 1.3rem;
+    font-weight: 500;
     transition: 40ms ease-in;
-    bottom: 2em;
-    left: calc(50% - 10em);
+    margin: 1.5em 0 4em;
+    font-family: 'Akshar', sans-serif;
+    left: calc(100% - 10em);
     :hover{
         cursor: pointer;
     };

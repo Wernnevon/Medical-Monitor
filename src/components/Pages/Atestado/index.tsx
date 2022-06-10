@@ -9,28 +9,30 @@ import {
   FormContainer,
   Input,
   Item,
-  Label
+  Label,
+  TitleForm
 } from "./styles";
 
 const Atestado: React.FC = () => {
 
-  const [paciente, setPaciente] = useState('__________________');
-  const [cid, setCID] = useState('__________________');
-  const [dia, setDias] = useState('3');
+  const [patientName, setPatientName] = useState('__________________');
+  const [CID, setCID] = useState('__________________');
+  const [days, setDays] = useState('1');
   const [date, setDate] = useState(new Date());
-  const [location, setLocation] = useState('Cajazeiras');
+  const [city, setCity] = useState('Cidade');
+  const [state, setState] = useState('UF');
 
   function handleDate(date: string){
     let result = new Date(date);
+
     result.setDate(result.getDate() + 1);
     setDate(result)
   }
-  function handleDay(days: string){
-    
-    if(parseInt(days) < 1){
-      setDias('1');
+  function handleDay(days: string){   
+    if(parseInt(days) < 1 || days === ''){
+      setDays('1');
     }else{
-      setDias(days.toString())
+      setDays(days.toString())
     }
   }
 
@@ -38,9 +40,10 @@ const Atestado: React.FC = () => {
     <AtestadoContainer>
       <AtestadoCard>
         <FormContainer>
+          <TitleForm>Dados do Paciente</TitleForm>
           <Item>
             <Label>Paciente:</Label>
-            <Input onChange={(event) => setPaciente(event.target.value.toLocaleUpperCase())} />
+            <Input onChange={(event) => setPatientName(event.target.value.toLocaleUpperCase())} />
           </Item>
           <Item>
             <Label>Entidade Nosocológica-CID:</Label>
@@ -48,19 +51,23 @@ const Atestado: React.FC = () => {
           </Item>
           <Item>
             <Label>Dias:</Label>
-            <Input onChange={(event) => handleDay(event.target.value)} type="number" min="01" />
+            <Input value={days} onChange={(event) => handleDay(event.target.value)} type="number" min="01" />
           </Item>
-          <Item>
+          <Item >
             <Label>Data:</Label>
-            <Input onChange={(event) => handleDate(event.target.value)} type="date" max={Date.now()} />
+            <Input defaultValue={date.toISOString().substr(0,10)} onChange={(event) => handleDate(event.target.value)} type="date" />
           </Item>
           <Item>
             <Label>Cidade:</Label>
-            <Input onChange={(event) => setLocation(event.target.value)} type="text"/>
+            <Input onChange={(event) => setCity(event.target.value)} type="text"/>
+          </Item>
+          <Item>
+            <Label>UF:</Label>
+            <Input onChange={(event) => setState(event.target.value)} type="text"/>
           </Item>
         </FormContainer>
       </AtestadoCard>
-      <AtestadoCardOutput><Output atestado={{paciente, cid, dia, date, location}} /></AtestadoCardOutput>
+      <AtestadoCardOutput><Output atestado={{patientName, CID, days: parseInt(days), date, city, state}} /></AtestadoCardOutput>
     </AtestadoContainer>
   );
 };

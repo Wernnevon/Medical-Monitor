@@ -9,7 +9,8 @@ interface Exames {
 }
 
 interface ExameContexData {
-    handleSelectExame: (exame: string) => void, 
+    handleSelectExame: (exame: string) => void,
+    handleClear: ()=> void,
     selected: string[], 
     exames: Exames[],
 }
@@ -71,8 +72,11 @@ export function ExameProvider({children}: ExameProps){
     }
     setSelected(ex);
   }
+  function handleClear(){
+    setSelected([]);
+  }
 
-    return (<ExameContext.Provider value={{handleSelectExame, selected, exames}}>{children}</ExameContext.Provider>)
+    return (<ExameContext.Provider value={{handleSelectExame, handleClear, selected, exames}}>{children}</ExameContext.Provider>)
 }
 
 export const useExame = () => useContext(ExameContext);

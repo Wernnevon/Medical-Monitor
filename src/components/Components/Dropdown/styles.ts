@@ -13,7 +13,7 @@ export const DropdownHeader = Styled.div<PropType>`
   height: 30px;
   position: absolute;
   background: #fff;
-  z-index: 999;
+  z-index: 20;
   top: 1px;
 `;
 

@@ -22,7 +22,7 @@ export const Container = Styled.div`
         padding: 1.2rem 0 .2rem;
         background: none;
         margin: 0 10px 0;
-        font-size: 1rem;
+        font-size: 1.2rem;
         box-sizing: border-box;
         width: 100%;
         z-index: 5;
@@ -42,4 +42,5 @@ export const Placeholder = Styled.label`
     z-index: 0;
     transition: 50ms linear;
     margin-bottom: 2.5rem;
+    font-size: 1.2rem;
 `;

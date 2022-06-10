@@ -7,6 +7,13 @@ export const ExameContainer = Styled.div`
   align-items: center;
   width: 85vw;
   margin-left: -.7vw;
+  height: 100vh;
+  box-sizing: border-box;
+`;
+
+export const ExameOutputCard = Styled.div`
+  display: flex;
+  justify-content: flex-start;
   height: 100%;
 `;
 
@@ -16,7 +23,7 @@ export const ExameCard = Styled.div`
   font-size: 30px;
   text-align: center;
   margin: 0 10px;
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
 `;
 
@@ -48,6 +55,9 @@ export const InputData = Styled.textarea`
   font-family: 'Akshar', sans-serif;
   font-weight: 300;
   min-height: 4rem;
+  :focus{
+    border-color: #03A696;
+  }
 `;
 
 export const CheckoutContent = Styled.div`
@@ -76,7 +86,7 @@ export const SearchBar = Styled.div`
   border: 1px solid #747474;
   border-radius: 5em;
   width: 100%;
-  margin-top: .5em;
+  margin-top: 1.5em;
   padding: 0;
   box-sizing: border-box;
   position: relative;
@@ -109,7 +119,7 @@ export const ListPatient = Styled.div`
   overflow-y: auto;
   flex-direction: column;
   width: 100%;
-  max-height: 6rem;
+  max-height: 25%;
   min-height: 4rem;
   box-sizing: border-box;
   margin: .5rem 0;
@@ -119,6 +129,7 @@ export const ListPatient = Styled.div`
 export const ItemPatient = Styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: .3rem 1rem;
   margin: .3rem 1rem;
   background-color: #FFF;
@@ -130,4 +141,75 @@ export const ItemPatient = Styled.div`
     font-weight: 300;
     color: #333
   }
+  button{
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    background-color: #03A696;
+    color: #fff;
+    padding: .4rem 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: 40ms ease-in;
+    font-family: 'Akshar', sans-serif;
+    :hover{
+        cursor: pointer;
+    };
+    :active{
+        transform: translateY(2px);
+    };
+  }
+`;
+
+export const FormButtonContainer = Styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: flex-end;
+  position: relative;
+  box-sizing: border-box;
+  margin-bottom: 3rem;
+`;
+
+export const FormButtonSave = Styled.button`
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  background-color: #03A696;
+  color: #FFF;
+  padding: .4rem 2rem;
+  margin: 0 1rem;
+  font-size: 1rem;
+  font-weight: 400;
+  transition: 40ms ease-in;
+  box-shadow: 0px 3px 8px 0px #00000033;
+  font-family: 'Akshar', sans-serif;
+
+  :hover{
+      cursor: pointer;
+  };
+  :active{
+      transform: translateY(2px);
+  };
+`;
+
+export const FormButtonClear = Styled.button`
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  background-color: #FFF;
+  color: #000;
+  padding: .4rem 2rem;
+  margin: 0 1rem;
+  font-size: 1rem;
+  font-weight: 400;
+  transition: 40ms ease-in;
+  box-shadow: 0px 3px 8px 0px #00000033;
+  font-family: 'Akshar', sans-serif;
+  :hover{
+      cursor: pointer;
+  };
+  :active{
+      transform: translateY(2px);
+  };
 `;

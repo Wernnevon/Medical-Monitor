@@ -1,14 +1,14 @@
 import Styled from "styled-components";
 
 export const BTNContainer = Styled.div`
-    width: min-content;
-    position: relative;
-    top: -22px;
-    left: 110px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    float: right
+    width: 1.8rem;
+    position: absolute;
+    right: 1.5rem;
+    display: flex;
     transition: 90ms linear;
+    z-index: 30;
     cursor: pointer;
     :active{
         transform: translateY(2px);

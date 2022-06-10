@@ -6,9 +6,9 @@ interface Address {
     complement?: string;
 };
 
-interface Exam {
+export interface Exam {
     name: string;
-    realizationDate: Date;
+    realizationDate?: Date;
     requisitionDate: Date;
     done: boolean;
 };

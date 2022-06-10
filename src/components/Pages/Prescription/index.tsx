@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import Patient from '../../../Infra/DAOarchive/model';
-import { index } from '../../../Infra/DAOarchive/patientDAO';
+import React, { useEffect, useState } from "react";
+import Patient from "../../../Infra/DAOarchive/model";
+import { index, update } from "../../../Infra/DAOarchive/patientDAO";
 
-import Output from '../../Components/output';
+import Output from "../../Components/output";
 
-import { 
+import {
   ReceitaContainer,
   ReceitaCard,
   LabelHeader,
@@ -15,16 +15,18 @@ import {
   SearchItem,
   ListPatient,
   ItemPatient,
-} 
-  
-  from './styles';
+  FormButtonSave,
+  FormButtonClear,
+  FormButtonContainer,
+  PrescriptionOutputCard,
+} from "./styles";
 
 const Prescription: React.FC = () => {
-
   const [content, setContent] = useState([]);
+  const [medicaments, setMedicaments] = useState("");
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
-  const [patient, setPatient] = useState({} as any);
+  const [patient, setPatient] = useState({} as Patient);
 
   const sortByName = (array: Array<any>) =>
     array.sort((patientA: Patient, patientB: Patient) =>
@@ -39,15 +41,33 @@ const Prescription: React.FC = () => {
     setPacientes(sortByName(index()));
   }, []);
 
-  function handleContent(value: any){
+  function handleContent(value: any) {
+    setMedicaments(value.target.value);
     setContent(value.target.value.split("\n"));
+  }
+  function handleClear() {
+    setContent([]);
+    setMedicaments("");
+    setPatient({} as Patient);
+  }
+
+  function handleAddPrecription(patientUpdate: Patient) {
+    content.map((medicament: string) =>
+      patientUpdate.medicament.push({
+        medicament: medicament,
+        date: new Date(),
+        administering: true,
+      }),
+    );
+    update(patient);
+    handleClear();
   }
 
   return (
     <ReceitaContainer>
       <ReceitaCard>
         <ReceituarioContainer>
-        <SearchBar>
+          <SearchBar>
             <SearchInput
               onChange={(e) => setPacienteNome(e.target.value)}
               value={pacienteNome}
@@ -67,27 +87,32 @@ const Prescription: React.FC = () => {
                   return paciente;
               })
               .map((paciente: Patient) => (
-                <ItemPatient
-                  onClick={() =>
-                    setPatient({
-                      name: paciente.name,
-                      birthday: paciente.birthday,
-                      healthInsurance: paciente.helthInsurance,
-                    })
-                  }
-                  key={paciente.id}
-                >
+                <ItemPatient key={paciente.id}>
                   <label>{paciente.name}</label>
+                  <button onClick={() => setPatient(paciente)}>
+                    Escolher paciente
+                  </button>
                 </ItemPatient>
               ))}
           </ListPatient>
           <LabelHeader>Informe as medicações:</LabelHeader>
-          <Receituario onChange={(text) => handleContent(text)} />
+          <Receituario
+            value={medicaments}
+            onChange={(text) => handleContent(text)}
+          />
+          <FormButtonContainer>
+            <FormButtonClear onClick={handleClear}>Limpar</FormButtonClear>
+            <FormButtonSave onClick={() => handleAddPrecription(patient)}>
+              Salvar
+            </FormButtonSave>
+          </FormButtonContainer>
         </ReceituarioContainer>
       </ReceitaCard>
-      <Output content={content} patientData={patient}/>
+      <PrescriptionOutputCard>
+        <Output prescription={content} patientName={patient.name} />
+      </PrescriptionOutputCard>
     </ReceitaContainer>
   );
-}
+};
 
 export default Prescription;

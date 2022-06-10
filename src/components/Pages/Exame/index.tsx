@@ -16,15 +16,33 @@ import {
   SearchItem,
   ListPatient,
   ItemPatient,
+  FormButtonSave,
+  FormButtonClear,
+  FormButtonContainer,
+  ExameOutputCard,
 } from "./styles";
 import Patient from "../../../Infra/DAOarchive/model";
-import { index } from "../../../Infra/DAOarchive/patientDAO";
+import { index, update } from "../../../Infra/DAOarchive/patientDAO";
+import Modal from "../../Components/Modal";
+import AlertLabel from "../../Components/AlertLabel";
+import { patientExist, validate } from "../../Components/Utils/midlleware";
+import { warnnigMenssage } from "../../Components/Utils/messages";
+import AlertTypes from "../../Components/Utils/alertTypes";
 
 const Exame: React.FC = () => {
-  const { exames, selected } = useExame();
+  const [modalState, setModalState] = useState(false);
+  const [alertType, setAlertType] = useState(AlertTypes.DEFAULT);
+  const [menssage, setMenssage] = useState("");
+  const { exames, selected, handleClear } = useExame();
+  const [otherExams, setOtherExams] = useState([]);
+  const [otherExamsText, setOtherExamsText] = useState("");
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
-  const [patient, setPatient] = useState({} as any);
+  const [patient, setPatient] = useState({} as Patient);
+
+  function closeModal() {
+    setModalState(!modalState);
+  }
 
   const sortByName = (array: Array<any>) =>
     array.sort((patientA: Patient, patientB: Patient) =>
@@ -39,8 +57,52 @@ const Exame: React.FC = () => {
     setPacientes(sortByName(index()));
   }, []);
 
+  function handleOtherExams(event: any) {
+    setOtherExamsText(event.target.value);
+    setOtherExams(event.target.value.split("\n"));
+  }
+
+  function handleClearAll() {
+    handleClear();
+    setPatient({} as Patient);
+    setOtherExams([]);
+    setOtherExamsText("");
+    for (const checkbox of document.querySelectorAll(
+      "input[type=checkbox]",
+    ) as unknown as Array<any>) {
+      checkbox.checked = false;
+    }
+  }
+
+  function handleAddExam(patientUpdate: Patient) {
+    let allExams = [...selected, ...otherExams];
+    if (patientExist(patientUpdate.id) && validate(allExams)) {
+      allExams.map((exame: string) =>
+        patientUpdate.exams.push({
+          done: false,
+          name: exame,
+          requisitionDate: new Date(),
+        }),
+      );
+      update(patient);
+      handleClearAll();
+    } else {
+      setAlertType(AlertTypes.WARNING);
+      setMenssage(warnnigMenssage);
+      setModalState(true);
+    }
+  }
+
   return (
     <ExameContainer>
+      <Modal
+        modalState={modalState}
+        closeModal={closeModal}
+        component={
+          <AlertLabel options={{ fontColor: "#FFF" }} menssage={menssage} />
+        }
+        configs={{bg: alertType}}
+      />
       <ExameCard>
         <ExameContent>
           <SearchBar>
@@ -63,17 +125,11 @@ const Exame: React.FC = () => {
                   return paciente;
               })
               .map((paciente: Patient) => (
-                <ItemPatient
-                  onClick={() =>
-                    setPatient({
-                      name: paciente.name,
-                      birthday: paciente.birthday,
-                      healthInsurance: paciente.helthInsurance,
-                    })
-                  }
-                  key={paciente.id}
-                >
+                <ItemPatient key={paciente.id}>
                   <label>{paciente.name}</label>
+                  <button onClick={() => setPatient(paciente)}>
+                    Escolher paciente
+                  </button>
                 </ItemPatient>
               ))}
           </ListPatient>
@@ -96,11 +152,25 @@ const Exame: React.FC = () => {
             }}
           >
             <LabelHeader>Outros Exames:</LabelHeader>
-            <InputData />
+            <InputData
+              value={otherExamsText}
+              onChange={(e) => handleOtherExams(e)}
+            />
           </CheckoutContent>
         </ExamesContent>
+        <FormButtonContainer>
+          <FormButtonClear onClick={handleClearAll}>Limpar</FormButtonClear>
+          <FormButtonSave onClick={() => handleAddExam(patient)}>
+            Salvar
+          </FormButtonSave>
+        </FormButtonContainer>
       </ExameCard>
-      <Output exames={selected} patientData={patient} />
+      <ExameOutputCard>
+        <Output
+          exames={[...selected, ...otherExams]}
+          patientName={patient.name}
+        />
+      </ExameOutputCard>
     </ExameContainer>
   );
 };

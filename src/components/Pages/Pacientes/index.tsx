@@ -13,6 +13,7 @@ import {
   SearchItem,
   ListPatient,
   ItemPatient,
+  PatientSection,
 } from "./styles";
 import Modal from "../../Components/Modal";
 import Register from "./Register";
@@ -44,7 +45,8 @@ const Paciente: React.FC = () => {
     <PacienteContainer>
       <Modal modalState={modalState} closeModal={closeModal} component={<Register/>}/>
       <PacienteCard>
-        <SearchBar>
+       <PatientSection>
+       <SearchBar>
           <SearchInput
             onChange={(e) => setPacienteNome(e.target.value)}
             value={pacienteNome}
@@ -71,6 +73,7 @@ const Paciente: React.FC = () => {
               </ItemPatient>
             ))}
         </ListPatient>
+       </PatientSection>
       </PacienteCard>
     </PacienteContainer>
   );
