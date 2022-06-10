@@ -47,7 +47,7 @@ const Atestado: React.FC = () => {
           </Item>
           <Item>
             <Label>Entidade Nosocológica-CID:</Label>
-            <Input onChange={(event) => setCID(event.target.value)} />
+            <Input onChange={(event: any) => setCID(event.target.value)} />
           </Item>
           <Item>
             <Label>Dias:</Label>
