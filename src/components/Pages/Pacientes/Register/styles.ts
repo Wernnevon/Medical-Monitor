@@ -6,9 +6,9 @@ export const Container = Styled.div`
     box-sizing: border-box;
     flex-direction: column;
     min-width: 60vw;
-    height: 65vh;
+    max-height: 70vh;
     position: relative;
-
+    overflow-y: auto;
 `;
 export const FormContainer = Styled(Form)`
     display: grid;

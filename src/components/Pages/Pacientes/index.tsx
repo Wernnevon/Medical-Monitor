@@ -17,11 +17,13 @@ import {
 } from "./styles";
 import Modal from "../../Components/Modal";
 import Register from "./Register";
+import Details from "./Details";
 
 const Paciente: React.FC = () => {
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
   const [modalState, setModalState] = useState(false);
+  const [patient, setPatient] = useState<Patient>({} as Patient)
   
   const sortByName = (array: Array<any>) =>
     array.sort((patientA: Patient, patientB: Patient) =>
@@ -66,7 +68,7 @@ const Paciente: React.FC = () => {
               ) return paciente;
             })
             .map((paciente: Patient) => (
-              <ItemPatient key={paciente.id}>
+              <ItemPatient onClick={()=>{setPatient(paciente)}} key={paciente.id}>
                 <label>
                   {paciente.name}
                 </label>
@@ -74,6 +76,7 @@ const Paciente: React.FC = () => {
             ))}
         </ListPatient>
        </PatientSection>
+       {patient.name && <Details patient={patient}/>}
       </PacienteCard>
     </PacienteContainer>
   );
