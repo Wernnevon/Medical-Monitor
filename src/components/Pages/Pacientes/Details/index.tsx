@@ -15,14 +15,16 @@ interface Props {
 const Details: React.FC<Props> = ({ patient }: Props) => {
   const [modalState, setModalState] = useState(false);
   const [exam, setExam] = useState<Exam>({} as Exam);
-  const [prescription, setPrescription] = useState<Prescription>({} as Prescription);
+  const [prescription, setPrescription] = useState<Prescription>(
+    {} as Prescription,
+  );
 
   function closeModal() {
     setModalState(!modalState);
   }
   function openModalExam(exam: Exam) {
     setExam(exam);
-    setPrescription({} as Prescription)
+    setPrescription({} as Prescription);
     setModalState(true);
   }
   function openModalPrescription(prescription: Prescription) {
@@ -48,7 +50,7 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
         component={<ExamDetails exam={exam} prescription={prescription} />}
       />
       <Card>
-        <label>Dados Pessoais</label>
+        <h4>Dados Pessoais</h4>
         <CardText>
           <label>Nome: </label>
           <label>{patient.name}</label>
@@ -103,17 +105,7 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
         </CardText>
       </Card>
       <Card>
-        <label>Exames</label>
-        {patient.exams.length > 0 &&
-          patient.exams.map((exam) => (
-            <CardItem>
-              <label>{exam.name}</label>
-              <button onClick={() => openModalExam(exam)}>Abrir</button>
-            </CardItem>
-          ))}
-      </Card>
-      <Card>
-        <label>Endereço</label>
+        <h4>Endereço</h4>
         <CardText>
           <label>Rua: </label>
           <label>{patient.adress.street}</label>
@@ -124,13 +116,15 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
         </CardText>
         <CardText>
           <label>Número: </label>
-          <label>{patient.adress.number == 0 ? 'S/N' : patient.adress.number}</label>
+          <label>
+            {patient.adress.number == 0 ? "S/N" : patient.adress.number}
+          </label>
         </CardText>
         {patient.adress.complement && (
-            <CardText>
-              <label>Complemento: </label>
-              <label>{patient.adress.complement}</label>
-            </CardText>
+          <CardText>
+            <label>Complemento: </label>
+            <label>{patient.adress.complement}</label>
+          </CardText>
         )}
         <CardText>
           <label>Cidade: </label>
@@ -138,13 +132,23 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
         </CardText>
       </Card>
       <Card>
-        <label>Prescrições</label>
+        <h4>Exames</h4>
+        {patient.exams.length > 0 &&
+          patient.exams.map((exam) => (
+            <CardItem>
+              <span>{exam.name}</span>
+              <button onClick={() => openModalExam(exam)}>Abrir</button>
+            </CardItem>
+          ))}
+      </Card>
+      <Card>
+        <h4>Prescrições</h4>
         {patient.medicament.length > 0 &&
           patient.medicament.map((prescription) => (
             <CardItem>
-              <label>{prescription.medicament}</label>
+              <span>{prescription.medicament}</span>
               <button onClick={() => openModalPrescription(prescription)}>
-              Abrir
+                Abrir
               </button>
             </CardItem>
           ))}

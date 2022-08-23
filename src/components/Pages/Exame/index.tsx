@@ -30,7 +30,7 @@ const Exame: React.FC = () => {
   const { exames, selected, handleClear } = useExame();
   const addToast = useToastContext();
   const [otherExams, setOtherExams] = useState([]);
-  const [otherExamsText, setOtherExamsText] = useState("");
+  const [otherExamsText, setOtherExamsText] = useState([]);
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
 
@@ -63,10 +63,9 @@ const Exame: React.FC = () => {
   }
 
   function handleClearAll() {
-    handleClear();
     setPatient({} as Patient);
     setOtherExams([]);
-    setOtherExamsText("");
+    setOtherExamsText([]);
     for (const checkbox of document.querySelectorAll(
       "input[type=checkbox]",
     ) as unknown as Array<any>) {
@@ -74,6 +73,7 @@ const Exame: React.FC = () => {
     }
   }
   function clean() {
+    handleClearAll();
     handleClear();
     addToast("Limpo", "sucess");
   }
