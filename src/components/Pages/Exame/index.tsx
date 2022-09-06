@@ -25,17 +25,24 @@ import Patient from "../../../Infra/DAOarchive/model";
 import { index, update } from "../../../Infra/DAOarchive/patientDAO";
 import { patientExist, validate } from "../../Components/Utils/midlleware";
 import { useToastContext } from "../../Components/Context/Toast";
-import { AlertTypes } from "../../Components/Utils/ToastConfigs";
 
 const Exame: React.FC = () => {
   const { exames, selected, handleClear } = useExame();
   const addToast = useToastContext();
   const [otherExams, setOtherExams] = useState([]);
-  const [otherExamsText, setOtherExamsText] = useState("");
+  const [otherExamsText, setOtherExamsText] = useState([]);
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
 
   const [patient, setPatient] = useState({} as Patient);
+
+  const setMenssage = () => {
+    if ([...selected, ...otherExams].length <= 0 && !patient.name)
+      return "Escolha o paciente e selecione ao menos um exame";
+    else if ([...selected, ...otherExams].length <= 0)
+      return "Selecione ao menos um exame";
+    else return "Escolha o paciente";
+  };
 
   const sortByName = (array: Array<any>) =>
     array.sort((patientA: Patient, patientB: Patient) =>
@@ -56,15 +63,19 @@ const Exame: React.FC = () => {
   }
 
   function handleClearAll() {
-    handleClear();
     setPatient({} as Patient);
     setOtherExams([]);
-    setOtherExamsText("");
+    setOtherExamsText([]);
     for (const checkbox of document.querySelectorAll(
       "input[type=checkbox]",
     ) as unknown as Array<any>) {
       checkbox.checked = false;
     }
+  }
+  function clean() {
+    handleClearAll();
+    handleClear();
+    addToast("Limpo", "sucess");
   }
 
   function handleAddExam(patientUpdate: Patient) {
@@ -78,9 +89,10 @@ const Exame: React.FC = () => {
         }),
       );
       update(patient);
+      addToast("Sucesso", "sucess");
       handleClearAll();
     } else {
-      addToast("Escolha o paciente e selecione ao menos um exame");
+      addToast(setMenssage());
     }
   }
 
@@ -142,7 +154,7 @@ const Exame: React.FC = () => {
           </CheckoutContent>
         </ExamesContent>
         <FormButtonContainer>
-          <FormButtonClear onClick={handleClearAll}>Limpar</FormButtonClear>
+          <FormButtonClear onClick={clean}>Limpar</FormButtonClear>
           <FormButtonSave onClick={() => handleAddExam(patient)}>
             Salvar
           </FormButtonSave>

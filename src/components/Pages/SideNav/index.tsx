@@ -6,7 +6,7 @@ import { AiOutlineAudit, AiOutlineFileText } from "react-icons/ai";
 import { HiUserGroup } from "react-icons/hi";
 import { BiTestTube } from "react-icons/bi";
 
-import Logo from "../../../assests/logo01.png";
+import Logo from "../../../assests/MonitorLogo.png";
 
 import {
   SideMenuContainer,

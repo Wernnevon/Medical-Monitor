@@ -31,6 +31,14 @@ const Prescription: React.FC = () => {
   const [pacienteNome, setPacienteNome] = useState<string>("");
   const [patient, setPatient] = useState({} as Patient);
 
+  const setMenssage = ()=>{
+    if(content.length<=0 && !patient.name)
+      return('Escolha o paciente e prescreva algo');
+    else if(content.length<=0)
+      return('Prescreva algo');
+    else return('Escolha o paciente');
+  }
+
   const sortByName = (array: Array<any>) =>
     array.sort((patientA: Patient, patientB: Patient) =>
       patientA.name > patientB.name
@@ -54,6 +62,11 @@ const Prescription: React.FC = () => {
     setPatient({} as Patient);
   }
 
+  function clean() {
+    handleClear()
+    addToast('Limpo', 'sucess');
+  }
+
   function handleAddPrecription(patientUpdate: Patient) {
     if (patientExist(patientUpdate.id) && validate(content)) {
       content.map((medicament: string) =>
@@ -64,9 +77,10 @@ const Prescription: React.FC = () => {
       }),
     );
     update(patient);
+    addToast('Sucesso', 'sucess');
     handleClear();
     } else {
-      addToast("Escolha o paciente e prescreva algo");
+      addToast(setMenssage());
     }
   }
 
@@ -108,7 +122,7 @@ const Prescription: React.FC = () => {
             onChange={(text) => handleContent(text)}
           />
           <FormButtonContainer>
-            <FormButtonClear onClick={handleClear}>Limpar</FormButtonClear>
+            <FormButtonClear onClick={clean}>Limpar</FormButtonClear>
             <FormButtonSave onClick={() => handleAddPrecription(patient)}>
               Salvar
             </FormButtonSave>

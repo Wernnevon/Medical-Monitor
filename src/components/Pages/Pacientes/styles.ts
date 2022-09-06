@@ -11,7 +11,7 @@ export const PacienteContainer = Styled.div`
 
 export const PacienteCard = Styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   font-size: 2rem;
   text-align: center;
   margin-left: 10px;
@@ -23,8 +23,8 @@ export const PacienteCard = Styled.div`
 export const PatientSection = Styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 8em;
-  max-width: 23%;
+  max-width: 12em;
+  width: 35%;
   height: 100%;
   border-right: 1px solid #888;
   padding: 1.5rem;
@@ -107,9 +107,16 @@ export const ItemPatient = Styled.div`
   background-color: #FFF;
   box-shadow: 0px 3px 8px 0px #00000033;
   border-radius: 2px;
+  :hover{
+    cursor: pointer;
+  }
+  :active{
+    transform: translateY(2px);
+  }
   label{
     font-family: 'Akshar', sans-serif;
     font-size: 1.3rem;
-    color: #333
+    color: #333;
+    cursor: pointer;
   }
 `;
