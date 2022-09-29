@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Session } from "electron";
 import path from "path";
-import os from 'os';
+import os from "os";
 
 declare global {
   const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -20,22 +20,20 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 800,
-    title : "Medical Monitor",
+    title: "Medical Monitor",
     resizable: true,
-    icon: './src/assests/logo01.png',
+    icon: "./src/assests/logo01.png",
     maximizable: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: true
+      devTools: true,
     },
   });
 
   /** Manage browser sessions, cookies, cache, proxy settings, etc */
   const ses = mainWindow.webContents.session;
   mainWindow.setMenuBarVisibility(false);
-  /**add chrome dev tools */
-  addReactDevTools(ses);
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
@@ -75,12 +73,6 @@ app.on("activate", () => {
     createWindow();
   }
 });
-
-async function addReactDevTools(ses: Session) {
-  const devToolsModulePath = path.join( os.homedir(),
-  '.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.24.6_0');
-  await ses.loadExtension(devToolsModulePath);
-}
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.

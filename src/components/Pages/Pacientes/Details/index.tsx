@@ -53,55 +53,57 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
         <h4>Dados Pessoais</h4>
         <CardText>
           <label>Nome: </label>
-          <label>{patient.name}</label>
+          <label>{patient.personalData.name}</label>
         </CardText>
         <CardText>
           <label>Nome da mãe: </label>
-          <label>{patient.motherName}</label>
+          <label>{patient.personalData.motherName}</label>
         </CardText>
         <CardText>
           <label>Data de Nascimento: </label>
-          <label>{new Date(patient.birthday).toLocaleDateString()}</label>
+          <label>
+            {new Date(patient.personalData.birthday).toLocaleDateString()}
+          </label>
         </CardText>
         <CardText>
           <label>Idade: </label>
-          <label>{calculaIdade(patient.birthday)}</label>
+          <label>{calculaIdade(patient.personalData.birthday)}</label>
         </CardText>
         <CardText>
           <label>Nome do Pai: </label>
-          <label>{patient.fatherName}</label>
+          <label>{patient.personalData.fatherName}</label>
         </CardText>
         <CardText>
           <label>Convênio: </label>
-          <label>{patient.helthInsurance}</label>
+          <label>{patient.health.helthInsurance}</label>
         </CardText>
         <CardText>
           <label>RG: </label>
-          <label>{patient.rg}</label>
+          <label>{patient.personalData.rg}</label>
         </CardText>
         <CardText>
           <label>CPF: </label>
-          <label>{patient.cpf}</label>
+          <label>{patient.personalData.cpf}</label>
         </CardText>
         <CardText>
           <label>Gênero: </label>
-          <label>{patient.gender}</label>
+          <label>{patient.personalData.gender}</label>
         </CardText>
         <CardText>
           <label>Telefone: </label>
-          <label>{patient.phone}</label>
+          <label>{patient.personalData.phone}</label>
         </CardText>
         <CardText>
           <label>Alergias: </label>
-          <label>{patient.allergy}</label>
+          <label>{patient.health.allergy}</label>
         </CardText>
         <CardText>
           <label>Peso: </label>
-          <label>{patient.weight}</label>
+          <label>{patient.health.weight}</label>
         </CardText>
         <CardText>
           <label>Altura: </label>
-          <label>{patient.height}</label>
+          <label>{patient.health.height}</label>
         </CardText>
       </Card>
       <Card>
@@ -131,28 +133,32 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
           <label>{patient.adress.city}</label>
         </CardText>
       </Card>
-      <Card>
-        <h4>Exames</h4>
-        {patient.exams.length > 0 &&
-          patient.exams.map((exam) => (
-            <CardItem>
-              <span>{exam.name}</span>
-              <button onClick={() => openModalExam(exam)}>Abrir</button>
-            </CardItem>
-          ))}
-      </Card>
-      <Card>
-        <h4>Prescrições</h4>
-        {patient.medicament.length > 0 &&
-          patient.medicament.map((prescription) => (
-            <CardItem>
-              <span>{prescription.medicament}</span>
-              <button onClick={() => openModalPrescription(prescription)}>
-                Abrir
-              </button>
-            </CardItem>
-          ))}
-      </Card>
+      {patient.exams && (
+        <Card>
+          <h4>Exames</h4>
+          {patient.exams.length > 0 &&
+            patient.exams.map((exam) => (
+              <CardItem>
+                <span>{exam.name}</span>
+                <button onClick={() => openModalExam(exam)}>Abrir</button>
+              </CardItem>
+            ))}
+        </Card>
+      )}
+      {patient.medicament && (
+        <Card>
+          <h4>Prescrições</h4>
+          {patient.medicament.length > 0 &&
+            patient.medicament.map((prescription) => (
+              <CardItem>
+                <span>{prescription.medicament}</span>
+                <button onClick={() => openModalPrescription(prescription)}>
+                  Abrir
+                </button>
+              </CardItem>
+            ))}
+        </Card>
+      )}
     </Container>
   );
 };

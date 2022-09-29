@@ -1,4 +1,4 @@
-interface Address {
+export interface Address {
   city: string;
   neighborhood: string;
   street: string;
@@ -19,20 +19,28 @@ export interface Prescription {
   administering: boolean;
 }
 
-export default interface Patient {
+export interface PersonalData {
   id?: string;
   name: string;
   birthday: Date;
-  helthInsurance: string;
   fatherName: string;
   motherName: string;
   rg: string;
   cpf: string;
   gender: string;
   phone?: string;
+}
+
+export interface Health {
+  helthInsurance: string;
   allergy?: string;
   weight?: number;
   height?: number;
+}
+
+export default interface Patient {
+  personalData: PersonalData;
+  health: Health;
   adress: Address;
   exams: Exam[];
   medicament: Prescription[];

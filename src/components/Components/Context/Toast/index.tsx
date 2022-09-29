@@ -17,7 +17,7 @@ interface ToastProps {
 
 const Icon = ({ type }: any) => {
   return type === AlertTypes.SUCESS ? (
-    <AiOutlineCheckCircle color="#fff" size={35}/>
+    <AiOutlineCheckCircle color="#fff" size={35} />
   ) : type === AlertTypes.ERROR ? (
     <VscError color="#fff" size={35} />
   ) : (

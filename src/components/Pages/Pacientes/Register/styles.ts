@@ -1,56 +1,94 @@
-import Styled from "styled-components";
-import { Form } from "@unform/web";
+import styled from "styled-components";
+import stepCard from "../../../../assests/SVGSs/stepCard.svg";
 
-export const Container = Styled.div`
-    display: flex;
-    box-sizing: border-box;
-    flex-direction: column;
-    min-width: 60vw;
-    max-height: 70vh;
-    position: relative;
-    overflow-y: auto;
+interface CardProps {
+  color: string;
+}
+
+export const Container = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60vw;
+  height: 40em;
+  max-height: 70vh;
+  position: relative;
+  overflow-y: auto;
+  box-sizing: border-box;
 `;
-export const FormContainer = Styled(Form)`
-    display: grid;
-    grid-template-columns: 40% 40%;
+
+export const StepProgressContainer = styled.div`
+  display: flex;
+  width: 85%;
+  justify-content: space-between;
+  box-sizing: border-box;
+  margin: 1em 0 3em;
+`;
+
+export const StepProgressCard = styled.div<CardProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  width: 100%;
+  margin: 2rem 0;
+  position: relative;
+  user-select: none;
+  cursor: default;
+  img {
     width: 100%;
-    gap: 2rem 1rem;
-    box-sizing: border-box;
-    align-items: center;
-    justify-content: center;
-`;
-
-export const Submit = Styled.button`
-    width: 20em;
-    position: relative;
-    border: none;
-    border-radius: 5em;
-    outline: none;
-    background-color: #03A696;
-    height: 2.5rem;
-    color: #fff;
-    font-size: 1.3rem;
-    font-weight: 500;
-    transition: 40ms ease-in;
-    margin: 1.5em 0 4em;
-    font-family: 'Akshar', sans-serif;
-    left: calc(100% - 10em);
-    :hover{
-        cursor: pointer;
-    };
-    :active{
-        transform: translateY(2px);
-    };
-`;
-
-export const Title = Styled.label`
-    font-family: 'Akshar', sans-serif;
+    position: absolute;
+    left: 0;
+    z-index: 5;
+  }
+  label {
+    font-size: 1.2vw;
+    font-family: "Akshar", sans-serif;
     font-weight: 600;
-    color: #03A696;
-    text-align: center;
-    margin: 3rem 0 1.7rem;
-    font-size: 2em;
-    width: 82%;
-    border:none;
-    align-self: center;
+    color: ${({ color }: CardProps) => color};
+    z-index: 10;
+  }
+`;
+
+export const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+`;
+
+export const Submit = styled.button`
+  width: 20em;
+  position: relative;
+  border: none;
+  border-radius: 5em;
+  outline: none;
+  background-color: #03a696;
+  height: 2.5rem;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 500;
+  transition: 40ms ease-in;
+  margin: 1.5em 0 4em;
+  font-family: "Akshar", sans-serif;
+  :hover {
+    cursor: pointer;
+  }
+  :active {
+    transform: translateY(2px);
+  }
+`;
+
+export const Title = styled.label`
+  font-family: "Akshar", sans-serif;
+  font-weight: 600;
+  color: #03a696;
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.5em;
+  width: 82%;
+  border: none;
 `;

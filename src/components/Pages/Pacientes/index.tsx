@@ -23,17 +23,16 @@ const Paciente: React.FC = () => {
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
   const [modalState, setModalState] = useState(false);
-  const [patient, setPatient] = useState<Patient>({} as Patient)
-  
+  const [patient, setPatient] = useState<Patient>({} as Patient);
+
   const sortByName = (array: Array<any>) =>
     array.sort((patientA: Patient, patientB: Patient) =>
-      patientA.name > patientB.name
+      patientA.personalData.name > patientB.personalData.name
         ? 1
-        : patientA.name < patientB.name
+        : patientA.personalData.name < patientB.personalData.name
         ? -1
         : 0,
     );
-
 
   useEffect(() => {
     setPacientes(sortByName(index()));
@@ -45,38 +44,46 @@ const Paciente: React.FC = () => {
 
   return (
     <PacienteContainer>
-      <Modal modalState={modalState} closeModal={closeModal} component={<Register/>}/>
+      <Modal
+        modalState={modalState}
+        closeModal={closeModal}
+        component={<Register />}
+      />
       <PacienteCard>
-       <PatientSection>
-       <SearchBar>
-          <SearchInput
-            onChange={(e) => setPacienteNome(e.target.value)}
-            value={pacienteNome}
-            placeholder="Pesquisar"
-          />
-          <SearchItem size={22} />
-        </SearchBar>
-        <AddButton onClick={() => setModalState(true)}>Casdastro</AddButton>
-        <ListPatient>
-          {pacientes
-            .filter((paciente) => {
-              if (pacienteNome === "") return paciente;
-              else if (
-                paciente.name
-                  .toLocaleLowerCase()
-                  .includes(pacienteNome.toLocaleLowerCase())
-              ) return paciente;
-            })
-            .map((paciente: Patient) => (
-              <ItemPatient onClick={()=>{setPatient(paciente)}} key={paciente.id}>
-                <label>
-                  {paciente.name}
-                </label>
-              </ItemPatient>
-            ))}
-        </ListPatient>
-       </PatientSection>
-       {patient.name && <Details patient={patient}/>}
+        <PatientSection>
+          <SearchBar>
+            <SearchInput
+              onChange={(e) => setPacienteNome(e.target.value)}
+              value={pacienteNome}
+              placeholder="Pesquisar"
+            />
+            <SearchItem size={22} />
+          </SearchBar>
+          <AddButton onClick={() => setModalState(true)}>Casdastro</AddButton>
+          <ListPatient>
+            {pacientes
+              .filter((paciente) => {
+                if (pacienteNome === "") return paciente;
+                else if (
+                  paciente.personalData.name
+                    .toLocaleLowerCase()
+                    .includes(pacienteNome.toLocaleLowerCase())
+                )
+                  return paciente;
+              })
+              .map((paciente: Patient) => (
+                <ItemPatient
+                  onClick={() => {
+                    setPatient(paciente);
+                  }}
+                  key={paciente.personalData.id}
+                >
+                  <label>{paciente.personalData.name}</label>
+                </ItemPatient>
+              ))}
+          </ListPatient>
+        </PatientSection>
+        {patient.personalData && <Details patient={patient} />}
       </PacienteCard>
     </PacienteContainer>
   );
