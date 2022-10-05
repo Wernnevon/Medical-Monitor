@@ -21,7 +21,7 @@ import {
   FormButtonContainer,
   ExameOutputCard,
 } from "./styles";
-import Patient from "../../../Infra/DAOarchive/model";
+import Patient, { PersonalData } from "../../../Infra/DAOarchive/model";
 import { index, update } from "../../../Infra/DAOarchive/patientDAO";
 import { patientExist, validate } from "../../Components/Utils/midlleware";
 import { useToastContext } from "../../Components/Context/Toast";
@@ -34,10 +34,14 @@ const Exame: React.FC = () => {
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
 
-  const [patient, setPatient] = useState({} as Patient);
+  const [patient, setPatient] = useState(() => {
+    let initPatient = {} as Patient;
+    initPatient.personalData = {} as PersonalData;
+    return initPatient;
+  });
 
   const setMenssage = () => {
-    if ([...selected, ...otherExams].length <= 0 && !patient.name)
+    if ([...selected, ...otherExams].length <= 0 && !patient.personalData.name)
       return "Escolha o paciente e selecione ao menos um exame";
     else if ([...selected, ...otherExams].length <= 0)
       return "Selecione ao menos um exame";
@@ -46,9 +50,9 @@ const Exame: React.FC = () => {
 
   const sortByName = (array: Array<any>) =>
     array.sort((patientA: Patient, patientB: Patient) =>
-      patientA.name > patientB.name
+      patientA.personalData.name > patientB.personalData.name
         ? 1
-        : patientA.name < patientB.name
+        : patientA.personalData.name < patientB.personalData.name
         ? -1
         : 0,
     );
@@ -80,7 +84,7 @@ const Exame: React.FC = () => {
 
   function handleAddExam(patientUpdate: Patient) {
     let allExams = [...selected, ...otherExams];
-    if (patientExist(patientUpdate.id) && validate(allExams)) {
+    if (patientExist(patientUpdate.personalData.id) && validate(allExams)) {
       allExams.map((exame: string) =>
         patientUpdate.exams.push({
           done: false,
@@ -113,15 +117,15 @@ const Exame: React.FC = () => {
               .filter((paciente) => {
                 if (pacienteNome === "") return paciente;
                 else if (
-                  paciente.name
+                  paciente.personalData.name
                     .toLocaleLowerCase()
                     .includes(pacienteNome.toLocaleLowerCase())
                 )
                   return paciente;
               })
               .map((paciente: Patient) => (
-                <ItemPatient key={paciente.id}>
-                  <label>{paciente.name}</label>
+                <ItemPatient key={paciente.personalData.id}>
+                  <label>{paciente.personalData.name}</label>
                   <button onClick={() => setPatient(paciente)}>
                     Escolher paciente
                   </button>
@@ -163,7 +167,7 @@ const Exame: React.FC = () => {
       <ExameOutputCard>
         <Output
           exames={[...selected, ...otherExams]}
-          patientName={patient.name}
+          patientName={patient.personalData.name}
         />
       </ExameOutputCard>
     </ExameContainer>
