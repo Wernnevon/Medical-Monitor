@@ -38,7 +38,6 @@ const StepAdressData: React.FC<StepAdressDataProps> = ({
         adress: data,
       });
       formRef.current.setErrors({});
-      formRef.current.reset();
       next();
     } catch (err) {
       console.log(data);

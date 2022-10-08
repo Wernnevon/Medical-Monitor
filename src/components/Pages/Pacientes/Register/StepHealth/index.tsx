@@ -39,7 +39,6 @@ const StepHealth: React.FC<StepHealthProps> = ({
         health: data,
       });
       formRef.current.setErrors({});
-      formRef.current.reset();
       next();
     } catch (err) {
       console.log(data);

@@ -17,6 +17,7 @@ import { AlertTypes } from "../../../Components/Utils/ToastConfigs";
 import StepAdressData from "./StepAdress";
 import StepHealth from "./StepHealth";
 import Patient from "../../../../Infra/DAOarchive/model";
+import EndPhase from "./StepEndPhase";
 
 const Register: React.FC = () => {
   const [step, setStep] = useState(1);
@@ -65,7 +66,7 @@ const Register: React.FC = () => {
           />
         );
       case 4:
-        return <div>Conclusão</div>;
+        return <EndPhase patient={patient} changeStep={setStep} back={prev} />;
     }
   }
 

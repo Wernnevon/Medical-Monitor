@@ -46,10 +46,8 @@ const StepPersonalData: React.FC<StepPersonalDataProps> = ({
         personalData: data,
       });
       formRef.current.setErrors({});
-      formRef.current.reset();
       next();
     } catch (err) {
-      console.log(data);
       if (err instanceof Yup.ValidationError) {
         const errors = GetErros(err);
         formRef.current.setErrors(errors);
