@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import stepCard from "../../../../assests/SVGSs/stepCard.svg";
 
 interface CardProps {
   color: string;

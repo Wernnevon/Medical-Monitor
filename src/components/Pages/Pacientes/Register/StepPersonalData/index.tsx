@@ -59,14 +59,54 @@ const StepPersonalData: React.FC<StepPersonalDataProps> = ({
     <Container>
       <FormContainer onSubmit={handleAdvance} ref={formRef}>
         <FormContent>
-          <Input placeholder="Nome completo" name="name" type="text" />
-          <Input placeholder="Nome da mãe" name="motherName" type="text" />
-          <Input placeholder="Nome do pai" name="fatherName" type="text" />
-          <Input placeholder="Data de Nascimento" name="birthday" type="date" />
-          <Input placeholder="RG" name="rg" type="text" />
-          <Input placeholder="CPF" name="cpf" type="text" />
-          <Input placeholder="Gênero" name="gender" type="text" />
-          <Input placeholder="Fone" name="phone" type="text" />
+          <Input
+            placeholder="Nome completo"
+            name="name"
+            type="text"
+            value={patient.personalData && patient.personalData.name}
+          />
+          <Input
+            placeholder="Nome da mãe"
+            name="motherName"
+            type="text"
+            value={patient.personalData && patient.personalData.motherName}
+          />
+          <Input
+            placeholder="Nome do pai"
+            name="fatherName"
+            type="text"
+            value={patient.personalData && patient.personalData.fatherName}
+          />
+          <Input
+            placeholder="Data de Nascimento"
+            name="birthday"
+            type="date"
+            value={patient.personalData && patient.personalData.birthday}
+          />
+          <Input
+            placeholder="RG"
+            name="rg"
+            type="text"
+            value={patient.personalData && patient.personalData.rg}
+          />
+          <Input
+            placeholder="CPF"
+            name="cpf"
+            type="text"
+            value={patient.personalData && patient.personalData.cpf}
+          />
+          <Input
+            placeholder="Gênero"
+            name="gender"
+            type="text"
+            value={patient.personalData && patient.personalData.gender}
+          />
+          <Input
+            placeholder="Fone"
+            name="phone"
+            type="text"
+            value={patient.personalData && patient.personalData.phone}
+          />
         </FormContent>
         <Button typeBtn={{ type: "submit" }} typeStyle="submit">
           Avançar
