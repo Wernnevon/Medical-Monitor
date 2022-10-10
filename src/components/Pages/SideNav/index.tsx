@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 
-import { Link } from "react-router-dom";
-
 import { AiOutlineAudit, AiOutlineFileText } from "react-icons/ai";
 import { HiUserGroup } from "react-icons/hi";
 import { BiTestTube } from "react-icons/bi";
 
-import Logo from "../../../assests/logo01.png";
+import Logo from "../../../assests/MMNoBG.png";
 
 import {
   SideMenuContainer,
@@ -14,6 +12,7 @@ import {
   NavLabel,
   Image,
   NavImage,
+  LogoDiv,
   NavLink,
 } from "./styles";
 
@@ -21,11 +20,11 @@ const SideNav: React.FC = () => {
   const [state, setState] = useState("home");
   return (
     <SideMenuContainer id="sidenav">
-      <Link draggable={false} style={{ outline: "none", margin: '2em 0' }} to="/main_window/">
-        <NavImage style={{ margin: 0, padding: 0}} draggable={false} onClick={() => setState("home")}>
+      <LogoDiv>
+        <NavImage draggable={false} onClick={() => setState("home")}>
           <Image draggable={false} src={Logo} />
         </NavImage>
-      </Link>
+      </LogoDiv>
       <NavLink
         draggable={false}
         to="/main_window/pacientes"
@@ -35,7 +34,7 @@ const SideNav: React.FC = () => {
         }}
       >
         <NavBtn active={state === "pacientes" ? state : ""}>
-          <HiUserGroup style={{ position: "relative", bottom: '.15rem' }} />
+          <HiUserGroup style={{ position: "relative", bottom: ".15rem" }} />
           <NavLabel>Pacientes</NavLabel>
         </NavBtn>
       </NavLink>

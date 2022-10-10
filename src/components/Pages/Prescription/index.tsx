@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Patient from "../../../Infra/DAOarchive/model";
+import Patient, { PersonalData } from "../../../Infra/DAOarchive/model";
 import { index, update } from "../../../Infra/DAOarchive/patientDAO";
 import { useToastContext } from "../../Components/Context/Toast";
 
@@ -29,13 +29,24 @@ const Prescription: React.FC = () => {
   const [medicaments, setMedicaments] = useState("");
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
-  const [patient, setPatient] = useState({} as Patient);
+  const [patient, setPatient] = useState<Patient>(() => {
+    let initPatient = {} as Patient;
+    initPatient.personalData = {} as PersonalData;
+    return initPatient;
+  });
 
-  const sortByName = (array: Array<any>) =>
+  const setMenssage = () => {
+    if (content.length <= 0 && !patient.personalData.name)
+      return "Escolha o paciente e prescreva algo";
+    else if (content.length <= 0) return "Prescreva algo";
+    else return "Escolha o paciente";
+  };
+
+  const sortByName = (array: Array<Patient>) =>
     array.sort((patientA: Patient, patientB: Patient) =>
-      patientA.name > patientB.name
+      patientA.personalData.name > patientB.personalData.name
         ? 1
-        : patientA.name < patientB.name
+        : patientA.personalData.name < patientB.personalData.name
         ? -1
         : 0,
     );
@@ -51,22 +62,32 @@ const Prescription: React.FC = () => {
   function handleClear() {
     setContent([]);
     setMedicaments("");
-    setPatient({} as Patient);
+    setPatient(() => {
+      let initPatient = {} as Patient;
+      initPatient.personalData = {} as PersonalData;
+      return initPatient;
+    });
+  }
+
+  function clean() {
+    handleClear();
+    addToast("Limpo", "sucess");
   }
 
   function handleAddPrecription(patientUpdate: Patient) {
-    if (patientExist(patientUpdate.id) && validate(content)) {
+    if (patientExist(patientUpdate.personalData.id) && validate(content)) {
       content.map((medicament: string) =>
-      patientUpdate.medicament.push({
-        medicament: medicament,
-        date: new Date(),
-        administering: true,
-      }),
-    );
-    update(patient);
-    handleClear();
+        patientUpdate.medicament.push({
+          medicament: medicament,
+          date: new Date(),
+          administering: true,
+        }),
+      );
+      update(patient);
+      addToast("Sucesso", "sucess");
+      handleClear();
     } else {
-      addToast("Escolha o paciente e prescreva algo");
+      addToast(setMenssage());
     }
   }
 
@@ -87,15 +108,15 @@ const Prescription: React.FC = () => {
               .filter((paciente) => {
                 if (pacienteNome === "") return paciente;
                 else if (
-                  paciente.name
+                  paciente.personalData.name
                     .toLocaleLowerCase()
                     .includes(pacienteNome.toLocaleLowerCase())
                 )
                   return paciente;
               })
               .map((paciente: Patient) => (
-                <ItemPatient key={paciente.id}>
-                  <label>{paciente.name}</label>
+                <ItemPatient key={paciente.personalData.id}>
+                  <label>{paciente.personalData.name}</label>
                   <button onClick={() => setPatient(paciente)}>
                     Escolher paciente
                   </button>
@@ -108,7 +129,7 @@ const Prescription: React.FC = () => {
             onChange={(text) => handleContent(text)}
           />
           <FormButtonContainer>
-            <FormButtonClear onClick={handleClear}>Limpar</FormButtonClear>
+            <FormButtonClear onClick={clean}>Limpar</FormButtonClear>
             <FormButtonSave onClick={() => handleAddPrecription(patient)}>
               Salvar
             </FormButtonSave>
@@ -116,7 +137,10 @@ const Prescription: React.FC = () => {
         </ReceituarioContainer>
       </ReceitaCard>
       <PrescriptionOutputCard>
-        <Output prescription={content} patientName={patient.name} />
+        <Output
+          prescription={content}
+          patientName={patient.personalData.name}
+        />
       </PrescriptionOutputCard>
     </ReceitaContainer>
   );
