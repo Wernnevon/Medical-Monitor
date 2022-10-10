@@ -62,7 +62,11 @@ const Prescription: React.FC = () => {
   function handleClear() {
     setContent([]);
     setMedicaments("");
-    setPatient({} as Patient);
+    setPatient(() => {
+      let initPatient = {} as Patient;
+      initPatient.personalData = {} as PersonalData;
+      return initPatient;
+    });
   }
 
   function clean() {

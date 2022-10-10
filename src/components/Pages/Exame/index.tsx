@@ -67,7 +67,11 @@ const Exame: React.FC = () => {
   }
 
   function handleClearAll() {
-    setPatient({} as Patient);
+    setPatient(() => {
+      let initPatient = {} as Patient;
+      initPatient.personalData = {} as PersonalData;
+      return initPatient;
+    });
     setOtherExams([]);
     setOtherExamsText([]);
     for (const checkbox of document.querySelectorAll(
