@@ -16,67 +16,37 @@ import {
 import { AlertTypes } from "../../../Components/Utils/ToastConfigs";
 import StepAdressData from "./StepAdress";
 import StepHealth from "./StepHealth";
-import Patient from "../../../../Infra/DAOarchive/model";
 import EndPhase from "./StepEndPhase";
+import { useRegister } from "../../../Components/Context/RegisterContext";
 
 const Register: React.FC = () => {
-  const [step, setStep] = useState(1);
-  const [patient, setPatient] = useState<Patient>({} as Patient);
+  const { patient, changeStep, step } = useRegister();
   const addToast = useToastContext();
   const sucessMensage = "Paciente cadastrado com sucesso";
 
   const handleSubmit = useCallback(async () => {
     console.log("@@", patient);
-    addToast(sucessMensage, AlertTypes.SUCESS);
     try {
+      addToast(sucessMensage, AlertTypes.SUCESS);
       await create(patient);
     } catch (err) {
+      addToast("Erro no cadastro", AlertTypes.ERROR);
       console.error(err);
     }
-
-    // setStep(1);
+    changeStep(1);
   }, [patient]);
 
-  function switchRender(params: number) {
-    switch (params) {
+  function switchRender() {
+    switch (step) {
       case 1:
-        return (
-          <StepPersonalData
-            patient={patient}
-            setPersonalData={setPatient}
-            next={next}
-          />
-        );
+        return <StepPersonalData />;
       case 2:
-        return (
-          <StepAdressData
-            patient={patient}
-            setPersonalData={setPatient}
-            next={next}
-            back={prev}
-          />
-        );
+        return <StepAdressData />;
       case 3:
-        return (
-          <StepHealth
-            patient={patient}
-            setPersonalData={setPatient}
-            back={prev}
-            next={next}
-          />
-        );
+        return <StepHealth />;
       case 4:
-        return <EndPhase patient={patient} changeStep={setStep} back={prev} />;
+        return <EndPhase />;
     }
-  }
-
-  function next() {
-    const nextStep = step > 3 ? step : step + 1;
-    setStep(nextStep);
-  }
-  function prev() {
-    const prevStep = step < 2 ? step : step - 1;
-    setStep(prevStep);
   }
 
   function handleSetColor(current: number) {
@@ -133,7 +103,7 @@ const Register: React.FC = () => {
           <label>Conclusão</label>
         </StepProgressCard>
       </StepProgressContainer>
-      <FormContainer>{switchRender(step)}</FormContainer>
+      <FormContainer>{switchRender()}</FormContainer>
       {step === 4 ? <Submit onClick={handleSubmit}>Cadastrar</Submit> : <></>}
     </Container>
   );

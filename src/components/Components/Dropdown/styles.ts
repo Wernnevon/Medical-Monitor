@@ -1,8 +1,8 @@
 import Styled from "styled-components";
 
 type PropType = {
-  active?: boolean
-}
+  active?: boolean;
+};
 
 export const DropdownHeader = Styled.div<PropType>`
   display: flex;
@@ -22,7 +22,7 @@ export const DropdownContainer = Styled.div<PropType>`
   flex-direction: column;
   justify-content: center;
   width: 93%;
-  height: ${(props) => props.active ? "250px" : "20px"};
+  height: ${(props) => (props.active ? "250px" : "20px")};
   background: #fff;
   box-shadow: 0px 3px 8px 0px #00000033;
   padding: 10px;
@@ -41,11 +41,11 @@ export const DropdownContent = Styled.div<PropType>`
   padding: 10px;
   z-index: 1;
   font-size: 1.2rem;
-  height: ${(props) => props.active ? "250px" : "0px"};
+  height: ${(props) => (props.active ? "250px" : "0px")};
   border-top: 1px solid #8d8d8d;
-  visibility: ${(props) => props.active ? "visible" : "hidden"};
-  overflow-y: ${(props) => props.active ? "auto" : "hidden"};
-  margin-top: ${(props) => props.active ? 30 : 0}px;
+  visibility: ${(props) => (props.active ? "visible" : "hidden")};
+  overflow-y: ${(props) => (props.active ? "auto" : "hidden")};
+  margin-top: ${(props) => (props.active ? 30 : 0)}px;
   transition: 300ms;
 `;
 
@@ -64,8 +64,8 @@ export const Arrow = Styled.span<PropType>`
   background-color: #2d2d2d;
   position: relative;
   transition: .2s;
-  transform: rotate(${(props) => props.active ? 135 : -45}deg);
-  top: ${(props) => props.active ? 18 : 10}px;
+  transform: rotate(${(props) => (props.active ? 135 : -45)}deg);
+  top: ${(props) => (props.active ? 18 : 10)}px;
   right: 10px;
   ::before{
     content: '';
@@ -81,7 +81,7 @@ export const Arrow = Styled.span<PropType>`
   }
 `;
 
-export const ContainerCheckbox = Styled.div`
+export const ContainerCheckbox = Styled.label`
   display: flex;
   width: 100%;
   gap: 10px;

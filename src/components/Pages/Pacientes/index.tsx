@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import log from "electron-log";
 
 import { index } from "../../../Infra/DAOarchive/patientDAO";
 import Patient from "../../../Infra/DAOarchive/model";
@@ -18,13 +17,14 @@ import {
 import Modal from "../../Components/Modal";
 import Register from "./Register";
 import Details from "./Details";
+import { useRegister } from "../../Components/Context/RegisterContext";
 
 const Paciente: React.FC = () => {
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
   const [modalState, setModalState] = useState(false);
   const [patient, setPatient] = useState<Patient>({} as Patient);
-
+  const { changeStep, clearData } = useRegister();
   const sortByName = (array: Array<any>) =>
     array.sort((patientA: Patient, patientB: Patient) =>
       patientA.personalData.name > patientB.personalData.name
@@ -39,6 +39,8 @@ const Paciente: React.FC = () => {
   }, []);
 
   function closeModal() {
+    changeStep(1);
+    clearData();
     setModalState(!modalState);
   }
 

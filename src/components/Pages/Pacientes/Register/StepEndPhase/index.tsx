@@ -2,19 +2,11 @@ import React, { Dispatch, SetStateAction } from "react";
 import { FiEdit } from "react-icons/fi";
 import Patient from "../../../../../Infra/DAOarchive/model";
 import Button from "../../../../Components/Buttons";
+import { useRegister } from "../../../../Components/Context/RegisterContext";
 import { Container, DataContainer, List, TitleContainer } from "./styles";
 
-interface StepEndPhaseProps {
-  back: () => void;
-  changeStep: Dispatch<SetStateAction<number>>;
-  patient: Patient;
-}
-
-export default function EndPhase({
-  back,
-  changeStep,
-  patient,
-}: StepEndPhaseProps) {
+export default function EndPhase() {
+  const { patient, changeStep, step } = useRegister();
   const { personalData, health, adress } = patient;
 
   return (
@@ -101,7 +93,11 @@ export default function EndPhase({
           )}
         </List>
       </DataContainer>
-      <Button typeBtn={{ type: "button" }} handle={back} typeStyle="back">
+      <Button
+        typeBtn={{ type: "button" }}
+        handle={() => changeStep(step - 1)}
+        typeStyle="back"
+      >
         Voltar
       </Button>
     </Container>

@@ -6,21 +6,11 @@ import GetErros from "../../../../Components/Utils/getErrors";
 import { Container, FormContainer, FormContent } from "./styles";
 import Button from "../../../../Components/Buttons";
 import Patient, { Address } from "../../../../../Infra/DAOarchive/model";
+import { useRegister } from "../../../../Components/Context/RegisterContext";
 
-interface StepAdressDataProps {
-  next: () => void;
-  back: () => void;
-  patient: Patient;
-  setPersonalData: React.Dispatch<React.SetStateAction<Patient>>;
-}
-
-const StepAdressData: React.FC<StepAdressDataProps> = ({
-  next,
-  back,
-  patient,
-  setPersonalData,
-}: StepAdressDataProps) => {
+const StepAdressData: React.FC = () => {
   const formRef = useRef({} as FormHandles);
+  const { patient, changeStep, step, addData } = useRegister();
 
   const handleAdvance = useCallback(async (data: Address) => {
     try {
@@ -33,12 +23,12 @@ const StepAdressData: React.FC<StepAdressDataProps> = ({
       await schema.validate(data, {
         abortEarly: false,
       });
-      setPersonalData({
+      addData({
         ...patient,
         adress: data,
       });
       formRef.current.setErrors({});
-      next();
+      changeStep(step + 1);
     } catch (err) {
       console.log(data);
       if (err instanceof Yup.ValidationError) {
@@ -61,7 +51,11 @@ const StepAdressData: React.FC<StepAdressDataProps> = ({
         <Button typeBtn={{ type: "submit" }} typeStyle="submit">
           Avançar
         </Button>
-        <Button typeBtn={{ type: "button" }} handle={back} typeStyle="back">
+        <Button
+          typeBtn={{ type: "button" }}
+          handle={() => changeStep(step - 1)}
+          typeStyle="back"
+        >
           Voltar
         </Button>
       </FormContainer>

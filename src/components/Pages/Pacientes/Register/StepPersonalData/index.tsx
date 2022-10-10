@@ -5,20 +5,12 @@ import * as Yup from "yup";
 import GetErros from "../../../../Components/Utils/getErrors";
 import { Container, FormContainer, FormContent } from "./styles";
 import Button from "../../../../Components/Buttons";
-import Patient, { PersonalData } from "../../../../../Infra/DAOarchive/model";
+import { PersonalData } from "../../../../../Infra/DAOarchive/model";
+import { useRegister } from "../../../../Components/Context/RegisterContext";
 
-interface StepPersonalDataProps {
-  patient: Patient;
-  next: () => void;
-  setPersonalData: React.Dispatch<React.SetStateAction<Patient>>;
-}
-
-const StepPersonalData: React.FC<StepPersonalDataProps> = ({
-  next,
-  patient,
-  setPersonalData,
-}: StepPersonalDataProps) => {
+const StepPersonalData: React.FC = () => {
   const formRef = useRef({} as FormHandles);
+  const { addData, patient, changeStep, step } = useRegister();
 
   const handleAdvance = useCallback(async (data: PersonalData) => {
     try {
@@ -41,12 +33,12 @@ const StepPersonalData: React.FC<StepPersonalDataProps> = ({
       await schema.validate(data, {
         abortEarly: false,
       });
-      setPersonalData({
+      addData({
         ...patient,
         personalData: data,
       });
       formRef.current.setErrors({});
-      next();
+      changeStep(step + 1);
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errors = GetErros(err);
@@ -54,7 +46,6 @@ const StepPersonalData: React.FC<StepPersonalDataProps> = ({
       }
     }
   }, []);
-
   return (
     <Container>
       <FormContainer onSubmit={handleAdvance} ref={formRef}>

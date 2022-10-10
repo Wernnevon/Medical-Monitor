@@ -5,23 +5,12 @@ import * as Yup from "yup";
 import GetErros from "../../../../Components/Utils/getErrors";
 import { Container, FormContainer, FormContent } from "./styles";
 import Button from "../../../../Components/Buttons";
-import Patient, { Health } from "../../../../../Infra/DAOarchive/model";
+import { Health } from "../../../../../Infra/DAOarchive/model";
+import { useRegister } from "../../../../Components/Context/RegisterContext";
 
-interface StepHealthProps {
-  next: () => void;
-  back: () => void;
-  patient: Patient;
-  setPersonalData: React.Dispatch<React.SetStateAction<Patient>>;
-}
-
-const StepHealth: React.FC<StepHealthProps> = ({
-  next,
-  back,
-  patient,
-  setPersonalData,
-}: StepHealthProps) => {
+const StepHealth: React.FC = () => {
   const formRef = useRef({} as FormHandles);
-
+  const { addData, patient, step, changeStep } = useRegister();
   const handleAdvance = useCallback(async (data: Health) => {
     try {
       formRef.current.setErrors({});
@@ -34,12 +23,12 @@ const StepHealth: React.FC<StepHealthProps> = ({
       await schema.validate(data, {
         abortEarly: false,
       });
-      setPersonalData({
+      addData({
         ...patient,
         health: data,
       });
       formRef.current.setErrors({});
-      next();
+      changeStep(step + 1);
     } catch (err) {
       console.log(data);
       if (err instanceof Yup.ValidationError) {
@@ -61,7 +50,11 @@ const StepHealth: React.FC<StepHealthProps> = ({
         <Button typeBtn={{ type: "submit" }} typeStyle="submit">
           Avançar
         </Button>
-        <Button typeBtn={{ type: "button" }} handle={back} typeStyle="back">
+        <Button
+          typeBtn={{ type: "button" }}
+          handle={() => changeStep(step - 1)}
+          typeStyle="back"
+        >
           Voltar
         </Button>
       </FormContainer>
