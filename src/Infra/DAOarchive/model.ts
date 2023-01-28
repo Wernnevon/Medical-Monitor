@@ -39,6 +39,7 @@ export interface Health {
 }
 
 export default interface Patient {
+  anamnese: string;
   personalData: PersonalData;
   health: Health;
   adress: Address;
