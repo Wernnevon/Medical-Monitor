@@ -22,7 +22,7 @@ const createWindow = () => {
     height: 800,
     title: "Medical Monitor",
     resizable: true,
-    icon: "./src/assests/logo01.png",
+    icon: "./src/assests/icon.png",
     maximizable: true,
     webPreferences: {
       nodeIntegration: true,

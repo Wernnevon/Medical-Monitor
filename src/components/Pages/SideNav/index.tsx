@@ -17,11 +17,11 @@ import {
 } from "./styles";
 
 const SideNav: React.FC = () => {
-  const [state, setState] = useState("home");
+  const [state, setState] = useState("pacientes");
   return (
     <SideMenuContainer id="sidenav">
       <LogoDiv>
-        <NavImage draggable={false} onClick={() => setState("home")}>
+        <NavImage draggable={false}>
           <Image draggable={false} src={Logo} />
         </NavImage>
       </LogoDiv>

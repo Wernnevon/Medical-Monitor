@@ -76,6 +76,7 @@ const Prescription: React.FC = () => {
 
   function handleAddPrecription(patientUpdate: Patient) {
     if (patientExist(patientUpdate.personalData.id) && validate(content)) {
+      patient.medicament = !patient.medicament ? [] : patient.medicament;
       content.map((medicament: string) =>
         patientUpdate.medicament.push({
           medicament: medicament,
@@ -85,7 +86,7 @@ const Prescription: React.FC = () => {
       );
       update(patient);
       addToast("Sucesso", "sucess");
-      handleClear();
+      clean();
     } else {
       addToast(setMenssage());
     }

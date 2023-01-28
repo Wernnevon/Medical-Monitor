@@ -89,6 +89,7 @@ const Exame: React.FC = () => {
   function handleAddExam(patientUpdate: Patient) {
     let allExams = [...selected, ...otherExams];
     if (patientExist(patientUpdate.personalData.id) && validate(allExams)) {
+      patient.exams = !patient.exams ? [] : patient.exams;
       allExams.map((exame: string) =>
         patientUpdate.exams.push({
           done: false,
@@ -98,7 +99,7 @@ const Exame: React.FC = () => {
       );
       update(patient);
       addToast("Sucesso", "sucess");
-      handleClearAll();
+      clean();
     } else {
       addToast(setMenssage());
     }

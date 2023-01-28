@@ -9,9 +9,17 @@ interface InputProps {
   type: string;
   placeholder?: string;
   value?: string | number | Date;
+  title?: string;
 }
 
-const Input = ({ name, placeholder, type, value }: InputProps) => {
+const Input = ({
+  name,
+  placeholder,
+  type,
+  value,
+  title,
+  ...rest
+}: InputProps) => {
   const ref = useRef(null);
   function format() {
     if (name === "rg" || name === "cpf" || name === "phone") {
@@ -36,9 +44,9 @@ const Input = ({ name, placeholder, type, value }: InputProps) => {
   }, [fieldName, registerField]);
 
   return (
-    <Container>
+    <Container title={title}>
       <Placeholder>{placeholder}</Placeholder>
-      <input defaultValue={defaultValue} ref={ref} type={type} />
+      <input {...rest} defaultValue={defaultValue} ref={ref} type={type} />
       <span>{error}</span>
     </Container>
   );

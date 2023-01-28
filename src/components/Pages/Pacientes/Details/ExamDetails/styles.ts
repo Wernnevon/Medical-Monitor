@@ -1,6 +1,6 @@
-import Styled from "styled-components";
+import styled from "styled-components";
 
-export const Container = Styled.div`
+export const Container = styled.div`
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
@@ -10,36 +10,88 @@ export const Container = Styled.div`
   position: relative;
   overflow-y: auto;
 `;
-export const Card = Styled.div`
+export const Card = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 300;
-	div{
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-		align-items: center;
-		width: 100%;
-		box-sizing: border-box;
-		span{
-			margin-left: 1rem;	
-		}
-	}
+  margin: 0 5rem;
+  span {
+    margin-left: 1rem;
+  }
 `;
 
-export const Title = Styled.label`
-  font-family: 'Akshar', sans-serif;
+export const DateLine = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+export const SatusLine = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  span {
+    font-family: "Akshar", sans-serif;
+    font-weight: 500;
+    color: #03a696;
+    user-select: none;
+    :hover {
+      cursor: pointer;
+    }
+  }
+`;
+
+export const DiagnosisLine = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+export const Title = styled.label`
+  font-family: "Akshar", sans-serif;
   font-weight: 500;
-  color: #03A696;
+  color: #03a696;
   text-align: center;
-  margin: .7rem 0 1.7rem;
+  margin: 0.7rem 0 1.7rem;
   font-size: 1.5em;
   width: 82%;
-  border:none;
+  border: none;
   align-self: center;
+`;
+
+export const ExamContent = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  min-width: 30vw;
+  width: 60vw;
+  max-width: 60vw;
+  max-height: 70vh;
+  height: 100%;
+  position: relative;
+`;
+
+export const PrescriptionContent = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  min-width: 30vw;
+  width: 60vw;
+  max-width: 60vw;
+  max-height: 70vh;
+  height: 100%;
+  position: relative;
 `;

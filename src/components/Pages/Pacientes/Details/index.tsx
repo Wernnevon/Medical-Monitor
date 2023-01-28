@@ -4,9 +4,16 @@ import Patient, {
   Prescription,
 } from "../../../../Infra/DAOarchive/model";
 import Modal from "../../../Components/Modal";
+import Anamnese from "./Anamnese";
 import ExamDetails from "./ExamDetails";
 
 import { Container, Card, CardItem, CardText } from "./styles";
+
+enum ModalStrategyOpen {
+  EXAM = "exam",
+  PRESC = "precription",
+  ANMN = "anamnese",
+}
 
 interface Props {
   patient: Patient;
@@ -18,20 +25,36 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
   const [prescription, setPrescription] = useState<Prescription>(
     {} as Prescription,
   );
+  const [anamnses, setAnamneses] = useState(false);
+
+  function clear() {}
 
   function closeModal() {
     setModalState(!modalState);
+    if (anamnses) setAnamneses(false);
   }
   function openModalExam(exam: Exam) {
-    setExam(exam);
     setPrescription({} as Prescription);
+    setExam(exam);
     setModalState(true);
   }
+
   function openModalPrescription(prescription: Prescription) {
-    setPrescription(prescription);
     setExam({} as Exam);
+    setPrescription(prescription);
     setModalState(true);
   }
+
+  function openModalAnamnese() {
+    setModalState(true);
+    setAnamneses(true);
+  }
+
+  const openStrategy = {
+    [ModalStrategyOpen.EXAM]: openModalExam,
+    [ModalStrategyOpen.PRESC]: openModalPrescription,
+    [ModalStrategyOpen.ANMN]: openModalAnamnese,
+  };
 
   function calculaIdade(nascimento: Date) {
     const hoje = new Date();
@@ -44,11 +67,18 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
   }
   return (
     <Container>
-      <Modal
-        modalState={modalState}
-        closeModal={closeModal}
-        component={<ExamDetails exam={exam} prescription={prescription} />}
-      />
+      <Modal modalState={modalState} closeModal={closeModal}>
+        {anamnses ? (
+          <Anamnese patient={patient} closeModal={closeModal} />
+        ) : (
+          <ExamDetails
+            patient={patient}
+            exam={exam}
+            prescription={prescription}
+            closeModal={closeModal}
+          />
+        )}
+      </Modal>
       <Card>
         <h4>Dados Pessoais</h4>
         <CardText>
@@ -71,7 +101,7 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
         </CardText>
         <CardText>
           <label>Idade: </label>
-          <label>{calculaIdade(patient.personalData.birthday)}</label>
+          <label>{calculaIdade(patient.personalData.birthday)} anos</label>
         </CardText>
         <CardText>
           <label>Convênio: </label>
@@ -89,10 +119,12 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
           <label>Gênero: </label>
           <label>{patient.personalData.gender}</label>
         </CardText>
-        <CardText>
-          <label>Telefone: </label>
-          <label>{patient.personalData.phone}</label>
-        </CardText>
+        {patient.personalData.phone && (
+          <CardText>
+            <label>Telefone: </label>
+            <label>{patient.personalData.phone}</label>
+          </CardText>
+        )}
       </Card>
       <Card>
         <h4>Endereço</h4>
@@ -129,31 +161,33 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
         </CardText>
         <CardText>
           <label>Peso: </label>
-          <label>{patient.health.weight}</label>
+          <label>{patient.health.weight} kg</label>
         </CardText>
         <CardText>
           <label>Altura: </label>
-          <label>{patient.health.height}</label>
+          <label>{patient.health.height} cm</label>
         </CardText>
       </Card>
       <Card>
-        <h4>Anamnese</h4>
-        {patient.anamnese && (
-          <CardText>
-            <label>key: </label>
-            <label>value</label>
-          </CardText>
-        )}
-        {!patient.anamnese && <div>add anamnese</div>}
+        <CardItem>
+          <span style={{ fontWeight: 600, textTransform: "uppercase" }}>
+            Anamnese
+          </span>
+          <button onClick={openStrategy[ModalStrategyOpen.ANMN]}>Abrir</button>
+        </CardItem>
       </Card>
       {patient.exams && (
         <Card>
           <h4>Exames</h4>
           {patient.exams.length > 0 &&
             patient.exams.map((exam) => (
-              <CardItem>
+              <CardItem key={exam.name}>
                 <span>{exam.name}</span>
-                <button onClick={() => openModalExam(exam)}>Abrir</button>
+                <button
+                  onClick={() => openStrategy[ModalStrategyOpen.EXAM](exam)}
+                >
+                  Abrir
+                </button>
               </CardItem>
             ))}
         </Card>
@@ -163,9 +197,13 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
           <h4>Prescrições</h4>
           {patient.medicament.length > 0 &&
             patient.medicament.map((prescription) => (
-              <CardItem>
+              <CardItem key={prescription.medicament}>
                 <span>{prescription.medicament}</span>
-                <button onClick={() => openModalPrescription(prescription)}>
+                <button
+                  onClick={() =>
+                    openStrategy[ModalStrategyOpen.PRESC](prescription)
+                  }
+                >
                   Abrir
                 </button>
               </CardItem>

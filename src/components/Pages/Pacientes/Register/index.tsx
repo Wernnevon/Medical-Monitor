@@ -21,15 +21,18 @@ import { useRegister } from "../../../Components/Context/RegisterContext";
 
 interface RegisterProps {
   isOpen: boolean;
+  close: Function;
 }
 
-const Register: React.FC<RegisterProps> = ({ isOpen }: RegisterProps) => {
+const Register: React.FC<RegisterProps> = ({
+  isOpen,
+  close,
+}: RegisterProps) => {
   const { patient, changeStep, step } = useRegister();
   const addToast = useToastContext();
   const sucessMensage = "Paciente cadastrado com sucesso";
 
   const handleSubmit = useCallback(async () => {
-    console.log("@@", patient);
     try {
       addToast(sucessMensage, AlertTypes.SUCESS);
       await create(patient);
@@ -37,7 +40,7 @@ const Register: React.FC<RegisterProps> = ({ isOpen }: RegisterProps) => {
       addToast("Erro no cadastro", AlertTypes.ERROR);
       console.error(err);
     }
-    changeStep(1);
+    close();
   }, [patient]);
 
   function switchRender() {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { ExameProvider } from "./Components/Context/ExameContext";
 import Prescription from "./Pages/Prescription";
 import Atestado from "./Pages/Atestado";
@@ -21,6 +21,9 @@ const Patients = () => (
 const Routes: React.FC = () => {
   return (
     <Switch>
+      <Route exact path="/main_window">
+        <Redirect to="/main_window/pacientes" />
+      </Route>
       <Route exact path="/main_window/pacientes" component={Patients} />
       <Route exact path="/main_window/receitas" component={Prescription} />
       <Route exact path="/main_window/exames" component={Exams} />

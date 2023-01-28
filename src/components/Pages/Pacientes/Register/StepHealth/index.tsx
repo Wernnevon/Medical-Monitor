@@ -44,8 +44,20 @@ const StepHealth: React.FC = () => {
         <FormContent>
           <Input placeholder="Convênio" name="helthInsurance" type="text" />
           <Input placeholder="Alergias" name="allergy" type="text" />
-          <Input placeholder="Peso" name="weight" type="number" />
-          <Input placeholder="Altura" name="height" type="number" />
+          <Input
+            placeholder="Peso"
+            title="Peso em quilos (KG)"
+            name="weight"
+            type="number"
+          />
+          <Input
+            placeholder="Altura"
+            name="height"
+            type="number"
+            title="Altura em centimetros (cm)"
+            value="100"
+            min="100"
+          />
         </FormContent>
         <Button typeBtn={{ type: "submit" }} typeStyle="submit">
           Avançar

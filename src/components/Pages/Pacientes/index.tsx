@@ -36,7 +36,14 @@ const Paciente: React.FC = () => {
 
   useEffect(() => {
     setPacientes(sortByName(index()));
-  }, []);
+    console.log("request");
+  }, [modalState]);
+
+  useEffect(() => {
+    if (pacientes.length) {
+      setPatient(pacientes[0]);
+    }
+  }, [pacientes]);
 
   function closeModal() {
     changeStep(1);
@@ -50,7 +57,7 @@ const Paciente: React.FC = () => {
   return (
     <PacienteContainer>
       <Modal modalState={modalState} closeModal={closeModal}>
-        {<Register isOpen={modalState} />}
+        <Register isOpen={modalState} close={closeModal} />
       </Modal>
       <PacienteCard>
         <PatientSection>

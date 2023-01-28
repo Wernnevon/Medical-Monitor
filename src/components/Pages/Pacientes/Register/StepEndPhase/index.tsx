@@ -82,7 +82,7 @@ const EndPhase = () => {
           )}
           {health.height && (
             <li>
-              <span>Altura:</span> {health.height}m
+              <span>Altura:</span> {health.height}cm
             </li>
           )}
           {health.weight && (

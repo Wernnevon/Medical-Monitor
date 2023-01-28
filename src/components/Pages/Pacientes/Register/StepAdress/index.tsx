@@ -43,7 +43,13 @@ const StepAdressData: React.FC = () => {
       <FormContainer onSubmit={handleAdvance} ref={formRef}>
         <FormContent>
           <Input placeholder="Rua" name="street" type="text" />
-          <Input placeholder="Número" name="number" type="number" />
+          <Input
+            placeholder="Número"
+            min="0"
+            title='Digite "0" para sem número'
+            name="number"
+            type="number"
+          />
           <Input placeholder="Bairro" name="neighborhood" type="text" />
           <Input placeholder="Complemento" name="complement" type="text" />
           <Input placeholder="Cidade" name="city" type="text" />
