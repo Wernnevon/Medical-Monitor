@@ -19,7 +19,11 @@ import StepHealth from "./StepHealth";
 import EndPhase from "./StepEndPhase";
 import { useRegister } from "../../../Components/Context/RegisterContext";
 
-const Register: React.FC = () => {
+interface RegisterProps {
+  isOpen: boolean;
+}
+
+const Register: React.FC<RegisterProps> = ({ isOpen }: RegisterProps) => {
   const { patient, changeStep, step } = useRegister();
   const addToast = useToastContext();
   const sucessMensage = "Paciente cadastrado com sucesso";
@@ -81,32 +85,42 @@ const Register: React.FC = () => {
         return noActive;
     }
   }
+  const renderContent = () => {
+    if (isOpen) {
+      return (
+        <Container>
+          <Title>Novo Paciente</Title>
+          <StepProgressContainer>
+            <StepProgressCard color={handleSetColor(1)}>
+              <img draggable="false" src={handleSetBackground(1)} />
+              <label>Dados Pessoais</label>
+            </StepProgressCard>
+            <StepProgressCard color={handleSetColor(2)}>
+              <img draggable="false" src={handleSetBackground(2)} />
+              <label>Endereço</label>
+            </StepProgressCard>
+            <StepProgressCard color={handleSetColor(3)}>
+              <img draggable="false" src={handleSetBackground(3)} />
+              <label>Saúde</label>
+            </StepProgressCard>
+            <StepProgressCard color={handleSetColor(4)}>
+              <img draggable="false" src={handleSetBackground(4)} />
+              <label>Conclusão</label>
+            </StepProgressCard>
+          </StepProgressContainer>
+          <FormContainer>{switchRender()}</FormContainer>
+          {step === 4 ? (
+            <Submit onClick={handleSubmit}>Cadastrar</Submit>
+          ) : (
+            <></>
+          )}
+        </Container>
+      );
+    }
+    return <></>;
+  };
 
-  return (
-    <Container>
-      <Title>Novo Paciente</Title>
-      <StepProgressContainer>
-        <StepProgressCard color={handleSetColor(1)}>
-          <img draggable="false" src={handleSetBackground(1)} />
-          <label>Dados Pessoais</label>
-        </StepProgressCard>
-        <StepProgressCard color={handleSetColor(2)}>
-          <img draggable="false" src={handleSetBackground(2)} />
-          <label>Endereço</label>
-        </StepProgressCard>
-        <StepProgressCard color={handleSetColor(3)}>
-          <img draggable="false" src={handleSetBackground(3)} />
-          <label>Saúde</label>
-        </StepProgressCard>
-        <StepProgressCard color={handleSetColor(4)}>
-          <img draggable="false" src={handleSetBackground(4)} />
-          <label>Conclusão</label>
-        </StepProgressCard>
-      </StepProgressContainer>
-      <FormContainer>{switchRender()}</FormContainer>
-      {step === 4 ? <Submit onClick={handleSubmit}>Cadastrar</Submit> : <></>}
-    </Container>
-  );
+  return renderContent();
 };
 
 export default Register;

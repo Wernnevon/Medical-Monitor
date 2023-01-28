@@ -43,14 +43,15 @@ const Paciente: React.FC = () => {
     clearData();
     setModalState(!modalState);
   }
+  function openModal() {
+    setModalState(true);
+  }
 
   return (
     <PacienteContainer>
-      <Modal
-        modalState={modalState}
-        closeModal={closeModal}
-        component={<Register />}
-      />
+      <Modal modalState={modalState} closeModal={closeModal}>
+        {<Register isOpen={modalState} />}
+      </Modal>
       <PacienteCard>
         <PatientSection>
           <SearchBar>
@@ -61,7 +62,7 @@ const Paciente: React.FC = () => {
             />
             <SearchItem size={22} />
           </SearchBar>
-          <AddButton onClick={() => setModalState(true)}>Casdastro</AddButton>
+          <AddButton onClick={openModal}>Casdastro</AddButton>
           <ListPatient>
             {pacientes
               .filter((paciente) => {
