@@ -1,11 +1,10 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import { FiEdit } from "react-icons/fi";
-import Patient from "../../../../../Infra/DAOarchive/model";
 import Button from "../../../../Components/Buttons";
 import { useRegister } from "../../../../Components/Context/RegisterContext";
 import { Container, DataContainer, List, TitleContainer } from "./styles";
 
-export default function EndPhase() {
+const EndPhase = () => {
   const { patient, changeStep, step } = useRegister();
   const { personalData, health, adress } = patient;
 
@@ -102,4 +101,6 @@ export default function EndPhase() {
       </Button>
     </Container>
   );
-}
+};
+
+export default EndPhase;

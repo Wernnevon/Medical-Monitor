@@ -60,6 +60,10 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
           <label>{patient.personalData.motherName}</label>
         </CardText>
         <CardText>
+          <label>Nome do Pai: </label>
+          <label>{patient.personalData.fatherName}</label>
+        </CardText>
+        <CardText>
           <label>Data de Nascimento: </label>
           <label>
             {new Date(patient.personalData.birthday).toLocaleDateString()}
@@ -68,10 +72,6 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
         <CardText>
           <label>Idade: </label>
           <label>{calculaIdade(patient.personalData.birthday)}</label>
-        </CardText>
-        <CardText>
-          <label>Nome do Pai: </label>
-          <label>{patient.personalData.fatherName}</label>
         </CardText>
         <CardText>
           <label>Convênio: </label>
@@ -92,18 +92,6 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
         <CardText>
           <label>Telefone: </label>
           <label>{patient.personalData.phone}</label>
-        </CardText>
-        <CardText>
-          <label>Alergias: </label>
-          <label>{patient.health.allergy}</label>
-        </CardText>
-        <CardText>
-          <label>Peso: </label>
-          <label>{patient.health.weight}</label>
-        </CardText>
-        <CardText>
-          <label>Altura: </label>
-          <label>{patient.health.height}</label>
         </CardText>
       </Card>
       <Card>
@@ -132,6 +120,31 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
           <label>Cidade: </label>
           <label>{patient.adress.city}</label>
         </CardText>
+      </Card>
+      <Card>
+        <h4>Saúde</h4>
+        <CardText>
+          <label>Alergias: </label>
+          <label>{patient.health.allergy}</label>
+        </CardText>
+        <CardText>
+          <label>Peso: </label>
+          <label>{patient.health.weight}</label>
+        </CardText>
+        <CardText>
+          <label>Altura: </label>
+          <label>{patient.health.height}</label>
+        </CardText>
+      </Card>
+      <Card>
+        <h4>Anamnese</h4>
+        {patient.anamnese && (
+          <CardText>
+            <label>key: </label>
+            <label>value</label>
+          </CardText>
+        )}
+        {!patient.anamnese && <div>add anamnese</div>}
       </Card>
       {patient.exams && (
         <Card>
