@@ -25,6 +25,7 @@ import Patient, { PersonalData } from "../../../Infra/DAOarchive/model";
 import { index, update } from "../../../Infra/DAOarchive/patientDAO";
 import { patientExist, validate } from "../../Components/Utils/midlleware";
 import { useToastContext } from "../../Components/Context/Toast";
+import { ExamStatus } from "../../../Infra/DAOarchive/enumModel";
 
 const Exame: React.FC = () => {
   const { exames, selected, handleClear } = useExame();
@@ -92,7 +93,7 @@ const Exame: React.FC = () => {
       patient.exams = !patient.exams ? [] : patient.exams;
       allExams.map((exame: string) =>
         patientUpdate.exams.push({
-          done: false,
+          done: ExamStatus.IN_PROGRESS,
           name: exame,
           requisitionDate: new Date(),
         }),

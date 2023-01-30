@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { PrescriptionSatus } from "../../../Infra/DAOarchive/enumModel";
 import Patient, { PersonalData } from "../../../Infra/DAOarchive/model";
 import { index, update } from "../../../Infra/DAOarchive/patientDAO";
 import { useToastContext } from "../../Components/Context/Toast";
@@ -81,7 +82,7 @@ const Prescription: React.FC = () => {
         patientUpdate.medicament.push({
           medicament: medicament,
           date: new Date(),
-          administering: true,
+          administering: PrescriptionSatus.ADMINISTERING,
         }),
       );
       update(patient);

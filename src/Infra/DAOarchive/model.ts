@@ -1,3 +1,4 @@
+import { ExamStatus, PrescriptionSatus } from "./enumModel";
 export interface Address {
   city: string;
   neighborhood: string;
@@ -10,13 +11,13 @@ export interface Exam {
   name: string;
   requisitionDate: Date;
   realizationDate?: Date;
-  done: boolean;
+  done: ExamStatus;
   diagnosis?: string;
 }
 export interface Prescription {
   medicament: string;
   date: Date;
-  administering: boolean;
+  administering: PrescriptionSatus;
 }
 
 export interface PersonalData {

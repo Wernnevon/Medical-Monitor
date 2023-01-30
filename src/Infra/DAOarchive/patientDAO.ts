@@ -46,8 +46,10 @@ function findById(id: string | undefined) {
 
 export function update(patient: Patient) {
   let patients: Patient[] = LoadDB();
-  let oldPatient = findById(patient.personalData.id);
-  patients.splice(patients.indexOf(oldPatient), 1, patient);
+  const updateIndex = patients.findIndex(
+    (p: Patient) => patient.personalData.id === p.personalData.id,
+  );
+  patients.splice(updateIndex, 1, patient);
   fs.writeFile(dbPath, JSON.stringify(patients), function (err) {
     if (err) throw err;
   });

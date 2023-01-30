@@ -1,23 +1,23 @@
-import Styled from "styled-components";
-import { BsSearch } from 'react-icons/bs';
+import styled from "styled-components";
+import { BsSearch } from "react-icons/bs";
 
-export const ReceitaContainer = Styled.div`
+export const ReceitaContainer = styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
   align-items: center;
   width: 85vw;
-  margin-left: -.7vw;
+  margin-left: -0.7vw;
   height: 100vh;
   box-sizing: border-box;
 `;
 
-export const PrescriptionOutputCard = Styled.div`
+export const PrescriptionOutputCard = styled.div`
   display: flex;
   justify-content: flex-start;
   height: 100%;
 `;
 
-export const ReceitaCard = Styled.div`
+export const ReceitaCard = styled.div`
   background-color: rgba(255, 255, 255, 0.92);
   padding: 20px;
   font-size: 30px;
@@ -27,15 +27,15 @@ export const ReceitaCard = Styled.div`
   overflow-y: auto;
 `;
 
-export const LabelHeader = Styled.label`
-  margin-top: .5rem;
+export const LabelHeader = styled.label`
+  margin-top: 0.5rem;
   font-size: 1.5rem;
   text-align: center;
   font-weight: 300;
-  font-family: 'Akshar', sans-serif;
+  font-family: "Akshar", sans-serif;
 `;
 
-export const ReceituarioContainer = Styled.div`
+export const ReceituarioContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,7 +43,7 @@ export const ReceituarioContainer = Styled.div`
   height: 100%;
 `;
 
-export const Receituario = Styled.textarea`
+export const Receituario = styled.textarea`
   display: flex;
   justify-content: center;
   background: none;
@@ -53,15 +53,15 @@ export const Receituario = Styled.textarea`
   border: 1px solid #329bbc;
   border-radius: 5px;
   box-sizing: border-box;
-  padding: 0.2rem .5rem;
-  font-family: 'Akshar', sans-serif;
+  padding: 0.2rem 0.5rem;
+  font-family: "Akshar", sans-serif;
   font-weight: 300;
   font-size: 1rem;
-  margin: 20px 0px; 
-  line-height:30px;
+  margin: 20px 0px;
+  line-height: 30px;
 `;
 
-export const SearchBar = Styled.div`
+export const SearchBar = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -75,13 +75,13 @@ export const SearchBar = Styled.div`
   position: relative;
   color: #747474;
   transition: 100ms linear;
-  :focus-within{
-    color: #03A696;
-    border-color: #03A696;
+  :focus-within {
+    color: #03a696;
+    border-color: #03a696;
   }
 `;
 
-export const SearchInput = Styled.input`
+export const SearchInput = styled.input`
   border: none;
   outline: none;
   padding: 0;
@@ -92,12 +92,12 @@ export const SearchInput = Styled.input`
   font-size: 1rem;
 `;
 
-export const SearchItem = Styled(BsSearch)`
+export const SearchItem = styled(BsSearch)`
   position: absolute;
   right: 1rem;
 `;
 
-export const ListPatient = Styled.div`
+export const ListPatient = styled.div`
   display: flex;
   overflow-y: auto;
   flex-direction: column;
@@ -105,46 +105,46 @@ export const ListPatient = Styled.div`
   max-height: 25%;
   min-height: 4rem;
   box-sizing: border-box;
-  margin: .5rem 0;
-  padding-top: .5rem;
+  margin: 0.5rem 0;
+  padding-top: 0.5rem;
 `;
 
-export const ItemPatient = Styled.div`
+export const ItemPatient = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .3rem 1rem;
-  margin: .3rem 1rem;
-  background-color: #FFF;
+  padding: 0.3rem 1rem;
+  margin: 0.3rem 1rem;
+  background-color: #fff;
   box-shadow: 0px 3px 8px 0px #00000033;
   border-radius: 2px;
-  label{
-    font-family: 'Akshar', sans-serif;
+  label {
+    font-family: "Akshar", sans-serif;
     font-size: 1.1rem;
     font-weight: 300;
-    color: #333
+    color: #333;
   }
-  button{
+  button {
     border: none;
     border-radius: 4px;
     outline: none;
-    background-color: #03A696;
+    background-color: #03a696;
     color: #fff;
-    padding: .4rem 1rem;
+    padding: 0.4rem 1rem;
     font-size: 1rem;
     font-weight: 400;
     transition: 40ms ease-in;
-    font-family: 'Akshar', sans-serif;
-    :hover{
-        cursor: pointer;
-    };
-    :active{
-        transform: translateY(2px);
-    };
+    font-family: "Akshar", sans-serif;
+    :hover {
+      cursor: pointer;
+    }
+    :active {
+      transform: translateY(2px);
+    }
   }
 `;
 
-export const FormButtonContainer = Styled.div`
+export const FormButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: calc(90% + 1em);
@@ -152,45 +152,45 @@ export const FormButtonContainer = Styled.div`
   position: relative;
 `;
 
-export const FormButtonSave = Styled.button`
+export const FormButtonSave = styled.button`
   border: none;
   border-radius: 4px;
   outline: none;
-  background-color: #03A696;
-  color: #FFF;
-  padding: .4rem 2rem;
+  background-color: #03a696;
+  color: #fff;
+  padding: 0.4rem 2rem;
   margin: 0 1rem;
   font-size: 1rem;
   font-weight: 400;
   transition: 40ms ease-in;
   box-shadow: 0px 3px 8px 0px #00000033;
-  font-family: 'Akshar', sans-serif;
+  font-family: "Akshar", sans-serif;
 
-  :hover{
-      cursor: pointer;
-  };
-  :active{
-      transform: translateY(2px);
-  };
+  :hover {
+    cursor: pointer;
+  }
+  :active {
+    transform: translateY(2px);
+  }
 `;
 
-export const FormButtonClear = Styled.button`
+export const FormButtonClear = styled.button`
   border: none;
   border-radius: 4px;
   outline: none;
-  background-color: #FFF;
+  background-color: #fff;
   color: #000;
-  padding: .4rem 2rem;
+  padding: 0.4rem 2rem;
   margin: 0 1rem;
   font-size: 1rem;
   font-weight: 400;
   transition: 40ms ease-in;
   box-shadow: 0px 3px 8px 0px #00000033;
-  font-family: 'Akshar', sans-serif;
-  :hover{
-      cursor: pointer;
-  };
-  :active{
-      transform: translateY(2px);
-  };
+  font-family: "Akshar", sans-serif;
+  :hover {
+    cursor: pointer;
+  }
+  :active {
+    transform: translateY(2px);
+  }
 `;

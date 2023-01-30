@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import {
+  ExamStatus,
+  PrescriptionSatus,
+} from "../../../../../Infra/DAOarchive/enumModel";
 import Patient, {
   Exam,
   Prescription,
 } from "../../../../../Infra/DAOarchive/model";
 import { update } from "../../../../../Infra/DAOarchive/patientDAO";
 import { useToastContext } from "../../../../Components/Context/Toast";
+import { isNullOrEmptyObject } from "../../../../Components/Utils/isNullOrEmpty";
 import { patientExist } from "../../../../Components/Utils/midlleware";
 import {
   Container,
@@ -15,6 +20,12 @@ import {
   DateLine,
   SatusLine,
   DiagnosisLine,
+  Edit,
+  Actions,
+  Save,
+  Text,
+  TextArea,
+  TitleExam,
 } from "./styles";
 
 interface Props {
@@ -31,23 +42,35 @@ const ExamDetails: React.FC<Props> = ({
   closeModal,
 }: Props) => {
   const [medicamentStatus, setMedicamentStatus] = useState(
-    prescription?.administering,
+    PrescriptionSatus.ADMINISTERING,
   );
-  const [examStatus, setExamStatus] = useState(exam?.done);
-  const [realizationExamData, setRealizationExamData] = useState<Date>(
-    new Date(),
-  );
-
+  const [examStatus, setExamStatus] = useState(ExamStatus.IN_PROGRESS);
+  const [realizationExamData, setRealizationExamData] = useState(new Date());
   const [examDiag, setExamDiag] = useState("");
+  const [edit, setEdit] = useState(false);
 
   const addToast = useToastContext();
+
+  useEffect(() => {
+    if (!isNullOrEmptyObject(exam)) {
+      setExamStatus(exam.done);
+      setRealizationExamData(exam!.realizationDate);
+      setExamDiag(exam.diagnosis);
+    }
+  }, [exam]);
+
+  useEffect(() => {
+    if (!isNullOrEmptyObject(prescription)) {
+      setMedicamentStatus(prescription!.administering);
+    }
+  }, [prescription]);
 
   function updatePrescriptios() {
     let { medicament: prescriptions } = patient;
     const prescriptionUpdateIndex = prescriptions.findIndex(
       (prescription) => prescription.medicament === prescription.medicament,
     );
-    prescriptions[prescriptionUpdateIndex].administering = !!medicamentStatus;
+    prescriptions[prescriptionUpdateIndex].administering = medicamentStatus;
 
     return [...prescriptions];
   }
@@ -57,7 +80,7 @@ const ExamDetails: React.FC<Props> = ({
     const examUpdateIndex = exams.findIndex(
       (exame) => exame.name === exam?.name,
     );
-    exams[examUpdateIndex].done = !!examStatus;
+    exams[examUpdateIndex].done = examStatus;
     exams[examUpdateIndex].realizationDate = realizationExamData;
     exams[examUpdateIndex].diagnosis = examDiag;
 
@@ -82,10 +105,16 @@ const ExamDetails: React.FC<Props> = ({
   }
 
   function toggleMedicamentStatus() {
-    setMedicamentStatus(!medicamentStatus);
+    const newState =
+      medicamentStatus === PrescriptionSatus.ADMINISTERING
+        ? PrescriptionSatus.SUSPENDED
+        : PrescriptionSatus.ADMINISTERING;
+    setMedicamentStatus(newState);
   }
   function toggleExamStatus() {
-    setExamStatus(!examStatus);
+    const newState =
+      examStatus === ExamStatus.DONE ? ExamStatus.IN_PROGRESS : ExamStatus.DONE;
+    setExamStatus(newState);
     setRealizationExamData(new Date());
   }
 
@@ -104,7 +133,7 @@ const ExamDetails: React.FC<Props> = ({
               </div>
               <div>
                 <label>Data de realização:</label>
-                {examStatus ? (
+                {examStatus === ExamStatus.DONE ? (
                   <span>
                     {new Date(realizationExamData).toLocaleDateString()}
                   </span>
@@ -115,13 +144,23 @@ const ExamDetails: React.FC<Props> = ({
             </DateLine>
             <SatusLine>
               <label>Status:</label>
-              <span onClick={toggleExamStatus}>
-                {examStatus ? "Realizado" : "Em Andamento"}
-              </span>
+              <span onClick={toggleExamStatus}>{examStatus}</span>
             </SatusLine>
             <DiagnosisLine>
-              <label>Situação:</label>
-              <span>{exam.diagnosis}</span>
+              <TitleExam>Conclusão</TitleExam>
+              {!edit && <Text>{examDiag || "<Vazio>"}</Text>}
+              {edit && (
+                <TextArea
+                  onChange={({ target }) => setExamDiag(target.value)}
+                  value={examDiag}
+                />
+              )}
+              <Actions>
+                <Edit onClick={() => setEdit(!edit)}>
+                  {edit ? "Concluir" : "Editar"}
+                </Edit>
+                {!edit && <Save onClick={handleUpdateExams}>Salvar</Save>}
+              </Actions>
             </DiagnosisLine>
           </Card>
         </ExamContent>
@@ -135,15 +174,17 @@ const ExamDetails: React.FC<Props> = ({
         <PrescriptionContent>
           <Title>{prescription.medicament}</Title>
           <Card>
-            <div>
-              <label>Data de prescrição:</label>
-              <span>{new Date(prescription.date).toLocaleDateString()}</span>
-            </div>
-            <div>
-              <label onClick={toggleMedicamentStatus}>
-                {!medicamentStatus ? "Administrando" : "Suspenso"}
-              </label>
-            </div>
+            <DateLine>
+              <div>
+                <label>Data de prescrição:</label>
+                <span>{new Date(prescription.date).toLocaleDateString()}</span>
+              </div>
+            </DateLine>
+            <SatusLine>
+              <label>Status:</label>
+              <span onClick={toggleMedicamentStatus}>{medicamentStatus}</span>
+            </SatusLine>
+            <Save onClick={handleUpdatePrescriptions}>Salvar</Save>
           </Card>
         </PrescriptionContent>
       );

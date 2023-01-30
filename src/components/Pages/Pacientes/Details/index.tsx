@@ -27,21 +27,19 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
   );
   const [anamnses, setAnamneses] = useState(false);
 
-  function clear() {}
-
   function closeModal() {
     setModalState(!modalState);
     if (anamnses) setAnamneses(false);
   }
   function openModalExam(exam: Exam) {
     setPrescription({} as Prescription);
-    setExam(exam);
+    setExam({ ...exam });
     setModalState(true);
   }
 
   function openModalPrescription(prescription: Prescription) {
     setExam({} as Exam);
-    setPrescription(prescription);
+    setPrescription({ ...prescription });
     setModalState(true);
   }
 
