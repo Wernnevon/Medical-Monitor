@@ -49,17 +49,20 @@ const Exame: React.FC = () => {
     else return "Escolha o paciente";
   };
 
-  const sortByName = (array: Array<any>) =>
-    array.sort((patientA: Patient, patientB: Patient) =>
-      patientA.personalData.name > patientB.personalData.name
-        ? 1
-        : patientA.personalData.name < patientB.personalData.name
-        ? -1
-        : 0
+  const getSortedPatinets = async () => {
+    const patients: Patient[] = await index();
+
+    const sortedPatients = patients.sort(
+      (
+        { personalData: { name: nameA } }: Patient,
+        { personalData: { name: nameB } }: Patient
+      ) => (nameA > nameB ? 1 : nameA < nameB ? -1 : 0)
     );
+    setPacientes(sortedPatients);
+  };
 
   useEffect(() => {
-    // setPacientes(sortByName(index()));
+    getSortedPatinets();
   }, []);
 
   function handleOtherExams(event: any) {
@@ -89,7 +92,7 @@ const Exame: React.FC = () => {
 
   function handleAddExam(patientUpdate: Patient) {
     let allExams = [...selected, ...otherExams];
-    if (patientExist(patientUpdate.personalData.id) && validate(allExams)) {
+    if (patientExist(patientUpdate.id) && validate(allExams)) {
       patient.exams = !patient.exams ? [] : patient.exams;
       allExams.map((exame: string) =>
         patientUpdate.exams.push({
@@ -98,7 +101,7 @@ const Exame: React.FC = () => {
           requisitionDate: new Date(),
         })
       );
-      // update(patient);
+      update(patient);
       addToast("Sucesso", "sucess");
       clean();
     } else {
@@ -128,9 +131,10 @@ const Exame: React.FC = () => {
                     .includes(pacienteNome.toLocaleLowerCase())
                 )
                   return paciente;
+                return {};
               })
               .map((paciente: Patient) => (
-                <ItemPatient key={paciente.personalData.id}>
+                <ItemPatient key={paciente.id}>
                   <label>{paciente.personalData.name}</label>
                   <button onClick={() => setPatient(paciente)}>
                     Escolher paciente

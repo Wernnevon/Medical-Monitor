@@ -39,7 +39,7 @@ export function ToastContextProvider({ children }: ToastProps) {
       setTimeout(() => setToasts((toasts: any) => toasts.slice(1)), 3000);
       setToastType(type.toLocaleUpperCase());
     },
-    [setToasts],
+    [toasts]
   );
 
   return (

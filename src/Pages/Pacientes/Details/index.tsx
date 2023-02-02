@@ -60,6 +60,11 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
       ) / 365.25
     );
   }
+
+  const getDate = (): string => {
+    const [y, m, d] = patient.personalData.birthday.toString().split("-");
+    return new Date(Number(y), Number(m) - 1, Number(d)).toLocaleDateString();
+  };
   return (
     <Container>
       <Modal modalState={modalState} closeModal={closeModal}>
@@ -90,9 +95,7 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
         </CardText>
         <CardText>
           <label>Data de Nascimento: </label>
-          <label>
-            {new Date(patient.personalData.birthday).toLocaleDateString()}
-          </label>
+          <label>{getDate()}</label>
         </CardText>
         <CardText>
           <label>Idade: </label>

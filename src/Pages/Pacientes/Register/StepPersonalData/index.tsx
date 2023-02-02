@@ -12,40 +12,43 @@ const StepPersonalData: React.FC = () => {
   const formRef = useRef({} as FormHandles);
   const { addData, patient, changeStep, step } = useRegister();
 
-  const handleAdvance = useCallback(async (data: PersonalData) => {
-    try {
-      formRef.current.setErrors({});
-      const schema = Yup.object().shape({
-        name: Yup.string().required("Preencha o nome completo do paciente"),
-        motherName: Yup.string().required(
-          "Preencha o nome completo da mão do paciente"
-        ),
-        fatherName: Yup.string().required(
-          "Preencha o nome completo do pai do paciente"
-        ),
-        birthday: Yup.string().required(
-          "Informe a data de nascimento do paciente"
-        ),
-        rg: Yup.string().required("Informe o RG"),
-        cpf: Yup.string().required("Informe o CPF"),
-        gender: Yup.string().required("Informe o gênero"),
-      });
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-      addData({
-        ...patient,
-        personalData: data,
-      });
-      formRef.current.setErrors({});
-      changeStep(step + 1);
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = GetErros(err);
-        formRef.current.setErrors(errors);
+  const handleAdvance = useCallback(
+    async (data: PersonalData) => {
+      try {
+        formRef.current.setErrors({});
+        const schema = Yup.object().shape({
+          name: Yup.string().required("Preencha o nome completo do paciente"),
+          motherName: Yup.string().required(
+            "Preencha o nome completo da mão do paciente"
+          ),
+          fatherName: Yup.string().required(
+            "Preencha o nome completo do pai do paciente"
+          ),
+          birthday: Yup.string().required(
+            "Informe a data de nascimento do paciente"
+          ),
+          rg: Yup.string().required("Informe o RG"),
+          cpf: Yup.string().required("Informe o CPF"),
+          gender: Yup.string().required("Informe o gênero"),
+        });
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+        addData({
+          ...patient,
+          personalData: data,
+        });
+        formRef.current.setErrors({});
+        changeStep(step + 1);
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = GetErros(err);
+          formRef.current.setErrors(errors);
+        }
       }
-    }
-  }, []);
+    },
+    [addData, changeStep, patient, step]
+  );
   return (
     <Container>
       <FormContainer onSubmit={handleAdvance} ref={formRef}>

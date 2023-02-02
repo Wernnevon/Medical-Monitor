@@ -8,9 +8,9 @@ require("@electron/remote/main").initialize();
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    icon: "./src/assests/icon.png",
+    width: 1200,
+    height: 800,
+    icon: isDev ? "./src/assests/icon.png" : "..build/icon.png",
     title: "Medical Monitor",
     webPreferences: {
       nodeIntegration: true,

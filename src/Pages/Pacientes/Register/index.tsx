@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable no-duplicate-case */
 import React, { useCallback } from "react";
 import StepPersonalData from "./StepPersonalData";
 import { useToastContext } from "../../../Components/Context/Toast";
-// import { create } from "../../../Infra/DAOarchive/patientDAO";
 import stepSvgNoActived from "../../../assests/SVGSs/stepCard.svg";
 import stepSvgActived from "../../../assests/SVGSs/stepCardActive.svg";
 
@@ -18,6 +19,7 @@ import StepAdressData from "./StepAdress";
 import StepHealth from "./StepHealth";
 import EndPhase from "./StepEndPhase";
 import { useRegister } from "../../../Components/Context/RegisterContext";
+import { create } from "../../../Infra/DAOarchive/patientDAO";
 
 interface RegisterProps {
   isOpen: boolean;
@@ -35,13 +37,13 @@ const Register: React.FC<RegisterProps> = ({
   const handleSubmit = useCallback(async () => {
     try {
       addToast(sucessMensage, AlertTypes.SUCESS);
-      // await create(patient);
+      await create(patient);
     } catch (err) {
       addToast("Erro no cadastro", AlertTypes.ERROR);
       console.error(err);
     }
     close();
-  }, [addToast, close]);
+  }, [addToast, close, patient]);
 
   function switchRender() {
     switch (step) {

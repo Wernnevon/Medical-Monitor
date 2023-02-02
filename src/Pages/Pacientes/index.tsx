@@ -25,18 +25,21 @@ const Paciente: React.FC = () => {
   const [modalState, setModalState] = useState(false);
   const [patient, setPatient] = useState<Patient>({} as Patient);
   const { changeStep, clearData } = useRegister();
-  const sortByName = (array: Array<any>) =>
-    array.sort((patientA: Patient, patientB: Patient) =>
-      patientA.personalData.name > patientB.personalData.name
-        ? 1
-        : patientA.personalData.name < patientB.personalData.name
-        ? -1
-        : 0
+
+  const getSortedPatinets = async () => {
+    const patients: Patient[] = await index();
+
+    const sortedPatients = patients.sort(
+      (
+        { personalData: { name: nameA } }: Patient,
+        { personalData: { name: nameB } }: Patient
+      ) => (nameA > nameB ? 1 : nameA < nameB ? -1 : 0)
     );
+    setPacientes(sortedPatients);
+  };
 
   useEffect(() => {
-    setPacientes(sortByName(index()));
-    console.log("request");
+    getSortedPatinets();
   }, [modalState]);
 
   useEffect(() => {
@@ -80,13 +83,14 @@ const Paciente: React.FC = () => {
                     .includes(pacienteNome.toLocaleLowerCase())
                 )
                   return paciente;
+                return {};
               })
               .map((paciente: Patient) => (
                 <ItemPatient
                   onClick={() => {
                     setPatient(paciente);
                   }}
-                  key={paciente.personalData.id}
+                  key={paciente.id}
                 >
                   <label>{paciente.personalData.name}</label>
                 </ItemPatient>

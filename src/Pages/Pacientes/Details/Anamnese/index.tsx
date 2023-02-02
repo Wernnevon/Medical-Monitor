@@ -25,7 +25,7 @@ const Anamnese: React.FC<AnamneseProps> = ({ patient, closeModal }) => {
   const addToast = useToastContext();
 
   function handleAddAnamnese() {
-    if (patientExist(patient.personalData.id)) {
+    if (patientExist(patient.id)) {
       patient.anamnese = !patient.anamnese ? "" : patient.anamnese;
       patient.anamnese = anamneseText;
       update(patient);

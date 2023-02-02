@@ -1,8 +1,22 @@
 import Patient from "./model";
-import * as fs from "fs";
-import { LoadDB } from "../DB/db";
 
-const dbPath = "src/Infra/DB/db.json";
+import { DBPromise } from "../DB/db";
+
+const DBRequest = window.indexedDB.open("pacientes", 1);
+let db: IDBDatabase;
+
+DBRequest.onsuccess = function () {
+  db = this.result;
+};
+
+DBRequest.onerror = function () {
+  console.error(`Error ${this.error}`);
+};
+
+DBRequest.onupgradeneeded = function () {
+  db = this.result;
+  db.createObjectStore("patients", { keyPath: "id" });
+};
 
 function uuidv4() {
   return "xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
@@ -12,61 +26,50 @@ function uuidv4() {
   });
 }
 
-function checkId(id: string) {
-  const patientList = index();
-  const exists = patientList.some(
-    ({ personalData }: Patient) => personalData.id === id
+async function verifyIdExists(id: string) {
+  let keys: any = await DBPromise(
+    db
+      .transaction(["patients"], "readonly")
+      .objectStore("patients")
+      .getAllKeys()
   );
-  if (exists) {
-    console.log("id igual");
-    return uuidv4();
+  return keys.includes(id);
+}
+
+export async function create(patient: Patient) {
+  const idTest = uuidv4();
+  const rs: any = await verifyIdExists(idTest);
+  if (rs) {
+    create(patient);
   }
-  return id;
-}
-
-export function create(patient: Patient) {
-  let db = LoadDB();
-  patient.personalData.id = checkId(uuidv4());
-  db.push(patient);
-  // fs.writeFile(dbPath, JSON.stringify(db), function (err) {
-  //   if (err) throw err;
-  // });
-}
-
-export function index() {
-  // const patients: Patient[] = LoadDB();
-  const patients: Patient[] = [];
-  return patients;
-}
-
-function findById(id: string | undefined) {
-  // const patients: Patient[] = LoadDB();
-  const patients: Patient[] = [];
-
-  let paciente = patients.filter((patient) => patient.personalData.id === id);
-  return paciente[0];
-}
-
-export function update(patient: Patient) {
-  let patients: Patient[] = LoadDB();
-  const updateIndex = patients.findIndex(
-    (p: Patient) => patient.personalData.id === p.personalData.id
-  );
-  patients.splice(updateIndex, 1, patient);
-  // fs.writeFile(dbPath, JSON.stringify(patients), function (err) {
-  //   if (err) throw err;
-  // });
-}
-
-export function remove(patientId: string | undefined) {
-  let patients: Patient[] = LoadDB();
-  if (patientId) {
-    patients = patients.filter(
-      (patient) => patient.personalData.id !== patientId
-    );
-    // fs.writeFile(dbPath, JSON.stringify(patients), function (err) {
-    //   if (err) throw err;
-    // });
+  const transaction = db.transaction(["patients"], "readwrite");
+  const patientTable = transaction.objectStore("patients");
+  patient.id = idTest;
+  try {
+    const request = await DBPromise(patientTable.add(patient));
+    console.log("Success", request);
+  } catch (error) {
+    console.error(error);
   }
-  console.log(patients);
 }
+
+export async function index(): Promise<Patient[]> {
+  return (await DBPromise(
+    db.transaction(["patients"], "readonly").objectStore("patients").getAll()
+  )) as Array<Patient>;
+}
+
+// function findById(id: string | undefined) {}
+
+export async function update(patient: Patient) {
+  const transaction = db.transaction(["patients"], "readwrite");
+  const patientTable = transaction.objectStore("patients");
+  try {
+    const request = await DBPromise(patientTable.put(patient));
+    console.log("Success", request);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export function remove(patientId: string | undefined) {}

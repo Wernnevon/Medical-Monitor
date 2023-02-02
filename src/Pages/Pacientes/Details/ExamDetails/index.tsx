@@ -52,15 +52,10 @@ const ExamDetails: React.FC<Props> = ({
   const addToast = useToastContext();
 
   useEffect(() => {
-    if (
-      !!exam &&
-      !!exam.realizationDate &&
-      exam.diagnosis &&
-      !isNullOrEmptyObject(exam)
-    ) {
-      setRealizationExamData(exam.realizationDate);
-      setExamDiag(exam.diagnosis);
-      setExamStatus(exam.done);
+    if (!isNullOrEmptyObject(exam)) {
+      setRealizationExamData(exam!.realizationDate || new Date());
+      setExamDiag(exam!.diagnosis || "");
+      setExamStatus(exam!.done);
     }
   }, [exam]);
 
@@ -73,8 +68,7 @@ const ExamDetails: React.FC<Props> = ({
   function updatePrescriptios() {
     let { medicament: prescriptions } = patient;
     const prescriptionUpdateIndex = prescriptions.findIndex(
-      (prescription: Prescription) =>
-        prescription.medicament === prescription.medicament
+      (receita: Prescription) => receita.medicament === prescription?.medicament
     );
     prescriptions[prescriptionUpdateIndex].administering = medicamentStatus;
 
@@ -94,7 +88,7 @@ const ExamDetails: React.FC<Props> = ({
   }
 
   function handleUpdatePrescriptions() {
-    if (patientExist(patient.personalData.id)) {
+    if (patientExist(patient.id)) {
       patient.medicament = updatePrescriptios();
       update(patient);
       addToast("Sucesso", "sucess");
@@ -102,7 +96,7 @@ const ExamDetails: React.FC<Props> = ({
     }
   }
   function handleUpdateExams() {
-    if (patientExist(patient.personalData.id)) {
+    if (patientExist(patient.id)) {
       patient.exams = updateExamp();
       update(patient);
       addToast("Sucesso", "sucess");

@@ -21,7 +21,6 @@ export interface Prescription {
 }
 
 export interface PersonalData {
-  id?: string;
   name: string;
   birthday: Date;
   fatherName: string;
@@ -40,6 +39,7 @@ export interface Health {
 }
 
 export default interface Patient {
+  id?: string;
   anamnese: string;
   personalData: PersonalData;
   health: Health;
