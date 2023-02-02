@@ -1,0 +1,32 @@
+body {
+  background-color:  #03A696;
+  margin: 0;
+  display: flex;
+  font-family: 'Akshar', sans-serif;
+  overflow: hidden;
+}
+.app{
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+}
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track { 
+  background-color: transparent;
+
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #5c5c5c33; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #8d8d8d; 
+}
