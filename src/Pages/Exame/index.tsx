@@ -123,16 +123,11 @@ const Exame: React.FC = () => {
           </SearchBar>
           <ListPatient>
             {pacientes
-              .filter((paciente) => {
-                if (pacienteNome === "") return paciente;
-                else if (
-                  paciente.personalData.name
-                    .toLocaleLowerCase()
-                    .includes(pacienteNome.toLocaleLowerCase())
-                )
-                  return paciente;
-                return {};
-              })
+              .filter((paciente) =>
+                paciente.personalData.name
+                  .toLocaleLowerCase()
+                  .includes(pacienteNome.toLocaleLowerCase())
+              )
               .map((paciente: Patient) => (
                 <ItemPatient key={paciente.id}>
                   <label>{paciente.personalData.name}</label>

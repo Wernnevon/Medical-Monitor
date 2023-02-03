@@ -75,16 +75,11 @@ const Paciente: React.FC = () => {
           <AddButton onClick={openModal}>Cadastro</AddButton>
           <ListPatient>
             {pacientes
-              .filter((paciente) => {
-                if (pacienteNome === "") return paciente;
-                else if (
-                  paciente.personalData.name
-                    .toLocaleLowerCase()
-                    .includes(pacienteNome.toLocaleLowerCase())
-                )
-                  return paciente;
-                return {};
-              })
+              .filter((paciente) =>
+                paciente.personalData.name
+                  .toLocaleLowerCase()
+                  .includes(pacienteNome.toLocaleLowerCase())
+              )
               .map((paciente: Patient) => (
                 <ItemPatient
                   onClick={() => {
