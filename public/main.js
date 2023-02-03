@@ -10,13 +10,14 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 1200,
     height: 800,
-    icon: isDev ? "./src/assests/icon.png" : "..build/icon.png",
+    icon: isDev ? "./src/assests/icon.png" : "./public/icon.png",
     title: "Medical Monitor",
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
     },
   });
+  win.maximize();
   win.setMenuBarVisibility(false);
 
   win.loadURL(
