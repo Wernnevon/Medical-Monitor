@@ -12,26 +12,18 @@ function RgMask(value: string): string {
 }
 
 function PhoneMask(value: string): string {
-  console.log("phone");
   return value
     .replace(/\D/g, "") // substitui qualquer caracter que nao seja numero por nada
+    .replace(/(\d{3})(\d)/, "$1 $2") // add espaço entre o 2º e o 3º número
     .replace(/^(\d{2})(\d)/g, "($1) $2") // add parentesis nos dois primeiros numeros
-    .replace(/(\d{5})(\d)/, "$1-$2") // add hifen entre o 4º e 0 5º número
+    .replace(/(\d{4})(\d)/, "$1-$2") // add hifen entre o 4º e  5º número
     .replace(/(-\d{4})\d+?$/, "$1"); // captura 4 numeros seguidos de um traço e não deixa ser digitado mais nada
 }
 
-export default function formatValue(type: string, value: string): string {
-  let retunedValue = "";
-  switch (type) {
-    case "cpf":
-      retunedValue = CPFMask(value);
-      break;
-    case "rg":
-      retunedValue = RgMask(value);
-      break;
-    case "phone":
-      retunedValue = PhoneMask(value);
-      break;
-  }
-  return retunedValue;
-}
+const formatValue = {
+  CPF: CPFMask,
+  PHONE: PhoneMask,
+  RG: RgMask,
+};
+
+export default formatValue;

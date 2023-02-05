@@ -24,7 +24,7 @@ export const Container = styled.button<PropsButton>`
     fontColors[typeButton as keyof typeof fontColors]};
   padding: 0.4rem 2rem;
   margin: 0 5rem;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 400;
   transition: 40ms ease-in;
   box-shadow: 0px 3px 8px 0px #00000033;

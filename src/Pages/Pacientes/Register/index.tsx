@@ -14,6 +14,7 @@ import {
   StepProgressCard,
   StepProgressContainer,
 } from "./styles";
+
 import { AlertTypes } from "../../../Components/Utils/ToastConfigs";
 import StepAdressData from "./StepAdress";
 import StepHealth from "./StepHealth";

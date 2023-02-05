@@ -10,7 +10,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   min-width: 60vw;
-  height: 40em;
+  height: 45em;
   max-height: 70vh;
   position: relative;
   overflow-y: auto;
@@ -87,7 +87,7 @@ export const Title = styled.label`
   color: #03a696;
   text-align: center;
   margin-top: 2rem;
-  font-size: 1.5em;
+  font-size: 2em;
   width: 82%;
   border: none;
 `;

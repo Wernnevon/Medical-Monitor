@@ -20,7 +20,7 @@ export const FormContent = styled.div`
   display: grid;
   grid-template-columns: 40% 40%;
   width: 100%;
-  gap: 2rem 1rem;
+  gap: 3rem 1rem;
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
