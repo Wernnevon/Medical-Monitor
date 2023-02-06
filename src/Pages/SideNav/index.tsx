@@ -4,7 +4,7 @@ import { AiOutlineAudit, AiOutlineFileText } from "react-icons/ai";
 import { HiUserGroup } from "react-icons/hi";
 import { BiTestTube } from "react-icons/bi";
 
-import Logo from "../../assests/MMNoBG.png";
+import Logo from "../../assests/MMNoBG.svg";
 
 import {
   SideMenuContainer,
@@ -18,6 +18,7 @@ import {
 
 const SideNav: React.FC = () => {
   const [state, setState] = useState("pacientes");
+  const iconSize = 35;
   return (
     <SideMenuContainer id="sidenav">
       <LogoDiv>
@@ -34,7 +35,10 @@ const SideNav: React.FC = () => {
         }}
       >
         <NavBtn active={state === "pacientes" ? state : ""}>
-          <HiUserGroup style={{ position: "relative", bottom: ".15rem" }} />
+          <HiUserGroup
+            size={iconSize}
+            style={{ position: "relative", bottom: ".2rem" }}
+          />
           <NavLabel>Pacientes</NavLabel>
         </NavBtn>
       </NavLink>
@@ -45,7 +49,7 @@ const SideNav: React.FC = () => {
         to="/receitas"
       >
         <NavBtn active={state === "receitas" ? state : ""}>
-          <AiOutlineFileText />
+          <AiOutlineFileText size={iconSize} />
           <NavLabel>Receitas</NavLabel>
         </NavBtn>
       </NavLink>
@@ -56,7 +60,7 @@ const SideNav: React.FC = () => {
         to="/exames"
       >
         <NavBtn active={state === "exames" ? state : ""}>
-          <BiTestTube />
+          <BiTestTube size={iconSize} />
           <NavLabel>Exame</NavLabel>
         </NavBtn>
       </NavLink>
@@ -68,7 +72,7 @@ const SideNav: React.FC = () => {
         to="/atestados"
       >
         <NavBtn active={state === "atestados" ? state : ""}>
-          <AiOutlineAudit />
+          <AiOutlineAudit size={iconSize} />
           <NavLabel>Atestado</NavLabel>
         </NavBtn>
       </NavLink>

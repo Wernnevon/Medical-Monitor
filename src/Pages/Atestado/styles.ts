@@ -47,7 +47,7 @@ export const TitleForm = Styled.div`
   text-align: center;
   font-family: 'Akshar', sans-serif;
   font-weight: 400;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: #03A696;
   margin-bottom: 1rem;
 `;

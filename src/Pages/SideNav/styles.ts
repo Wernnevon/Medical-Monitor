@@ -62,7 +62,7 @@ export const NavBtn = styled.button`
 export const NavLabel = styled.label`
   color: #fff;
   text-transform: uppercase;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   margin-left: 10px;
   font-family: "Akshar", sans-serif;
   :hover {
@@ -70,16 +70,17 @@ export const NavLabel = styled.label`
   }
 `;
 export const Image = styled.img`
-  width: 80%;
-  height: 80%;
-  margin: 20px 0;
+  width: 70%;
+  margin: 2rem;
+  user-select: none;
 `;
 
-export const NavImage = styled.button`
-  outline: none;
-  border: none;
-  width: 70%;
-  margin: 30px 0;
+export const NavImage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2.5rem 0;
+  width: 65%;
   border-radius: 50%;
   background-image: radial-gradient(#fff 5%, #d0d0d0 100%);
 `;

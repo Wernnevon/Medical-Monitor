@@ -1,5 +1,5 @@
 import Styled from "styled-components";
-import { BsSearch } from 'react-icons/bs';
+import { BsSearch } from "react-icons/bs";
 
 export const PacienteContainer = Styled.div`
   display: flex;
@@ -69,17 +69,15 @@ export const AddButton = Styled.button`
   border: none;
   border-radius: 5em;
   outline: none;
-  padding: .5rem 0;
+  padding: .3rem 0;
   background-color: #03A696;
-  height: 40px;
   width: 100%;
   margin-top: 1em;
   color: #fff;
-  font-size: 1rem;
   font-weight: 500;
   transition: 40ms ease-in;
   font-family: 'Akshar', sans-serif;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   :hover{
     cursor: pointer;
   }
