@@ -63,8 +63,8 @@ export const Toast = styled.div`
   span {
     padding: 0.2rem 5rem;
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.8rem;
     span {
       padding: 0 2rem;

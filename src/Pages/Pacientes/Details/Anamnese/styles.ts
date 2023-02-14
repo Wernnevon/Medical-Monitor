@@ -22,8 +22,8 @@ export const Title = styled.h2`
   font-size: 1.5em;
   border: none;
   align-self: center;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1.5rem;
   }
 `;
@@ -38,8 +38,8 @@ export const Text = styled.pre`
   white-space: pre-wrap;
   overflow-y: auto;
   padding: 5px 10px;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1rem;
   }
 `;
@@ -60,8 +60,8 @@ export const TextArea = styled.textarea`
   font-size: 1.2rem;
   margin: 20px 0px;
   line-height: 20px;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.9rem;
   }
 `;
@@ -87,8 +87,8 @@ export const Edit = styled.button`
   :active {
     transform: translateY(2px);
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.9rem;
     height: 1.5rem;
   }
@@ -115,8 +115,8 @@ export const Save = styled.button`
   :active {
     transform: translateY(2px);
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.9rem;
     height: 1.5rem;
   }

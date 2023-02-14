@@ -42,8 +42,8 @@ export const LabelHeader = styled.label`
   text-align: center;
   /* font-weight: 300; */
   font-family: "Akshar-Light", sans-serif;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1.2rem;
   }
 `;
@@ -72,8 +72,8 @@ export const Receituario = styled.textarea`
   font-size: 1rem;
   margin: 20px 0px;
   line-height: 30px;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.8rem;
   }
 `;
@@ -107,8 +107,8 @@ export const SearchInput = styled.input`
   width: calc(100% - 60px);
   margin: 0 10px 0 15px;
   font-size: 1rem;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.85rem;
     height: 28px;
   }
@@ -118,8 +118,8 @@ export const SearchItem = styled(BsSearch)`
   position: absolute;
   right: 1rem;
   width: 24px;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     width: 18px;
     right: 0.8rem;
   }
@@ -135,8 +135,8 @@ export const ListPatient = styled.div`
   box-sizing: border-box;
   margin: 0.5rem 0;
   padding-top: 0.5rem;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     max-height: 20%;
   }
 `;
@@ -174,8 +174,8 @@ export const ItemPatient = styled.div`
       transform: translateY(2px);
     }
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     padding: 0.2rem 0.5rem;
     label {
       font-size: 0.9rem;
@@ -215,8 +215,8 @@ export const FormButtonSave = styled.button`
   :active {
     transform: translateY(2px);
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.8rem;
     padding: 0.2rem 1.5rem;
     height: 28px;
@@ -243,8 +243,8 @@ export const FormButtonClear = styled.button`
   :active {
     transform: translateY(2px);
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.8rem;
     padding: 0.2rem 1.5rem;
     height: 28px;

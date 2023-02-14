@@ -93,8 +93,8 @@ export const Logo = styled.img`
   height: 65px;
   text-align: center;
   margin-top: 10px;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     width: 70px;
     height: 45px;
   }
@@ -104,8 +104,8 @@ export const LabelHeader = styled.label`
   margin-top: 5px;
   font-size: 1.5rem;
   text-align: center;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1.1rem;
   }
 `;
@@ -114,8 +114,8 @@ export const LabelHeaderContent = styled.label`
   margin-top: 5px;
   font-size: 1rem;
   text-align: center;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.85rem;
   }
 `;
@@ -145,8 +145,8 @@ export const ReceituarioOutput = styled.label`
   position: relative;
   box-sizing: border-box;
   word-wrap: break-word;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.8rem;
   }
 `;
@@ -179,8 +179,8 @@ export const AtestadoOutput = styled.label`
   font-family: "Arial", sans-serif;
   font-size: 1rem;
   width: 100%;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     line-height: 1.5rem;
     font-size: 0.7rem;
   }
@@ -192,8 +192,8 @@ export const AtestadoDateOutput = styled.label`
   font-family: "Arial", sans-serif;
   font-size: 1rem;
   text-align: right;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.7rem;
   }
 `;
@@ -224,8 +224,8 @@ export const FooterLabel = styled.label`
   padding: 5px;
   font-family: "Arial";
   font-size: 0.8rem;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.6rem;
   }
 `;
@@ -242,8 +242,8 @@ export const PatientLabel = styled.label`
   font-size: 1rem;
   /* font-weight: 300; */
   margin-bottom: 1rem;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.8rem;
   }
 `;

@@ -57,8 +57,8 @@ export const NavBtn = styled.button`
     font-weight: ${({ active }: PropType) => (active ? "400" : "500")};
     cursor: pointer;
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1.6rem;
   }
 `;
@@ -71,8 +71,8 @@ export const NavLabel = styled.label`
   :hover {
     cursor: pointer;
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1rem;
   }
 `;
@@ -80,8 +80,8 @@ export const Image = styled.img`
   width: 80%;
   height: 80%;
   margin: 20px 0;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     height: 68%;
   }
 `;
@@ -93,8 +93,8 @@ export const NavImage = styled.button`
   margin: 30px 0;
   border-radius: 50%;
   background-image: radial-gradient(#fff 5%, #d0d0d0 100%);
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     height: 75%;
     margin: 15px 0;
   }

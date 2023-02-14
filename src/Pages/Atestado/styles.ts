@@ -40,8 +40,8 @@ export const FormContainer = styled.div`
   justify-content: center;
   height: 70%;
   position: relative;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     top: 3rem;
   }
 `;
@@ -84,8 +84,8 @@ export const Label = styled.label`
   /* font-weight: 300; */
   font-size: 1.3rem;
   z-index: 0;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.9rem;
   }
 `;
@@ -102,8 +102,8 @@ export const Input = styled.input`
   z-index: 5;
   font-family: "Akshar-Light", sans-serif;
   /* font-weight: 300; */
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.8rem;
   }
 `;

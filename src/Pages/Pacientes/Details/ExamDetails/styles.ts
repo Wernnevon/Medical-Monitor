@@ -23,8 +23,8 @@ export const Card = styled.div`
   span {
     margin-left: 1rem;
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     width: 98.3%;
     font-size: 1.2rem;
     margin: 0;
@@ -81,8 +81,8 @@ export const Title = styled.label`
   width: 82%;
   border: none;
   align-self: center;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1.5rem;
   }
 `;
@@ -118,8 +118,8 @@ export const TitleExam = styled.label`
   font-size: 1.5em;
   border: none;
   align-self: center;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1.5rem;
   }
 `;
@@ -134,8 +134,8 @@ export const Text = styled.pre`
   white-space: pre-wrap;
   overflow-y: auto;
   padding: 5px 10px;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1.2rem;
   }
 `;
@@ -156,8 +156,8 @@ export const TextArea = styled.textarea`
   font-size: 1.2rem;
   margin: 20px 0px;
   line-height: 20px;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.8rem;
     height: 200px;
   }
@@ -184,8 +184,8 @@ export const Edit = styled.button`
   :active {
     transform: translateY(2px);
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     height: 1.4rem;
     font-size: 1rem;
     /* width: 80%; */
@@ -213,8 +213,8 @@ export const Save = styled.button`
   :active {
     transform: translateY(2px);
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     height: 1.4rem;
     font-size: 1rem;
     /* width: 80%; */

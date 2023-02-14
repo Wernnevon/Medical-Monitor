@@ -24,8 +24,8 @@ export const FormContent = styled.div`
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     gap: 1rem 1rem;
   }
 `;

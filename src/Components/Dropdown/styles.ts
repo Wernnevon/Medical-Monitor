@@ -15,8 +15,8 @@ export const DropdownHeader = styled.div<PropType>`
   background: #fff;
   z-index: 20;
   top: 1px;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     height: 10px;
   }
 `;
@@ -36,8 +36,8 @@ export const DropdownContainer = styled.div<PropType>`
   @media print {
     display: none;
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     height: ${(props) => (props.active ? 250 : 10)}px;
     width: 92%;
   }
@@ -91,8 +91,8 @@ export const Arrow = styled.span<PropType>`
     transform: rotate(45deg);
     z-index: 99;
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     top: ${(props) => (props.active ? 12 : 4)}px;
   }
 `;
@@ -117,8 +117,8 @@ export const Checkbox = styled.input`
 export const LabelCheckbox = styled.label`
   font-size: 1rem;
   font-weight: 300;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.7rem;
   }
 `;
@@ -128,8 +128,8 @@ export const Exames = styled.label`
   /* font-weight: 300; */
   margin: 0.4rem;
   font-size: 1.3rem;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.9rem;
   }
 `;

@@ -19,8 +19,8 @@ export const BTNContainer = styled.div`
   @media print {
     display: none;
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     width: 20px;
   }
 `;

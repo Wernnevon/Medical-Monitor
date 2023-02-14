@@ -28,8 +28,8 @@ export const PatientSection = styled.div`
   height: 100%;
   border-right: 1px solid #888;
   padding: 1.5rem;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     padding: 10px;
     width: 40%;
     max-width: auto;
@@ -64,8 +64,8 @@ export const SearchInput = styled.input`
   width: calc(100% - 60px);
   margin: 0 10px 0 15px;
   font-size: 1rem;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.85rem;
     height: 28px;
   }
@@ -75,8 +75,8 @@ export const SearchItem = styled(BsSearch)`
   position: absolute;
   right: 1rem;
   width: 24px;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     width: 18px;
     right: 0.8rem;
   }
@@ -103,8 +103,8 @@ export const AddButton = styled.button`
   :active {
     transform: translateY(2px);
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     height: 30px;
     padding: 0;
     font-size: 0.95rem;
@@ -119,8 +119,8 @@ export const ListPatient = styled.div`
   box-sizing: border-box;
   margin: 1rem 0;
   padding-top: 1.5rem;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     margin-top: 0;
   }
 `;
@@ -146,8 +146,8 @@ export const ItemPatient = styled.div`
     color: #333;
     cursor: pointer;
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     margin: 0.3rem 0;
     padding: 0.7rem;
     label {

@@ -12,8 +12,8 @@ export const Container = styled.div`
   border-radius: 1rem;
   box-shadow: 0px 3px 8px 0px #00000033;
   overflow-y: auto;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     padding: 1rem;
   }
 `;
@@ -37,8 +37,8 @@ export const Card = styled.div`
 
     text-transform: uppercase;
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1.5rem;
   }
 `;
@@ -76,8 +76,8 @@ export const CardItem = styled.div`
       transform: translateY(2px);
     }
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1rem;
     button {
       font-size: 0.9rem;
@@ -97,8 +97,8 @@ export const CardText = styled.div`
     margin-right: 0.5rem;
     font-family: "Akshar-Medium";
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1rem;
   }
 `;

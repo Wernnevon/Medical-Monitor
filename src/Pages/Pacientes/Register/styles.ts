@@ -23,8 +23,8 @@ export const StepProgressContainer = styled.div`
   justify-content: space-between;
   box-sizing: border-box;
   margin: 1em 0 3em;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     margin: 0;
   }
 `;
@@ -83,8 +83,8 @@ export const Submit = styled.button`
   :active {
     transform: translateY(2px);
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1rem;
   }
 `;
@@ -98,8 +98,8 @@ export const Title = styled.label`
   font-size: 2em;
   width: 82%;
   border: none;
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 1.5rem;
   }
 `;

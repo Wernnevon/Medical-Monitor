@@ -40,8 +40,8 @@ export const Container = styled.button<PropsButton>`
   :active {
     transform: translateY(2px);
   }
-  @media (min-width: 1200px),
-    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.9rem;
     padding: 0.2rem 2rem;
   }
