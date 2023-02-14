@@ -1,0 +1,96 @@
+TC-01
+  Register by steps:
+    ## step 1: dados pessoais{nome, pai, mae, nascimento, rg, cpf, fone, gênero}
+    ## step 2: saúde {convenio, alergias, peso, altura}
+    ## step 3: endereço {Rua, bairro, número, complemento, cidade}
+    ## step 4: anaminese {anaminese}
+    PatientData{
+      PersonalData: {
+        name: string,
+        fatherName: string,
+        motherName: string,
+        birthday: string,
+        rg: string,
+        cpf: string,
+        phone: string,
+        gender: string
+      },
+      Health:{
+        helthInsurance: string,
+        allergy: string,
+        weigth: number,
+        heigth: number
+      },
+      Adress:{
+        street: string,
+        neigthborhood: string,
+        number: number,
+        complement: string,
+        city: string
+      }
+      AnamineseData:{
+        date: Date,
+        ...
+      }
+    } done
+
+TC-02
+  # Add anaminese data
+  done
+  
+TC-03
+  # Refactor PatientDatails
+    ## ExamsModal
+    ## PrescriptionModal
+  done
+
+TC-04
+  # Refactor Generate PDF
+  done
+
+TC-05
+  # Refactor storage data factory
+    - Switch json archive to IndexedDB
+    done
+
+TC-06
+  # Refactor SidMenu: done
+
+TC-07
+  # Refactor wrote code
+
+TC-08
+  # Fix show PatientData, name, id etc... in system; done
+
+TC-09:
+  # Add overview in register modal; done
+
+TC-10:
+  # Resolve data persistence on editing patient data; done
+
+TC-11:
+  # resolve masks for input cpf, input rg and input phone
+  done
+
+TC-12: 
+  # clear patient data on close register modal;
+  done
+
+TC-13:
+  # clear button in prescription and exams throw a error on click;
+  done
+
+TC-14:
+  # Create data to Health, adress, exams, prescriptions, anaminese in patientDetail;
+  done
+
+TC-15:
+  # Backup function:
+    Definir arquitetura de funcionamento;
+    Testar funcionalidade
+
+TC-16:
+  # Custom Datepick;
+
+TC-17:
+  # Create remote register to patients;
