@@ -25,10 +25,10 @@ export const Container = styled.button<PropsButton>`
   padding: 0.4rem 2rem;
   margin: 0 5rem;
   font-size: 1.2rem;
-  font-weight: 400;
+  /* font-weight: 400; */
   transition: 40ms ease-in;
   box-shadow: 0px 3px 8px 0px #00000033;
-  font-family: "Akshar", sans-serif;
+  font-family: "Akshar-Regular", sans-serif;
   max-width: max-content;
   position: absolute;
   bottom: -5em;
@@ -39,5 +39,10 @@ export const Container = styled.button<PropsButton>`
   }
   :active {
     transform: translateY(2px);
+  }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 0.9rem;
+    padding: 0.2rem 2rem;
   }
 `;

@@ -10,7 +10,7 @@ export const SideMenuContainer = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  min-width: 175px;
+  min-width: 150px;
   width: 15vw;
   padding: 10px 0;
   overflow: hidden;
@@ -53,10 +53,13 @@ export const NavBtn = styled.button`
   font-weight: 400;
   color: #fff;
   height: 100%;
-  width: 20vw;
   :hover {
     font-weight: ${({ active }: PropType) => (active ? "400" : "500")};
     cursor: pointer;
+  }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 1.6rem;
   }
 `;
 export const NavLabel = styled.label`
@@ -64,15 +67,23 @@ export const NavLabel = styled.label`
   text-transform: uppercase;
   font-size: 1.3rem;
   margin-left: 10px;
-  font-family: "Akshar", sans-serif;
+  font-family: "Akshar-Regular", sans-serif;
   :hover {
     cursor: pointer;
+  }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 1rem;
   }
 `;
 export const Image = styled.img`
   width: 80%;
   height: 80%;
   margin: 20px 0;
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    height: 68%;
+  }
 `;
 
 export const NavImage = styled.button`
@@ -82,4 +93,9 @@ export const NavImage = styled.button`
   margin: 30px 0;
   border-radius: 50%;
   background-image: radial-gradient(#fff 5%, #d0d0d0 100%);
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    height: 75%;
+    margin: 15px 0;
+  }
 `;

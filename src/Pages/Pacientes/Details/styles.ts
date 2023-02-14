@@ -12,6 +12,10 @@ export const Container = styled.div`
   border-radius: 1rem;
   box-shadow: 0px 3px 8px 0px #00000033;
   overflow-y: auto;
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    padding: 1rem;
+  }
 `;
 
 export const Card = styled.div`
@@ -20,17 +24,22 @@ export const Card = styled.div`
   width: 100%;
   padding: 1rem;
   box-sizing: border-box;
-  font-weight: 300;
+  /* font-weight: 300; */
   font-size: 2rem;
-  font-family: "Akshar", sans-serif;
+  font-family: "Akshar-Light", sans-serif;
   color: #2c2c2c;
-  h4 {
-    font-weight: 500;
+  p {
+    font-family: "Akshar-Medium", sans-serif;
     text-transform: capitalize;
   }
   label:first-child {
-    font-weight: 500;
+    font-family: "Akshar-Medium", sans-serif;
+
     text-transform: uppercase;
+  }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 1.5rem;
   }
 `;
 export const CardItem = styled.div`
@@ -56,15 +65,22 @@ export const CardItem = styled.div`
     margin-top: 1em;
     color: #fff;
     font-size: 1rem;
-    font-weight: 300;
+    /* font-weight: 300; */
     transition: 40ms ease-in;
-    font-family: "Akshar", sans-serif;
+    font-family: "Akshar-Light", sans-serif;
     font-size: 1.3rem;
     :hover {
       cursor: pointer;
     }
     :active {
       transform: translateY(2px);
+    }
+  }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 1rem;
+    button {
+      font-size: 0.9rem;
     }
   }
 `;
@@ -79,5 +95,10 @@ export const CardText = styled.div`
   border-bottom: 1px solid #03a696;
   label:first-child {
     margin-right: 0.5rem;
+    font-family: "Akshar-Medium";
+  }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 1rem;
   }
 `;

@@ -65,8 +65,7 @@ export async function update(patient: Patient) {
   const transaction = db.transaction(["patients"], "readwrite");
   const patientTable = transaction.objectStore("patients");
   try {
-    const request = await DBPromise(patientTable.put(patient));
-    console.log("Success", request);
+    await DBPromise(patientTable.put(patient));
   } catch (error) {
     console.error(error);
   }

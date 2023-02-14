@@ -40,8 +40,12 @@ export const LabelHeader = styled.label`
   margin-top: 0.5rem;
   font-size: 1.5rem;
   text-align: center;
-  font-weight: 300;
-  font-family: "Akshar", sans-serif;
+  /* font-weight: 300; */
+  font-family: "Akshar-Light", sans-serif;
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 1.2rem;
+  }
 `;
 
 export const ReceituarioContainer = styled.div`
@@ -63,11 +67,15 @@ export const Receituario = styled.textarea`
   border-radius: 5px;
   box-sizing: border-box;
   padding: 0.2rem 0.5rem;
-  font-family: "Akshar", sans-serif;
-  font-weight: 300;
+  font-family: "Akshar-Light", sans-serif;
+  /* font-weight: 300; */
   font-size: 1rem;
   margin: 20px 0px;
   line-height: 30px;
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 0.8rem;
+  }
 `;
 
 export const SearchBar = styled.div`
@@ -99,11 +107,22 @@ export const SearchInput = styled.input`
   width: calc(100% - 60px);
   margin: 0 10px 0 15px;
   font-size: 1rem;
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 0.85rem;
+    height: 28px;
+  }
 `;
 
 export const SearchItem = styled(BsSearch)`
   position: absolute;
   right: 1rem;
+  width: 24px;
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    width: 18px;
+    right: 0.8rem;
+  }
 `;
 
 export const ListPatient = styled.div`
@@ -116,6 +135,10 @@ export const ListPatient = styled.div`
   box-sizing: border-box;
   margin: 0.5rem 0;
   padding-top: 0.5rem;
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    max-height: 20%;
+  }
 `;
 
 export const ItemPatient = styled.div`
@@ -128,9 +151,9 @@ export const ItemPatient = styled.div`
   box-shadow: 0px 3px 8px 0px #00000033;
   border-radius: 2px;
   label {
-    font-family: "Akshar", sans-serif;
+    font-family: "Akshar-Light", sans-serif;
     font-size: 1.1rem;
-    font-weight: 300;
+    /* font-weight: 300; */
     color: #333;
   }
   button {
@@ -141,14 +164,25 @@ export const ItemPatient = styled.div`
     color: #fff;
     padding: 0.4rem 1rem;
     font-size: 1rem;
-    font-weight: 400;
+    /* font-weight: 400; */
     transition: 40ms ease-in;
-    font-family: "Akshar", sans-serif;
+    font-family: "Akshar-Regular", sans-serif;
     :hover {
       cursor: pointer;
     }
     :active {
       transform: translateY(2px);
+    }
+  }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    padding: 0.2rem 0.5rem;
+    label {
+      font-size: 0.9rem;
+    }
+    button {
+      font-size: 0.8rem;
+      padding: 0.1rem 0.8rem;
     }
   }
 `;
@@ -170,16 +204,23 @@ export const FormButtonSave = styled.button`
   padding: 0.4rem 2rem;
   margin: 0 1rem;
   font-size: 1rem;
-  font-weight: 400;
+  /* font-weight: 400; */
   transition: 40ms ease-in;
   box-shadow: 0px 3px 8px 0px #00000033;
-  font-family: "Akshar", sans-serif;
+  font-family: "Akshar-Regular", sans-serif;
 
   :hover {
     cursor: pointer;
   }
   :active {
     transform: translateY(2px);
+  }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 0.8rem;
+    padding: 0.2rem 1.5rem;
+    height: 28px;
+    margin: 0 0.5rem;
   }
 `;
 
@@ -192,14 +233,21 @@ export const FormButtonClear = styled.button`
   padding: 0.4rem 2rem;
   margin: 0 1rem;
   font-size: 1rem;
-  font-weight: 400;
+  /* font-weight: 400; */
   transition: 40ms ease-in;
   box-shadow: 0px 3px 8px 0px #00000033;
-  font-family: "Akshar", sans-serif;
+  font-family: "Akshar-Regular", sans-serif;
   :hover {
     cursor: pointer;
   }
   :active {
     transform: translateY(2px);
+  }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 0.8rem;
+    padding: 0.2rem 1.5rem;
+    height: 28px;
+    margin: 0 0.5rem;
   }
 `;

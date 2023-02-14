@@ -1,10 +1,10 @@
-import Styled from "styled-components";
+import styled from "styled-components";
 
 type PropType = {
   active?: boolean;
 };
 
-export const DropdownHeader = Styled.div<PropType>`
+export const DropdownHeader = styled.div<PropType>`
   display: flex;
   justify-content: space-between;
   margin: 0;
@@ -15,9 +15,13 @@ export const DropdownHeader = Styled.div<PropType>`
   background: #fff;
   z-index: 20;
   top: 1px;
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    height: 10px;
+  }
 `;
 
-export const DropdownContainer = Styled.div<PropType>`
+export const DropdownContainer = styled.div<PropType>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -32,9 +36,14 @@ export const DropdownContainer = Styled.div<PropType>`
   @media print {
     display: none;
   }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    height: ${(props) => (props.active ? 250 : 10)}px;
+    width: 92%;
+  }
 `;
 
-export const DropdownContent = Styled.div<PropType>`
+export const DropdownContent = styled.div<PropType>`
   display: grid;
   grid-template-columns: auto auto;
   gap: 5px;
@@ -52,7 +61,7 @@ export const DropdownContent = Styled.div<PropType>`
   transition: 300ms;
 `;
 
-export const HeaderExames = Styled.div`
+export const HeaderExames = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -60,31 +69,35 @@ export const HeaderExames = Styled.div`
   background: #fff;
 `;
 
-export const Arrow = Styled.span<PropType>`
+export const Arrow = styled.span<PropType>`
   display: flex;
   width: 12px;
   height: 12px;
   background-color: #2d2d2d;
   position: relative;
-  transition: .2s;
+  transition: 0.2s;
   transform: rotate(${(props) => (props.active ? 135 : -45)}deg);
   top: ${(props) => (props.active ? 18 : 10)}px;
   right: 10px;
-  ::before{
-    content: '';
-        display: block;
-        width: 20px;
-        height: 10px;
-        background-color: #fff;
-        position: absolute;
-        top: -1px;
-        left: -1px;
-        transform: rotate(45deg);
-        z-index: 99;
+  ::before {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 10px;
+    background-color: #fff;
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    transform: rotate(45deg);
+    z-index: 99;
+  }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    top: ${(props) => (props.active ? 12 : 4)}px;
   }
 `;
 
-export const ContainerCheckbox = Styled.label`
+export const ContainerCheckbox = styled.label`
   display: flex;
   width: 100%;
   gap: 10px;
@@ -92,7 +105,7 @@ export const ContainerCheckbox = Styled.label`
   border-bottom: 1px solid #8d8d8d;
 `;
 
-export const Checkbox = Styled.input`
+export const Checkbox = styled.input`
   background: none;
   outline: none;
   border: 1px solid black;
@@ -101,14 +114,22 @@ export const Checkbox = Styled.input`
   height: 15px;
 `;
 
-export const LabelCheckbox = Styled.label`
+export const LabelCheckbox = styled.label`
   font-size: 1rem;
   font-weight: 300;
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 0.7rem;
+  }
 `;
 
-export const Exames = Styled.label`
-  font-family: 'Akshar', sans-serif;
-  font-weight: 300;
-  margin: .4rem;
+export const Exames = styled.label`
+  font-family: "Akshar-Light", sans-serif;
+  /* font-weight: 300; */
+  margin: 0.4rem;
   font-size: 1.3rem;
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 0.9rem;
+  }
 `;

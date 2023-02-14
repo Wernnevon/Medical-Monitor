@@ -24,11 +24,15 @@ export const FormContent = styled.div`
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    gap: 1rem 1rem;
+  }
 `;
 
 export const Title = styled.label`
-  font-family: "Akshar", sans-serif;
-  font-weight: 600;
+  font-family: "Akshar-SemiBold", sans-serif;
+  /* font-weight: 600; */
   color: #03a696;
   text-align: center;
   margin-bottom: 2rem;

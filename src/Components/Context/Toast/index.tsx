@@ -14,14 +14,16 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 interface ToastProps {
   children: ReactNode;
 }
+const { innerWidth: width } = window;
+console.log(width);
 
 const Icon = ({ type }: any) => {
   return type === AlertTypes.SUCESS ? (
-    <AiOutlineCheckCircle color="#fff" size={35} />
+    <AiOutlineCheckCircle size={width < 1025 ? 20 : 32} color="#fff" />
   ) : type === AlertTypes.ERROR ? (
-    <VscError color="#fff" size={35} />
+    <VscError size={width < 1025 ? 20 : 32} color="#fff" />
   ) : (
-    <FiAlertTriangle color="#000" size={30} />
+    <FiAlertTriangle size={width < 1025 ? 18 : 30} color="#000" />
   );
 };
 
@@ -36,7 +38,7 @@ export function ToastContextProvider({ children }: ToastProps) {
   const addToast = useCallback(
     function (toast: string, type: string = AlertTypes.WARNING) {
       setToasts([...toasts, toast]);
-      setTimeout(() => setToasts((toasts: any) => toasts.slice(1)), 3000);
+      setTimeout(() => setToasts((toasts: any) => toasts.slice(1)), 2000);
       setToastType(type.toLocaleUpperCase());
     },
     [toasts]

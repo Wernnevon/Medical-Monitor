@@ -38,8 +38,8 @@ export const Toast = styled.div`
   color: #333;
   background-color: #efefef;
   font-size: 1.2rem;
-  font-weight: 300;
-  font-family: "Akshar", sans-serif;
+  /* font-weight: 300; */
+  font-family: "Akshar-Light", sans-serif;
   border: 0.3rem solid;
   border-color: ${({ toastType }: ToastProps) =>
     toastType === AlertTypes.WARNING
@@ -62,5 +62,12 @@ export const Toast = styled.div`
   }
   span {
     padding: 0.2rem 5rem;
+  }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 0.8rem;
+    span {
+      padding: 0 2rem;
+    }
   }
 `;

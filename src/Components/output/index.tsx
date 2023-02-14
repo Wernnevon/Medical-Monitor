@@ -60,7 +60,7 @@ const Output: React.FC<Params> = ({
 
   return (
     <ReceitaCard>
-      <Item>
+      {/* <Item>
         <Label>Cópias:</Label>
         <Input
           min="1"
@@ -69,7 +69,7 @@ const Output: React.FC<Params> = ({
           value={copies}
           onChange={(e) => setCopies(parseInt(e.target.value))}
         />
-      </Item>
+      </Item> */}
       <PDFButton
         copies={copies}
         type={prescription ? "Receita" : exames ? "Exames" : "Atestado"}
@@ -82,13 +82,13 @@ const Output: React.FC<Params> = ({
           <LabelHeaderContent style={{ letterSpacing: "3px" }}>
             MEDICINA GERIÁTRICA
           </LabelHeaderContent>
-          <LabelHeaderContent style={{ fontSize: ".8rem", fontWeight: "bold" }}>
+          <LabelHeaderContent style={{ fontSize: ".6rem", fontWeight: "bold" }}>
             CRM/PB: 9647 | CRM/RN: 8103
           </LabelHeaderContent>
-          <LabelHeaderContent style={{ fontSize: ".9rem" }}>
+          <LabelHeaderContent style={{ fontSize: ".7rem" }}>
             (83) 9 9929-2209 | (83) 9 9844-1379
           </LabelHeaderContent>
-          <LabelHeaderContent style={{ fontSize: ".8rem", fontWeight: "bold" }}>
+          <LabelHeaderContent style={{ fontSize: ".6rem", fontWeight: "bold" }}>
             Rua Lourival Ribeiro da Nóbrega, 11, Centro, São João do Rio do
             Peixe - PB
           </LabelHeaderContent>
