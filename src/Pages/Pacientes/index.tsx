@@ -70,7 +70,7 @@ const Paciente: React.FC = () => {
               value={pacienteNome}
               placeholder="Pesquisar"
             />
-            <SearchItem size={22} />
+            <SearchItem />
           </SearchBar>
           <AddButton onClick={openModal}>Cadastro</AddButton>
           <ListPatient>

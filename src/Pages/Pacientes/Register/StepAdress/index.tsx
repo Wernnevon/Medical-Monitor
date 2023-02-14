@@ -45,16 +45,37 @@ const StepAdressData: React.FC = () => {
     <Container>
       <FormContainer onSubmit={handleAdvance} ref={formRef}>
         <FormContent>
-          <Input placeholder="Rua" name="street" type="text" />
           <Input
+            value={patient.adress && patient.adress.street}
+            placeholder="Rua"
+            name="street"
+            type="text"
+          />
+          <Input
+            value={patient.adress && patient.adress.number}
             placeholder="Número"
             title='Digite "0" para sem número'
             name="number"
             type="number"
           />
-          <Input placeholder="Bairro" name="neighborhood" type="text" />
-          <Input placeholder="Complemento" name="complement" type="text" />
-          <Input placeholder="Cidade" name="city" type="text" />
+          <Input
+            value={patient.adress && patient.adress.neighborhood}
+            placeholder="Bairro"
+            name="neighborhood"
+            type="text"
+          />
+          <Input
+            value={patient.adress && patient.adress.complement}
+            placeholder="Complemento"
+            name="complement"
+            type="text"
+          />
+          <Input
+            value={patient.adress && patient.adress.city}
+            placeholder="Cidade"
+            name="city"
+            type="text"
+          />
         </FormContent>
         <Button typeBtn={{ type: "submit" }} typeStyle="submit">
           Avançar

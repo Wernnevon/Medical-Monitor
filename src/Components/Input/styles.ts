@@ -29,10 +29,20 @@ export const Container = styled.div`
   }
   span {
     color: #e87c03;
-    font-size: 0.8em;
+    font-size: 1em;
     position: absolute;
-    bottom: -1rem;
+    bottom: -1.8rem;
     box-sizing: border-box;
+  }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    input {
+      font-size: 0.8rem;
+    }
+    span {
+      bottom: -1rem;
+      font-size: 0.7rem;
+    }
   }
 `;
 
@@ -42,5 +52,11 @@ export const Placeholder = styled.label`
   z-index: 0;
   transition: 50ms linear;
   margin-bottom: 2.5rem;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  font-family: "Akshar-Regular";
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
 `;

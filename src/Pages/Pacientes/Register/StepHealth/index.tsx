@@ -45,20 +45,31 @@ const StepHealth: React.FC = () => {
     <Container>
       <FormContainer onSubmit={handleAdvance} ref={formRef}>
         <FormContent>
-          <Input placeholder="Convênio" name="helthInsurance" type="text" />
-          <Input placeholder="Alergias" name="allergy" type="text" />
           <Input
+            value={patient.health && patient.health.helthInsurance}
+            placeholder="Convênio"
+            name="helthInsurance"
+            type="text"
+          />
+          <Input
+            value={patient.health && patient.health.allergy}
+            placeholder="Alergias"
+            name="allergy"
+            type="text"
+          />
+          <Input
+            value={patient.health && patient.health.weight}
             placeholder="Peso"
             title="Peso em quilos (KG)"
             name="weight"
             type="number"
           />
           <Input
+            value={patient.health && patient.health.height}
             placeholder="Altura"
             name="height"
             type="number"
             title="Altura em centimetros (cm)"
-            value="100"
           />
         </FormContent>
         <Button typeBtn={{ type: "submit" }} typeStyle="submit">

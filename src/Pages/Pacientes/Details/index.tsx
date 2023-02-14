@@ -80,7 +80,7 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
         )}
       </Modal>
       <Card>
-        <h4>Dados Pessoais</h4>
+        <p>Dados Pessoais</p>
         <CardText>
           <label>Nome: </label>
           <label>{patient.personalData.name}</label>

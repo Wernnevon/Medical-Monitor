@@ -15,8 +15,8 @@ export const DataContainer = styled.div`
   height: 208px;
   color: #333;
   b {
-    font-family: "Akshar", sans-serif;
-    font-weight: 500;
+    font-family: "Akshar-Medium", sans-serif;
+    /* font-weight: 500; */
     font-size: 1.5rem;
     text-transform: uppercase;
     text-align: center;

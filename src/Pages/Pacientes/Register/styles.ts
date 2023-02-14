@@ -10,7 +10,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   min-width: 60vw;
-  height: 40em;
+  height: 45em;
   max-height: 70vh;
   position: relative;
   overflow-y: auto;
@@ -23,6 +23,10 @@ export const StepProgressContainer = styled.div`
   justify-content: space-between;
   box-sizing: border-box;
   margin: 1em 0 3em;
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    margin: 0;
+  }
 `;
 
 export const StepProgressCard = styled.div<CardProps>`
@@ -43,8 +47,8 @@ export const StepProgressCard = styled.div<CardProps>`
   }
   label {
     font-size: 1.2vw;
-    font-family: "Akshar", sans-serif;
-    font-weight: 600;
+    font-family: "Akshar-SemiBold", sans-serif;
+    /* font-weight: 600; */
     color: ${({ color }: CardProps) => color};
     z-index: 10;
   }
@@ -69,25 +73,33 @@ export const Submit = styled.button`
   height: 2.5rem;
   color: #fff;
   font-size: 1.3rem;
-  font-weight: 500;
+  /* font-weight: 500; */
   transition: 40ms ease-in;
   margin: 1.5em 0 4em;
-  font-family: "Akshar", sans-serif;
+  font-family: "Akshar-Medium", sans-serif;
   :hover {
     cursor: pointer;
   }
   :active {
     transform: translateY(2px);
   }
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 1rem;
+  }
 `;
 
 export const Title = styled.label`
-  font-family: "Akshar", sans-serif;
-  font-weight: 600;
+  font-family: "Akshar-SemiBold", sans-serif;
+  /* font-weight: 600; */
   color: #03a696;
   text-align: center;
   margin-top: 2rem;
-  font-size: 1.5em;
+  font-size: 2em;
   width: 82%;
   border: none;
+  @media (min-width: 1200px),
+    (min-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 1.5rem;
+  }
 `;

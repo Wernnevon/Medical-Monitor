@@ -25,8 +25,8 @@ export const FormContent = styled.div`
 `;
 
 export const Title = styled.label`
-  font-family: "Akshar", sans-serif;
-  font-weight: 600;
+  font-family: "Akshar-SemiBold", sans-serif;
+  /* font-weight: 600; */
   color: #03a696;
   text-align: center;
   margin-bottom: 2rem;

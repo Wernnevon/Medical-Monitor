@@ -1,5 +1,5 @@
 import { useField } from "@unform/core";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import formatValue from "../Utils/masks";
 
 import { Container, Placeholder } from "./styles";
@@ -20,18 +20,11 @@ const Input = ({
   title,
   ...rest
 }: InputProps) => {
-  const ref = useRef(null);
-  function format() {
-    if (name === "rg" || name === "cpf" || name === "phone") {
-      if (typeof value === "string") {
-        return formatValue(name, value);
-      }
-    }
-    return value;
-  }
+  const ref = useRef<any>(null);
+
   const {
     fieldName,
-    defaultValue = format(),
+    defaultValue = value,
     error,
     registerField,
   } = useField(name);
@@ -43,10 +36,24 @@ const Input = ({
     });
   }, [fieldName, registerField]);
 
+  const handleMask = () => {
+    const keyIndex = Object.keys(formatValue).indexOf(name.toUpperCase());
+    if (keyIndex !== -1) {
+      const formated = Object.values(formatValue)[keyIndex](ref.current.value);
+      ref.current.value = formated;
+    }
+  };
+
   return (
     <Container title={title}>
       <Placeholder>{placeholder}</Placeholder>
-      <input {...rest} defaultValue={defaultValue} ref={ref} type={type} />
+      <input
+        onChange={handleMask}
+        {...rest}
+        defaultValue={defaultValue}
+        ref={ref}
+        type={type}
+      />
       <span>{error}</span>
     </Container>
   );

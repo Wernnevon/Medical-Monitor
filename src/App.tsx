@@ -6,6 +6,12 @@ import Routes from "./routes";
 
 import "./style.css";
 
+import "./assests/fonts/Akshar/static/Akshar-Bold.ttf";
+import "./assests/fonts/Akshar/static/Akshar-Light.ttf";
+import "./assests/fonts/Akshar/static/Akshar-Medium.ttf";
+import "./assests/fonts/Akshar/static/Akshar-Regular.ttf";
+import "./assests/fonts/Akshar/static/Akshar-SemiBold.ttf";
+
 function App() {
   return (
     <HashRouter>

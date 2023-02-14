@@ -107,7 +107,7 @@ const Prescription: React.FC = () => {
               value={pacienteNome}
               placeholder="Pesquisar Paciente"
             />
-            <SearchItem size={22} />
+            <SearchItem />
           </SearchBar>
           <ListPatient>
             {pacientes
