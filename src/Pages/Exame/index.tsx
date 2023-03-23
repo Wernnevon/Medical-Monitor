@@ -26,6 +26,7 @@ import { index, update } from "../../Infra/DAOarchive/patientDAO";
 import { patientExist, validate } from "../../Components/Utils/midlleware";
 import { useToastContext } from "../../Components/Context/Toast";
 import { ExamStatus } from "../../Infra/DAOarchive/enumModel";
+import { AlertTypes } from "../../Components/Utils/ToastConfigs";
 
 const Exame: React.FC = () => {
   const { exames, selected, handleClear } = useExame();
@@ -41,12 +42,12 @@ const Exame: React.FC = () => {
     return initPatient;
   });
 
-  const setMenssage = () => {
+  const getMenssage = () => {
     if ([...selected, ...otherExams].length <= 0 && !patient.personalData.name)
-      return "Escolha o paciente e selecione ao menos um exame";
+      return "Você precisa escolher o paciente e selecionar ao menos um exame";
     else if ([...selected, ...otherExams].length <= 0)
-      return "Selecione ao menos um exame";
-    else return "Escolha o paciente";
+      return "Você precisa selecionar ao menos um exame";
+    else return "Você precisa escolher o paciente";
   };
 
   const getSortedPatinets = async () => {
@@ -87,7 +88,10 @@ const Exame: React.FC = () => {
   function clean() {
     handleClearAll();
     handleClear();
-    addToast("Limpo", "sucess");
+    addToast(
+      "Paciente desselecionado e lista de exames removidos!",
+      AlertTypes.SUCESS
+    );
   }
 
   function handleAddExam(patientUpdate: Patient) {
@@ -102,10 +106,10 @@ const Exame: React.FC = () => {
         })
       );
       update(patient);
-      addToast("Sucesso", "sucess");
+      addToast("Exames adicionado ao perfil do paciente!", AlertTypes.SUCESS);
       clean();
     } else {
-      addToast(setMenssage());
+      addToast(getMenssage(), AlertTypes.WARNING);
     }
   }
 

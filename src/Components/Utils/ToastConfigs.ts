@@ -1,16 +1,21 @@
-export enum AlertBg{
-    WARNING = '#FC0',
-    ERROR = '#C30',
-    SUCESS = '#390',
-};
-export enum AlertFontColor{
-    WARNING = '#333',
-    ERROR = '#FFF',
-    SUCESS = '#FFF',
+export enum AlertFontColor {
+  SUCESS = "#FFF",
+  WARNING = "#333",
+  ERROR = "#FFF",
 }
 
-export enum AlertTypes{
-    WARNING = 'WARNING',
-    ERROR = 'ERROR',
-    SUCESS = 'SUCESS',
+export enum AlertTypes {
+  SUCESS = "SUCESS",
+  WARNING = "WARNING",
+  ERROR = "ERROR",
 }
+export const AlertColors = {
+  [AlertTypes.SUCESS]: "#038C3E",
+  [AlertTypes.WARNING]: "#8C770A",
+  [AlertTypes.ERROR]: "#8C1A11",
+};
+export const AlertTitle = {
+  [AlertTypes.SUCESS]: "Deu tudo certo!",
+  [AlertTypes.WARNING]: "Cuidado!",
+  [AlertTypes.ERROR]: "Ops, algo deu errado!",
+};

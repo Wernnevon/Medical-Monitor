@@ -24,6 +24,7 @@ import {
   FormButtonContainer,
   PrescriptionOutputCard,
 } from "./styles";
+import { AlertTypes } from "../../Components/Utils/ToastConfigs";
 
 const Prescription: React.FC = () => {
   const [content, setContent] = useState([]);
@@ -37,11 +38,12 @@ const Prescription: React.FC = () => {
     return initPatient;
   });
 
-  const setMenssage = () => {
+  const getMenssage = () => {
     if (content.length <= 0 && !patient.personalData.name)
-      return "Escolha o paciente e prescreva algo";
-    else if (content.length <= 0) return "Prescreva algo";
-    else return "Escolha o paciente";
+      return "Você precisa escolher o paciente e prescrever alguma medicação!";
+    else if (content.length <= 0)
+      return "Você precisa prescrever alguma medicação!";
+    else return "Você precisa escolher o paciente!";
   };
 
   const getSortedPatinets = async () => {
@@ -76,7 +78,10 @@ const Prescription: React.FC = () => {
 
   function clean() {
     handleClear();
-    addToast("Limpo", "sucess");
+    addToast(
+      "Paciente desselecionar e lista de medicações removidas!",
+      AlertTypes.SUCESS
+    );
   }
 
   function handleAddPrecription(patientUpdate: Patient) {
@@ -90,10 +95,13 @@ const Prescription: React.FC = () => {
         })
       );
       update(patient);
-      addToast("Sucesso", "sucess");
+      addToast(
+        "Medicamentos adicionado ao perfil do paciente!",
+        AlertTypes.SUCESS
+      );
       clean();
     } else {
-      addToast(setMenssage());
+      addToast(getMenssage(), AlertTypes.WARNING);
     }
   }
 

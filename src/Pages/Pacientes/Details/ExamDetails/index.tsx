@@ -27,6 +27,7 @@ import {
   TextArea,
   TitleExam,
 } from "./styles";
+import { AlertTypes } from "../../../../Components/Utils/ToastConfigs";
 
 interface Props {
   exam?: Exam;
@@ -91,7 +92,7 @@ const ExamDetails: React.FC<Props> = ({
     if (patientExist(patient.id)) {
       patient.medicament = updatePrescriptios();
       update(patient);
-      addToast("Sucesso", "sucess");
+      addToast("Status do tratamento atualizado", AlertTypes.SUCESS);
       closeModal();
     }
   }
@@ -99,7 +100,7 @@ const ExamDetails: React.FC<Props> = ({
     if (patientExist(patient.id)) {
       patient.exams = updateExamp();
       update(patient);
-      addToast("Sucesso", "sucess");
+      addToast("Status do exame atualizado", AlertTypes.SUCESS);
       closeModal();
     }
   }

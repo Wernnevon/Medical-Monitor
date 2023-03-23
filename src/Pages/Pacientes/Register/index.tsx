@@ -32,17 +32,20 @@ const Register: React.FC<RegisterProps> = ({
 }: RegisterProps) => {
   const { patient, step } = useRegister();
   const addToast = useToastContext();
-  const sucessMensage = "Paciente cadastrado com sucesso";
+  const sucessMensage = "O paciente foi registrado com sucesso";
 
   const handleSubmit = useCallback(async () => {
     try {
-      addToast(sucessMensage, AlertTypes.SUCESS);
       await create(patient);
+      addToast(sucessMensage, AlertTypes.SUCESS);
+      close();
     } catch (err) {
-      addToast("Erro no cadastro", AlertTypes.ERROR);
+      addToast(
+        "Aconteceu algo no momento do cadastro, por favor tente novamente",
+        AlertTypes.ERROR
+      );
       console.error(err);
     }
-    close();
   }, [addToast, close, patient]);
 
   function switchRender() {

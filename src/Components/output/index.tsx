@@ -19,9 +19,9 @@ import {
   FooterLine,
   FooterLabel,
   AtestadoDateOutput,
-  Input,
-  Item,
-  Label,
+  // Input,
+  // Item,
+  // Label,
   ExamsList,
   ExamsContent,
   PatientLabel,
@@ -52,7 +52,7 @@ const Output: React.FC<Params> = ({
   patientName,
 }: Params) => {
   const [select, setSelect] = useState(exames);
-  const [copies, setCopies] = useState(1);
+  // const [copies, setCopies] = useState(1);
 
   useEffect(() => {
     setSelect(exames);
@@ -71,7 +71,7 @@ const Output: React.FC<Params> = ({
         />
       </Item> */}
       <PDFButton
-        copies={copies}
+        copies={1}
         type={prescription ? "Receita" : exames ? "Exames" : "Atestado"}
       />
       <Content>

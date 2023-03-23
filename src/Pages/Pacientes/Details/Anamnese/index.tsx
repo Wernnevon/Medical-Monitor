@@ -12,6 +12,7 @@ import {
   Save,
   Actions,
 } from "./styles";
+import { AlertTypes } from "../../../../Components/Utils/ToastConfigs";
 interface AnamneseProps {
   patient: Patient;
   closeModal: Function;
@@ -27,9 +28,12 @@ const Anamnese: React.FC<AnamneseProps> = ({ patient, closeModal }) => {
   function handleAddAnamnese() {
     if (patientExist(patient.id)) {
       patient.anamnese = !patient.anamnese ? "" : patient.anamnese;
+      const flashMessage = !patient.anamnese
+        ? "Anamnese adicionada ao perfil do paciente"
+        : "Anamnese foi atualizada no perfil do paciente";
       patient.anamnese = anamneseText;
       update(patient);
-      addToast("Sucesso", "sucess");
+      addToast(flashMessage, AlertTypes.SUCESS);
       closeModal();
     }
   }
