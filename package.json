@@ -30,6 +30,7 @@
     "eject": "react-scripts eject",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none npm run start\" \"npm run electron:start\"",
     "electron:build": "npm run build && electron-builder -c.extraMetadata.main=build/main.js",
+    "electron:build-deb": "npm run build && electron-builder --linux deb -c.extraMetadata.main=build/main.js",
     "electron:build-win": "npm run build && electron-builder --win -c.extraMetadata.main=build/main.js",
     "electron:start": "wait-on tcp:3000 && electron ."
   },
@@ -45,6 +46,9 @@
     ],
     "win": {
       "target": "NSIS"
+    },
+    "linux": {
+      "target": "deb"
     },
     "directories": {
       "buildResources": "assets"
@@ -77,5 +81,9 @@
     "electron-builder": "^23.6.0",
     "wait-on": "^7.0.1",
     "electron": "^22.1.0"
+  },
+  "author": {
+    "name": "Wernnevon",
+    "email": "wernnevon12@gmail.com"
   }
 }
