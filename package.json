@@ -47,8 +47,16 @@
     "win": {
       "target": "NSIS"
     },
+    "nsis":{
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
     "linux": {
       "target": "deb"
+    },
+    "deb":{
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     },
     "directories": {
       "buildResources": "assets"
