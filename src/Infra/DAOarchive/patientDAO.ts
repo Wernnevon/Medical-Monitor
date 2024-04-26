@@ -1,6 +1,7 @@
 import Patient from "./model";
 
 import { DBPromise } from "../DB/db";
+import mockDB from "../DB/db.json"
 
 const DBRequest = window.indexedDB.open("pacientes", 1);
 let db: IDBDatabase;
@@ -55,7 +56,7 @@ export async function create(patient: Patient) {
 
 export async function index(): Promise<Patient[]> {
   return (await DBPromise(
-    db.transaction(["patients"], "readonly").objectStore("patients").getAll()
+    db.transaction(["patients"], "readonly").objectStore("patients").getAll(null, 10)
   )) as Array<Patient>;
 }
 
@@ -72,3 +73,19 @@ export async function update(patient: Patient) {
 }
 
 export function remove(patientId: string | undefined) {}
+
+// Carrega o banco de dev
+export async function bootstrapDb(){
+  const res = await index()
+  if (res.length === 0) mockDB.forEach(p => create(p as unknown as Patient))
+}
+
+export async function clearDB() {
+  const transaction = db.transaction(["patients"], "readwrite");
+  const patientTable = transaction.objectStore("patients");
+  try {
+    await DBPromise(patientTable.clear());
+  } catch (error) {
+    console.error(error);
+  }
+}
