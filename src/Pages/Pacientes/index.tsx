@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { index } from "../../Infra/DAOarchive/patientDAO";
+import { bootstrapDb, clearDB, index } from "../../Infra/DAOarchive/patientDAO";
 import Patient from "../../Infra/DAOarchive/model";
 
 import {
@@ -11,42 +11,40 @@ import {
   SearchBar,
   SearchItem,
   ListPatient,
-  ItemPatient,
   PatientSection,
 } from "./styles";
 import Modal from "../../Components/Modal";
 import Register from "./Register";
-import Details from "./Details";
 import { useRegister } from "../../Components/Context/RegisterContext";
+import Table from "../../Components/Table";
 
 const Paciente: React.FC = () => {
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
   const [modalState, setModalState] = useState(false);
-  const [patient, setPatient] = useState<Patient>({} as Patient);
   const { changeStep, clearData } = useRegister();
 
   const getSortedPatinets = async () => {
     const patients: Patient[] = await index();
 
-    const sortedPatients = patients.sort(
-      (
-        { personalData: { name: nameA } }: Patient,
-        { personalData: { name: nameB } }: Patient
-      ) => (nameA > nameB ? 1 : nameA < nameB ? -1 : 0)
-    );
-    setPacientes(sortedPatients);
+    if (patients.length) {
+      const sortedPatients = patients.sort(
+        (
+          { personalData: { name: nameA } }: Patient,
+          { personalData: { name: nameB } }: Patient
+        ) => (nameA > nameB ? 1 : nameA < nameB ? -1 : 0)
+      );
+      setPacientes(sortedPatients);
+    }
   };
 
   useEffect(() => {
-    getSortedPatinets();
-  }, [modalState]);
+    bootstrapDb();
+  }, []);
 
   useEffect(() => {
-    if (pacientes.length) {
-      setPatient(pacientes[0]);
-    }
-  }, [pacientes]);
+    setTimeout(() => getSortedPatinets(), 100);
+  }, [modalState]);
 
   function closeModal() {
     changeStep(1);
@@ -57,12 +55,20 @@ const Paciente: React.FC = () => {
     setModalState(true);
   }
 
+  function clean() {
+    clearDB();
+    setPacientes([]);
+  }
+
   return (
     <PacienteContainer>
       <Modal modalState={modalState} closeModal={closeModal}>
         <Register isOpen={modalState} close={closeModal} />
       </Modal>
       <PacienteCard>
+        <button style={{ height: 30, position: "absolute" }} onClick={clean}>
+          clean
+        </button>
         <PatientSection>
           <SearchBar>
             <SearchInput
@@ -74,25 +80,18 @@ const Paciente: React.FC = () => {
           </SearchBar>
           <AddButton onClick={openModal}>Cadastro</AddButton>
           <ListPatient>
-            {pacientes
-              .filter((paciente) =>
-                paciente.personalData.name
-                  .toLocaleLowerCase()
-                  .includes(pacienteNome.toLocaleLowerCase())
-              )
-              .map((paciente: Patient) => (
-                <ItemPatient
-                  onClick={() => {
-                    setPatient(paciente);
-                  }}
-                  key={paciente.id}
-                >
-                  <label>{paciente.personalData.name}</label>
-                </ItemPatient>
-              ))}
+            <Table
+              data={pacientes.map(
+                ({
+                  id,
+                  personalData: { name },
+                  adress: { city },
+                  health: {helthInsurance}
+                }) => ({ id, name, city, helthInsurance })
+              )}
+            />
           </ListPatient>
         </PatientSection>
-        {patient.personalData && <Details patient={patient} />}
       </PacienteCard>
     </PacienteContainer>
   );

@@ -23,17 +23,10 @@ export const PacienteCard = styled.div`
 export const PatientSection = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 12em;
-  width: 35%;
+  width: 100%;
   height: 100%;
   border-right: 1px solid #888;
   padding: 1.5rem;
-  @media (max-width: 1200px),
-    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
-    padding: 10px;
-    width: 40%;
-    max-width: auto;
-  }
 `;
 
 export const SearchBar = styled.div`
@@ -119,10 +112,6 @@ export const ListPatient = styled.div`
   box-sizing: border-box;
   margin: 1rem 0;
   padding-top: 1.5rem;
-  @media (max-width: 1200px),
-    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
-    margin-top: 0;
-  }
 `;
 
 export const ItemPatient = styled.div`
