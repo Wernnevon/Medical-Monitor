@@ -1,14 +1,14 @@
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import { Container } from "./styles";
+import { Container, TotalLabel, PaginationContainer } from "./styles";
 
 const Pagination: React.FC = () => {
   return <Container>
-    <label>30 Pacientes</label>
-    <div>
+    <TotalLabel>30 Pacientes</TotalLabel>
+    <PaginationContainer>
         <BsChevronLeft />
         <label>1 de 10</label>
         <BsChevronRight />
-    </div>
+    </PaginationContainer>
   </Container>;
 };
 
