@@ -6,10 +6,6 @@ import Patient from "../../Infra/DAOarchive/model";
 import {
   PacienteContainer,
   PacienteCard,
-  SearchInput,
-  AddButton,
-  SearchBar,
-  SearchItem,
   ListPatient,
   PatientSection,
 } from "./styles";
@@ -20,7 +16,6 @@ import Table from "../../Components/Table";
 
 const Paciente: React.FC = () => {
   const [pacientes, setPacientes] = useState<Patient[]>([]);
-  const [pacienteNome, setPacienteNome] = useState<string>("");
   const [modalState, setModalState] = useState(false);
   const { changeStep, clearData } = useRegister();
 
@@ -51,9 +46,6 @@ const Paciente: React.FC = () => {
     clearData();
     setModalState(!modalState);
   }
-  function openModal() {
-    setModalState(true);
-  }
 
   function clean() {
     clearDB();
@@ -66,19 +58,13 @@ const Paciente: React.FC = () => {
         <Register isOpen={modalState} close={closeModal} />
       </Modal>
       <PacienteCard>
-        <button style={{ height: 30, position: "absolute" }} onClick={clean}>
+        <button
+          style={{ height: 30, position: "absolute", bottom: 10, left: 300 }}
+          onClick={clean}
+        >
           clean
         </button>
         <PatientSection>
-          <SearchBar>
-            <SearchInput
-              onChange={(e) => setPacienteNome(e.target.value)}
-              value={pacienteNome}
-              placeholder="Pesquisar"
-            />
-            <SearchItem />
-          </SearchBar>
-          <AddButton onClick={openModal}>Cadastro</AddButton>
           <ListPatient>
             <Table
               data={pacientes.map(
@@ -86,9 +72,40 @@ const Paciente: React.FC = () => {
                   id,
                   personalData: { name },
                   adress: { city },
-                  health: {helthInsurance}
+                  health: { helthInsurance },
                 }) => ({ id, name, city, helthInsurance })
               )}
+              columns={[
+                { name: "Paciente", key: "name", type: "text" },
+                { name: "Cidade", key: "city", type: "text" },
+                { name: "Convênio", key: "helthInsurance", type: "text" },
+                { name: "", key: "action", type: "action" },
+              ]}
+              filters={[
+                {
+                  handle: () => {},
+                  placeholder: "Convenio",
+                  type: "radio",
+                  value: pacientes.map(({ health: { helthInsurance } }) => ({
+                    name: "helthInsurance",
+                    value: helthInsurance,
+                  })),
+                },
+                {
+                  handle: () => {},
+                  placeholder: "Cidade",
+                  type: "radio",
+                  value: pacientes.map(({ adress: { city } }) => ({
+                    name: "city",
+                    value: city,
+                  })),
+                },
+                { handle: () => {}, placeholder: "Buscar", type: "text" },
+              ]}
+              config={{
+                columnWidth: ["40%", "27.5%", "27.5%", "5%"],
+                columnAlign: ["left", "left", "left", "center"],
+              }}
             />
           </ListPatient>
         </PatientSection>
