@@ -114,7 +114,12 @@ const Table: React.FC<Props<any>> = ({
           </Row>
         ))}
       </TableWrapper>
-      <Pagination />
+      <Pagination
+        changePage={config.pagination.changePage}
+        actualPage={config.pagination.actualPage}
+        totalPages={config.pagination.totalPages}
+        totalEntries={config.pagination.totalEntries}
+      />
     </TableContainer>
   );
 };

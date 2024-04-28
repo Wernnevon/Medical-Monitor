@@ -16,6 +16,7 @@ import Table from "../../Components/Table";
 
 const Paciente: React.FC = () => {
   const [pacientes, setPacientes] = useState<Patient[]>([]);
+  const [page, setPage] = useState(1)
   const [modalState, setModalState] = useState(false);
   const { changeStep, clearData } = useRegister();
 
@@ -105,6 +106,12 @@ const Paciente: React.FC = () => {
               config={{
                 columnWidth: ["40%", "27.5%", "27.5%", "5%"],
                 columnAlign: ["left", "left", "left", "center"],
+                pagination: {
+                  changePage: setPage,
+                  actualPage: page,
+                  totalPages: 10,
+                  totalEntries: 100
+                }
               }}
             />
           </ListPatient>
