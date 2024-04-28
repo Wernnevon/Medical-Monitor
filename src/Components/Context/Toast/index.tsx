@@ -15,7 +15,6 @@ interface ToastProps {
   children: ReactNode;
 }
 const { innerWidth: width } = window;
-console.log(width);
 
 const Icon = ({ type }: any) => {
   return type === AlertTypes.SUCESS ? (
