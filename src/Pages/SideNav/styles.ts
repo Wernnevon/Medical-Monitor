@@ -78,24 +78,14 @@ export const NavLabel = styled.label`
 `;
 export const Image = styled.img`
   width: 80%;
-  height: 80%;
-  margin: 20px 0;
-  @media (max-width: 1200px),
-    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
-    height: 68%;
-  }
+  border-radius: 50%;
+  margin: 3rem 1rem 1rem;
 `;
 
 export const NavImage = styled.button`
+  display: flex;
+  justify-content: center;
   outline: none;
   border: none;
-  width: 70%;
-  margin: 30px 0;
-  border-radius: 50%;
-  background-image: radial-gradient(#fff 5%, #d0d0d0 100%);
-  @media (max-width: 1200px),
-    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
-    height: 75%;
-    margin: 15px 0;
-  }
+  background: none;
 `;

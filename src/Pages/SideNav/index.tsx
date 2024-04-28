@@ -4,7 +4,7 @@ import { AiOutlineAudit, AiOutlineFileText } from "react-icons/ai";
 import { HiUserGroup } from "react-icons/hi";
 import { BiTestTube } from "react-icons/bi";
 
-import Logo from "../../assests/MMNoBG.png";
+import Logo from "../../assests/MMnoBGwithBorder.svg";
 
 import {
   SideMenuContainer,
