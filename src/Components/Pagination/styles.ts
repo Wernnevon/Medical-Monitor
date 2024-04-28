@@ -7,6 +7,7 @@ export const Container = styled.div`
   font-family: "Akshar-Light";
   font-size: 1.5rem;
   gap: 2rem;
+  user-select: none;
 `;
 
 export const TotalLabel = styled.label`
@@ -22,11 +23,11 @@ export const PaginationContainer = styled.div`
   align-items: center;
 
   label {
-  font-size: 1.2rem;
+    font-size: 1.2rem;
   }
 
   svg:hover {
     cursor: pointer;
-    color: #03a696 
+    color: #03a696;
   }
 `;
