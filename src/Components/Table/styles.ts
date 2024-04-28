@@ -66,7 +66,7 @@ export const TableWrapper = styled.div`
   position: relative;
   display: table;
   text-align: left;
-  margin: 1rem;
+  margin: 0 1rem 1rem;
 `;
 
 export const Row = styled.div<any>`

@@ -13,6 +13,7 @@ import {
   TableContainer,
 } from "./styles";
 import { RadioSelect, SearchTextFilter } from "../Filters";
+import Pagination from "../Pagination";
 
 type Props<T> = {
   columns: DataColumn[];
@@ -113,6 +114,7 @@ const Table: React.FC<Props<any>> = ({
           </Row>
         ))}
       </TableWrapper>
+      <Pagination />
     </TableContainer>
   );
 };
