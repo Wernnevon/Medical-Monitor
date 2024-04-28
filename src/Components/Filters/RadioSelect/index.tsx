@@ -1,6 +1,5 @@
 import { IoFilter } from "react-icons/io5";
-import { BsChevronDown } from "react-icons/bs";
-import { BsChevronUp } from "react-icons/bs";
+import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 import { Body, Container, Header, Item } from "./styles";
