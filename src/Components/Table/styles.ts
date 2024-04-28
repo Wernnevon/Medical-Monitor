@@ -13,6 +13,7 @@ export const TableHeader = styled.div`
   display: flex;
   flex-direction: column;
   margin: 1rem;
+  gap: 1.5rem;
 `;
 
 export const TitleWrapper = styled.div`
