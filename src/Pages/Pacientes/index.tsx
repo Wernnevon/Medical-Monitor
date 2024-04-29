@@ -16,7 +16,7 @@ import Table from "../../Components/Table";
 
 const Paciente: React.FC = () => {
   const [pacientes, setPacientes] = useState<Patient[]>([]);
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
   const [modalState, setModalState] = useState(false);
   const { changeStep, clearData } = useRegister();
 
@@ -84,24 +84,24 @@ const Paciente: React.FC = () => {
               ]}
               filters={[
                 {
-                  handle: () => {},
                   placeholder: "Convenio",
                   type: "radio",
+                  handle: () => {},
                   value: pacientes.map(({ health: { helthInsurance } }) => ({
                     name: "helthInsurance",
                     value: helthInsurance,
                   })),
                 },
                 {
-                  handle: () => {},
                   placeholder: "Cidade",
                   type: "radio",
+                  handle: () => {},
                   value: pacientes.map(({ adress: { city } }) => ({
                     name: "city",
                     value: city,
                   })),
                 },
-                { handle: () => {}, placeholder: "Buscar", type: "text" },
+                { placeholder: "Buscar", type: "text", handle: () => {} },
               ]}
               config={{
                 columnWidth: ["40%", "27.5%", "27.5%", "5%"],
@@ -110,8 +110,8 @@ const Paciente: React.FC = () => {
                   changePage: setPage,
                   actualPage: page,
                   totalPages: 10,
-                  totalEntries: 100
-                }
+                  totalEntries: 100,
+                },
               }}
             />
           </ListPatient>
