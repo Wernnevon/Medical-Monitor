@@ -21,6 +21,9 @@ export const TitleWrapper = styled.div`
   gap: 1rem;
   align-items: center;
   margin: 1rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #747474;
+
   label {
     font-family: "Akshar-Regular";
   }
