@@ -5,15 +5,15 @@ import * as Yup from "yup";
 import GetErros from "../../../../Components/Utils/getErrors";
 import { Container, FormContainer, FormContent } from "./styles";
 import Button from "../../../../Components/Buttons";
-import { PersonalData } from "../../../../Infra/DAOarchive/model";
 import { useRegister } from "../../../../Components/Context/RegisterContext";
+import { Patient } from "../../../../Infra/Entities";
 
 const StepPersonalData: React.FC = () => {
   const formRef = useRef({} as FormHandles);
   const { addData, patient, changeStep, step } = useRegister();
 
   const handleAdvance = useCallback(
-    async (data: PersonalData) => {
+    async (data: Patient) => {
       try {
         formRef.current.setErrors({});
         const schema = Yup.object().shape({
@@ -36,7 +36,7 @@ const StepPersonalData: React.FC = () => {
         });
         addData({
           ...patient,
-          personalData: data,
+          ...data,
         });
         formRef.current.setErrors({});
         changeStep(step + 1);
@@ -57,49 +57,49 @@ const StepPersonalData: React.FC = () => {
             placeholder="Nome completo"
             name="name"
             type="text"
-            value={patient.personalData && patient.personalData.name}
+            value={patient && patient.name}
           />
           <Input
             placeholder="Nome da mãe"
             name="motherName"
             type="text"
-            value={patient.personalData && patient.personalData.motherName}
+            value={patient && patient.motherName}
           />
           <Input
             placeholder="Nome do pai"
             name="fatherName"
             type="text"
-            value={patient.personalData && patient.personalData.fatherName}
+            value={patient && patient.fatherName}
           />
           <Input
             placeholder="Data de Nascimento"
             name="birthday"
             type="date"
-            value={patient.personalData && patient.personalData.birthday}
+            value={patient && patient.birthday}
           />
           <Input
             placeholder="RG"
             name="rg"
             type="text"
-            value={patient.personalData && patient.personalData.rg}
+            value={patient && patient.rg}
           />
           <Input
             placeholder="CPF"
             name="cpf"
             type="text"
-            value={patient.personalData && patient.personalData.cpf}
+            value={patient && patient.cpf}
           />
           <Input
             placeholder="Gênero"
             name="gender"
             type="text"
-            value={patient.personalData && patient.personalData.gender}
+            value={patient && patient.gender}
           />
           <Input
             placeholder="Fone"
             name="phone"
             type="text"
-            value={patient.personalData && patient.personalData.phone}
+            value={patient && patient.phone}
           />
         </FormContent>
         <Button typeBtn={{ type: "submit" }} typeStyle="submit">

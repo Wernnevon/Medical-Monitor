@@ -6,7 +6,7 @@ import { Container, DataContainer, List, TitleContainer } from "./styles";
 
 const EndPhase = () => {
   const { patient, changeStep, step } = useRegister();
-  const { personalData, health, adress } = patient;
+  const { health, adress } = patient;
 
   return (
     <Container>
@@ -17,31 +17,31 @@ const EndPhase = () => {
         </TitleContainer>
         <List>
           <li>
-            <span>Nome:</span> {personalData.name}
+            <span>Nome:</span> {patient.name}
           </li>
           <li>
             <span>Nascimento:</span>{" "}
-            {new Date(personalData.birthday).toLocaleDateString()}
+            {new Date(patient.birthday).toLocaleDateString()}
           </li>
           <li>
-            <span>Nome do Pai:</span> {personalData.fatherName}
+            <span>Nome do Pai:</span> {patient.fatherName}
           </li>
           <li>
-            <span>Nome da Mãe:</span> {personalData.motherName}
+            <span>Nome da Mãe:</span> {patient.motherName}
           </li>
           <li>
-            <span>Sexo:</span> {personalData.gender}
+            <span>Sexo:</span> {patient.gender}
           </li>
-          {personalData.phone && (
+          {patient.phone && (
             <li>
-              <span>Contato:</span> {personalData.phone}
+              <span>Contato:</span> {patient.phone}
             </li>
           )}
           <li>
-            <span>CPF:</span> {personalData.cpf}
+            <span>CPF:</span> {patient.cpf}
           </li>
           <li>
-            <span>RG:</span> {personalData.rg}
+            <span>RG:</span> {patient.rg}
           </li>
         </List>
         <TitleContainer>
@@ -73,7 +73,7 @@ const EndPhase = () => {
         </TitleContainer>
         <List>
           <li>
-            <span>Convênio:</span> {health.helthInsurance}
+            <span>Convênio:</span> {health.healthInsurance}
           </li>
           {health.allergy && (
             <li>

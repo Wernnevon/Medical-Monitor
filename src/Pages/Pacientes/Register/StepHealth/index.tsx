@@ -5,8 +5,8 @@ import * as Yup from "yup";
 import GetErros from "../../../../Components/Utils/getErrors";
 import { Container, FormContainer, FormContent } from "./styles";
 import Button from "../../../../Components/Buttons";
-import { Health } from "../../../../Infra/DAOarchive/model";
 import { useRegister } from "../../../../Components/Context/RegisterContext";
+import { Health } from "../../../../Infra/Entities";
 
 const StepHealth: React.FC = () => {
   const formRef = useRef({} as FormHandles);
@@ -46,7 +46,7 @@ const StepHealth: React.FC = () => {
       <FormContainer onSubmit={handleAdvance} ref={formRef}>
         <FormContent>
           <Input
-            value={patient.health && patient.health.helthInsurance}
+            value={patient.health && patient.health.healthInsurance}
             placeholder="Convênio"
             name="helthInsurance"
             type="text"

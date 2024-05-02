@@ -1,5 +1,5 @@
-import React, { createContext, ReactNode, useContext, useState } from "react";
-import Patient from "../../Infra/DAOarchive/model";
+import { createContext, ReactNode, useContext, useState } from "react";
+import { Patient } from "../../Infra/Entities";
 
 interface RegisterProps {
   children: ReactNode;

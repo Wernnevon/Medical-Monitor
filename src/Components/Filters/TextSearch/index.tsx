@@ -3,13 +3,12 @@ import { SearchBar, SearchInput, SearchItem } from "./styles";
 
 type Props = {
   placeholder: string;
-  onFind: (e: ChangeEvent<HTMLInputElement>) => void;
-}
+  onFind: (e: string) => void;
+};
 
 const SearchTextFilter: React.FC<Props> = ({ placeholder, onFind }) => {
-  
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    if(onFind) onFind(e)
+    if (onFind) onFind(e.target.value);
   }
 
   return (

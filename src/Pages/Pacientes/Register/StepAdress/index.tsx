@@ -5,15 +5,15 @@ import * as Yup from "yup";
 import GetErros from "../../../../Components/Utils/getErrors";
 import { Container, FormContainer, FormContent } from "./styles";
 import Button from "../../../../Components/Buttons";
-import { Address } from "../../../../Infra/DAOarchive/model";
 import { useRegister } from "../../../../Components/Context/RegisterContext";
+import { Adress } from "../../../../Infra/Entities";
 
 const StepAdressData: React.FC = () => {
   const formRef = useRef({} as FormHandles);
   const { patient, changeStep, step, addData } = useRegister();
 
   const handleAdvance = useCallback(
-    async (data: Address) => {
+    async (data: Adress) => {
       try {
         formRef.current.setErrors({});
         const schema = Yup.object().shape({

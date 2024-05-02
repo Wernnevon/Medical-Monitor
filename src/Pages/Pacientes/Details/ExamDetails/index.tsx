@@ -1,16 +1,6 @@
-import React, { useEffect, useState } from "react";
-import {
-  ExamStatus,
-  PrescriptionSatus,
-} from "../../../../Infra/DAOarchive/enumModel";
-import Patient, {
-  Exam,
-  Prescription,
-} from "../../../../Infra/DAOarchive/model";
-import { update } from "../../../../Infra/DAOarchive/patientDAO";
+import { useEffect, useState } from "react";
 import { useToastContext } from "../../../../Components/Context/Toast";
 import { isNullOrEmptyObject } from "../../../../Components/Utils/isNullOrEmpty";
-import { patientExist } from "../../../../Components/Utils/midlleware";
 import {
   Container,
   Card,
@@ -27,6 +17,8 @@ import {
   TextArea,
   TitleExam,
 } from "./styles";
+import Exam, { ExamStatus } from "../../../../Infra/Entities/Exams";
+import { Patient, Prescription } from "../../../../Infra/Entities";
 
 interface Props {
   exam?: Exam;
@@ -41,9 +33,7 @@ const ExamDetails: React.FC<Props> = ({
   patient,
   closeModal,
 }: Props) => {
-  const [medicamentStatus, setMedicamentStatus] = useState(
-    PrescriptionSatus.ADMINISTERING
-  );
+  const [medicamentStatus, setMedicamentStatus] = useState();
   const [examStatus, setExamStatus] = useState(ExamStatus.IN_PROGRESS);
   const [realizationExamData, setRealizationExamData] = useState(new Date());
   const [examDiag, setExamDiag] = useState("");
@@ -58,65 +48,6 @@ const ExamDetails: React.FC<Props> = ({
       setExamStatus(exam!.done);
     }
   }, [exam]);
-
-  useEffect(() => {
-    if (!isNullOrEmptyObject(prescription)) {
-      setMedicamentStatus(prescription!.administering);
-    }
-  }, [prescription]);
-
-  function updatePrescriptios() {
-    let { medicament: prescriptions } = patient;
-    const prescriptionUpdateIndex = prescriptions.findIndex(
-      (receita: Prescription) => receita.medicament === prescription?.medicament
-    );
-    prescriptions[prescriptionUpdateIndex].administering = medicamentStatus;
-
-    return [...prescriptions];
-  }
-
-  function updateExamp() {
-    let { exams } = patient;
-    const examUpdateIndex = exams.findIndex(
-      (exame: Exam) => exame.name === exam?.name
-    );
-    exams[examUpdateIndex].done = examStatus;
-    exams[examUpdateIndex].realizationDate = realizationExamData;
-    exams[examUpdateIndex].diagnosis = examDiag;
-
-    return [...exams];
-  }
-
-  function handleUpdatePrescriptions() {
-    if (patientExist(patient.id)) {
-      patient.medicament = updatePrescriptios();
-      update(patient);
-      addToast("Sucesso", "sucess");
-      closeModal();
-    }
-  }
-  function handleUpdateExams() {
-    if (patientExist(patient.id)) {
-      patient.exams = updateExamp();
-      update(patient);
-      addToast("Sucesso", "sucess");
-      closeModal();
-    }
-  }
-
-  function toggleMedicamentStatus() {
-    const newState =
-      medicamentStatus === PrescriptionSatus.ADMINISTERING
-        ? PrescriptionSatus.SUSPENDED
-        : PrescriptionSatus.ADMINISTERING;
-    setMedicamentStatus(newState);
-  }
-  function toggleExamStatus() {
-    const newState =
-      examStatus === ExamStatus.DONE ? ExamStatus.IN_PROGRESS : ExamStatus.DONE;
-    setExamStatus(newState);
-    setRealizationExamData(new Date());
-  }
 
   function renderExamsEdit() {
     if (exam?.name) {
@@ -144,7 +75,7 @@ const ExamDetails: React.FC<Props> = ({
             </DateLine>
             <SatusLine>
               <label>Status:</label>
-              <span onClick={toggleExamStatus}>{examStatus}</span>
+              <span>{examStatus}</span>
             </SatusLine>
             <DiagnosisLine>
               <TitleExam>Conclusão</TitleExam>
@@ -159,7 +90,7 @@ const ExamDetails: React.FC<Props> = ({
                 <Edit onClick={() => setEdit(!edit)}>
                   {edit ? "Concluir" : "Editar"}
                 </Edit>
-                {!edit && <Save onClick={handleUpdateExams}>Salvar</Save>}
+                {!edit && <Save>Salvar</Save>}
               </Actions>
             </DiagnosisLine>
           </Card>
@@ -182,9 +113,9 @@ const ExamDetails: React.FC<Props> = ({
             </DateLine>
             <SatusLine>
               <label>Status:</label>
-              <span onClick={toggleMedicamentStatus}>{medicamentStatus}</span>
+              <span>{medicamentStatus}</span>
             </SatusLine>
-            <Save onClick={handleUpdatePrescriptions}>Salvar</Save>
+            <Save>Salvar</Save>
           </Card>
         </PrescriptionContent>
       );

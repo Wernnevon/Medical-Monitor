@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import Patient from "../../../../Infra/DAOarchive/model";
-import { update } from "../../../../Infra/DAOarchive/patientDAO";
+import { useState } from "react";
 import { useToastContext } from "../../../../Components/Context/Toast";
 import { patientExist } from "../../../../Components/Utils/midlleware";
 import {
@@ -12,6 +10,7 @@ import {
   Save,
   Actions,
 } from "./styles";
+import { Patient } from "../../../../Infra/Entities";
 interface AnamneseProps {
   patient: Patient;
   closeModal: Function;
@@ -28,7 +27,6 @@ const Anamnese: React.FC<AnamneseProps> = ({ patient, closeModal }) => {
     if (patientExist(patient.id)) {
       patient.anamnese = !patient.anamnese ? "" : patient.anamnese;
       patient.anamnese = anamneseText;
-      update(patient);
       addToast("Sucesso", "sucess");
       closeModal();
     }

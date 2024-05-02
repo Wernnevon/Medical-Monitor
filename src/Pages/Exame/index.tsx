@@ -21,11 +21,9 @@ import {
   FormButtonContainer,
   ExameOutputCard,
 } from "./styles";
-import Patient, { PersonalData } from "../../Infra/DAOarchive/model";
-import { index, update } from "../../Infra/DAOarchive/patientDAO";
 import { patientExist, validate } from "../../Components/Utils/midlleware";
 import { useToastContext } from "../../Components/Context/Toast";
-import { ExamStatus } from "../../Infra/DAOarchive/enumModel";
+import { Patient } from "../../Infra/Entities";
 
 const Exame: React.FC = () => {
   const { exames, selected, handleClear } = useExame();
@@ -35,35 +33,15 @@ const Exame: React.FC = () => {
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
 
-  const [patient, setPatient] = useState(() => {
-    let initPatient = {} as Patient;
-    initPatient.personalData = {} as PersonalData;
-    return initPatient;
-  });
+  const [patient, setPatient] = useState<Patient>({} as Patient);
 
   const setMenssage = () => {
-    if ([...selected, ...otherExams].length <= 0 && !patient.personalData.name)
+    if ([...selected, ...otherExams].length <= 0)
       return "Escolha o paciente e selecione ao menos um exame";
     else if ([...selected, ...otherExams].length <= 0)
       return "Selecione ao menos um exame";
     else return "Escolha o paciente";
   };
-
-  const getSortedPatinets = async () => {
-    const patients: Patient[] = await index();
-
-    const sortedPatients = patients.sort(
-      (
-        { personalData: { name: nameA } }: Patient,
-        { personalData: { name: nameB } }: Patient
-      ) => (nameA > nameB ? 1 : nameA < nameB ? -1 : 0)
-    );
-    setPacientes(sortedPatients);
-  };
-
-  useEffect(() => {
-    getSortedPatinets();
-  }, []);
 
   function handleOtherExams(event: any) {
     setOtherExamsText(event.target.value);
@@ -71,11 +49,7 @@ const Exame: React.FC = () => {
   }
 
   function handleClearAll() {
-    setPatient(() => {
-      let initPatient = {} as Patient;
-      initPatient.personalData = {} as PersonalData;
-      return initPatient;
-    });
+    setPatient({} as Patient);
     setOtherExams([]);
     setOtherExamsText([]);
     for (const checkbox of document.querySelectorAll(
@@ -93,15 +67,6 @@ const Exame: React.FC = () => {
   function handleAddExam(patientUpdate: Patient) {
     let allExams = [...selected, ...otherExams];
     if (patientExist(patientUpdate.id) && validate(allExams)) {
-      patient.exams = !patient.exams ? [] : patient.exams;
-      allExams.map((exame: string) =>
-        patientUpdate.exams.push({
-          done: ExamStatus.IN_PROGRESS,
-          name: exame,
-          requisitionDate: new Date(),
-        })
-      );
-      update(patient);
       addToast("Sucesso", "sucess");
       clean();
     } else {
@@ -124,13 +89,13 @@ const Exame: React.FC = () => {
           <ListPatient>
             {pacientes
               .filter((paciente) =>
-                paciente.personalData.name
+                paciente.name
                   .toLocaleLowerCase()
                   .includes(pacienteNome.toLocaleLowerCase())
               )
               .map((paciente: Patient) => (
                 <ItemPatient key={paciente.id}>
-                  <label>{paciente.personalData.name}</label>
+                  <label>{paciente.name}</label>
                   <button onClick={() => setPatient(paciente)}>
                     Escolher paciente
                   </button>
@@ -164,7 +129,7 @@ const Exame: React.FC = () => {
         </ExamesContent>
         <FormButtonContainer>
           <FormButtonClear onClick={clean}>Limpar</FormButtonClear>
-          <FormButtonSave onClick={() => handleAddExam(patient)}>
+          <FormButtonSave onClick={() => handleAddExam({} as Patient)}>
             Salvar
           </FormButtonSave>
         </FormButtonContainer>
@@ -172,7 +137,7 @@ const Exame: React.FC = () => {
       <ExameOutputCard>
         <Output
           exames={[...selected, ...otherExams]}
-          patientName={patient.personalData.name}
+          patientName={patient.name}
         />
       </ExameOutputCard>
     </ExameContainer>

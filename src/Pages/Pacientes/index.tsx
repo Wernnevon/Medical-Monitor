@@ -1,7 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-
-import { bootstrapDb, clearDB, index } from "../../Infra/DAOarchive/patientDAO";
-import Patient from "../../Infra/DAOarchive/model";
 
 import {
   PacienteContainer,
@@ -9,99 +7,134 @@ import {
   ListPatient,
   PatientSection,
 } from "./styles";
-import Modal from "../../Components/Modal";
-import Register from "./Register";
-import { useRegister } from "../../Components/Context/RegisterContext";
 import Table from "../../Components/Table";
+import { makeLocalPatientList } from "../../Factories";
+import { Patient } from "../../Infra/Entities";
+import { List } from "../../Infra/Interfaces";
 
 const Paciente: React.FC = () => {
+  const patientList = makeLocalPatientList();
+
   const [pacientes, setPacientes] = useState<Patient[]>([]);
+
   const [page, setPage] = useState(1);
-  const [modalState, setModalState] = useState(false);
-  const { changeStep, clearData } = useRegister();
-
-  const getSortedPatinets = async () => {
-    const patients: Patient[] = await index();
-
-    if (patients.length) {
-      const sortedPatients = patients.sort(
-        (
-          { personalData: { name: nameA } }: Patient,
-          { personalData: { name: nameB } }: Patient
-        ) => (nameA > nameB ? 1 : nameA < nameB ? -1 : 0)
-      );
-      setPacientes(sortedPatients);
-    }
-  };
+  const [pagination, setPagination] = useState<{
+    totalEntries: number;
+    totalPages: number;
+  }>({ totalEntries: 0, totalPages: 0 });
+  const [filters, setFilters] = useState<List.Filter[]>([]);
+  const [keywords, setKeywords] = useState<string[]>([]);
+  const [filtersData, setFiltersData] = useState<any>({});
 
   useEffect(() => {
-    bootstrapDb();
+    patientList
+      .listPerPage({
+        page,
+        pageSize: 10,
+        keywords,
+        filters,
+      })
+      .then((data) => {
+        setPacientes(data.records || []);
+        setPagination({
+          totalEntries: data.totalRecords || 0,
+          totalPages: Math.ceil(data.totalRecords / 10) || 0,
+        });
+      });
+  }, [page, filters, keywords]);
+
+  useEffect(() => {
+    const cityMap = new Map();
+    const healthInsuranceMap = new Map();
+    patientList.listAll().then((value) => {
+      value.forEach(({ adress: { city }, health: { healthInsurance } }) => {
+        cityMap.set(city, city);
+        healthInsuranceMap.set(healthInsurance, healthInsurance);
+      });
+      setFiltersData({
+        insurance: [
+          ...Array.from(healthInsuranceMap, ([, value]) => ({
+            name: "helthInsurance",
+            value,
+          })),
+        ],
+        city: [
+          ...Array.from(cityMap, ([, value]) => ({ name: "city", value })),
+        ],
+      });
+    });
   }, []);
-
-  useEffect(() => {
-    setTimeout(() => getSortedPatinets(), 100);
-  }, [modalState]);
-
-  function closeModal() {
-    changeStep(1);
-    clearData();
-    setModalState(!modalState);
-  }
-
-  function clean() {
-    clearDB();
-    setPacientes([]);
-  }
 
   return (
     <PacienteContainer>
-      <Modal modalState={modalState} closeModal={closeModal}>
-        <Register isOpen={modalState} close={closeModal} />
-      </Modal>
       <PacienteCard>
-        <button
-          style={{ height: 30, position: "absolute", bottom: 10, left: 300 }}
-          onClick={clean}
-        >
-          clean
-        </button>
         <PatientSection>
           <ListPatient>
             <Table
               data={pacientes.map(
                 ({
                   id,
-                  personalData: { name },
+                  name,
                   adress: { city },
-                  health: { helthInsurance },
-                }) => ({ id, name, city, helthInsurance })
+                  health: { healthInsurance },
+                }) => ({ id, name, city, healthInsurance })
               )}
               columns={[
                 { name: "Paciente", key: "name", type: "text" },
                 { name: "Cidade", key: "city", type: "text" },
-                { name: "Convênio", key: "helthInsurance", type: "text" },
+                { name: "Convênio", key: "healthInsurance", type: "text" },
                 { name: "", key: "action", type: "action" },
               ]}
               filters={[
                 {
                   placeholder: "Convenio",
                   type: "radio",
-                  handle: () => {},
-                  value: pacientes.map(({ health: { helthInsurance } }) => ({
-                    name: "helthInsurance",
-                    value: helthInsurance,
-                  })),
+                  handle: (v) => {
+                    const filtersMap = new Map(
+                      filters.map(({ key, value }) => [key, value])
+                    );
+                    if (v) filtersMap.set("healthInsurance", v);
+                    else filtersMap.delete("healthInsurance");
+
+                    const filtersArray = Array.from(
+                      filtersMap,
+                      ([key, value]) => ({
+                        key,
+                        value,
+                      })
+                    );
+                    setFilters(filtersArray);
+                  },
+                  value: filtersData.insurance,
                 },
                 {
                   placeholder: "Cidade",
                   type: "radio",
-                  handle: () => {},
-                  value: pacientes.map(({ adress: { city } }) => ({
-                    name: "city",
-                    value: city,
-                  })),
+                  handle: (v) => {
+                    const filtersMap = new Map(
+                      filters.map(({ key, value }) => [key, value])
+                    );
+                    if (v) filtersMap.set("city", v);
+                    else filtersMap.delete("city");
+
+                    const filtersArray = Array.from(
+                      filtersMap,
+                      ([key, value]) => ({
+                        key,
+                        value,
+                      })
+                    );
+                    setFilters(filtersArray);
+                  },
+                  value: filtersData.city,
                 },
-                { placeholder: "Buscar", type: "text", handle: () => {} },
+                {
+                  placeholder: "Buscar",
+                  type: "text",
+                  handle: (v: string) => {
+                    setKeywords(v.split(" "));
+                  },
+                },
               ]}
               config={{
                 columnWidth: ["40%", "27.5%", "27.5%", "5%"],
@@ -109,8 +142,8 @@ const Paciente: React.FC = () => {
                 pagination: {
                   changePage: setPage,
                   actualPage: page,
-                  totalPages: 10,
-                  totalEntries: 100,
+                  totalPages: pagination.totalPages,
+                  totalEntries: pagination.totalEntries,
                 },
               }}
             />

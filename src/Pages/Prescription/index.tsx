@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { PrescriptionSatus } from "../../Infra/DAOarchive/enumModel";
-import Patient, { PersonalData } from "../../Infra/DAOarchive/model";
-import { index, update } from "../../Infra/DAOarchive/patientDAO";
 import { useToastContext } from "../../Components/Context/Toast";
 
 import Output from "../../Components/output";
@@ -24,6 +21,7 @@ import {
   FormButtonContainer,
   PrescriptionOutputCard,
 } from "./styles";
+import { Patient } from "../../Infra/Entities";
 
 const Prescription: React.FC = () => {
   const [content, setContent] = useState([]);
@@ -31,34 +29,14 @@ const Prescription: React.FC = () => {
   const [medicaments, setMedicaments] = useState("");
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [pacienteNome, setPacienteNome] = useState<string>("");
-  const [patient, setPatient] = useState<Patient>(() => {
-    let initPatient = {} as Patient;
-    initPatient.personalData = {} as PersonalData;
-    return initPatient;
-  });
+  const [patient, setPatient] = useState<Patient>({} as Patient);
 
   const setMenssage = () => {
-    if (content.length <= 0 && !patient.personalData.name)
+    if (content.length <= 0 && !patient.name)
       return "Escolha o paciente e prescreva algo";
     else if (content.length <= 0) return "Prescreva algo";
     else return "Escolha o paciente";
   };
-
-  const getSortedPatinets = async () => {
-    const patients: Patient[] = await index();
-
-    const sortedPatients = patients.sort(
-      (
-        { personalData: { name: nameA } }: Patient,
-        { personalData: { name: nameB } }: Patient
-      ) => (nameA > nameB ? 1 : nameA < nameB ? -1 : 0)
-    );
-    setPacientes(sortedPatients);
-  };
-
-  useEffect(() => {
-    getSortedPatinets();
-  }, []);
 
   function handleContent(value: any) {
     setMedicaments(value.target.value);
@@ -67,11 +45,7 @@ const Prescription: React.FC = () => {
   function handleClear() {
     setContent([]);
     setMedicaments("");
-    setPatient(() => {
-      let initPatient = {} as Patient;
-      initPatient.personalData = {} as PersonalData;
-      return initPatient;
-    });
+    setPatient({} as Patient);
   }
 
   function clean() {
@@ -81,15 +55,6 @@ const Prescription: React.FC = () => {
 
   function handleAddPrecription(patientUpdate: Patient) {
     if (patientExist(patientUpdate.id) && validate(content)) {
-      patient.medicament = !patient.medicament ? [] : patient.medicament;
-      content.map((medicament: string) =>
-        patientUpdate.medicament.push({
-          medicament: medicament,
-          date: new Date(),
-          administering: PrescriptionSatus.ADMINISTERING,
-        })
-      );
-      update(patient);
       addToast("Sucesso", "sucess");
       clean();
     } else {
@@ -112,13 +77,13 @@ const Prescription: React.FC = () => {
           <ListPatient>
             {pacientes
               .filter((paciente) =>
-                paciente.personalData.name
+                paciente.name
                   .toLocaleLowerCase()
                   .includes(pacienteNome.toLocaleLowerCase())
               )
               .map((paciente: Patient) => (
                 <ItemPatient key={paciente.id}>
-                  <label>{paciente.personalData.name}</label>
+                  <label>{paciente.name}</label>
                   <button onClick={() => setPatient(paciente)}>
                     Escolher paciente
                   </button>
@@ -139,10 +104,7 @@ const Prescription: React.FC = () => {
         </ReceituarioContainer>
       </ReceitaCard>
       <PrescriptionOutputCard>
-        <Output
-          prescription={content}
-          patientName={patient.personalData.name}
-        />
+        <Output prescription={content} patientName={patient.name} />
       </PrescriptionOutputCard>
     </ReceitaContainer>
   );

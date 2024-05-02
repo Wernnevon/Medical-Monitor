@@ -44,8 +44,11 @@ const RadioSelect: React.FC<Props> = ({
       </Header>
       <Body collapsed={isCollapsed}>
         <span>
-          {data.map((option) => (
-            <Item key={option} onClick={() => handleSelect(option)}>
+          {data.map((option, index) => (
+            <Item
+              key={`${option}-${index}`}
+              onClick={() => handleSelect(option)}
+            >
               <input
                 type="radio"
                 readOnly

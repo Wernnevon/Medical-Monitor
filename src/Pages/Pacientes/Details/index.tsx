@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import Patient, { Exam, Prescription } from "../../../Infra/DAOarchive/model";
 import Modal from "../../../Components/Modal";
 import Anamnese from "./Anamnese";
 import ExamDetails from "./ExamDetails";
 
 import { Container, Card, CardItem, CardText } from "./styles";
+import { Patient, Prescription } from "../../../Infra/Entities";
+import Exam from "../../../Infra/Entities/Exams";
 
 enum ModalStrategyOpen {
   EXAM = "exam",
@@ -62,7 +63,7 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
   }
 
   const getDate = (): string => {
-    const [y, m, d] = patient.personalData.birthday.toString().split("-");
+    const [y, m, d] = patient.birthday.toString().split("-");
     return new Date(Number(y), Number(m) - 1, Number(d)).toLocaleDateString();
   };
   return (
@@ -83,15 +84,15 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
         <p>Dados Pessoais</p>
         <CardText>
           <label>Nome: </label>
-          <label>{patient.personalData.name}</label>
+          <label>{patient.name}</label>
         </CardText>
         <CardText>
           <label>Nome da mãe: </label>
-          <label>{patient.personalData.motherName}</label>
+          <label>{patient.motherName}</label>
         </CardText>
         <CardText>
           <label>Nome do Pai: </label>
-          <label>{patient.personalData.fatherName}</label>
+          <label>{patient.fatherName}</label>
         </CardText>
         <CardText>
           <label>Data de Nascimento: </label>
@@ -99,28 +100,28 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
         </CardText>
         <CardText>
           <label>Idade: </label>
-          <label>{calculaIdade(patient.personalData.birthday)} anos</label>
+          <label>{calculaIdade(patient.birthday)} anos</label>
         </CardText>
         <CardText>
           <label>Convênio: </label>
-          <label>{patient.health.helthInsurance}</label>
+          <label>{patient.health.healthInsurance}</label>
         </CardText>
         <CardText>
           <label>RG: </label>
-          <label>{patient.personalData.rg}</label>
+          <label>{patient.rg}</label>
         </CardText>
         <CardText>
           <label>CPF: </label>
-          <label>{patient.personalData.cpf}</label>
+          <label>{patient.cpf}</label>
         </CardText>
         <CardText>
           <label>Gênero: </label>
-          <label>{patient.personalData.gender}</label>
+          <label>{patient.gender}</label>
         </CardText>
-        {patient.personalData.phone && (
+        {patient.phone && (
           <CardText>
             <label>Telefone: </label>
-            <label>{patient.personalData.phone}</label>
+            <label>{patient.phone}</label>
           </CardText>
         )}
       </Card>
@@ -174,40 +175,6 @@ const Details: React.FC<Props> = ({ patient }: Props) => {
           <button onClick={openStrategy[ModalStrategyOpen.ANMN]}>Abrir</button>
         </CardItem>
       </Card>
-      {patient.exams && (
-        <Card>
-          <h4>Exames</h4>
-          {patient.exams.length > 0 &&
-            patient.exams.map((exam: Exam) => (
-              <CardItem key={exam.name}>
-                <span>{exam.name}</span>
-                <button
-                  onClick={() => openStrategy[ModalStrategyOpen.EXAM](exam)}
-                >
-                  Abrir
-                </button>
-              </CardItem>
-            ))}
-        </Card>
-      )}
-      {patient.medicament && (
-        <Card>
-          <h4>Prescrições</h4>
-          {patient.medicament.length > 0 &&
-            patient.medicament.map((prescription: Prescription) => (
-              <CardItem key={prescription.medicament}>
-                <span>{prescription.medicament}</span>
-                <button
-                  onClick={() =>
-                    openStrategy[ModalStrategyOpen.PRESC](prescription)
-                  }
-                >
-                  Abrir
-                </button>
-              </CardItem>
-            ))}
-        </Card>
-      )}
     </Container>
   );
 };
