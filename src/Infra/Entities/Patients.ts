@@ -1,13 +1,18 @@
-import { Adress, Exams, Health, PersonalData, Prescription } from "./";
+import { Adress, Health } from "./";
 
 type Patient = {
-  id?: string;
+  id?: number;
   anamnese: string;
-  personalData: PersonalData;
+  name: string;
+  birthday: Date;
+  fatherName: string;
+  motherName: string;
+  rg: string;
+  cpf: string;
+  gender: string;
+  phone?: string;
   health: Health;
   adress: Adress;
-  exams: Exams[];
-  medicament: Prescription[];
 };
 
 export default Patient;

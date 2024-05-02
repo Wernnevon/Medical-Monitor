@@ -4,10 +4,11 @@ export enum PrescriptionSatus {
 }
 
 type Prescription = {
-  patientId: string;
+  patientId: number;
   medicament: string;
   date: Date;
   administering: PrescriptionSatus;
+  id: string;
 };
 
 export default Prescription;

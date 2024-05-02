@@ -4,13 +4,14 @@ export enum ExamStatus {
 }
 
 type Exam = {
-  patientId: string;
+  patientId: number;
   name: string;
   requisitionDate: Date;
   realizationDate?: Date;
   done: ExamStatus;
   diagnosis?: string;
   anamnese: string;
+  id: string;
 };
 
 export default Exam;

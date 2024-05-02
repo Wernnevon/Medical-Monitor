@@ -1,15 +1,9 @@
-import IPersonalDataRepository from "./IPersonalDataRepository";
-import IAdressRepository from "./IAdressRepository";
-import IHealthRepository from "./IHealthRepository";
-import IExamsRepository from "./IExamsRepository";
-import IPrescriptionRepository from "./IPrescriptionRepository";
-import IPatientDataRepository from "./IPatientDataRepository";
+import { Store } from "./UseCases/store";
+import { List } from "./UseCases/list";
+import { Find } from "./UseCases/find";
+import { Update } from "./UseCases/update";
+import { Delete } from "./UseCases/delete";
+import { Client } from "./Protocols/resquest";
 
-export type {
-  IPersonalDataRepository,
-  IAdressRepository,
-  IHealthRepository,
-  IExamsRepository,
-  IPatientDataRepository,
-  IPrescriptionRepository,
-};
+// Dependecy inversion
+export type { Store, Delete, Find, List, Update, Client };

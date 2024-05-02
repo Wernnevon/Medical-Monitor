@@ -1,6 +1,5 @@
 type Health = {
-  idPatient: string;
-  helthInsurance: string;
+  healthInsurance: string;
   allergy?: string;
   weight?: number;
   height?: number;
