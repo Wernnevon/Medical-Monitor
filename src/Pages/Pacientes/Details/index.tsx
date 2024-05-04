@@ -13,11 +13,30 @@ enum ModalStrategyOpen {
   ANMN = "anamnese",
 }
 
-interface Props {
-  patient: Patient;
-}
-
-const Details: React.FC<Props> = ({ patient }: Props) => {
+const Details: React.FC = () => {
+  const patient: Patient = {
+    anamnese: "",
+    name: "",
+    birthday: new Date(),
+    fatherName: "",
+    motherName: "",
+    rg: "",
+    cpf: "",
+    gender: "",
+    health: {
+      healthInsurance: "",
+      allergy: undefined,
+      weight: undefined,
+      height: undefined,
+    },
+    adress: {
+      city: "",
+      neighborhood: "",
+      street: "",
+      number: 0,
+      complement: undefined,
+    },
+  };
   const [modalState, setModalState] = useState(false);
   const [exam, setExam] = useState<Exam>({} as Exam);
   const [prescription, setPrescription] = useState<Prescription>(

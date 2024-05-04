@@ -14,6 +14,7 @@ import {
 } from "./styles";
 import { RadioSelect, SearchTextFilter } from "../Filters";
 import Pagination from "../Pagination";
+import { useNavigate } from "react-router-dom";
 
 type Props<T> = {
   columns: DataColumn[];
@@ -63,6 +64,10 @@ const Table: React.FC<Props<any>> = ({
   filters,
   config,
 }: Props<any>) => {
+  const navigate = useNavigate();
+  function handleNavigate() {
+    navigate(config.navigateTo);
+  }
   return (
     <TableContainer>
       <TableHeader>
@@ -76,7 +81,7 @@ const Table: React.FC<Props<any>> = ({
         </TitleWrapper>
         <FilterWrapper>
           {filters.map((filter: DataFilter) => Filters[filter.type](filter))}
-          <AddButton>
+          <AddButton onClick={handleNavigate}>
             <IoPersonAdd />
             Novo
           </AddButton>

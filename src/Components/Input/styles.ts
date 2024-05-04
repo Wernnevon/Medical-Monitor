@@ -21,15 +21,15 @@ export const Container = styled.div`
     outline: none;
     padding: 1.2rem 0 0.2rem;
     background: none;
-    margin: 0 10px 0;
-    font-size: 1.2rem;
+    margin: 0 5px 0;
+    font-size: 1.5rem;
     box-sizing: border-box;
     width: 100%;
     z-index: 5;
   }
   span {
     color: #e87c03;
-    font-size: 1em;
+    font-size: 1.2em;
     position: absolute;
     bottom: -1.8rem;
     box-sizing: border-box;
@@ -51,8 +51,8 @@ export const Placeholder = styled.label`
   position: absolute;
   z-index: 0;
   transition: 50ms linear;
-  margin-bottom: 2.5rem;
-  font-size: 1.4rem;
+  margin-bottom: 4rem;
+  font-size: 2rem;
   font-family: "Akshar-Regular";
   @media (max-width: 1200px),
     (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {

@@ -23,17 +23,13 @@ export const Container = styled.button<PropsButton>`
   color: ${({ typeButton }: PropsButton) =>
     fontColors[typeButton as keyof typeof fontColors]};
   padding: 0.4rem 2rem;
-  margin: 0 5rem;
+  margin: 0;
   font-size: 1.2rem;
   /* font-weight: 400; */
   transition: 40ms ease-in;
   box-shadow: 0px 3px 8px 0px #00000033;
   font-family: "Akshar-Regular", sans-serif;
   max-width: max-content;
-  position: absolute;
-  bottom: -5em;
-  align-self: ${({ typeButton }: PropsButton) =>
-    typeButton === "submit" ? "flex-end" : "flex-start"};
   :hover {
     cursor: pointer;
   }

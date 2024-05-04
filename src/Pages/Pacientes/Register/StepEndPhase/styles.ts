@@ -4,15 +4,17 @@ export const Container = styled.div`
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
+  justify-content: space-between;
   width: 100%;
+  height: 100%;
   position: relative;
+  padding: 0 1rem;
+  margin-top: 1rem;
 `;
 export const DataContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 3em;
   overflow-y: auto;
-  height: 208px;
   color: #333;
   b {
     font-family: "Akshar-Medium", sans-serif;
@@ -24,23 +26,39 @@ export const DataContainer = styled.div`
 `;
 export const List = styled.ul`
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 1fr 1fr;
+  text-align: left;
+  margin: 0 0 1.5rem;
+  padding: 0 1rem;
   li {
     list-style: none;
-    font-weight: 300;
-    font-size: 1.2rem;
+    font-family: "Akshar-Light", sans-serif;
+
+    font-size: 1.5rem;
     text-transform: capitalize;
     span {
-      text-transform: uppercase;
+      text-transform: capitalize;
+      text-decoration: underline;
     }
   }
 `;
 
-export const TitleContainer = styled.span`
+export const TitleContainer = styled.span<any>`
   display: flex;
-  justify-content: center;
   cursor: default;
   gap: 1rem;
+  position: relative;
+
+  ::after {
+    content: "";
+    position: absolute;
+    left: ${({ titleSpace }) => titleSpace + 3}ch;
+    right: 0;
+    top: 0.76rem;
+    height: 1px;
+    background-color: #000;
+  }
+
   * {
     :last-child {
       cursor: pointer;

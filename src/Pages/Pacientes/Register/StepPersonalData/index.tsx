@@ -3,12 +3,14 @@ import React, { useCallback, useRef } from "react";
 import Input from "../../../../Components/Input";
 import * as Yup from "yup";
 import GetErros from "../../../../Components/Utils/getErrors";
-import { Container, FormContainer, FormContent } from "./styles";
 import Button from "../../../../Components/Buttons";
 import { useRegister } from "../../../../Components/Context/RegisterContext";
 import { Patient } from "../../../../Infra/Entities";
+import { useNavigate } from "react-router-dom";
+import { ActionsContainer, FormContainer, FormContent } from "../styles";
 
 const StepPersonalData: React.FC = () => {
+  const navigate = useNavigate();
   const formRef = useRef({} as FormHandles);
   const { addData, patient, changeStep, step } = useRegister();
 
@@ -50,63 +52,70 @@ const StepPersonalData: React.FC = () => {
     [addData, changeStep, patient, step]
   );
   return (
-    <Container>
-      <FormContainer onSubmit={handleAdvance} ref={formRef}>
-        <FormContent>
-          <Input
-            placeholder="Nome completo"
-            name="name"
-            type="text"
-            value={patient && patient.name}
-          />
-          <Input
-            placeholder="Nome da mãe"
-            name="motherName"
-            type="text"
-            value={patient && patient.motherName}
-          />
-          <Input
-            placeholder="Nome do pai"
-            name="fatherName"
-            type="text"
-            value={patient && patient.fatherName}
-          />
-          <Input
-            placeholder="Data de Nascimento"
-            name="birthday"
-            type="date"
-            value={patient && patient.birthday}
-          />
-          <Input
-            placeholder="RG"
-            name="rg"
-            type="text"
-            value={patient && patient.rg}
-          />
-          <Input
-            placeholder="CPF"
-            name="cpf"
-            type="text"
-            value={patient && patient.cpf}
-          />
-          <Input
-            placeholder="Gênero"
-            name="gender"
-            type="text"
-            value={patient && patient.gender}
-          />
-          <Input
-            placeholder="Fone"
-            name="phone"
-            type="text"
-            value={patient && patient.phone}
-          />
-        </FormContent>
+    <FormContainer onSubmit={handleAdvance} ref={formRef}>
+      <FormContent>
+        <Input
+          placeholder="Nome completo"
+          name="name"
+          type="text"
+          value={patient && patient.name}
+        />
+        <Input
+          placeholder="Nome da mãe"
+          name="motherName"
+          type="text"
+          value={patient && patient.motherName}
+        />
+        <Input
+          placeholder="Nome do pai"
+          name="fatherName"
+          type="text"
+          value={patient && patient.fatherName}
+        />
+        <Input
+          placeholder="Data de Nascimento"
+          name="birthday"
+          type="date"
+          value={patient && patient.birthday}
+        />
+        <Input
+          placeholder="RG"
+          name="rg"
+          type="text"
+          value={patient && patient.rg}
+        />
+        <Input
+          placeholder="CPF"
+          name="cpf"
+          type="text"
+          value={patient && patient.cpf}
+        />
+        <Input
+          placeholder="Gênero"
+          name="gender"
+          type="text"
+          value={patient && patient.gender}
+        />
+        <Input
+          placeholder="Fone"
+          name="phone"
+          type="text"
+          value={patient && patient.phone}
+        />
+      </FormContent>
+      <ActionsContainer>
+        <Button
+          typeBtn={{ type: "button" }}
+          typeStyle="back"
+          handle={() => navigate(-1)}
+        >
+          Cancelar
+        </Button>
         <Button typeBtn={{ type: "submit" }} typeStyle="submit">
           Avançar
         </Button>
-      </FormContainer>
-    </Container>
+      </ActionsContainer>
+    </FormContainer>
   );
 };
 

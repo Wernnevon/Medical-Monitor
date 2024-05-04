@@ -145,6 +145,7 @@ const Paciente: React.FC = () => {
                   totalPages: pagination.totalPages,
                   totalEntries: pagination.totalEntries,
                 },
+                navigateTo: "novo",
               }}
             />
           </ListPatient>

@@ -3,15 +3,24 @@ import { FiEdit } from "react-icons/fi";
 import Button from "../../../../Components/Buttons";
 import { useRegister } from "../../../../Components/Context/RegisterContext";
 import { Container, DataContainer, List, TitleContainer } from "./styles";
+import { ActionsContainer } from "../styles";
 
-const EndPhase = () => {
+type Props = {
+  onSubmit(): void;
+};
+
+const EndPhase: React.FC<Props> = ({ onSubmit }: Props) => {
   const { patient, changeStep, step } = useRegister();
   const { health, adress } = patient;
+
+  function handleSubmit() {
+    if (onSubmit) onSubmit();
+  }
 
   return (
     <Container>
       <DataContainer>
-        <TitleContainer>
+        <TitleContainer titleSpace={11}>
           <b>Dados pessoais</b>
           <FiEdit onClick={() => changeStep(1)} color="#03a696" size={25} />
         </TitleContainer>
@@ -20,7 +29,7 @@ const EndPhase = () => {
             <span>Nome:</span> {patient.name}
           </li>
           <li>
-            <span>Nascimento:</span>{" "}
+            <span>Nascimento:</span>
             {new Date(patient.birthday).toLocaleDateString()}
           </li>
           <li>
@@ -32,11 +41,10 @@ const EndPhase = () => {
           <li>
             <span>Sexo:</span> {patient.gender}
           </li>
-          {patient.phone && (
-            <li>
-              <span>Contato:</span> {patient.phone}
-            </li>
-          )}
+          <li>
+            <span>Contato:</span>
+            {patient.phone ? patient.phone : " Não informado"}
+          </li>
           <li>
             <span>CPF:</span> {patient.cpf}
           </li>
@@ -44,8 +52,8 @@ const EndPhase = () => {
             <span>RG:</span> {patient.rg}
           </li>
         </List>
-        <TitleContainer>
-          <b>Endereço</b>{" "}
+        <TitleContainer titleSpace={7}>
+          <b>Endereço</b>
           <FiEdit onClick={() => changeStep(2)} color="#03a696" size={25} />
         </TitleContainer>
         <List>
@@ -53,7 +61,7 @@ const EndPhase = () => {
             <span>Rua:</span> {adress.street}
           </li>
           <li>
-            <span>Numero:</span> {adress.number}
+            <span>Numero:</span> {adress.number ? adress.number : "S/N"}
           </li>
           <li>
             <span>Bairro:</span> {adress.neighborhood}
@@ -61,25 +69,24 @@ const EndPhase = () => {
           <li>
             <span>Cidade:</span> {adress.city}
           </li>
-          {adress.complement && (
-            <li>
-              <span>Complemento:</span> {adress.complement}
-            </li>
-          )}
+          <li>
+            <span>Complemento:</span>
+            {adress.complement ? adress.complement : " Sem complemento"}
+          </li>
         </List>
-        <TitleContainer>
-          <b>Saúde</b>{" "}
+        <TitleContainer titleSpace={5}>
+          <b>Saúde</b>
           <FiEdit onClick={() => changeStep(3)} color="#03a696" size={25} />
         </TitleContainer>
         <List>
           <li>
-            <span>Convênio:</span> {health.healthInsurance}
+            <span>Convênio:</span>
+            {health.healthInsurance ? health.healthInsurance : " Não informado"}
           </li>
-          {health.allergy && (
-            <li>
-              <span>Alergias:</span> {health.allergy}
-            </li>
-          )}
+          <li>
+            <span>Alergias:</span>
+            {health.allergy ? health.allergy : " Não informado"}
+          </li>
           {health.height && (
             <li>
               <span>Altura:</span> {health.height}cm
@@ -92,13 +99,22 @@ const EndPhase = () => {
           )}
         </List>
       </DataContainer>
-      <Button
-        typeBtn={{ type: "button" }}
-        handle={() => changeStep(step - 1)}
-        typeStyle="back"
-      >
-        Voltar
-      </Button>
+      <ActionsContainer>
+        <Button
+          typeBtn={{ type: "button" }}
+          handle={() => changeStep(step - 1)}
+          typeStyle="back"
+        >
+          Voltar
+        </Button>
+        <Button
+          typeBtn={{ type: "submit" }}
+          typeStyle="submit"
+          handle={handleSubmit}
+        >
+          Concluir
+        </Button>
+      </ActionsContainer>
     </Container>
   );
 };

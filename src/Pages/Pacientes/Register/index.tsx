@@ -7,92 +7,67 @@ import stepSvgNoActived from "../../../assests/SVGSs/stepCard.svg";
 import stepSvgActived from "../../../assests/SVGSs/stepCardActive.svg";
 
 import {
-  Container,
-  FormContainer,
-  Submit,
-  Title,
+  RegisterCard,
+  FormWrapper,
   StepProgressCard,
   StepProgressContainer,
+  TitleWrapper,
 } from "./styles";
 import { AlertTypes } from "../../../Components/Utils/ToastConfigs";
 import StepAdressData from "./StepAdress";
 import StepHealth from "./StepHealth";
 import EndPhase from "./StepEndPhase";
 import { useRegister } from "../../../Components/Context/RegisterContext";
+import { PacienteCard, PacienteContainer } from "../styles";
+import { HiUserGroup } from "react-icons/hi";
 
-interface RegisterProps {
-  isOpen: boolean;
-  close: Function;
-}
+type StepProps = {
+  [key: number]: any;
+};
 
-const Register: React.FC<RegisterProps> = ({
-  isOpen,
-  close,
-}: RegisterProps) => {
-  const { patient, step } = useRegister();
+const Register: React.FC = () => {
+  const { step } = useRegister();
   const addToast = useToastContext();
   const sucessMensage = "Paciente cadastrado com sucesso";
 
-  const handleSubmit = useCallback(async () => {
+  const submit = useCallback(async () => {
     try {
       addToast(sucessMensage, AlertTypes.SUCESS);
     } catch (err) {
       addToast("Erro no cadastro", AlertTypes.ERROR);
       console.error(err);
     }
-    close();
-  }, [addToast, close, patient]);
+  }, [addToast]);
 
-  function switchRender() {
-    switch (step) {
-      case 1:
-        return <StepPersonalData />;
-      case 2:
-        return <StepAdressData />;
-      case 3:
-        return <StepHealth />;
-      case 4:
-        return <EndPhase />;
-    }
-  }
+  const Step: StepProps = {
+    1: <StepPersonalData />,
+    2: <StepAdressData />,
+    3: <StepHealth />,
+    4: <EndPhase onSubmit={submit} />,
+  };
 
   function handleSetColor(current: number) {
     const active = "#FFF";
-    const noActive = "#555";
-    switch (step) {
-      case current:
-        return active;
-      case current:
-        return active;
-      case current:
-        return active;
-      case current:
-        return active;
-      default:
-        return noActive;
-    }
+    const inactive = "#555";
+    return current === step ? active : inactive;
   }
   function handleSetBackground(current: number) {
-    const noActive = stepSvgNoActived;
+    const inactive = stepSvgNoActived;
     const active = stepSvgActived;
-    switch (step) {
-      case current:
-        return active;
-      case current:
-        return active;
-      case current:
-        return active;
-      case current:
-        return active;
-      default:
-        return noActive;
-    }
+    return current === step ? active : inactive;
   }
-  const renderContent = () => {
-    if (isOpen) {
-      return (
-        <Container>
-          <Title>Novo Paciente</Title>
+  return (
+    <PacienteContainer>
+      <PacienteCard>
+        <RegisterCard>
+          <TitleWrapper>
+            <HiUserGroup
+              color="#03a696"
+              size={40}
+              style={{ position: "relative", bottom: ".15rem" }}
+            />
+            <label>Novo Paciente</label>
+          </TitleWrapper>
           <StepProgressContainer>
             <StepProgressCard color={handleSetColor(1)}>
               <img draggable="false" src={handleSetBackground(1)} />
@@ -111,19 +86,11 @@ const Register: React.FC<RegisterProps> = ({
               <label>Conclusão</label>
             </StepProgressCard>
           </StepProgressContainer>
-          <FormContainer>{switchRender()}</FormContainer>
-          {step === 4 ? (
-            <Submit onClick={handleSubmit}>Cadastrar</Submit>
-          ) : (
-            <></>
-          )}
-        </Container>
-      );
-    }
-    return <></>;
-  };
-
-  return renderContent();
+          <FormWrapper>{Step[step]}</FormWrapper>
+        </RegisterCard>
+      </PacienteCard>
+    </PacienteContainer>
+  );
 };
 
 export default Register;

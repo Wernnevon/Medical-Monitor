@@ -3,10 +3,10 @@ import React, { useCallback, useRef } from "react";
 import Input from "../../../../Components/Input";
 import * as Yup from "yup";
 import GetErros from "../../../../Components/Utils/getErrors";
-import { Container, FormContainer, FormContent } from "./styles";
 import Button from "../../../../Components/Buttons";
 import { useRegister } from "../../../../Components/Context/RegisterContext";
 import { Health } from "../../../../Infra/Entities";
+import { ActionsContainer, FormContainer, FormContent } from "../styles";
 
 const StepHealth: React.FC = () => {
   const formRef = useRef({} as FormHandles);
@@ -42,39 +42,36 @@ const StepHealth: React.FC = () => {
   );
 
   return (
-    <Container>
-      <FormContainer onSubmit={handleAdvance} ref={formRef}>
-        <FormContent>
-          <Input
-            value={patient.health && patient.health.healthInsurance}
-            placeholder="Convênio"
-            name="helthInsurance"
-            type="text"
-          />
-          <Input
-            value={patient.health && patient.health.allergy}
-            placeholder="Alergias"
-            name="allergy"
-            type="text"
-          />
-          <Input
-            value={patient.health && patient.health.weight}
-            placeholder="Peso"
-            title="Peso em quilos (KG)"
-            name="weight"
-            type="number"
-          />
-          <Input
-            value={patient.health && patient.health.height}
-            placeholder="Altura"
-            name="height"
-            type="number"
-            title="Altura em centimetros (cm)"
-          />
-        </FormContent>
-        <Button typeBtn={{ type: "submit" }} typeStyle="submit">
-          Avançar
-        </Button>
+    <FormContainer onSubmit={handleAdvance} ref={formRef}>
+      <FormContent>
+        <Input
+          value={patient.health && patient.health.healthInsurance}
+          placeholder="Convênio"
+          name="helthInsurance"
+          type="text"
+        />
+        <Input
+          value={patient.health && patient.health.allergy}
+          placeholder="Alergias"
+          name="allergy"
+          type="text"
+        />
+        <Input
+          value={patient.health && patient.health.weight}
+          placeholder="Peso"
+          title="Peso em quilos (KG)"
+          name="weight"
+          type="number"
+        />
+        <Input
+          value={patient.health && patient.health.height}
+          placeholder="Altura"
+          name="height"
+          type="number"
+          title="Altura em centimetros (cm)"
+        />
+      </FormContent>
+      <ActionsContainer>
         <Button
           typeBtn={{ type: "button" }}
           handle={() => changeStep(step - 1)}
@@ -82,8 +79,11 @@ const StepHealth: React.FC = () => {
         >
           Voltar
         </Button>
-      </FormContainer>
-    </Container>
+        <Button typeBtn={{ type: "submit" }} typeStyle="submit">
+          Avançar
+        </Button>
+      </ActionsContainer>
+    </FormContainer>
   );
 };
 

@@ -3,7 +3,7 @@ import React, { useCallback, useRef } from "react";
 import Input from "../../../../Components/Input";
 import * as Yup from "yup";
 import GetErros from "../../../../Components/Utils/getErrors";
-import { Container, FormContainer, FormContent } from "./styles";
+import { ActionsContainer, FormContainer, FormContent } from "../styles";
 import Button from "../../../../Components/Buttons";
 import { useRegister } from "../../../../Components/Context/RegisterContext";
 import { Adress } from "../../../../Infra/Entities";
@@ -42,44 +42,41 @@ const StepAdressData: React.FC = () => {
   );
 
   return (
-    <Container>
-      <FormContainer onSubmit={handleAdvance} ref={formRef}>
-        <FormContent>
-          <Input
-            value={patient.adress && patient.adress.street}
-            placeholder="Rua"
-            name="street"
-            type="text"
-          />
-          <Input
-            value={patient.adress && patient.adress.number}
-            placeholder="Número"
-            title='Digite "0" para sem número'
-            name="number"
-            type="number"
-          />
-          <Input
-            value={patient.adress && patient.adress.neighborhood}
-            placeholder="Bairro"
-            name="neighborhood"
-            type="text"
-          />
-          <Input
-            value={patient.adress && patient.adress.complement}
-            placeholder="Complemento"
-            name="complement"
-            type="text"
-          />
-          <Input
-            value={patient.adress && patient.adress.city}
-            placeholder="Cidade"
-            name="city"
-            type="text"
-          />
-        </FormContent>
-        <Button typeBtn={{ type: "submit" }} typeStyle="submit">
-          Avançar
-        </Button>
+    <FormContainer onSubmit={handleAdvance} ref={formRef}>
+      <FormContent>
+        <Input
+          value={patient.adress && patient.adress.street}
+          placeholder="Rua"
+          name="street"
+          type="text"
+        />
+        <Input
+          value={patient.adress && patient.adress.number}
+          placeholder="Número"
+          title='Digite "0" para sem número'
+          name="number"
+          type="number"
+        />
+        <Input
+          value={patient.adress && patient.adress.neighborhood}
+          placeholder="Bairro"
+          name="neighborhood"
+          type="text"
+        />
+        <Input
+          value={patient.adress && patient.adress.complement}
+          placeholder="Complemento"
+          name="complement"
+          type="text"
+        />
+        <Input
+          value={patient.adress && patient.adress.city}
+          placeholder="Cidade"
+          name="city"
+          type="text"
+        />
+      </FormContent>
+      <ActionsContainer>
         <Button
           typeBtn={{ type: "button" }}
           handle={() => changeStep(step - 1)}
@@ -87,8 +84,11 @@ const StepAdressData: React.FC = () => {
         >
           Voltar
         </Button>
-      </FormContainer>
-    </Container>
+        <Button typeBtn={{ type: "submit" }} typeStyle="submit">
+          Avançar
+        </Button>
+      </ActionsContainer>
+    </FormContainer>
   );
 };
 

@@ -6,22 +6,28 @@ import Atestado from "./Pages/Atestado";
 import Exame from "./Pages/Exame";
 import Pacientes from "./Pages/Pacientes";
 import { RegisterProvider } from "./Components/Context/RegisterContext";
+import Register from "./Pages/Pacientes/Register";
+import Details from "./Pages/Pacientes/Details";
 
 const Exams = () => (
   <ExameProvider>
     <Exame />
   </ExameProvider>
 );
-const Patients = () => (
+const RegisterPatient = () => (
   <RegisterProvider>
-    <Pacientes />
+    <Register />
   </RegisterProvider>
 );
 
 const MyRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/pacientes" element={<Patients />} />
+      <Route path="/pacientes">
+        <Route index element={<Pacientes />} />
+        <Route path="novo" element={<RegisterPatient />} />
+        <Route path="detalhes/:id" element={<Details />} />
+      </Route>
       <Route path="/receitas" element={<Prescription />} />
       <Route path="/exames" element={<Exams />} />
       <Route path="/atestados" element={<Atestado />} />
