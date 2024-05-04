@@ -16,7 +16,7 @@ const StepHealth: React.FC = () => {
       try {
         formRef.current.setErrors({});
         const schema = Yup.object().shape({
-          helthInsurance: Yup.string(),
+          healthInsurance: Yup.string(),
           allergy: Yup.string().optional(),
           weight: Yup.number().optional(),
           height: Yup.number().optional(),
@@ -47,7 +47,7 @@ const StepHealth: React.FC = () => {
         <Input
           value={patient.health && patient.health.healthInsurance}
           placeholder="Convênio"
-          name="helthInsurance"
+          name="healthInsurance"
           type="text"
         />
         <Input

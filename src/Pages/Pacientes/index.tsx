@@ -54,7 +54,7 @@ const Paciente: React.FC = () => {
       setFiltersData({
         insurance: [
           ...Array.from(healthInsuranceMap, ([, value]) => ({
-            name: "helthInsurance",
+            name: "healthInsurance",
             value,
           })),
         ],

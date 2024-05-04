@@ -8,6 +8,7 @@ interface CardProps {
 export const RegisterCard = styled.main`
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
   background-color: #fff;
   border-radius: 4px;
@@ -19,6 +20,7 @@ export const RegisterCard = styled.main`
 export const TitleWrapper = styled.div`
   display: flex;
   gap: 1rem;
+  width: 100%;
   align-items: center;
   margin: 1rem 0;
   padding-bottom: 1rem;
@@ -31,10 +33,10 @@ export const TitleWrapper = styled.div`
 
 export const StepProgressContainer = styled.div`
   display: flex;
-  width: 100%;
+  width: 75%;
   justify-content: space-between;
   box-sizing: border-box;
-  margin: 1em 0;
+  margin-bottom: 3rem;
   @media (max-width: 1200px),
     (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     margin: 0;

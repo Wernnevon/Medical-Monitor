@@ -8,17 +8,17 @@ import {
 
 import makeClient from "./ClientFactory";
 
-const examClient = makeClient("patient");
+const patientClient = makeClient("patient");
 
-const makeLocalPatientStore = () => new LocalPatientStore(examClient);
+const makeLocalPatientStore = () => new LocalPatientStore(patientClient);
 
-const makeLocalPatientUpdate = () => new LocalPatientUpdate(examClient);
+const makeLocalPatientUpdate = () => new LocalPatientUpdate(patientClient);
 
-const makeLocalPatientDelete = () => new LocalPatientDelete(examClient);
+const makeLocalPatientDelete = () => new LocalPatientDelete(patientClient);
 
-const makeLocalPatientFind = () => new LocalPatientFind(examClient);
+const makeLocalPatientFind = () => new LocalPatientFind(patientClient);
 
-const makeLocalPatientList = () => new LocalPatientList(examClient);
+const makeLocalPatientList = () => new LocalPatientList(patientClient);
 
 export {
   makeLocalPatientStore,

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-duplicate-case */
 import React, { useCallback } from "react";
@@ -20,24 +21,33 @@ import EndPhase from "./StepEndPhase";
 import { useRegister } from "../../../Components/Context/RegisterContext";
 import { PacienteCard, PacienteContainer } from "../styles";
 import { HiUserGroup } from "react-icons/hi";
+import { makeLocalPatientStore } from "../../../Factories";
+import { useNavigate } from "react-router-dom";
 
 type StepProps = {
   [key: number]: any;
 };
 
 const Register: React.FC = () => {
-  const { step } = useRegister();
+  const navigate = useNavigate();
+  const { step, patient } = useRegister();
   const addToast = useToastContext();
   const sucessMensage = "Paciente cadastrado com sucesso";
+  const patientStore = makeLocalPatientStore();
 
   const submit = useCallback(async () => {
-    try {
-      addToast(sucessMensage, AlertTypes.SUCESS);
-    } catch (err) {
-      addToast("Erro no cadastro", AlertTypes.ERROR);
-      console.error(err);
-    }
-  }, [addToast]);
+    console.log(patient);
+    await patientStore
+      .store({ data: patient })
+      .then(() => {
+        addToast(sucessMensage, AlertTypes.SUCESS);
+        navigate(-1);
+      })
+      .catch((err) => {
+        addToast("Erro no cadastro", AlertTypes.ERROR);
+        console.error(err);
+      });
+  }, [addToast, patient]);
 
   const Step: StepProps = {
     1: <StepPersonalData />,
