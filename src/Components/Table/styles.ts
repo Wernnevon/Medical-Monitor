@@ -3,10 +3,28 @@ import styled from "styled-components";
 export const TableContainer = styled.main`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 100%;
+  height: 100%;
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0px 3px 13px 5px #00000021;
+
+  > span {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    > label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: "Akshar-Regular";
+      color: #444;
+      height: 100%;
+    }
+  }
 `;
 
 export const TableHeader = styled.div`
@@ -35,7 +53,6 @@ export const FilterWrapper = styled.div`
   height: 3rem;
   gap: 1rem;
 `;
-
 
 export const AddButton = styled.button`
   display: flex;

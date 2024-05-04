@@ -70,55 +70,61 @@ const Table: React.FC<Props<any>> = ({
   }
   return (
     <TableContainer>
-      <TableHeader>
-        <TitleWrapper>
-          <HiUserGroup
-            color="#03a696"
-            size={40}
-            style={{ position: "relative", bottom: ".15rem" }}
-          />
-          <label>Pacientes</label>
-        </TitleWrapper>
-        <FilterWrapper>
-          {filters.map((filter: DataFilter) => Filters[filter.type](filter))}
-          <AddButton onClick={handleNavigate}>
-            <IoPersonAdd />
-            Novo
-          </AddButton>
-        </FilterWrapper>
-      </TableHeader>
-      <TableWrapper>
-        <Row isHeader={true}>
-          {columns &&
-            columns.map((column, i) => (
-              <Cell key={column.key + i}>{column.name}</Cell>
+      <span>
+        <TableHeader>
+          <TitleWrapper>
+            <HiUserGroup
+              color="#03a696"
+              size={40}
+              style={{ position: "relative", bottom: ".15rem" }}
+            />
+            <label>Pacientes</label>
+          </TitleWrapper>
+          <FilterWrapper>
+            {filters.map((filter: DataFilter) => Filters[filter.type](filter))}
+            <AddButton onClick={handleNavigate}>
+              <IoPersonAdd />
+              Novo
+            </AddButton>
+          </FilterWrapper>
+        </TableHeader>
+        {data && data.length ? (
+          <TableWrapper>
+            <Row isHeader={true}>
+              {columns &&
+                columns.map((column, i) => (
+                  <Cell key={column.key + i}>{column.name}</Cell>
+                ))}
+            </Row>
+            {data.map((item, index) => (
+              <Row key={item.id} isOdd={index % 2 !== 0}>
+                {columns.map(({ key, type }, i) =>
+                  type !== "action" ? (
+                    <Cell
+                      key={key + i}
+                      widthCol={config.columnWidth[i]}
+                      align="left"
+                    >
+                      {item[key]}
+                    </Cell>
+                  ) : (
+                    <Cell
+                      key={key + i}
+                      widthCol={config.columnWidth[i]}
+                      align="right"
+                      isAction={true}
+                    >
+                      <KebabMenu />
+                    </Cell>
+                  )
+                )}
+              </Row>
             ))}
-        </Row>
-        {data.map((item, index) => (
-          <Row key={item.id} isOdd={index % 2 !== 0}>
-            {columns.map(({ key, type }, i) =>
-              type !== "action" ? (
-                <Cell
-                  key={key + i}
-                  widthCol={config.columnWidth[i]}
-                  align="left"
-                >
-                  {item[key]}
-                </Cell>
-              ) : (
-                <Cell
-                  key={key + i}
-                  widthCol={config.columnWidth[i]}
-                  align="right"
-                  isAction={true}
-                >
-                  <KebabMenu />
-                </Cell>
-              )
-            )}
-          </Row>
-        ))}
-      </TableWrapper>
+          </TableWrapper>
+        ) : (
+          <label>Sem dados</label>
+        )}
+      </span>
       <Pagination
         changePage={config.pagination.changePage}
         actualPage={config.pagination.actualPage}
