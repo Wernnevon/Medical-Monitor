@@ -31,7 +31,7 @@ const Pagination: React.FC<Props> = ({
   return (
     <Container>
       <TotalLabel>{totalEntries} Pacientes</TotalLabel>
-      <PaginationContainer>
+      <PaginationContainer disabled={totalEntries < 11}>
         <BsChevronLeft
           onClick={() => handleChangePage(actualPage - 1, "back")}
         />

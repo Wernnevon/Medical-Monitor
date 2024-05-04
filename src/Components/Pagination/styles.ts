@@ -17,7 +17,7 @@ export const TotalLabel = styled.label`
   border-radius: 5px;
 `;
 
-export const PaginationContainer = styled.div`
+export const PaginationContainer = styled.div<any>`
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -26,8 +26,13 @@ export const PaginationContainer = styled.div`
     font-size: 1.2rem;
   }
 
-  svg:hover {
-    cursor: pointer;
-    color: #03a696;
+  svg {
+    color: ${({ disabled }) => (disabled ? "#ddd" : "#111")};
+    pointer-events: ${({ disabled }) => (disabled ? "none" : "all")};
+    cursor: ${({ disabled }) => (disabled ? "not-allowed" : "default")};
+    :hover {
+      cursor: pointer;
+      color: #03a696;
+    }
   }
 `;
