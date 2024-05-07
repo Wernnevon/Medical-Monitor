@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable no-duplicate-case */
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import StepPersonalData from "./StepPersonalData";
 import { useToastContext } from "../../../Components/Context/Toast";
 import stepSvgNoActived from "../../../assests/SVGSs/stepCard.svg";
@@ -21,8 +20,12 @@ import EndPhase from "./StepEndPhase";
 import { useRegister } from "../../../Components/Context/RegisterContext";
 import { PacienteCard, PacienteContainer } from "../styles";
 import { HiUserGroup } from "react-icons/hi";
-import { makeLocalPatientStore } from "../../../Factories";
-import { useNavigate } from "react-router-dom";
+import {
+  makeLocalPatientFind,
+  makeLocalPatientStore,
+  makeLocalPatientUpdate,
+} from "../../../Factories";
+import { useNavigate, useParams } from "react-router-dom";
 
 type StepProps = {
   [key: number]: any;
@@ -30,23 +33,50 @@ type StepProps = {
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
-  const { step, patient } = useRegister();
+  const { id } = useParams();
+  const { step, patient, addData } = useRegister();
   const addToast = useToastContext();
-  const sucessMensage = "Paciente cadastrado com sucesso";
+  const sucessMensage = {
+    store: "Paciente cadastrado com sucesso",
+    update: "Dados do paciente foram atualizados com sucesso",
+  };
   const patientStore = makeLocalPatientStore();
+  const patientFind = makeLocalPatientFind();
+  const patientUpdate = makeLocalPatientUpdate();
+
+  useEffect(() => {
+    if (id) {
+      patientFind.findOne({ query: id }).then(([data]: any) => {
+        addData({ ...data });
+      });
+    }
+  }, []);
 
   const submit = useCallback(async () => {
     console.log(patient);
-    await patientStore
-      .store({ data: patient })
-      .then(() => {
-        addToast(sucessMensage, AlertTypes.SUCESS);
-        navigate(-1);
-      })
-      .catch((err) => {
-        addToast("Erro no cadastro", AlertTypes.ERROR);
-        console.error(err);
-      });
+    if (id) {
+      await patientUpdate
+        .update({ data: patient })
+        .then(() => {
+          addToast(sucessMensage.update, AlertTypes.SUCESS);
+          navigate(-1);
+        })
+        .catch((err) => {
+          addToast("Erro na atualização", AlertTypes.ERROR);
+          console.error(err);
+        });
+    } else {
+      await patientStore
+        .store({ data: patient })
+        .then(() => {
+          addToast(sucessMensage.store, AlertTypes.SUCESS);
+          navigate(-1);
+        })
+        .catch((err) => {
+          addToast("Erro no cadastro", AlertTypes.ERROR);
+          console.error(err);
+        });
+    }
   }, [addToast, patient]);
 
   const Step: StepProps = {
