@@ -42,48 +42,7 @@ export const Card = styled.div`
     font-size: 1.5rem;
   }
 `;
-export const CardItem = styled.div`
-  display: flex;
-  align-items: flex-end;
-  flex-direction: row;
-  justify-content: space-between;
-  background: none;
-  font-size: 1.5rem;
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  border-bottom: 1px solid #03a696;
-  label:first-child {
-    margin-right: 0.5rem;
-  }
-  button {
-    border: none;
-    border-radius: 0.2rem;
-    outline: none;
-    padding: 0.2rem 1rem;
-    background-color: #03a696;
-    width: max-content;
-    margin-top: 1em;
-    color: #fff;
-    font-size: 1rem;
-    /* font-weight: 300; */
-    transition: 40ms ease-in;
-    font-family: "Akshar-Light", sans-serif;
-    font-size: 1.3rem;
-    :hover {
-      cursor: pointer;
-    }
-    :active {
-      transform: translateY(2px);
-    }
-  }
-  @media (max-width: 1200px),
-    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
-    font-size: 1rem;
-    button {
-      font-size: 0.9rem;
-    }
-  }
-`;
+
 export const CardText = styled.div`
   display: flex;
   align-items: flex-end;

@@ -1,17 +1,7 @@
-import React, { useState } from "react";
-import Modal from "../../../Components/Modal";
-import Anamnese from "./Anamnese";
-import ExamDetails from "./ExamDetails";
+import React from "react";
 
-import { Container, Card, CardItem, CardText } from "./styles";
-import { Patient, Prescription } from "../../../Infra/Entities";
-import Exam from "../../../Infra/Entities/Exams";
-
-enum ModalStrategyOpen {
-  EXAM = "exam",
-  PRESC = "precription",
-  ANMN = "anamnese",
-}
+import { Container, Card, CardText } from "./styles";
+import { Patient } from "../../../Infra/Entities";
 
 const Details: React.FC = () => {
   const patient: Patient = {
@@ -37,39 +27,6 @@ const Details: React.FC = () => {
       complement: undefined,
     },
   };
-  const [modalState, setModalState] = useState(false);
-  const [exam, setExam] = useState<Exam>({} as Exam);
-  const [prescription, setPrescription] = useState<Prescription>(
-    {} as Prescription
-  );
-  const [anamnses, setAnamneses] = useState(false);
-
-  function closeModal() {
-    setModalState(!modalState);
-    if (anamnses) setAnamneses(false);
-  }
-  function openModalExam(exam: Exam) {
-    setPrescription({} as Prescription);
-    setExam({ ...exam });
-    setModalState(true);
-  }
-
-  function openModalPrescription(prescription: Prescription) {
-    setExam({} as Exam);
-    setPrescription({ ...prescription });
-    setModalState(true);
-  }
-
-  function openModalAnamnese() {
-    setModalState(true);
-    setAnamneses(true);
-  }
-
-  const openStrategy = {
-    [ModalStrategyOpen.EXAM]: openModalExam,
-    [ModalStrategyOpen.PRESC]: openModalPrescription,
-    [ModalStrategyOpen.ANMN]: openModalAnamnese,
-  };
 
   function calculaIdade(nascimento: Date) {
     const hoje = new Date();
@@ -87,18 +44,6 @@ const Details: React.FC = () => {
   };
   return (
     <Container>
-      <Modal modalState={modalState} closeModal={closeModal}>
-        {anamnses ? (
-          <Anamnese patient={patient} closeModal={closeModal} />
-        ) : (
-          <ExamDetails
-            patient={patient}
-            exam={exam}
-            prescription={prescription}
-            closeModal={closeModal}
-          />
-        )}
-      </Modal>
       <Card>
         <p>Dados Pessoais</p>
         <CardText>
@@ -185,14 +130,6 @@ const Details: React.FC = () => {
           <label>Altura: </label>
           <label>{patient.health.height} cm</label>
         </CardText>
-      </Card>
-      <Card>
-        <CardItem>
-          <span style={{ fontWeight: 600, textTransform: "uppercase" }}>
-            Anamnese
-          </span>
-          <button onClick={openStrategy[ModalStrategyOpen.ANMN]}>Abrir</button>
-        </CardItem>
       </Card>
     </Container>
   );

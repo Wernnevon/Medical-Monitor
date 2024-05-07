@@ -18,7 +18,7 @@ import StepAdressData from "./StepAdress";
 import StepHealth from "./StepHealth";
 import EndPhase from "./StepEndPhase";
 import { useRegister } from "../../../Components/Context/RegisterContext";
-import { PacienteCard, PacienteContainer } from "../styles";
+import { PacienteCard, PacienteContainer } from "../List/styles";
 import { HiUserGroup } from "react-icons/hi";
 import {
   makeLocalPatientFind,

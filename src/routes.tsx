@@ -4,10 +4,8 @@ import { ExameProvider } from "./Components/Context/ExameContext";
 import Prescription from "./Pages/Prescription";
 import Atestado from "./Pages/Atestado";
 import Exame from "./Pages/Exame";
-import Pacientes from "./Pages/Pacientes";
+import { List, Details, Register } from "./Pages/Pacientes";
 import { RegisterProvider } from "./Components/Context/RegisterContext";
-import Register from "./Pages/Pacientes/Register";
-import Details from "./Pages/Pacientes/Details";
 
 const Exams = () => (
   <ExameProvider>
@@ -24,7 +22,7 @@ const MyRoutes: React.FC = () => {
   return (
     <Routes>
       <Route path="/pacientes">
-        <Route index element={<Pacientes />} />
+        <Route index element={<List />} />
         <Route path="novo" element={<RegisterPatient />} />
         <Route path="editar/:id" element={<RegisterPatient />} />
         <Route path="detalhes/:id" element={<Details />} />

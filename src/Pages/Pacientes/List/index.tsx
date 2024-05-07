@@ -9,10 +9,10 @@ import {
   ListPatient,
   PatientSection,
 } from "./styles";
-import Table from "../../Components/Table";
-import { makeLocalPatientList } from "../../Factories";
-import { Patient } from "../../Infra/Entities";
-import { List } from "../../Infra/Interfaces";
+import Table from "../../../Components/Table";
+import { makeLocalPatientList } from "../../../Factories";
+import { Patient } from "../../../Infra/Entities";
+import { List } from "../../../Infra/Interfaces";
 import { useNavigate } from "react-router-dom";
 
 const Paciente: React.FC = () => {
