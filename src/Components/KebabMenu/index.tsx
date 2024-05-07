@@ -1,24 +1,42 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useRef, useState } from "react";
-import { Container, Kebab } from "./styles";
+import { Container, Item, Kebab } from "./styles";
 import useOutsideAlerter from "../../Hooks/useOutsideAlerter";
 
-const KebabMenu: React.FC = () => {
+type Props = {
+  rowId: number | string;
+  items: KebabItem[];
+};
+
+type KebabItem = {
+  icon: any;
+  name: string;
+  action(param: any): void;
+};
+
+const KebabMenu: React.FC<Props> = ({ items, rowId }: Props) => {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef, closeKebab);
 
   function closeKebab() {
-    if(open) setOpen(false);
+    if (open) setOpen(false);
+  }
+
+  function handleAction(onAction: (param: any) => void) {
+    if (onAction) onAction(rowId);
   }
 
   return (
     <span ref={wrapperRef}>
       <Kebab onClick={() => setOpen(!open)} />
       <Container isOpen={open}>
-        <a>Item 1</a>
-        <a>Item 2</a>
-        <a>Item 3</a>
+        {items &&
+          items.length &&
+          items.map(({ icon, name, action }) => (
+            <Item key={name} onClick={() => handleAction(action)}>
+              {icon} {name}
+            </Item>
+          ))}
       </Container>
     </span>
   );

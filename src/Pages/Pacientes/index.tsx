@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
+import { FaUserEdit } from "react-icons/fa";
 
 import {
   PacienteContainer,
@@ -11,9 +12,11 @@ import Table from "../../Components/Table";
 import { makeLocalPatientList } from "../../Factories";
 import { Patient } from "../../Infra/Entities";
 import { List } from "../../Infra/Interfaces";
+import { useNavigate } from "react-router-dom";
 
 const Paciente: React.FC = () => {
   const patientList = makeLocalPatientList();
+  const navigate = useNavigate();
 
   const [pacientes, setPacientes] = useState<Patient[]>([]);
 
@@ -24,7 +27,18 @@ const Paciente: React.FC = () => {
   }>({ totalEntries: 0, totalPages: 0 });
   const [filters, setFilters] = useState<List.Filter[]>([]);
   const [keywords, setKeywords] = useState<string[]>([]);
+
   const [filtersData, setFiltersData] = useState<any>({});
+
+  const kebabConfigs = [
+    {
+      icon: <FaUserEdit />,
+      name: "Editar",
+      action: (id: number) => {
+        navigate(`editar/${id}`);
+      },
+    },
+  ];
 
   useEffect(() => {
     patientList
@@ -147,6 +161,7 @@ const Paciente: React.FC = () => {
                 },
                 navigateTo: "novo",
               }}
+              kebabConfig={kebabConfigs}
             />
           </ListPatient>
         </PatientSection>

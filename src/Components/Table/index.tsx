@@ -21,6 +21,7 @@ type Props<T> = {
   data: DataTable<T>[];
   filters: DataFilter[];
   config?: any;
+  kebabConfig: any;
 };
 
 type DataTable<T> = {
@@ -63,11 +64,13 @@ const Table: React.FC<Props<any>> = ({
   columns,
   filters,
   config,
+  kebabConfig,
 }: Props<any>) => {
   const navigate = useNavigate();
   function handleNavigate() {
     navigate(config.navigateTo);
   }
+
   return (
     <TableContainer>
       <span>
@@ -114,7 +117,7 @@ const Table: React.FC<Props<any>> = ({
                       align="right"
                       isAction={true}
                     >
-                      <KebabMenu />
+                      <KebabMenu rowId={item.id} items={kebabConfig} />
                     </Cell>
                   )
                 )}
