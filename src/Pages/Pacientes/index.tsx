@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { FaUserEdit } from "react-icons/fa";
+import { TbListDetails } from "react-icons/tb";
 
 import {
   PacienteContainer,
@@ -36,6 +37,13 @@ const Paciente: React.FC = () => {
       name: "Editar",
       action: (id: number) => {
         navigate(`editar/${id}`);
+      },
+    },
+    {
+      icon: <TbListDetails />,
+      name: "Ver detalhes",
+      action: (id: number) => {
+        navigate(`detalhes/${id}`);
       },
     },
   ];
