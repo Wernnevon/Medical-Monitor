@@ -94,3 +94,5 @@ TC-16:
 
 TC-17:
   # Create remote register to patients;
+
+Utilizar generic ao gateway, para simplificar os gateways em apenas unm quinteto ao invés de 3. A diferenciação vai acontecer nas factories que é onde será passado os tipos
