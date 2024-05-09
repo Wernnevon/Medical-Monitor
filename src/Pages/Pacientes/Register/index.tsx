@@ -19,13 +19,15 @@ import StepHealth from "./StepHealth";
 import EndPhase from "./StepEndPhase";
 import { useRegister } from "../../../Components/Context/RegisterContext";
 import { PacienteCard, PacienteContainer } from "../List/styles";
-import { HiUserGroup } from "react-icons/hi";
+
 import {
   makeLocalPatientFind,
   makeLocalPatientStore,
   makeLocalPatientUpdate,
 } from "../../../Factories";
 import { useNavigate, useParams } from "react-router-dom";
+import { IoPersonAdd } from "react-icons/io5";
+import { FaUserEdit } from "react-icons/fa";
 
 type StepProps = {
   [key: number]: any;
@@ -101,11 +103,19 @@ const Register: React.FC = () => {
       <PacienteCard>
         <RegisterCard>
           <TitleWrapper>
-            <HiUserGroup
-              color="#03a696"
-              size={40}
-              style={{ position: "relative", bottom: ".15rem" }}
-            />
+            {id ? (
+              <FaUserEdit
+                color="#03a696"
+                size={40}
+                style={{ position: "relative", bottom: ".15rem" }}
+              />
+            ) : (
+              <IoPersonAdd
+                color="#03a696"
+                size={40}
+                style={{ position: "relative", bottom: ".15rem" }}
+              />
+            )}
             <label>Novo Paciente</label>
           </TitleWrapper>
           <StepProgressContainer>
