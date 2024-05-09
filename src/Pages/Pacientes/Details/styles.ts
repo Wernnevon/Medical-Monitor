@@ -2,62 +2,99 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
+  align-items: center;
+  width: 85.7vw;
+  margin-left: -0.7vw;
+`;
+
+export const PacienteCard = styled.div`
+  display: flex;
   flex-direction: column;
-  margin: 2rem;
-  padding: 2rem;
+  font-size: 2rem;
+  text-align: center;
+  margin-left: 10px;
   width: 100%;
-  box-sizing: border-box;
-  background-color: #fff;
-  border: none;
-  border-radius: 1rem;
-  box-shadow: 0px 3px 8px 0px #00000033;
+  height: auto;
   overflow-y: auto;
-  @media (max-width: 1200px),
-    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
-    padding: 1rem;
+  padding: 2rem;
+  background-color: #ffffffeb;
+  gap: 2rem;
+
+  > div {
+    gap: 2rem;
+    display: flex;
+    width: 100%;
+    height: max-content;
   }
 `;
 
 export const Card = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   padding: 1rem;
   box-sizing: border-box;
-  /* font-weight: 300; */
-  font-size: 2rem;
-  font-family: "Akshar-Light", sans-serif;
-  color: #2c2c2c;
-  p {
-    font-family: "Akshar-Medium", sans-serif;
-    text-transform: capitalize;
-  }
-  label:first-child {
-    font-family: "Akshar-Medium", sans-serif;
+  border-radius: 1rem;
+  box-shadow: 0px 3px 13px 5px #00000021;
+  background-color: #fff;
+`;
 
-    text-transform: uppercase;
-  }
-  @media (max-width: 1200px),
-    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
-    font-size: 1.5rem;
+export const TitleCard = styled(Card)`
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem !important;
+`;
+export const Title = styled.label`
+  font-family: "Akshar-Light";
+`;
+
+export const PersonalDataCard = styled(Card)`
+  width: 70%;
+  align-items: flex-start;
+
+  > div:not(:first-child) {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.6fr 1fr 0.6fr;
+    gap: 1rem;
   }
 `;
 
 export const CardText = styled.div`
   display: flex;
-  align-items: flex-end;
-  flex-direction: row;
+  justify-content: flex-end;
+  flex-direction: column;
   background: none;
   font-size: 1.5rem;
-  margin: 0.5rem 0;
+  margin: 0;
   padding: 0.5rem;
-  border-bottom: 1px solid #03a696;
-  label:first-child {
-    margin-right: 0.5rem;
-    font-family: "Akshar-Medium";
+  /* border-bottom: 1px solid #03a696; */
+  width: 100%;
+  text-align: left;
+  label {
+    font-family: "Akshar-Light";
+    :first-child {
+      color: #555;
+      font-size: 1.2rem;
+    }
   }
-  @media (max-width: 1200px),
-    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
-    font-size: 1rem;
+`;
+
+export const HealtyhCardText = styled(CardText)`
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 1rem;
+`;
+
+export const AnamneseCard = styled(Card)`
+  width: 30%;
+`;
+
+export const TableCard = styled(Card)`
+  margin: 0;
+  padding: 0;
+  border-radius: 4px;
+
+  > main:first-child {
+    box-shadow: none;
   }
 `;
