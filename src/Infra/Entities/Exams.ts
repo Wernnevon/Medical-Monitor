@@ -10,7 +10,6 @@ type Exam = {
   realizationDate?: Date;
   done: ExamStatus;
   diagnosis?: string;
-  anamnese: string;
   id: string;
 };
 
