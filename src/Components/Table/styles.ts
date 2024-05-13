@@ -74,12 +74,6 @@ export const AddButton = styled.button`
   :active {
     transform: translateY(2px);
   }
-  @media (max-width: 1200px),
-    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
-    height: 30px;
-    padding: 0;
-    font-size: 0.95rem;
-  }
 `;
 
 export const TableWrapper = styled.div`

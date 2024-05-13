@@ -17,6 +17,7 @@ import Pagination from "../Pagination";
 import { useNavigate } from "react-router-dom";
 
 type Props<T> = {
+  title: string;
   columns: DataColumn[];
   data: DataTable<T>[];
   filters: DataFilter[];
@@ -60,6 +61,7 @@ const Filters = {
 };
 
 const Table: React.FC<Props<any>> = ({
+  title = "Titulo",
   data,
   columns,
   filters,
@@ -81,7 +83,7 @@ const Table: React.FC<Props<any>> = ({
               size={40}
               style={{ position: "relative", bottom: ".15rem" }}
             />
-            <label>Pacientes</label>
+            <label>{title}</label>
           </TitleWrapper>
           <FilterWrapper>
             {filters.map((filter: DataFilter) => Filters[filter.type](filter))}
@@ -105,7 +107,7 @@ const Table: React.FC<Props<any>> = ({
                   type !== "action" ? (
                     <Cell
                       key={key + i}
-                      widthCol={config.columnWidth[i]}
+                      widthCol={config.columnWidth && config.columnWidth[i]}
                       align="left"
                     >
                       {item[key]}
@@ -113,7 +115,7 @@ const Table: React.FC<Props<any>> = ({
                   ) : (
                     <Cell
                       key={key + i}
-                      widthCol={config.columnWidth[i]}
+                      widthCol={config.columnWidth && config.columnWidth[i]}
                       align="right"
                       isAction={true}
                     >
