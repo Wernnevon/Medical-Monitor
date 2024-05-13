@@ -93,6 +93,7 @@ const Paciente: React.FC = () => {
         <PatientSection>
           <ListPatient>
             <Table
+              title="Pacientes"
               data={pacientes.map(
                 ({
                   id,
