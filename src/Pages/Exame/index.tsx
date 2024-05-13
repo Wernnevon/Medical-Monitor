@@ -6,16 +6,10 @@ import { useExame } from "../../Components/Context/ExameContext";
 import {
   ExameCard,
   ExameContainer,
-  ExameContent,
   LabelHeader,
   InputData,
   CheckoutContent,
   ExamesContent,
-  SearchBar,
-  SearchInput,
-  SearchItem,
-  ListPatient,
-  ItemPatient,
   FormButtonSave,
   FormButtonClear,
   FormButtonContainer,
@@ -30,8 +24,6 @@ const Exame: React.FC = () => {
   const addToast = useToastContext();
   const [otherExams, setOtherExams] = useState([]);
   const [otherExamsText, setOtherExamsText] = useState([]);
-  const [pacientes, setPacientes] = useState<Patient[]>([]);
-  const [pacienteNome, setPacienteNome] = useState<string>("");
 
   const [patient, setPatient] = useState<Patient>({} as Patient);
 
@@ -49,7 +41,6 @@ const Exame: React.FC = () => {
   }
 
   function handleClearAll() {
-    setPatient({} as Patient);
     setOtherExams([]);
     setOtherExamsText([]);
     for (const checkbox of document.querySelectorAll(
@@ -77,34 +68,8 @@ const Exame: React.FC = () => {
   return (
     <ExameContainer>
       <ExameCard>
-        <ExameContent>
-          <SearchBar>
-            <SearchInput
-              onChange={(e) => setPacienteNome(e.target.value)}
-              value={pacienteNome}
-              placeholder="Pesquisar Paciente"
-            />
-            <SearchItem size={22} />
-          </SearchBar>
-          <ListPatient>
-            {pacientes
-              .filter((paciente) =>
-                paciente.name
-                  .toLocaleLowerCase()
-                  .includes(pacienteNome.toLocaleLowerCase())
-              )
-              .map((paciente: Patient) => (
-                <ItemPatient key={paciente.id}>
-                  <label>{paciente.name}</label>
-                  <button onClick={() => setPatient(paciente)}>
-                    Escolher paciente
-                  </button>
-                </ItemPatient>
-              ))}
-          </ListPatient>
-        </ExameContent>
-        <LabelHeader>Selecione os exames:</LabelHeader>
         <ExamesContent>
+          <LabelHeader>Selecione os exames:</LabelHeader>
           {exames.map((exame) => (
             <Dropdown
               key={exame.type}
