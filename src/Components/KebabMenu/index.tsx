@@ -29,7 +29,7 @@ const KebabMenu: React.FC<Props> = ({ items, rowId }: Props) => {
   return (
     <span ref={wrapperRef}>
       <Kebab onClick={() => setOpen(!open)} />
-      <Container isOpen={open}>
+      <Container isOpen={open && items && items.length}>
         {items &&
           items.length &&
           items.map(({ icon, name, action }) => (
