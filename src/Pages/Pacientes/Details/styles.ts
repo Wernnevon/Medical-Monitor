@@ -5,17 +5,19 @@ export const Container = styled.div`
   align-items: center;
   width: 85.7vw;
   margin-left: -0.7vw;
+  box-sizing: border-box;
 `;
 
 export const PacienteCard = styled.div`
+  overflow-y: auto !important;
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
   font-size: 2rem;
   text-align: center;
   margin-left: 10px;
   width: 100%;
-  height: auto;
-  overflow-y: auto;
+  height: 100vh;
   padding: 2rem;
   background-color: #ffffffeb;
   gap: 2rem;

@@ -88,6 +88,7 @@ const Details: React.FC = () => {
             </CardText>
             <div>
               <span>
+                {/* Dados Pessoais */}
                 <CardText>
                   <label>Nome da mãe: </label>
                   <label>{patient.motherName}</label>
@@ -138,17 +139,18 @@ const Details: React.FC = () => {
                   </label>
                 </CardText>
               </span>
+              {/* Dados de saúde */}
               <span>
                 <HealtyhCardText>
-                  <FaAllergies />
+                  <FaAllergies color="#555" />
                   <label>{patient.health.allergy}</label>
                 </HealtyhCardText>
                 <HealtyhCardText>
-                  <FaWeightHanging />
+                  <FaWeightHanging color="#555" />
                   <label>{patient.health.weight} kg</label>
                 </HealtyhCardText>
                 <HealtyhCardText>
-                  <GiBodyHeight />
+                  <GiBodyHeight color="#555" />
                   <label>{patient.health.height} cm</label>
                 </HealtyhCardText>
               </span>
@@ -160,8 +162,37 @@ const Details: React.FC = () => {
         </div>
         <TableCard>
           <Table
-            columns={[]}
-            data={[]}
+            title="Exames"
+            columns={[
+              { name: "Exame", key: "name", type: "text" },
+              { name: "Requisição", key: "requisitionDate", type: "text" },
+              { name: "Realização", key: "realizationDate", type: "text" },
+              { name: "Status", key: "done", type: "text" },
+              { name: "", key: "action", type: "action" },
+            ]}
+            data={[
+              {
+                id: 1,
+                name: "Exame 1",
+                requisitionDate: "13/04/2024",
+                realizationDate: "-",
+                done: "Em Andamento",
+              },
+              {
+                id: 2,
+                name: "Exame 2",
+                requisitionDate: "10/05/2024",
+                realizationDate: "-",
+                done: "Em Andamento",
+              },
+              {
+                id: 3,
+                name: "Exame 3",
+                requisitionDate: "01/10/2023",
+                realizationDate: "15/10/2023",
+                done: "Realizado",
+              },
+            ]}
             filters={[
               {
                 placeholder: "Buscar",
@@ -178,6 +209,7 @@ const Details: React.FC = () => {
                 totalPages: 1,
                 totalEntries: 0,
               },
+              navigateTo: "exam",
             }}
             kebabConfig={undefined}
           />
