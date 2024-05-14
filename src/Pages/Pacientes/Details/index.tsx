@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { FaAllergies, FaWeightHanging } from "react-icons/fa";
 import { GiBodyHeight } from "react-icons/gi";
 import { IoPerson } from "react-icons/io5";
@@ -17,9 +17,11 @@ import {
   TableCard,
 } from "./styles";
 import { Patient } from "../../../Infra/Entities";
-import { makeLocalPatientFind } from "../../../Factories";
+import { makeLocalExamList, makeLocalPatientFind } from "../../../Factories";
 import Table from "../../../Components/Table";
 import { formmatDate, getAge } from "../../../Components/Utils/dateUtils";
+import { List } from "../../../Infra/Interfaces";
+import Exam from "../../../Infra/Entities/Exams";
 
 const initial: Patient = {
   anamnese: "",
@@ -45,16 +47,76 @@ const initial: Patient = {
   },
 };
 
+type ExamTableData = {
+  id: number;
+  name: string;
+  requisitionDate: string;
+  realizationDate: string;
+  done: string;
+};
+
+type PaginationProps = {
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  totalEntries: number;
+};
+
 const Details: React.FC = () => {
   const [patient, setPatient] = useState<Patient>(initial);
+  const [exams, setExams] = useState<ExamTableData[]>([]);
+  const [filters, setFilters] = useState<List.Filter[]>([]);
+  const [pagination, setPagination] = useState<PaginationProps>({
+    page: 1,
+    pageSize: 5,
+    totalEntries: 0,
+    totalPages: 1,
+  });
+
   const { id } = useParams();
   const patientFind = makeLocalPatientFind();
+  const examList = makeLocalExamList();
+
+  function handleChangePage(page: number) {
+    setPagination((prev) => ({ ...prev, page }));
+  }
 
   useLayoutEffect(() => {
-    patientFind.findOne({ query: id }).then(([resp]: any) => {
-      setPatient(resp);
-    });
+    if (id) {
+      patientFind.findOne({ query: id }).then(([resp]: any) => {
+        setPatient(resp);
+        setFilters([{ key: "patientId", value: id }]);
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    examList
+      .listPerPage({
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+        filters,
+      })
+      .then((data: { totalRecords: number; records: Exam[] }) => {
+        const list: ExamTableData[] = data.records.map(
+          ({ id, name, requisitionDate, realizationDate, done }) => ({
+            id: id || 0,
+            name,
+            requisitionDate: formmatDate(requisitionDate),
+            realizationDate: realizationDate
+              ? formmatDate(realizationDate)
+              : "-",
+            done,
+          })
+        );
+        setPagination((prev) => ({
+          ...prev,
+          totalEntries: data.totalRecords || 0,
+          totalPages: Math.ceil(data.totalRecords / pagination.pageSize) || 0,
+        }));
+        setExams(list || []);
+      });
+  }, [filters, pagination.page]);
 
   return (
     <Container>
@@ -157,29 +219,7 @@ const Details: React.FC = () => {
               { name: "Status", key: "done", type: "text" },
               { name: "", key: "action", type: "action" },
             ]}
-            data={[
-              {
-                id: 1,
-                name: "Exame 1",
-                requisitionDate: "13/04/2024",
-                realizationDate: "-",
-                done: "Em Andamento",
-              },
-              {
-                id: 2,
-                name: "Exame 2",
-                requisitionDate: "10/05/2024",
-                realizationDate: "-",
-                done: "Em Andamento",
-              },
-              {
-                id: 3,
-                name: "Exame 3",
-                requisitionDate: "01/10/2023",
-                realizationDate: "15/10/2023",
-                done: "Realizado",
-              },
-            ]}
+            data={exams}
             filters={[
               {
                 placeholder: "Buscar",
@@ -191,10 +231,11 @@ const Details: React.FC = () => {
             ]}
             config={{
               pagination: {
-                changePage: () => {},
-                actualPage: 1,
-                totalPages: 1,
-                totalEntries: 0,
+                changePage: handleChangePage,
+                actualPage: pagination.page,
+                pageSize: pagination.pageSize,
+                totalPages: pagination.totalPages,
+                totalEntries: pagination.totalEntries,
               },
               navigateTo: "exam",
             }}
