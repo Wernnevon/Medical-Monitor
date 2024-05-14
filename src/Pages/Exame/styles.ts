@@ -36,7 +36,6 @@ export const ExameCard = styled.div`
   text-align: center;
   height: 100%;
   position: relative;
-  border: 1px solid;
 `;
 
 export const LabelHeader = styled.label`
@@ -85,9 +84,10 @@ export const ExamesContent = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 100%;
+  height: 800px;
   margin: 0;
   padding: 1rem 0;
-  overflow: auto;
+  overflow-y: auto;
 `;
 
 export const FormButtonContainer = styled.div`
@@ -95,7 +95,6 @@ export const FormButtonContainer = styled.div`
   flex-direction: row;
   width: 100%;
   justify-content: flex-end;
-  position: relative;
   box-sizing: border-box;
 `;
 
