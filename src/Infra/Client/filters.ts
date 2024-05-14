@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-computed-key */
 import { Patient } from "../Entities";
+import Exam from "../Entities/Exams";
 
 type FilterParams = {
   key: "healthInsurance" | "city" | "patient";
@@ -16,10 +17,14 @@ const filterInsurance = (healthInsurance: string, patient: Patient) =>
 const filterPatientName = (name: string, patient: Patient) =>
   patient.name.includes(name);
 
+const filterExamByPatient = (patientId: string, exam: Exam) =>
+  Number(patientId) === exam.patientId;
+
 const filters = {
   ["healthInsurance"]: filterInsurance,
   ["city"]: filterCity,
   ["patient"]: filterPatientName,
+  ["patientId"]: filterExamByPatient,
 };
 
 const filterBy = (params: FilterParams) =>
