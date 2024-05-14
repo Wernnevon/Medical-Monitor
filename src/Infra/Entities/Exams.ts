@@ -10,7 +10,7 @@ type Exam = {
   realizationDate?: Date;
   done: ExamStatus;
   diagnosis?: string;
-  id: string;
+  id?: number;
 };
 
 export default Exam;
