@@ -8,7 +8,7 @@ import {
 
 import makeClient from "./ClientFactory";
 
-const patientClient = makeClient("patient");
+const patientClient = makeClient("patients");
 
 const makeLocalPatientStore = () => new LocalPatientStore(patientClient);
 

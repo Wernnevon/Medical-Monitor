@@ -8,19 +8,22 @@ import {
 
 import makeClient from "./ClientFactory";
 
-const examClient = makeClient("prescription");
+const prescriptionClient = makeClient("prescriptions");
 
-const makeLocalPrescriptionStore = () => new LocalPrescriptionStore(examClient);
+const makeLocalPrescriptionStore = () =>
+  new LocalPrescriptionStore(prescriptionClient);
 
 const makeLocalPrescriptionUpdate = () =>
-  new LocalPrescriptionUpdate(examClient);
+  new LocalPrescriptionUpdate(prescriptionClient);
 
 const makeLocalPrescriptionDelete = () =>
-  new LocalPrescriptionDelete(examClient);
+  new LocalPrescriptionDelete(prescriptionClient);
 
-const makeLocalPrescriptionFind = () => new LocalPrescriptionFind(examClient);
+const makeLocalPrescriptionFind = () =>
+  new LocalPrescriptionFind(prescriptionClient);
 
-const makeLocalPrescriptionList = () => new LocalPrescriptionList(examClient);
+const makeLocalPrescriptionList = () =>
+  new LocalPrescriptionList(prescriptionClient);
 
 export {
   makeLocalPrescriptionStore,
