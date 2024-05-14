@@ -55,8 +55,20 @@ class IndexedDBClient implements Client {
       request.onupgradeneeded = (event: any) => {
         const db: IDBDatabase = event.target.result;
 
-        if (!db.objectStoreNames.contains(this.dbConfig.storeName)) {
-          db.createObjectStore(this.dbConfig.storeName, {
+        if (!db.objectStoreNames.contains("patients")) {
+          db.createObjectStore("patients", {
+            keyPath: "id",
+            autoIncrement: true,
+          });
+        }
+        if (!db.objectStoreNames.contains("exams")) {
+          db.createObjectStore("exams", {
+            keyPath: "id",
+            autoIncrement: true,
+          });
+        }
+        if (!db.objectStoreNames.contains("prescriptions")) {
+          db.createObjectStore("prescriptions", {
             keyPath: "id",
             autoIncrement: true,
           });
