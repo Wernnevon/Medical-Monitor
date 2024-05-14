@@ -2,26 +2,28 @@ import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { Container, TotalLabel, PaginationContainer } from "./styles";
 
 type Props = {
-  actualPage: number;
+  page: number;
+  pageSize: number;
   totalPages: number;
   totalEntries: number;
   changePage: (e: number) => void;
 };
 
 const Pagination: React.FC<Props> = ({
-  actualPage,
+  page,
+  pageSize,
   totalPages,
   totalEntries,
   changePage,
 }: Props) => {
-  function handleChangePage(page: number, type: "next" | "back") {
+  function handleChangePage(newPage: number, type: "next" | "back") {
     if (changePage) {
       switch (type) {
         case "next":
-          if (actualPage < totalPages) changePage(page);
+          if (page < totalPages) changePage(newPage);
           break;
         case "back":
-          if (actualPage > 1) changePage(page);
+          if (page > 1) changePage(newPage);
           break;
         default:
           break;
@@ -31,16 +33,12 @@ const Pagination: React.FC<Props> = ({
   return (
     <Container>
       <TotalLabel>{totalEntries} Pacientes</TotalLabel>
-      <PaginationContainer disabled={totalEntries < 11}>
-        <BsChevronLeft
-          onClick={() => handleChangePage(actualPage - 1, "back")}
-        />
+      <PaginationContainer disabled={totalEntries < pageSize}>
+        <BsChevronLeft onClick={() => handleChangePage(page - 1, "back")} />
         <label>
-          {actualPage} de {totalPages}
+          {page} de {totalPages}
         </label>
-        <BsChevronRight
-          onClick={() => handleChangePage(actualPage + 1, "next")}
-        />
+        <BsChevronRight onClick={() => handleChangePage(page + 1, "next")} />
       </PaginationContainer>
     </Container>
   );

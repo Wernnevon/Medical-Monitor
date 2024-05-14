@@ -132,9 +132,10 @@ const Table: React.FC<Props<any>> = ({
       </span>
       <Pagination
         changePage={config.pagination.changePage}
-        actualPage={config.pagination.actualPage}
+        page={config.pagination.actualPage}
         totalPages={config.pagination.totalPages}
         totalEntries={config.pagination.totalEntries}
+        pageSize={config.pagination.pageSize}
       />
     </TableContainer>
   );
