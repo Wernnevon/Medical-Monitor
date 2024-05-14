@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { FaAllergies, FaWeightHanging } from "react-icons/fa";
 import { GiBodyHeight } from "react-icons/gi";
 import { IoPerson } from "react-icons/io5";
@@ -19,6 +19,7 @@ import {
 import { Patient } from "../../../Infra/Entities";
 import { makeLocalPatientFind } from "../../../Factories";
 import Table from "../../../Components/Table";
+import { formmatDate, getAge } from "../../../Components/Utils/dateUtils";
 
 const initial: Patient = {
   anamnese: "",
@@ -49,26 +50,12 @@ const Details: React.FC = () => {
   const { id } = useParams();
   const patientFind = makeLocalPatientFind();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     patientFind.findOne({ query: id }).then(([resp]: any) => {
       setPatient(resp);
     });
   }, []);
 
-  function calculaIdade(nascimento: Date) {
-    const hoje = new Date();
-    const birthday = new Date(nascimento);
-    return Math.floor(
-      Math.ceil(
-        Math.abs(birthday.getTime() - hoje.getTime()) / (1000 * 3600 * 24)
-      ) / 365.25
-    );
-  }
-
-  function getAge(birthday: Date): string {
-    const [y, m, d] = birthday.toString().split("-");
-    return new Date(Number(y), Number(m) - 1, Number(d)).toLocaleDateString();
-  }
   return (
     <Container>
       <PacienteCard>
@@ -99,11 +86,11 @@ const Details: React.FC = () => {
                 </CardText>
                 <CardText>
                   <label>Data de Nascimento: </label>
-                  <label>{getAge(patient.birthday)}</label>
+                  <label>{formmatDate(patient.birthday)}</label>
                 </CardText>
                 <CardText>
                   <label>Idade: </label>
-                  <label>{calculaIdade(patient.birthday)} anos</label>
+                  <label>{getAge(patient.birthday)} anos</label>
                 </CardText>
                 <CardText>
                   <label>RG: </label>
