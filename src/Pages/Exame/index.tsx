@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useLayoutEffect, useState } from "react";
 import Output from "../../Components/output";
 import Dropdown from "../../Components/Dropdown";
 import { useExame } from "../../Components/Context/ExameContext";
@@ -15,25 +16,28 @@ import {
   FormButtonContainer,
   ExameOutputCard,
 } from "./styles";
-import { patientExist, validate } from "../../Components/Utils/midlleware";
 import { useToastContext } from "../../Components/Context/Toast";
-import { Patient } from "../../Infra/Entities";
+import { makeLocalExamStore, makeLocalPatientFind } from "../../Factories";
+import { useParams } from "react-router-dom";
+import { ExamStatus } from "../../Infra/Entities/Exams";
 
 const Exame: React.FC = () => {
+  const { id } = useParams();
+  const [otherExamsText, setOtherExamsText] = useState([]);
+  const [name, setPatient] = useState("");
   const { exames, selected, handleClear } = useExame();
   const addToast = useToastContext();
   const [otherExams, setOtherExams] = useState([]);
-  const [otherExamsText, setOtherExamsText] = useState([]);
 
-  const [patient, setPatient] = useState<Patient>({} as Patient);
+  const findPatient = makeLocalPatientFind();
+  const examStore = makeLocalExamStore();
 
-  const setMenssage = () => {
-    if ([...selected, ...otherExams].length <= 0)
-      return "Escolha o paciente e selecione ao menos um exame";
-    else if ([...selected, ...otherExams].length <= 0)
-      return "Selecione ao menos um exame";
-    else return "Escolha o paciente";
-  };
+  useLayoutEffect(() => {
+    if (id)
+      findPatient.findOne({ query: id }).then(([{ name }]: any) => {
+        setPatient(name);
+      });
+  }, []);
 
   function handleOtherExams(event: any) {
     setOtherExamsText(event.target.value);
@@ -55,13 +59,31 @@ const Exame: React.FC = () => {
     addToast("Limpo", "sucess");
   }
 
-  function handleAddExam(patientUpdate: Patient) {
-    let allExams = [...selected, ...otherExams];
-    if (patientExist(patientUpdate.id) && validate(allExams)) {
-      addToast("Sucesso", "sucess");
-      clean();
+  function handleAddExam() {
+    const allExams = [...selected, ...otherExams];
+    if (id && allExams.length) {
+      allExams.forEach((exam) => {
+        examStore
+          .store({
+            data: {
+              patientId: parseInt(id),
+              name: exam,
+              requisitionDate: new Date(Date.now())
+                .toISOString()
+                .substring(0, 10),
+              done: ExamStatus.IN_PROGRESS,
+            },
+          })
+          .then(() => {
+            addToast("Sucesso", "sucess");
+            clean();
+          })
+          .catch((err) => {
+            addToast(err, "error");
+          });
+      });
     } else {
-      addToast(setMenssage());
+      addToast("Selecione ao menos um exame");
     }
   }
 
@@ -69,6 +91,7 @@ const Exame: React.FC = () => {
     <ExameContainer>
       <ExameCard>
         <ExamesContent>
+          {name}
           <LabelHeader>Selecione os exames:</LabelHeader>
           {exames.map((exame) => (
             <Dropdown
@@ -94,16 +117,13 @@ const Exame: React.FC = () => {
         </ExamesContent>
         <FormButtonContainer>
           <FormButtonClear onClick={clean}>Limpar</FormButtonClear>
-          <FormButtonSave onClick={() => handleAddExam({} as Patient)}>
-            Salvar
-          </FormButtonSave>
+          {id && (
+            <FormButtonSave onClick={handleAddExam}>Salvar</FormButtonSave>
+          )}
         </FormButtonContainer>
       </ExameCard>
       <ExameOutputCard>
-        <Output
-          exames={[...selected, ...otherExams]}
-          patientName={patient.name}
-        />
+        <Output exames={[...selected, ...otherExams]} patientName={name} />
       </ExameOutputCard>
     </ExameContainer>
   );
