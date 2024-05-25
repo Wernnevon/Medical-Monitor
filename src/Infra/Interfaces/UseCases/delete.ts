@@ -5,7 +5,7 @@ export interface Delete {
 
 export namespace Delete {
   export type Params = {
-    id?: string;
-    ids?: string[];
+    id?: number;
+    ids?: number[];
   };
 }
