@@ -131,6 +131,7 @@ const Table: React.FC<Props<any>> = ({
         )}
       </span>
       <Pagination
+        entityName={config.pagination.entityName}
         changePage={config.pagination.changePage}
         page={config.pagination.actualPage}
         totalPages={config.pagination.totalPages}
