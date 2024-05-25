@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useLayoutEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import { FaAllergies, FaWeightHanging } from "react-icons/fa";
 import { GiBodyHeight } from "react-icons/gi";
 import { IoPerson } from "react-icons/io5";
-import { useParams } from "react-router-dom";
 
 import {
   Container,
@@ -21,7 +22,10 @@ import { makeLocalExamList, makeLocalPatientFind } from "../../../Factories";
 import Table from "../../../Components/Table";
 import { formmatDate, getAge } from "../../../Components/Utils/dateUtils";
 import { List } from "../../../Infra/Interfaces";
-import Exam from "../../../Infra/Entities/Exams";
+import Exam, { ExamStatus } from "../../../Infra/Entities/Exams";
+import { DataFilter } from "../../../Components/Filters";
+import { PaginationType } from "../../../Components/Pagination";
+import { handleFilter } from "../../../Components/Utils/filterAdpater";
 
 const initial: Patient = {
   anamnese: "",
@@ -55,23 +59,42 @@ type ExamTableData = {
   done: string;
 };
 
-type PaginationProps = {
-  page: number;
-  pageSize: number;
-  totalPages: number;
-  totalEntries: number;
-};
-
 const Details: React.FC = () => {
   const [patient, setPatient] = useState<Patient>(initial);
   const [exams, setExams] = useState<ExamTableData[]>([]);
   const [filters, setFilters] = useState<List.Filter[]>([]);
-  const [pagination, setPagination] = useState<PaginationProps>({
+  const [keywords, setKeywords] = useState<string[]>([]);
+  const [pagination, setPagination] = useState<PaginationType>({
     page: 1,
     pageSize: 5,
     totalEntries: 0,
     totalPages: 1,
   });
+
+  const filterExamTable: DataFilter[] = [
+    {
+      type: "radio",
+      placeholder: "Status",
+      handle: (filterValue: any) =>
+        handleFilter({
+          keyFilter: "status",
+          filterValue,
+          filterArray: filters,
+          callback: setFilters,
+        }),
+      value: [
+        { name: "status", value: ExamStatus.IN_PROGRESS },
+        { name: "status", value: ExamStatus.DONE },
+      ],
+    },
+    {
+      placeholder: "Buscar",
+      type: "text",
+      handle: (v: string) => {
+        setKeywords(v.split(" "));
+      },
+    },
+  ];
 
   const { id } = useParams();
   const patientFind = makeLocalPatientFind();
@@ -96,27 +119,36 @@ const Details: React.FC = () => {
         page: pagination.page,
         pageSize: pagination.pageSize,
         filters,
+        keywords,
       })
-      .then((data: { totalRecords: number; records: Exam[] }) => {
-        const list: ExamTableData[] = data.records.map(
-          ({ id, name, requisitionDate, realizationDate, done }) => ({
-            id: id || 0,
-            name,
-            requisitionDate: formmatDate(requisitionDate),
-            realizationDate: realizationDate
-              ? formmatDate(realizationDate)
-              : "-",
-            done,
-          })
-        );
-        setPagination((prev) => ({
-          ...prev,
-          totalEntries: data.totalRecords || 0,
-          totalPages: Math.ceil(data.totalRecords / pagination.pageSize) || 0,
-        }));
-        setExams(list || []);
-      });
-  }, [filters, pagination.page]);
+      .then(
+        ({
+          totalRecords,
+          records,
+        }: {
+          totalRecords: number;
+          records: Exam[];
+        }) => {
+          const list: ExamTableData[] = records.map(
+            ({ id, name, requisitionDate, realizationDate, done }) => ({
+              id: id || 0,
+              name,
+              requisitionDate: formmatDate(requisitionDate),
+              realizationDate: realizationDate
+                ? formmatDate(realizationDate)
+                : "-",
+              done,
+            })
+          );
+          setPagination((prev) => ({
+            ...prev,
+            totalEntries: totalRecords || 0,
+            totalPages: Math.ceil(totalRecords / pagination.pageSize) || 0,
+          }));
+          setExams(list || []);
+        }
+      );
+  }, [filters, keywords, pagination.page]);
 
   return (
     <Container>
@@ -220,17 +252,10 @@ const Details: React.FC = () => {
               { name: "", key: "action", type: "action" },
             ]}
             data={exams}
-            filters={[
-              {
-                placeholder: "Buscar",
-                type: "text",
-                handle: (v: string) => {
-                  console.log(v.split(" "));
-                },
-              },
-            ]}
+            filters={filterExamTable}
             config={{
               pagination: {
+                entityName: "Exames",
                 changePage: handleChangePage,
                 actualPage: pagination.page,
                 pageSize: pagination.pageSize,
