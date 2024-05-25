@@ -8,7 +8,7 @@ type Prescription = {
   medicament: string;
   date: Date;
   administering: PrescriptionSatus;
-  id: string;
+  id: number;
 };
 
 export default Prescription;
