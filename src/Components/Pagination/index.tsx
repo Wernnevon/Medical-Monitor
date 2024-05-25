@@ -1,7 +1,16 @@
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { Container, TotalLabel, PaginationContainer } from "./styles";
 
+export type PaginationType = {
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  totalEntries: number;
+};
+
 type Props = {
+  entityName: string;
+
   page: number;
   pageSize: number;
   totalPages: number;
@@ -10,6 +19,7 @@ type Props = {
 };
 
 const Pagination: React.FC<Props> = ({
+  entityName = "Entidades",
   page,
   pageSize,
   totalPages,
@@ -32,7 +42,9 @@ const Pagination: React.FC<Props> = ({
   }
   return (
     <Container>
-      <TotalLabel>{totalEntries} Pacientes</TotalLabel>
+      <TotalLabel>
+        {totalEntries} {entityName}
+      </TotalLabel>
       <PaginationContainer disabled={totalEntries < pageSize}>
         <BsChevronLeft onClick={() => handleChangePage(page - 1, "back")} />
         <label>
