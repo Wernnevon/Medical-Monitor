@@ -95,8 +95,10 @@ export const TableCard = styled(Card)`
   margin: 0;
   padding: 0;
   border-radius: 4px;
+  background-color: transparent;
+  box-shadow: none;
 
-  > main:first-child {
-    box-shadow: none;
+  main {
+    border-radius: 1rem;
   }
 `;

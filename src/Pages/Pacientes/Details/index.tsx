@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { FaAllergies, FaWeightHanging } from "react-icons/fa";
@@ -18,14 +18,10 @@ import {
   TableCard,
 } from "./styles";
 import { Patient } from "../../../Infra/Entities";
-import { makeLocalExamList, makeLocalPatientFind } from "../../../Factories";
-import Table from "../../../Components/Table";
+import { makeLocalPatientFind } from "../../../Factories";
 import { formmatDate, getAge } from "../../../Components/Utils/dateUtils";
-import { List } from "../../../Infra/Interfaces";
-import Exam, { ExamStatus } from "../../../Infra/Entities/Exams";
-import { DataFilter } from "../../../Components/Filters";
-import { PaginationType } from "../../../Components/Pagination";
-import { handleFilter } from "../../../Components/Utils/filterAdpater";
+import { ExamList } from "./ExamList";
+import { PrecriptionList } from "./PrecriptionList";
 
 const initial: Patient = {
   anamnese: "",
@@ -51,104 +47,19 @@ const initial: Patient = {
   },
 };
 
-type ExamTableData = {
-  id: number;
-  name: string;
-  requisitionDate: string;
-  realizationDate: string;
-  done: string;
-};
-
 const Details: React.FC = () => {
   const [patient, setPatient] = useState<Patient>(initial);
-  const [exams, setExams] = useState<ExamTableData[]>([]);
-  const [filters, setFilters] = useState<List.Filter[]>([]);
-  const [keywords, setKeywords] = useState<string[]>([]);
-  const [pagination, setPagination] = useState<PaginationType>({
-    page: 1,
-    pageSize: 5,
-    totalEntries: 0,
-    totalPages: 1,
-  });
-
-  const filterExamTable: DataFilter[] = [
-    {
-      type: "radio",
-      placeholder: "Status",
-      handle: (filterValue: any) =>
-        handleFilter({
-          keyFilter: "status",
-          filterValue,
-          filterArray: filters,
-          callback: setFilters,
-        }),
-      value: [
-        { name: "status", value: ExamStatus.IN_PROGRESS },
-        { name: "status", value: ExamStatus.DONE },
-      ],
-    },
-    {
-      placeholder: "Buscar",
-      type: "text",
-      handle: (v: string) => {
-        setKeywords(v.split(" "));
-      },
-    },
-  ];
 
   const { id } = useParams();
   const patientFind = makeLocalPatientFind();
-  const examList = makeLocalExamList();
-
-  function handleChangePage(page: number) {
-    setPagination((prev) => ({ ...prev, page }));
-  }
 
   useLayoutEffect(() => {
     if (id) {
       patientFind.findOne({ query: id }).then(([resp]: any) => {
         setPatient(resp);
-        setFilters([{ key: "patientId", value: id }]);
       });
     }
   }, []);
-
-  useEffect(() => {
-    examList
-      .listPerPage({
-        page: pagination.page,
-        pageSize: pagination.pageSize,
-        filters,
-        keywords,
-      })
-      .then(
-        ({
-          totalRecords,
-          records,
-        }: {
-          totalRecords: number;
-          records: Exam[];
-        }) => {
-          const list: ExamTableData[] = records.map(
-            ({ id, name, requisitionDate, realizationDate, done }) => ({
-              id: id || 0,
-              name,
-              requisitionDate: formmatDate(requisitionDate),
-              realizationDate: realizationDate
-                ? formmatDate(realizationDate)
-                : "-",
-              done,
-            })
-          );
-          setPagination((prev) => ({
-            ...prev,
-            totalEntries: totalRecords || 0,
-            totalPages: Math.ceil(totalRecords / pagination.pageSize) || 0,
-          }));
-          setExams(list || []);
-        }
-      );
-  }, [filters, keywords, pagination.page]);
 
   return (
     <Container>
@@ -242,30 +153,8 @@ const Details: React.FC = () => {
           </AnamneseCard>
         </div>
         <TableCard>
-          <Table
-            title="Exames"
-            columns={[
-              { name: "Exame", key: "name", type: "text" },
-              { name: "Requisição", key: "requisitionDate", type: "text" },
-              { name: "Realização", key: "realizationDate", type: "text" },
-              { name: "Status", key: "done", type: "text" },
-              { name: "", key: "action", type: "action" },
-            ]}
-            data={exams}
-            filters={filterExamTable}
-            config={{
-              pagination: {
-                entityName: "Exames",
-                changePage: handleChangePage,
-                actualPage: pagination.page,
-                pageSize: pagination.pageSize,
-                totalPages: pagination.totalPages,
-                totalEntries: pagination.totalEntries,
-              },
-              navigateTo: "exam",
-            }}
-            kebabConfig={undefined}
-          />
+          <ExamList patientId={id} />
+          <PrecriptionList patientId={id} />
         </TableCard>
       </PacienteCard>
     </Container>
