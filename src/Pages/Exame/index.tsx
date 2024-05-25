@@ -24,7 +24,7 @@ import { ExamStatus } from "../../Infra/Entities/Exams";
 const Exame: React.FC = () => {
   const { id } = useParams();
   const [otherExamsText, setOtherExamsText] = useState([]);
-  const [name, setPatient] = useState("");
+  const [name, setName] = useState("");
   const { exames, selected, handleClear } = useExame();
   const addToast = useToastContext();
   const [otherExams, setOtherExams] = useState([]);
@@ -35,7 +35,7 @@ const Exame: React.FC = () => {
   useLayoutEffect(() => {
     if (id)
       findPatient.findOne({ query: id }).then(([{ name }]: any) => {
-        setPatient(name);
+        setName(name);
       });
   }, []);
 
