@@ -36,6 +36,9 @@ export const ExameCard = styled.div`
   text-align: center;
   height: 100%;
   position: relative;
+  @media print {
+    display: none;
+  }
 `;
 
 export const LabelHeader = styled.label`
