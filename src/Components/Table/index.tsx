@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-computed-key */
 import { HiUserGroup } from "react-icons/hi";
-import { IoPersonAdd } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa";
 import KebabMenu from "../KebabMenu";
 import {
   AddButton,
@@ -88,7 +88,7 @@ const Table: React.FC<Props<any>> = ({
           <FilterWrapper>
             {filters.map((filter: DataFilter) => Filters[filter.type](filter))}
             <AddButton onClick={handleNavigate}>
-              <IoPersonAdd />
+              <FaPlus />
               Novo
             </AddButton>
           </FilterWrapper>
