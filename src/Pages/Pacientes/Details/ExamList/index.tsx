@@ -41,14 +41,14 @@ export const ExamList: React.FC<Props> = ({ patientId }: Props) => {
       placeholder: "Status",
       handle: (filterValue: any) =>
         handleFilter({
-          keyFilter: "status",
+          keyFilter: "done",
           filterValue,
           filterArray: filters,
           callback: setFilters,
         }),
       value: [
-        { name: "status", value: ExamStatus.IN_PROGRESS },
-        { name: "status", value: ExamStatus.DONE },
+        { name: "done", value: ExamStatus.IN_PROGRESS },
+        { name: "done", value: ExamStatus.DONE },
       ],
     },
     {

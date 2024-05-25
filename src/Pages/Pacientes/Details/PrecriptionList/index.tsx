@@ -41,14 +41,14 @@ export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
       placeholder: "Status",
       handle: (filterValue: any) =>
         handleFilter({
-          keyFilter: "status",
+          keyFilter: "administering",
           filterValue,
           filterArray: filters,
           callback: setFilters,
         }),
       value: [
-        { name: "status", value: PrescriptionSatus.ADMINISTERING },
-        { name: "status", value: PrescriptionSatus.SUSPENDED },
+        { name: "administering", value: PrescriptionSatus.ADMINISTERING },
+        { name: "administering", value: PrescriptionSatus.SUSPENDED },
       ],
     },
     {

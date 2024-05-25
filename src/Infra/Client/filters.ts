@@ -1,9 +1,9 @@
 /* eslint-disable no-useless-computed-key */
-import { Patient } from "../Entities";
+import { Patient, Prescription } from "../Entities";
 import Exam from "../Entities/Exams";
 
 type FilterParams = {
-  key: "healthInsurance" | "city" | "patient" | "status";
+  key: "healthInsurance" | "city" | "patient" | "done" | "administering";
   value: string;
   record: any;
 };
@@ -20,14 +20,20 @@ const filterPatientName = (name: string, patient: Patient) =>
 const filterExamByPatient = (patientId: string, exam: Exam) =>
   Number(patientId) === exam.patientId;
 
-const filterExamByStatus = (status: string, exam: Exam) => status === exam.done;
+const filterExamByStatus = (done: string, exam: Exam) => done === exam.done;
+
+const filterPrescriptionByStatus = (
+  administering: string,
+  prescription: Prescription
+) => administering === prescription.administering;
 
 const filters = {
   ["healthInsurance"]: filterInsurance,
   ["city"]: filterCity,
   ["patient"]: filterPatientName,
   ["patientId"]: filterExamByPatient,
-  ["status"]: filterExamByStatus,
+  ["done"]: filterExamByStatus,
+  ["administering"]: filterPrescriptionByStatus,
 };
 
 const filterBy = (params: FilterParams) =>
