@@ -1,3 +1,6 @@
-import SearchTextFilter from "./TextSearch"
+import SearchTextFilter from "./TextSearch";
 import RadioSelect from "./RadioSelect";
-export {SearchTextFilter, RadioSelect};
+import { DataFilter } from "./types";
+
+export { SearchTextFilter, RadioSelect };
+export type { DataFilter };
