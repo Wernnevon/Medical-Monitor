@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { FaUserEdit } from "react-icons/fa";
-import { TbListDetails } from "react-icons/tb";
+import { RiFileUserFill } from "react-icons/ri";
+import { TiUserDelete } from "react-icons/ti";
 
 import {
   PacienteContainer,
@@ -10,26 +11,57 @@ import {
   PatientSection,
 } from "./styles";
 import Table from "../../../Components/Table";
-import { makeLocalPatientList } from "../../../Factories";
-import { Patient } from "../../../Infra/Entities";
+import {
+  makeLocalPatientDelete,
+  makeLocalPatientList,
+} from "../../../Factories";
 import { List } from "../../../Infra/Interfaces";
 import { useNavigate } from "react-router-dom";
+import { Patient } from "../../../Infra/Entities";
+import { useToastContext } from "../../../Components/Context/Toast";
+import { AlertTypes } from "../../../Components/Utils/ToastConfigs";
+import { DataFilter } from "../../../Components/Filters";
+import { PaginationType } from "../../../Components/Pagination";
+import { handleFilter } from "../../../Components/Utils/filterAdpater";
+
+type PatientTableData = {
+  id: number;
+  name: string;
+  city: string;
+  healthInsurance: string;
+};
 
 const Paciente: React.FC = () => {
   const patientList = makeLocalPatientList();
+  const deletePatient = makeLocalPatientDelete();
+  const addToast = useToastContext();
+
   const navigate = useNavigate();
 
-  const [pacientes, setPacientes] = useState<Patient[]>([]);
+  const [pacientes, setPacientes] = useState<PatientTableData[]>([]);
 
-  const [page, setPage] = useState(1);
-  const [pagination, setPagination] = useState<{
-    totalEntries: number;
-    totalPages: number;
-  }>({ totalEntries: 0, totalPages: 0 });
+  const [pagination, setPagination] = useState<PaginationType>({
+    page: 1,
+    pageSize: 10,
+    totalEntries: 0,
+    totalPages: 1,
+  });
+
   const [filters, setFilters] = useState<List.Filter[]>([]);
   const [keywords, setKeywords] = useState<string[]>([]);
 
   const [filtersData, setFiltersData] = useState<any>({});
+
+  const deleteUser = (value: number) => {
+    deletePatient
+      .delete({ id: value })
+      .then(() => {
+        addToast("Paciente apagado", AlertTypes.SUCESS);
+      })
+      .catch(() => {
+        addToast("Houve um problema", AlertTypes.ERROR);
+      });
+  };
 
   const kebabConfigs = [
     {
@@ -40,52 +72,118 @@ const Paciente: React.FC = () => {
       },
     },
     {
-      icon: <TbListDetails />,
+      icon: <RiFileUserFill />,
       name: "Ver detalhes",
       action: (id: number) => {
         navigate(`detalhes/${id}`);
       },
     },
+    {
+      icon: <TiUserDelete />,
+      name: "Deletar",
+      action: deleteUser,
+    },
   ];
 
-  useEffect(() => {
+  const tableFilters: DataFilter[] = [
+    {
+      placeholder: "Convenio",
+      type: "radio",
+      handle: (filterValue: any) =>
+        handleFilter({
+          keyFilter: "healthInsurance",
+          filterValue,
+          filterArray: filters,
+          callback: setFilters,
+        }),
+      value: filtersData.insurance,
+    },
+    {
+      placeholder: "Cidade",
+      type: "radio",
+      handle: (filterValue: any) =>
+        handleFilter({
+          keyFilter: "city",
+          filterValue,
+          filterArray: filters,
+          callback: setFilters,
+        }),
+      value: filtersData.city,
+    },
+    {
+      placeholder: "Buscar",
+      type: "text",
+      handle: (v: string) => {
+        setKeywords(v.split(" "));
+      },
+    },
+  ];
+
+  const tableColumns = [
+    { name: "Paciente", key: "name", type: "text" },
+    { name: "Cidade", key: "city", type: "text" },
+    { name: "Convênio", key: "healthInsurance", type: "text" },
+    { name: "", key: "action", type: "action" },
+  ];
+
+  const tableConfig = {
+    columnWidth: ["40%", "27.5%", "27.5%", "5%"],
+    columnAlign: ["left", "left", "left", "center"],
+    pagination: {
+      entityName: "Pacientes",
+      changePage: handleChangePage,
+      actualPage: pagination.page,
+      totalPages: pagination.totalPages,
+      totalEntries: pagination.totalEntries,
+    },
+    navigateTo: "novo",
+  };
+
+  useLayoutEffect(() => {
     patientList
       .listPerPage({
-        page,
-        pageSize: 10,
+        page: pagination.page,
+        pageSize: pagination.pageSize,
         keywords,
         filters,
       })
-      .then((data) => {
-        setPacientes(data.records || []);
+      .then(({ records, totalRecords }) => {
+        const list: PatientTableData[] = records.map(
+          ({
+            id,
+            name,
+            adress: { city },
+            health: { healthInsurance },
+          }: Patient) => ({ id, name, city, healthInsurance })
+        );
+        setPacientes(list || []);
         setPagination({
-          totalEntries: data.totalRecords || 0,
-          totalPages: Math.ceil(data.totalRecords / 10) || 0,
+          ...pagination,
+          totalEntries: totalRecords || 0,
+          totalPages: Math.ceil(totalRecords / 10) || 0,
         });
       });
-  }, [page, filters, keywords]);
+  }, [pagination.page, filters, keywords, addToast]);
 
-  useEffect(() => {
-    const cityMap = new Map();
-    const healthInsuranceMap = new Map();
+  useLayoutEffect(() => {
     patientList.listAll().then((value) => {
-      value.forEach(({ adress: { city }, health: { healthInsurance } }) => {
-        cityMap.set(city, city);
-        healthInsuranceMap.set(healthInsurance, healthInsurance);
-      });
       setFiltersData({
-        insurance: [
-          ...Array.from(healthInsuranceMap, ([, value]) => ({
+        insurance: value
+          .map(({ health: { healthInsurance } }) => ({
             name: "healthInsurance",
-            value,
-          })),
-        ],
-        city: [
-          ...Array.from(cityMap, ([, value]) => ({ name: "city", value })),
-        ],
+            value: healthInsurance,
+          }))
+          .filter((value, index, self) => self.indexOf(value) === index),
+        city: value
+          .map(({ adress: { city } }) => ({ name: "city", value: city }))
+          .filter((value, index, self) => self.indexOf(value) === index),
       });
     });
   }, []);
+
+  function handleChangePage(page: number) {
+    setPagination((prev) => ({ ...prev, page }));
+  }
 
   return (
     <PacienteContainer>
@@ -94,82 +192,10 @@ const Paciente: React.FC = () => {
           <ListPatient>
             <Table
               title="Pacientes"
-              data={pacientes.map(
-                ({
-                  id,
-                  name,
-                  adress: { city },
-                  health: { healthInsurance },
-                }) => ({ id, name, city, healthInsurance })
-              )}
-              columns={[
-                { name: "Paciente", key: "name", type: "text" },
-                { name: "Cidade", key: "city", type: "text" },
-                { name: "Convênio", key: "healthInsurance", type: "text" },
-                { name: "", key: "action", type: "action" },
-              ]}
-              filters={[
-                {
-                  placeholder: "Convenio",
-                  type: "radio",
-                  handle: (v) => {
-                    const filtersMap = new Map(
-                      filters.map(({ key, value }) => [key, value])
-                    );
-                    if (v) filtersMap.set("healthInsurance", v);
-                    else filtersMap.delete("healthInsurance");
-
-                    const filtersArray = Array.from(
-                      filtersMap,
-                      ([key, value]) => ({
-                        key,
-                        value,
-                      })
-                    );
-                    setFilters(filtersArray);
-                  },
-                  value: filtersData.insurance,
-                },
-                {
-                  placeholder: "Cidade",
-                  type: "radio",
-                  handle: (v) => {
-                    const filtersMap = new Map(
-                      filters.map(({ key, value }) => [key, value])
-                    );
-                    if (v) filtersMap.set("city", v);
-                    else filtersMap.delete("city");
-
-                    const filtersArray = Array.from(
-                      filtersMap,
-                      ([key, value]) => ({
-                        key,
-                        value,
-                      })
-                    );
-                    setFilters(filtersArray);
-                  },
-                  value: filtersData.city,
-                },
-                {
-                  placeholder: "Buscar",
-                  type: "text",
-                  handle: (v: string) => {
-                    setKeywords(v.split(" "));
-                  },
-                },
-              ]}
-              config={{
-                columnWidth: ["40%", "27.5%", "27.5%", "5%"],
-                columnAlign: ["left", "left", "left", "center"],
-                pagination: {
-                  changePage: setPage,
-                  actualPage: page,
-                  totalPages: pagination.totalPages,
-                  totalEntries: pagination.totalEntries,
-                },
-                navigateTo: "novo",
-              }}
+              data={pacientes}
+              columns={tableColumns}
+              filters={tableFilters}
+              config={tableConfig}
               kebabConfig={kebabConfigs}
             />
           </ListPatient>
