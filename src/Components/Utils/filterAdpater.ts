@@ -21,6 +21,5 @@ export function handleFilter({
     key,
     value,
   }));
-  console.log("aaaa");
   if (callback) callback(filtersArray);
 }
