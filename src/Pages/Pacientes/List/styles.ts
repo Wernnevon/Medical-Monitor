@@ -29,7 +29,6 @@ export const PatientSection = styled.div`
 
 export const ListPatient = styled.div`
   display: flex;
-  overflow-y: auto;
   flex-direction: column;
   height: 100%;
   box-sizing: border-box;

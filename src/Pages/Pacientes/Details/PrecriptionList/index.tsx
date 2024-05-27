@@ -126,7 +126,7 @@ export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
           totalPages: pagination.totalPages,
           totalEntries: pagination.totalEntries,
         },
-        navigateTo: "prescribe",
+        navigateTo: "receitas",
       }}
       kebabConfig={undefined}
     />

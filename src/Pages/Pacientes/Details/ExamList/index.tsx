@@ -125,7 +125,7 @@ export const ExamList: React.FC<Props> = ({ patientId }: Props) => {
           totalPages: pagination.totalPages,
           totalEntries: pagination.totalEntries,
         },
-        navigateTo: "exam",
+        navigateTo: "exames",
       }}
       kebabConfig={undefined}
     />

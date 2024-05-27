@@ -23,6 +23,8 @@ import { AlertTypes } from "../../../Components/Utils/ToastConfigs";
 import { DataFilter } from "../../../Components/Filters";
 import { PaginationType } from "../../../Components/Pagination";
 import { handleFilter } from "../../../Components/Utils/filterAdpater";
+import { LuClipboardEdit } from "react-icons/lu";
+import { BiTestTube } from "react-icons/bi";
 
 type PatientTableData = {
   id: number;
@@ -65,6 +67,13 @@ const Paciente: React.FC = () => {
 
   const kebabConfigs = [
     {
+      icon: <RiFileUserFill />,
+      name: "Ver detalhes",
+      action: (id: number) => {
+        navigate(`detalhes/${id}`);
+      },
+    },
+    {
       icon: <FaUserEdit />,
       name: "Editar",
       action: (id: number) => {
@@ -72,10 +81,17 @@ const Paciente: React.FC = () => {
       },
     },
     {
-      icon: <RiFileUserFill />,
-      name: "Ver detalhes",
+      icon: <LuClipboardEdit />,
+      name: "Precrever",
       action: (id: number) => {
-        navigate(`detalhes/${id}`);
+        navigate(`detalhes/${id}/receitas`);
+      },
+    },
+    {
+      icon: <BiTestTube />,
+      name: "Exame",
+      action: (id: number) => {
+        navigate(`detalhes/${id}/exames`);
       },
     },
     {

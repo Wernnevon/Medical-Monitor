@@ -27,8 +27,8 @@ const MyRoutes: React.FC = () => {
         <Route path="editar/:id" element={<RegisterPatient />} />
         <Route path="detalhes/:id">
           <Route index element={<Details />} />
-          <Route path="exam" element={<Exams />} />
-          <Route path="prescribe" element={<Prescription />} />
+          <Route path="exames" element={<Exams />} />
+          <Route path="receitas" element={<Prescription />} />
         </Route>
       </Route>
       <Route path="/receitas" element={<Prescription />} />

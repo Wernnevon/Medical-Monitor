@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+/* eslint-disable no-useless-computed-key */
+import React, { useLayoutEffect, useState } from "react";
 
-import { AiOutlineAudit, AiOutlineFileText } from "react-icons/ai";
+import { AiOutlineAudit } from "react-icons/ai";
+import { LuClipboardSignature } from "react-icons/lu";
 import { HiUserGroup } from "react-icons/hi";
 import { BiTestTube } from "react-icons/bi";
 
@@ -15,9 +17,29 @@ import {
   LogoDiv,
   NavLink,
 } from "./styles";
+import { useLocation } from "react-router-dom";
 
 const SideNav: React.FC = () => {
   const [state, setState] = useState("pacientes");
+  const { pathname } = useLocation();
+
+  useLayoutEffect(() => {
+    const place = pathname.split("/").at(-1);
+    switch (place) {
+      case "exames":
+        setState("exames");
+        break;
+      case "receitas":
+        setState("receitas");
+        break;
+      case "atestados":
+        setState("atestados");
+        break;
+      default:
+        setState("pacientes");
+        break;
+    }
+  }, [pathname]);
   return (
     <SideMenuContainer id="sidenav">
       <LogoDiv>
@@ -29,9 +51,6 @@ const SideNav: React.FC = () => {
         draggable={false}
         to="/pacientes"
         active={state === "pacientes" ? state : ""}
-        onClick={() => {
-          setState("pacientes");
-        }}
       >
         <NavBtn active={state === "pacientes" ? state : ""}>
           <HiUserGroup style={{ position: "relative", bottom: ".15rem" }} />
@@ -41,18 +60,16 @@ const SideNav: React.FC = () => {
       <NavLink
         draggable={false}
         active={state === "receitas" ? state : ""}
-        onClick={() => setState("receitas")}
         to="/receitas"
       >
         <NavBtn active={state === "receitas" ? state : ""}>
-          <AiOutlineFileText />
+          <LuClipboardSignature />
           <NavLabel>Receitas</NavLabel>
         </NavBtn>
       </NavLink>
       <NavLink
         draggable={false}
         active={state === "exames" ? state : ""}
-        onClick={() => setState("exames")}
         to="/exames"
       >
         <NavBtn active={state === "exames" ? state : ""}>
@@ -64,7 +81,6 @@ const SideNav: React.FC = () => {
       <NavLink
         draggable={false}
         active={state === "atestados" ? state : ""}
-        onClick={() => setState("atestados")}
         to="/atestados"
       >
         <NavBtn active={state === "atestados" ? state : ""}>
