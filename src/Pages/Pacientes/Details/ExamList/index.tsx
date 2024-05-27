@@ -20,10 +20,10 @@ type Props = {
   patientId?: string;
 };
 
-export const ExamList: React.FC<Props> = ({ patientId }: Props) => {
+export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
   const [exams, setExams] = useState<ExamTableData[]>([]);
   const [filters, setFilters] = useState<List.Filter[]>([
-    { key: "patientId", value: patientId || "0" },
+    { key: "patientId", value: patientId },
   ]);
   const [keywords, setKeywords] = useState<string[]>([]);
   const [pagination, setPagination] = useState<PaginationType>({
