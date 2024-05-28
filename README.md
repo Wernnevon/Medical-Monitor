@@ -1,4 +1,3 @@
-````markdown
 # Monitor Médico
 
 ## Descrição
@@ -12,7 +11,6 @@ Para instalar as dependências do projeto, execute o seguinte comando:
 ```bash
 npm install
 ```
-````
 
 ## Uso
 
