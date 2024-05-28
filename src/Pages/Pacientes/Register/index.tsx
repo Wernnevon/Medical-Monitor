@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useCallback, useEffect } from "react";
 import StepPersonalData from "./StepPersonalData";
-import { useToastContext } from "../../../Hooks/useToast";
+import { useToast } from "../../../Hooks";
 import stepSvgNoActived from "../../../assests/SVGSs/stepCard.svg";
 import stepSvgActived from "../../../assests/SVGSs/stepCardActive.svg";
 
@@ -19,7 +19,7 @@ import { AlertTypes } from "../../../Hooks/useToast/ToastConfigs";
 import StepAdressData from "./StepAdress";
 import StepHealth from "./StepHealth";
 import EndPhase from "./StepEndPhase";
-import { useRegister } from "../../../Hooks/useRegister/RegisterContext";
+import { useRegister } from "../../../Hooks";
 import { PacienteCard, PacienteContainer } from "../List/styles";
 
 import {
@@ -39,7 +39,7 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { step, patient, addData } = useRegister();
-  const addToast = useToastContext();
+  const addToast = useToast();
   const sucessMensage = {
     store: "Paciente cadastrado com sucesso",
     update: "Dados do paciente foram atualizados com sucesso",

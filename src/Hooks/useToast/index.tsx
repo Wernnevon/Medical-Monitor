@@ -1,4 +1,4 @@
-import React, {
+import {
   useCallback,
   useContext,
   useState,
@@ -60,4 +60,4 @@ export function ToastContextProvider({ children }: ToastProps) {
   );
 }
 
-export const useToastContext = () => useContext(ToastContext);
+export const useToast = () => useContext(ToastContext);

@@ -9,7 +9,7 @@ import { makeLocalExamDelete, makeLocalExamList } from "../../../../Factories";
 import { formmatDate } from "../../../../Utils/dateUtils";
 import { LuClipboardCheck, LuClipboardX } from "react-icons/lu";
 import { AlertTypes } from "../../../../Hooks/useToast/ToastConfigs";
-import { useToastContext } from "../../../../Hooks/useToast";
+import { useToast } from "../../../../Hooks";
 
 type ExamTableData = {
   id: number;
@@ -36,7 +36,7 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
     totalPages: 1,
   });
 
-  const addToast = useToastContext();
+  const addToast = useToast();
 
   const examList = makeLocalExamList();
   const examDelete = makeLocalExamDelete();

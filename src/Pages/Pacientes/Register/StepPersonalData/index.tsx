@@ -4,7 +4,7 @@ import Input from "../../../../Components/Input";
 import * as Yup from "yup";
 import GetErros from "../../../../Utils/getErrors";
 import Button from "../../../../Components/Buttons";
-import { useRegister } from "../../../../Hooks/useRegister/RegisterContext";
+import { useRegister } from "../../../../Hooks";
 import { Patient } from "../../../../Infra/Entities";
 import { useNavigate } from "react-router-dom";
 import { ActionsContainer, FormContainer, FormContent } from "../styles";

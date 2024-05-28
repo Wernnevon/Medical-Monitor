@@ -18,7 +18,7 @@ import {
 import { List } from "../../../Infra/Interfaces";
 import { useNavigate } from "react-router-dom";
 import { Patient } from "../../../Infra/Entities";
-import { useToastContext } from "../../../Hooks/useToast";
+import { useToast } from "../../../Hooks";
 import { AlertTypes } from "../../../Hooks/useToast/ToastConfigs";
 import { DataFilter } from "../../../Components/Filters";
 import { PaginationType } from "../../../Components/Pagination";
@@ -36,7 +36,7 @@ type PatientTableData = {
 const Paciente: React.FC = () => {
   const patientList = makeLocalPatientList();
   const deletePatient = makeLocalPatientDelete();
-  const addToast = useToastContext();
+  const addToast = useToast();
 
   const navigate = useNavigate();
 

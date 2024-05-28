@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import GetErros from "../../../../Utils/getErrors";
 import { ActionsContainer, FormContainer, FormContent } from "../styles";
 import Button from "../../../../Components/Buttons";
-import { useRegister } from "../../../../Hooks/useRegister/RegisterContext";
+import { useRegister } from "../../../../Hooks";
 import { Adress } from "../../../../Infra/Entities";
 
 const StepAdressData: React.FC = () => {

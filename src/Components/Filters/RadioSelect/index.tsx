@@ -4,7 +4,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 
 import { Body, Container, Header, Item } from "./styles";
 import { useRef, useState } from "react";
-import useOutsideAlerter from "../../../Hooks/useOutsideAlerter";
+import { useOutsideAlert } from "../../../Hooks";
 
 type Props = {
   onSelect: (value: any) => void;
@@ -21,7 +21,7 @@ const RadioSelect: React.FC<Props> = ({
   const [item, setItem] = useState();
   const wrapperRef = useRef(null);
 
-  useOutsideAlerter(wrapperRef, collapse);
+  useOutsideAlert(wrapperRef, collapse);
 
   function collapse() {
     setIsCollapsed(false);

@@ -2,7 +2,7 @@
 import React, { useLayoutEffect, useState } from "react";
 import Output from "../../Components/output";
 import Dropdown from "../../Components/Dropdown";
-import { useExame } from "../../Hooks/useExam/ExameContext";
+import { useExame } from "../../Hooks";
 
 import {
   ExameCard,
@@ -19,14 +19,14 @@ import {
 import { makeLocalExamStore, makeLocalPatientFind } from "../../Factories";
 import { useParams } from "react-router-dom";
 import { ExamStatus } from "../../Infra/Entities/Exams";
-import { useToastContext } from "../../Hooks/useToast";
+import { useToast } from "../../Hooks";
 
 const Exame: React.FC = () => {
   const { id } = useParams();
   const [otherExamsText, setOtherExamsText] = useState([]);
   const [name, setName] = useState("");
   const { exames, selected, handleClear } = useExame();
-  const addToast = useToastContext();
+  const addToast = useToast();
   const [otherExams, setOtherExams] = useState([]);
 
   const findPatient = makeLocalPatientFind();

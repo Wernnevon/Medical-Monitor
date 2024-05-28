@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useLayoutEffect, useState } from "react";
-import { useToastContext } from "../../Hooks/useToast";
+import { useToast } from "../../Hooks";
 
 import Output from "../../Components/output";
 import { patientExist, validate } from "../../Utils/midlleware";
@@ -26,7 +26,7 @@ import { PrescriptionSatus } from "../../Infra/Entities/Prescription";
 const Prescription: React.FC = () => {
   const { id } = useParams();
   const [content, setContent] = useState([]);
-  const addToast = useToastContext();
+  const addToast = useToast();
   const [medicaments, setMedicaments] = useState("");
   const [name, setName] = useState("");
 

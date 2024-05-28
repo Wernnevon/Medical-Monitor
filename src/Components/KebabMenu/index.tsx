@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Container, Item, Kebab } from "./styles";
-import useOutsideAlerter from "../../Hooks/useOutsideAlerter";
+import useOutsideAlerter from "../../Hooks/useOutsideAlert";
 
 type Props = {
   rowId: number | string;

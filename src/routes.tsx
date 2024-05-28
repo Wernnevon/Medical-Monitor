@@ -1,11 +1,11 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { ExameProvider } from "./Hooks/useExam/ExameContext";
+import { ExameProvider } from "./Hooks/useExam";
 import Prescription from "./Pages/Prescription";
 import Atestado from "./Pages/Atestado";
 import Exame from "./Pages/Exame";
 import { List, Details, Register } from "./Pages/Pacientes";
-import { RegisterProvider } from "./Hooks/useRegister/RegisterContext";
+import { RegisterProvider } from "./Hooks/useRegister";
 
 const Exams = () => (
   <ExameProvider>
