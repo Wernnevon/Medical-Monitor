@@ -3,9 +3,9 @@ import Table from "../../../../Components/Table";
 import { List } from "../../../../Infra/Interfaces";
 import { PaginationType } from "../../../../Components/Pagination";
 import { DataFilter } from "../../../../Components/Filters";
-import { handleFilter } from "../../../../Components/Utils/filterAdpater";
+import { handleFilter } from "../../../../Utils/filterAdpater";
 import { makeLocalPrescriptionList } from "../../../../Factories";
-import { formmatDate } from "../../../../Components/Utils/dateUtils";
+import { formmatDate } from "../../../../Utils/dateUtils";
 import { Prescription } from "../../../../Infra/Entities";
 import { PrescriptionSatus } from "../../../../Infra/Entities/Prescription";
 

@@ -6,10 +6,10 @@ import React, {
   ReactNode,
 } from "react";
 import { Toast, ToastWrapper } from "./styles";
-import { AlertTypes } from "../../Utils/ToastConfigs";
 import { FiAlertTriangle } from "react-icons/fi";
 import { VscError } from "react-icons/vsc";
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { AlertTypes } from "./ToastConfigs";
 
 interface ToastProps {
   children: ReactNode;

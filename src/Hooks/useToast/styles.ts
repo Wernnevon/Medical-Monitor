@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { AlertBg, AlertTypes } from "../../Utils/ToastConfigs";
+import { AlertBg, AlertTypes } from "./ToastConfigs";
 
 interface ToastProps {
   toastType: string;

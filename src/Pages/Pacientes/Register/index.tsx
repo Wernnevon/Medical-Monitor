@@ -2,9 +2,11 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useCallback, useEffect } from "react";
 import StepPersonalData from "./StepPersonalData";
-import { useToastContext } from "../../../Components/Context/Toast";
+import { useToastContext } from "../../../Hooks/useToast";
 import stepSvgNoActived from "../../../assests/SVGSs/stepCard.svg";
 import stepSvgActived from "../../../assests/SVGSs/stepCardActive.svg";
+
+import mock from "../../../Infra/DB/db.json";
 
 import {
   RegisterCard,
@@ -13,11 +15,11 @@ import {
   StepProgressContainer,
   TitleWrapper,
 } from "./styles";
-import { AlertTypes } from "../../../Components/Utils/ToastConfigs";
+import { AlertTypes } from "../../../Hooks/useToast/ToastConfigs";
 import StepAdressData from "./StepAdress";
 import StepHealth from "./StepHealth";
 import EndPhase from "./StepEndPhase";
-import { useRegister } from "../../../Components/Context/RegisterContext";
+import { useRegister } from "../../../Hooks/useRegister/RegisterContext";
 import { PacienteCard, PacienteContainer } from "../List/styles";
 
 import {
@@ -45,6 +47,16 @@ const Register: React.FC = () => {
   const patientStore = makeLocalPatientStore();
   const patientFind = makeLocalPatientFind();
   const patientUpdate = makeLocalPatientUpdate();
+
+  // on dev mode
+  function fillPatientDB() {
+    mock.forEach((data) => {
+      data.birthday = new Date(Date.parse(data.birthday))
+        .toISOString()
+        .substring(0, 10);
+      patientStore.store({ data });
+    });
+  }
 
   useEffect(() => {
     if (id) {
@@ -100,6 +112,12 @@ const Register: React.FC = () => {
   }
   return (
     <PacienteContainer>
+      <button
+        style={{ position: "absolute", top: "0.5rem", left: "16vw" }}
+        onClick={fillPatientDB}
+      >
+        fill
+      </button>
       <PacienteCard>
         <RegisterCard>
           <TitleWrapper>

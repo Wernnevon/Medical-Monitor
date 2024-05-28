@@ -1,5 +1,5 @@
 import { HashRouter } from "react-router-dom";
-import { ToastContextProvider } from "./Components/Context/Toast";
+import { ToastContextProvider } from "./Hooks/useToast";
 
 import SideNav from "./Pages/SideNav";
 import Routes from "./routes";

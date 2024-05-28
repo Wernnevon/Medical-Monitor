@@ -19,7 +19,7 @@ import {
 } from "./styles";
 import { Patient } from "../../../Infra/Entities";
 import { makeLocalPatientFind } from "../../../Factories";
-import { formmatDate, getAge } from "../../../Components/Utils/dateUtils";
+import { formmatDate, getAge } from "../../../Utils/dateUtils";
 import { ExamList } from "./ExamList";
 import { PrecriptionList } from "./PrecriptionList";
 

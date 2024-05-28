@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useLayoutEffect, useState } from "react";
-import { useToastContext } from "../../Components/Context/Toast";
+import { useToastContext } from "../../Hooks/useToast";
 
 import Output from "../../Components/output";
-import { patientExist, validate } from "../../Components/Utils/midlleware";
+import { patientExist, validate } from "../../Utils/midlleware";
 
 import {
   ReceitaContainer,

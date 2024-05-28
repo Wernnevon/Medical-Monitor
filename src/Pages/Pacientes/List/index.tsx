@@ -18,11 +18,11 @@ import {
 import { List } from "../../../Infra/Interfaces";
 import { useNavigate } from "react-router-dom";
 import { Patient } from "../../../Infra/Entities";
-import { useToastContext } from "../../../Components/Context/Toast";
-import { AlertTypes } from "../../../Components/Utils/ToastConfigs";
+import { useToastContext } from "../../../Hooks/useToast";
+import { AlertTypes } from "../../../Hooks/useToast/ToastConfigs";
 import { DataFilter } from "../../../Components/Filters";
 import { PaginationType } from "../../../Components/Pagination";
-import { handleFilter } from "../../../Components/Utils/filterAdpater";
+import { handleFilter } from "../../../Utils/filterAdpater";
 import { LuClipboardEdit } from "react-icons/lu";
 import { BiTestTube } from "react-icons/bi";
 

@@ -2,9 +2,9 @@ import { FormHandles } from "@unform/core";
 import React, { useCallback, useRef } from "react";
 import Input from "../../../../Components/Input";
 import * as Yup from "yup";
-import GetErros from "../../../../Components/Utils/getErrors";
+import GetErros from "../../../../Utils/getErrors";
 import Button from "../../../../Components/Buttons";
-import { useRegister } from "../../../../Components/Context/RegisterContext";
+import { useRegister } from "../../../../Hooks/useRegister/RegisterContext";
 import { Health } from "../../../../Infra/Entities";
 import { ActionsContainer, FormContainer, FormContent } from "../styles";
 

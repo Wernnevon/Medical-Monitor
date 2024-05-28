@@ -2,7 +2,7 @@
 import React, { useLayoutEffect, useState } from "react";
 
 import { AiOutlineAudit } from "react-icons/ai";
-import { LuClipboardSignature } from "react-icons/lu";
+import { LuClipboardEdit } from "react-icons/lu";
 import { HiUserGroup } from "react-icons/hi";
 import { BiTestTube } from "react-icons/bi";
 
@@ -63,7 +63,7 @@ const SideNav: React.FC = () => {
         to="/receitas"
       >
         <NavBtn active={state === "receitas" ? state : ""}>
-          <LuClipboardSignature />
+          <LuClipboardEdit />
           <NavLabel>Receitas</NavLabel>
         </NavBtn>
       </NavLink>

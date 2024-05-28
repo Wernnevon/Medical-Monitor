@@ -1,8 +1,8 @@
 import { useField } from "@unform/core";
 import { useEffect, useRef } from "react";
-import formatValue from "../Utils/masks";
 
 import { Container, Placeholder } from "./styles";
+import formatValue from "../../Utils/masks";
 
 interface InputProps {
   name: string;

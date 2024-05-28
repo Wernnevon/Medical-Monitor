@@ -1,7 +1,7 @@
 import React from "react";
 import { FiEdit } from "react-icons/fi";
 import Button from "../../../../Components/Buttons";
-import { useRegister } from "../../../../Components/Context/RegisterContext";
+import { useRegister } from "../../../../Hooks/useRegister/RegisterContext";
 import { Container, DataContainer, List, TitleContainer } from "./styles";
 import { ActionsContainer } from "../styles";
 

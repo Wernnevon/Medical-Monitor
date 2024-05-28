@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useExame } from "../Context/ExameContext";
+import { useExame } from "../../Hooks/useExam/ExameContext";
 
 import {
   Exames,

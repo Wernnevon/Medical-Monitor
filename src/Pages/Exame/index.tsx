@@ -2,7 +2,7 @@
 import React, { useLayoutEffect, useState } from "react";
 import Output from "../../Components/output";
 import Dropdown from "../../Components/Dropdown";
-import { useExame } from "../../Components/Context/ExameContext";
+import { useExame } from "../../Hooks/useExam/ExameContext";
 
 import {
   ExameCard,
@@ -16,10 +16,10 @@ import {
   FormButtonContainer,
   ExameOutputCard,
 } from "./styles";
-import { useToastContext } from "../../Components/Context/Toast";
 import { makeLocalExamStore, makeLocalPatientFind } from "../../Factories";
 import { useParams } from "react-router-dom";
 import { ExamStatus } from "../../Infra/Entities/Exams";
+import { useToastContext } from "../../Hooks/useToast";
 
 const Exame: React.FC = () => {
   const { id } = useParams();

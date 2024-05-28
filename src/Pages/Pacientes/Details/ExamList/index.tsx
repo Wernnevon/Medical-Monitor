@@ -3,10 +3,13 @@ import Table from "../../../../Components/Table";
 import { List } from "../../../../Infra/Interfaces";
 import { PaginationType } from "../../../../Components/Pagination";
 import { DataFilter } from "../../../../Components/Filters";
-import { handleFilter } from "../../../../Components/Utils/filterAdpater";
+import { handleFilter } from "../../../../Utils/filterAdpater";
 import Exam, { ExamStatus } from "../../../../Infra/Entities/Exams";
-import { makeLocalExamList } from "../../../../Factories";
-import { formmatDate } from "../../../../Components/Utils/dateUtils";
+import { makeLocalExamDelete, makeLocalExamList } from "../../../../Factories";
+import { formmatDate } from "../../../../Utils/dateUtils";
+import { LuClipboardCheck, LuClipboardX } from "react-icons/lu";
+import { AlertTypes } from "../../../../Hooks/useToast/ToastConfigs";
+import { useToastContext } from "../../../../Hooks/useToast";
 
 type ExamTableData = {
   id: number;
@@ -33,7 +36,10 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
     totalPages: 1,
   });
 
+  const addToast = useToastContext();
+
   const examList = makeLocalExamList();
+  const examDelete = makeLocalExamDelete();
 
   const filterExamTable: DataFilter[] = [
     {
@@ -66,6 +72,21 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
     { name: "Realização", key: "realizationDate", type: "text" },
     { name: "Status", key: "done", type: "text" },
     { name: "", key: "action", type: "action" },
+  ];
+
+  const kebab = [
+    {
+      icon: <LuClipboardCheck />,
+      name: "Diagnótico",
+      action: (id: number) => {
+        console.log(`exame ${id}`);
+      },
+    },
+    {
+      icon: <LuClipboardX />,
+      name: "Deletar",
+      action: deleteExam,
+    },
   ];
 
   useEffect(() => {
@@ -104,10 +125,21 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
         }
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, keywords, pagination.page]);
+  }, [filters, keywords, pagination.page, addToast]);
 
   function handleChangePage(page: number) {
     setPagination((prev) => ({ ...prev, page }));
+  }
+
+  function deleteExam(examId: number) {
+    examDelete
+      .delete({ id: examId })
+      .then(() => {
+        addToast("Paciente apagado", AlertTypes.SUCESS);
+      })
+      .catch(() => {
+        addToast("Houve um problema", AlertTypes.ERROR);
+      });
   }
 
   return (
@@ -127,7 +159,7 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
         },
         navigateTo: "exames",
       }}
-      kebabConfig={undefined}
+      kebabConfig={kebab}
     />
   );
 };
