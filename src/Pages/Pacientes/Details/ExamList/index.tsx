@@ -10,6 +10,7 @@ import { formmatDate } from "../../../../Utils/dateUtils";
 import { LuClipboardCheck, LuClipboardX } from "react-icons/lu";
 import { AlertTypes } from "../../../../Hooks/useToast/ToastConfigs";
 import { useToast } from "../../../../Hooks";
+import { usePopup } from "../../../../Hooks/usePopup";
 
 type ExamTableData = {
   id: number;
@@ -37,6 +38,7 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
   });
 
   const addToast = useToast();
+  const { show } = usePopup();
 
   const examList = makeLocalExamList();
   const examDelete = makeLocalExamDelete();
@@ -44,7 +46,7 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
   const filterExamTable: DataFilter[] = [
     {
       type: "radio",
-      placeholder: "Status",
+      placeholder: "Situação",
       handle: (filterValue: any) =>
         handleFilter({
           keyFilter: "done",
@@ -70,7 +72,7 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
     { name: "Exame", key: "name", type: "text" },
     { name: "Requisição", key: "requisitionDate", type: "text" },
     { name: "Realização", key: "realizationDate", type: "text" },
-    { name: "Status", key: "done", type: "text" },
+    { name: "Situação", key: "done", type: "text" },
     { name: "", key: "action", type: "action" },
   ];
 
@@ -132,14 +134,22 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
   }
 
   function deleteExam(examId: number) {
-    examDelete
-      .delete({ id: examId })
-      .then(() => {
-        addToast("Paciente apagado", AlertTypes.SUCESS);
-      })
-      .catch(() => {
-        addToast("Houve um problema", AlertTypes.ERROR);
-      });
+    const deletePopup = {
+      data: {
+        title: "Excluir exame?",
+        message: `Tem certeza de que deseja excluir? Não há como desfazer esta ação!`,
+      },
+      onConfirm: () =>
+        examDelete
+          .delete({ id: examId })
+          .then(() => {
+            addToast("Paciente apagado", AlertTypes.SUCESS);
+          })
+          .catch(() => {
+            addToast("Houve um problema", AlertTypes.ERROR);
+          }),
+    };
+    show(deletePopup);
   }
 
   return (
