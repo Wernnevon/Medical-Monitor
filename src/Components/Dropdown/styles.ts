@@ -112,6 +112,7 @@ export const Checkbox = styled.input`
   border-radius: 5px;
   width: 15px;
   height: 15px;
+  accent-color: #03a696;
 `;
 
 export const LabelCheckbox = styled.label`
