@@ -25,6 +25,7 @@ import { PaginationType } from "../../../Components/Pagination";
 import { handleFilter } from "../../../Utils/filterAdpater";
 import { LuClipboardEdit } from "react-icons/lu";
 import { BiTestTube } from "react-icons/bi";
+import { usePopup } from "../../../Hooks/usePopup";
 
 type PatientTableData = {
   id: number;
@@ -37,6 +38,7 @@ const Paciente: React.FC = () => {
   const patientList = makeLocalPatientList();
   const deletePatient = makeLocalPatientDelete();
   const addToast = useToast();
+  const { showPopup } = usePopup();
 
   const navigate = useNavigate();
 
@@ -55,14 +57,22 @@ const Paciente: React.FC = () => {
   const [filtersData, setFiltersData] = useState<any>({});
 
   const deleteUser = (value: number) => {
-    deletePatient
-      .delete({ id: value })
-      .then(() => {
-        addToast("Paciente apagado", AlertTypes.SUCESS);
-      })
-      .catch(() => {
-        addToast("Houve um problema", AlertTypes.ERROR);
-      });
+    const popupData = {
+      data: {
+        title: "Excluir Paciente?",
+        message: `Tem certeza de que deseja excluir? Não há como desfazer esta ação!`,
+      },
+      onConfirm: () =>
+        deletePatient
+          .delete({ id: value })
+          .then(() => {
+            addToast("Paciente apagado", AlertTypes.SUCESS);
+          })
+          .catch(() => {
+            addToast("Houve um problema", AlertTypes.ERROR);
+          }),
+    };
+    showPopup(popupData);
   };
 
   const kebabConfigs = [
