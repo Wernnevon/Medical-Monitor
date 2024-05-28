@@ -52,9 +52,5 @@ Autor: [Wernnevon](mailto:wernnevon12@gmail.com)
 
 ```
 
-Este README.md fornece uma visão geral do projeto, instruções de instalação e uso, uma lista de scripts disponíveis, informações sobre contribuição e licença, além de detalhes de contato do autor. Certifique-se de adaptar as seções conforme necessário para refletir os detalhes específicos do seu projeto.
-```
-
-```
-
+Este README.md fornece uma visão geral do projeto, instruções de instalação e uso, uma lista de scripts disponíveis, informações sobre contribuição e licença, além de detalhes de contato do autor.
 ```
