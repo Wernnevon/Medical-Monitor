@@ -1,22 +1,15 @@
 import React from "react";
-import { ModalContainer, ModalContent, ModalCloser } from "./styles";
-import { AiOutlineClose } from "react-icons/ai";
+import { ModalContainer, ModalContent } from "./styles";
 
-interface ModalProps {
+type ModalProps = {
   modalState: boolean;
-  closeModal: () => void;
   children: React.ReactNode;
-}
+};
 
-const Modal: React.FC<ModalProps> = ({ modalState, closeModal, children }) => {
+const Modal: React.FC<ModalProps> = ({ modalState, children }) => {
   return (
     <ModalContainer show={modalState}>
-      <ModalContent show={modalState}>
-        <ModalCloser onClick={closeModal}>
-          <AiOutlineClose color="#FFF" size={20} />
-        </ModalCloser>
-        {children}
-      </ModalContent>
+      <ModalContent show={modalState}>{children}</ModalContent>
     </ModalContainer>
   );
 };
