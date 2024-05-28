@@ -38,7 +38,7 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
   });
 
   const addToast = useToast();
-  const { show } = usePopup();
+  const { showPopup } = usePopup();
 
   const examList = makeLocalExamList();
   const examDelete = makeLocalExamDelete();
@@ -134,7 +134,7 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
   }
 
   function deleteExam(examId: number) {
-    const deletePopup = {
+    const popupData = {
       data: {
         title: "Excluir exame?",
         message: `Tem certeza de que deseja excluir? Não há como desfazer esta ação!`,
@@ -149,7 +149,7 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
             addToast("Houve um problema", AlertTypes.ERROR);
           }),
     };
-    show(deletePopup);
+    showPopup(popupData);
   }
 
   return (

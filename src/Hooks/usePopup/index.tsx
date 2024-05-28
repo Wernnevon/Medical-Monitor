@@ -15,7 +15,7 @@ type PopupData = {
 };
 
 type ContextProps = {
-  show(props: PopupProps): void;
+  showPopup(props: PopupProps): void;
 };
 
 type SettingsProps = {
@@ -36,7 +36,7 @@ const Context = createContext({} as ContextProps);
 export const PopupProvider = ({ children }: any) => {
   const [settings, setSettings] = useState(initialSettings);
 
-  function show({ data, onConfirm, onCancel }: PopupProps) {
+  function showPopup({ data, onConfirm, onCancel }: PopupProps) {
     setSettings({
       visible: true,
       data,
@@ -60,7 +60,7 @@ export const PopupProvider = ({ children }: any) => {
   }
 
   return (
-    <Context.Provider value={{ show }}>
+    <Context.Provider value={{ showPopup }}>
       {children}
       <Popup
         data={settings.data}
