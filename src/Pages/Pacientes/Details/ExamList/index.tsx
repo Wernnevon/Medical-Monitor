@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { LuClipboardCheck, LuClipboardX } from "react-icons/lu";
+import { BiTestTube } from "react-icons/bi";
+
 import Table from "../../../../Components/Table";
 import { List } from "../../../../Infra/Interfaces";
 import { PaginationType } from "../../../../Components/Pagination";
@@ -7,7 +10,6 @@ import { handleFilter } from "../../../../Utils/filterAdpater";
 import Exam, { ExamStatus } from "../../../../Infra/Entities/Exams";
 import { makeLocalExamDelete, makeLocalExamList } from "../../../../Factories";
 import { formmatDate } from "../../../../Utils/dateUtils";
-import { LuClipboardCheck, LuClipboardX } from "react-icons/lu";
 import { AlertTypes } from "../../../../Hooks/useToast/ToastConfigs";
 import { useToast } from "../../../../Hooks";
 import { usePopup } from "../../../../Hooks/usePopup";
@@ -154,6 +156,7 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
 
   return (
     <Table
+      icon={<BiTestTube />}
       title="Exames"
       columns={columnsData}
       data={exams}

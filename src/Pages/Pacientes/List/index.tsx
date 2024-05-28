@@ -1,8 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useLayoutEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaUserEdit } from "react-icons/fa";
 import { RiFileUserFill } from "react-icons/ri";
 import { TiUserDelete } from "react-icons/ti";
+import { LuClipboardEdit } from "react-icons/lu";
+import { BiTestTube } from "react-icons/bi";
 
 import {
   PacienteContainer,
@@ -16,15 +19,12 @@ import {
   makeLocalPatientList,
 } from "../../../Factories";
 import { List } from "../../../Infra/Interfaces";
-import { useNavigate } from "react-router-dom";
 import { Patient } from "../../../Infra/Entities";
 import { useToast } from "../../../Hooks";
 import { AlertTypes } from "../../../Hooks/useToast/ToastConfigs";
 import { DataFilter } from "../../../Components/Filters";
 import { PaginationType } from "../../../Components/Pagination";
 import { handleFilter } from "../../../Utils/filterAdpater";
-import { LuClipboardEdit } from "react-icons/lu";
-import { BiTestTube } from "react-icons/bi";
 import { usePopup } from "../../../Hooks/usePopup";
 
 type PatientTableData = {

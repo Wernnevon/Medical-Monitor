@@ -45,6 +45,13 @@ export const TitleWrapper = styled.div`
   label {
     font-family: "Akshar-Regular";
   }
+
+  svg {
+    position: relative;
+    font-size: 2.5rem;
+    bottom: 0.15rem;
+    color: #03a696;
+  }
 `;
 
 export const FilterWrapper = styled.div`

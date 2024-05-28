@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-computed-key */
-import { HiUserGroup } from "react-icons/hi";
+import { HiOutlineUserGroup } from "react-icons/hi";
 import { FaPlus } from "react-icons/fa";
 import KebabMenu from "../KebabMenu";
 import {
@@ -17,6 +17,7 @@ import Pagination from "../Pagination";
 import { useNavigate } from "react-router-dom";
 
 type Props<T> = {
+  icon?: any;
   title: string;
   columns: DataColumn[];
   data: DataTable<T>[];
@@ -61,6 +62,7 @@ const Filters = {
 };
 
 const Table: React.FC<Props<any>> = ({
+  icon = <HiOutlineUserGroup />,
   title = "Titulo",
   data,
   columns,
@@ -78,11 +80,7 @@ const Table: React.FC<Props<any>> = ({
       <span>
         <TableHeader>
           <TitleWrapper>
-            <HiUserGroup
-              color="#03a696"
-              size={40}
-              style={{ position: "relative", bottom: ".15rem" }}
-            />
+            {icon}
             <label>{title}</label>
           </TitleWrapper>
           <FilterWrapper>

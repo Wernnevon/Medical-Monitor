@@ -8,6 +8,7 @@ import { makeLocalPrescriptionList } from "../../../../Factories";
 import { formmatDate } from "../../../../Utils/dateUtils";
 import { Prescription } from "../../../../Infra/Entities";
 import { PrescriptionSatus } from "../../../../Infra/Entities/Prescription";
+import { LuClipboardEdit } from "react-icons/lu";
 
 type PrecriptionTableData = {
   id: number;
@@ -113,6 +114,7 @@ export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
 
   return (
     <Table
+      icon={<LuClipboardEdit />}
       title="Prescrições"
       columns={columnsData}
       data={prescription}

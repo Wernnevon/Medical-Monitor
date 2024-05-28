@@ -3,7 +3,7 @@ import React, { useLayoutEffect, useState } from "react";
 
 import { AiOutlineAudit } from "react-icons/ai";
 import { LuClipboardEdit } from "react-icons/lu";
-import { HiUserGroup } from "react-icons/hi";
+import { HiOutlineUserGroup } from "react-icons/hi";
 import { BiTestTube } from "react-icons/bi";
 
 import Logo from "../../assests/MM.svg";
@@ -53,7 +53,9 @@ const SideNav: React.FC = () => {
         active={state === "pacientes" ? state : ""}
       >
         <NavBtn active={state === "pacientes" ? state : ""}>
-          <HiUserGroup style={{ position: "relative", bottom: ".15rem" }} />
+          <HiOutlineUserGroup
+            style={{ position: "relative", bottom: ".15rem" }}
+          />
           <NavLabel>Pacientes</NavLabel>
         </NavBtn>
       </NavLink>
