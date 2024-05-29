@@ -52,7 +52,6 @@ export const Body = styled.form<any>`
   z-index: 10;
   max-height: 15rem;
   visibility: ${({ collapsed }) => (collapsed ? "visible" : "hidden")};
-
   span {
     overflow-y: auto;
   }
@@ -71,6 +70,21 @@ export const Item = styled.div`
   padding: 0.5rem 1rem;
   gap: 1rem;
 
+  :hover {
+    background-color: #ededed;
+    cursor: pointer;
+    color: #00786d;
+  }
+
+  label {
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    direction: ltr;
+  }
+
   input[type="radio"] {
     width: 1.5rem;
     height: 1.5rem;
@@ -79,11 +93,5 @@ export const Item = styled.div`
     :hover {
       cursor: pointer;
     }
-  }
-
-  :hover {
-    background-color: #ededed;
-    cursor: pointer;
-    color: #00786d;
   }
 `;

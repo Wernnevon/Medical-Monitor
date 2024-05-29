@@ -48,6 +48,7 @@ const RadioSelect: React.FC<Props> = ({
             <Item
               key={`${option}-${index}`}
               onClick={() => handleSelect(option)}
+              title={option}
             >
               <input
                 type="radio"
