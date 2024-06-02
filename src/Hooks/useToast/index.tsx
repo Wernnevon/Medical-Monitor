@@ -5,25 +5,38 @@ import {
   createContext,
   ReactNode,
 } from "react";
-import { Toast, ToastWrapper } from "./styles";
 import { FiAlertTriangle } from "react-icons/fi";
 import { VscError } from "react-icons/vsc";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-import { AlertTypes } from "./ToastConfigs";
+
+import { Toast, ToastWrapper } from "./styles";
+import { ToastColorStartegy, ToastTypes } from "./ToastConfigs";
 
 interface ToastProps {
   children: ReactNode;
 }
+
 const { innerWidth: width } = window;
 
-const Icon = ({ type }: any) => {
-  return type === AlertTypes.SUCESS ? (
-    <AiOutlineCheckCircle size={width < 1025 ? 20 : 32} color="#fff" />
-  ) : type === AlertTypes.ERROR ? (
-    <VscError size={width < 1025 ? 20 : 32} color="#fff" />
-  ) : (
-    <FiAlertTriangle size={width < 1025 ? 18 : 30} color="#000" />
-  );
+export const IconStartegy = {
+  [ToastTypes.ERROR]: (
+    <VscError
+      size={width < 1025 ? 20 : 32}
+      color={ToastColorStartegy[ToastTypes.ERROR]}
+    />
+  ),
+  [ToastTypes.SUCESS]: (
+    <AiOutlineCheckCircle
+      size={width < 1025 ? 20 : 32}
+      color={ToastColorStartegy[ToastTypes.SUCESS]}
+    />
+  ),
+  [ToastTypes.WARNING]: (
+    <FiAlertTriangle
+      size={width < 1025 ? 18 : 30}
+      color={ToastColorStartegy[ToastTypes.WARNING]}
+    />
+  ),
 };
 
 const ToastContext = createContext({} as Function);
@@ -32,13 +45,13 @@ export default ToastContext;
 
 export function ToastContextProvider({ children }: ToastProps) {
   const [toasts, setToasts] = useState<string[]>([]);
-  const [toastType, setToastType] = useState<string>("");
+  const [toastType, setToastType] = useState<ToastTypes>(ToastTypes.WARNING);
 
   const addToast = useCallback(
-    function (toast: string, type: string = AlertTypes.WARNING) {
+    function (toast: string, type: ToastTypes = ToastTypes.WARNING) {
       setToasts([...toasts, toast]);
       setTimeout(() => setToasts((toasts: any) => toasts.slice(1)), 2000);
-      setToastType(type.toLocaleUpperCase());
+      setToastType(type);
     },
     [toasts]
   );
@@ -49,9 +62,7 @@ export function ToastContextProvider({ children }: ToastProps) {
       <ToastWrapper>
         {toasts.map((toast) => (
           <Toast toastType={toastType} key={toast}>
-            <div>
-              <Icon type={toastType} />
-            </div>
+            {IconStartegy[toastType]}
             <span>{toast}</span>
           </Toast>
         ))}

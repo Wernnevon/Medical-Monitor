@@ -1,8 +1,8 @@
 import styled, { keyframes } from "styled-components";
-import { AlertBg, AlertTypes } from "./ToastConfigs";
+import { ToastColorStartegy, ToastTypes } from "./ToastConfigs";
 
 interface ToastProps {
-  toastType: string;
+  toastType: ToastTypes;
 }
 
 const shake = keyframes`
@@ -25,49 +25,32 @@ const shake = keyframes`
 
 export const ToastWrapper = styled.div`
   position: absolute;
-  bottom: 1rem;
-  left: 2rem;
+  top: 2rem;
+  right: 2rem;
   z-index: 99;
 `;
 
 export const Toast = styled.div`
   display: flex;
+  align-items: center;
   border-radius: 2px;
   margin-bottom: 0.5rem;
   animation: ${shake} 850ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   color: #333;
-  background-color: #efefef;
+  background-color: #f9f9f9;
   font-size: 1.2rem;
+  gap: 1rem;
+  width: 18rem;
   /* font-weight: 300; */
   font-family: "Akshar-Light", sans-serif;
-  border: 0.3rem solid;
-  border-color: ${({ toastType }: ToastProps) =>
-    toastType === AlertTypes.WARNING
-      ? AlertBg.WARNING
-      : toastType === AlertTypes.ERROR
-      ? AlertBg.ERROR
-      : AlertBg.SUCESS};
-  div {
-    display: flex;
-    padding: 0rem 1.5rem;
-    margin: -0.1rem;
-    justify-content: center;
-    align-items: center;
-    background: ${({ toastType }: ToastProps) =>
-      toastType === AlertTypes.WARNING
-        ? AlertBg.WARNING
-        : toastType === AlertTypes.ERROR
-        ? AlertBg.ERROR
-        : AlertBg.SUCESS};
-  }
-  span {
-    padding: 0.2rem 5rem;
-  }
+  border: 1px solid
+    ${({ toastType }: ToastProps) => ToastColorStartegy[toastType]};
+  padding: 1rem;
+  box-shadow: 0px 3px 13px 5px #00000021;
+
+  border-radius: 5px;
   @media (max-width: 1200px),
     (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.8rem;
-    span {
-      padding: 0 2rem;
-    }
   }
 `;

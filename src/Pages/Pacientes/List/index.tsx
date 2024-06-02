@@ -21,7 +21,7 @@ import {
 import { List } from "../../../Infra/Interfaces";
 import { Patient } from "../../../Infra/Entities";
 import { useToast } from "../../../Hooks";
-import { AlertTypes } from "../../../Hooks/useToast/ToastConfigs";
+import { ToastTypes } from "../../../Hooks/useToast/ToastConfigs";
 import { DataFilter } from "../../../Components/Filters";
 import { PaginationType } from "../../../Components/Pagination";
 import { handleFilter } from "../../../Utils/filterAdpater";
@@ -66,10 +66,10 @@ const Paciente: React.FC = () => {
         deletePatient
           .delete({ id: value })
           .then(() => {
-            addToast("Paciente apagado", AlertTypes.SUCESS);
+            addToast("Paciente apagado", ToastTypes.SUCESS);
           })
           .catch(() => {
-            addToast("Houve um problema", AlertTypes.ERROR);
+            addToast("Houve um problema", ToastTypes.ERROR);
           }),
     };
     showPopup(popupData);

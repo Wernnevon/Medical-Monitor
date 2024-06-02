@@ -15,7 +15,7 @@ import {
   StepProgressContainer,
   TitleWrapper,
 } from "./styles";
-import { AlertTypes } from "../../../Hooks/useToast/ToastConfigs";
+import { ToastTypes } from "../../../Hooks/useToast/ToastConfigs";
 import StepAdressData from "./StepAdress";
 import StepHealth from "./StepHealth";
 import EndPhase from "./StepEndPhase";
@@ -72,22 +72,22 @@ const Register: React.FC = () => {
       await patientUpdate
         .update({ data: patient })
         .then(() => {
-          addToast(sucessMensage.update, AlertTypes.SUCESS);
+          addToast(sucessMensage.update, ToastTypes.SUCESS);
           navigate(-1);
         })
         .catch((err) => {
-          addToast("Erro na atualização", AlertTypes.ERROR);
+          addToast("Erro na atualização", ToastTypes.ERROR);
           console.error(err);
         });
     } else {
       await patientStore
         .store({ data: patient })
         .then(() => {
-          addToast(sucessMensage.store, AlertTypes.SUCESS);
+          addToast(sucessMensage.store, ToastTypes.SUCESS);
           navigate(-1);
         })
         .catch((err) => {
-          addToast("Erro no cadastro", AlertTypes.ERROR);
+          addToast("Erro no cadastro", ToastTypes.ERROR);
           console.error(err);
         });
     }

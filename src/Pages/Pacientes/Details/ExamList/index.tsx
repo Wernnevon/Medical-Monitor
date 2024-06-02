@@ -10,7 +10,7 @@ import { handleFilter } from "../../../../Utils/filterAdpater";
 import Exam, { ExamStatus } from "../../../../Infra/Entities/Exams";
 import { makeLocalExamDelete, makeLocalExamList } from "../../../../Factories";
 import { formmatDate } from "../../../../Utils/dateUtils";
-import { AlertTypes } from "../../../../Hooks/useToast/ToastConfigs";
+import { ToastTypes } from "../../../../Hooks/useToast/ToastConfigs";
 import { useToast } from "../../../../Hooks";
 import { usePopup } from "../../../../Hooks/usePopup";
 import Toggle from "../../../../Components/Toggle";
@@ -153,10 +153,10 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
         examDelete
           .delete({ id: examId })
           .then(() => {
-            addToast("Paciente apagado", AlertTypes.SUCESS);
+            addToast("Paciente apagado", ToastTypes.SUCESS);
           })
           .catch(() => {
-            addToast("Houve um problema", AlertTypes.ERROR);
+            addToast("Houve um problema", ToastTypes.ERROR);
           }),
     };
     showPopup(popupData);
