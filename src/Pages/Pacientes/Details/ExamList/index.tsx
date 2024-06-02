@@ -13,6 +13,7 @@ import { formmatDate } from "../../../../Utils/dateUtils";
 import { AlertTypes } from "../../../../Hooks/useToast/ToastConfigs";
 import { useToast } from "../../../../Hooks";
 import { usePopup } from "../../../../Hooks/usePopup";
+import Toggle from "../../../../Components/Toggle";
 
 type ExamTableData = {
   id: number;
@@ -82,6 +83,13 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
     {
       icon: <LuClipboardCheck />,
       name: "Diagnótico",
+      action: (id: number) => {
+        console.log(`exame ${id}`);
+      },
+    },
+    {
+      icon: <Toggle />,
+      name: "Mudar Situação",
       action: (id: number) => {
         console.log(`exame ${id}`);
       },
