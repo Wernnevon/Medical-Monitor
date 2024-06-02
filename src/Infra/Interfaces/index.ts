@@ -3,7 +3,8 @@ import { List } from "./UseCases/list";
 import { Find } from "./UseCases/find";
 import { Update } from "./UseCases/update";
 import { Delete } from "./UseCases/delete";
+import { ChangeStatus } from "./UseCases/changeStatus";
 import { Client } from "./Protocols/resquest";
 
 // Dependecy inversion
-export type { Store, Delete, Find, List, Update, Client };
+export type { Store, Delete, Find, List, Update, ChangeStatus, Client };
