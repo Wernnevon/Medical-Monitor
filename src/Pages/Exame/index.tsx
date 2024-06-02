@@ -20,6 +20,7 @@ import { makeLocalExamStore, makeLocalPatientFind } from "../../Factories";
 import { useParams } from "react-router-dom";
 import { ExamStatus } from "../../Infra/Entities/Exams";
 import { useToast } from "../../Hooks";
+import { ToastTypes } from "../../Hooks/useToast/ToastConfigs";
 
 const Exame: React.FC = () => {
   const { id } = useParams();
@@ -52,11 +53,11 @@ const Exame: React.FC = () => {
     ) as unknown as Array<any>) {
       checkbox.checked = false;
     }
+    handleClear();
   }
   function clean() {
     handleClearAll();
-    handleClear();
-    addToast("Limpo", "sucess");
+    addToast("Limpo", ToastTypes.SUCESS);
   }
 
   function handleAddExam() {
@@ -75,13 +76,19 @@ const Exame: React.FC = () => {
             },
           })
           .then(() => {
-            addToast("Sucesso", "sucess");
-            clean();
+            addToast(
+              `Exames vinculados ao paciente ${name}`,
+              ToastTypes.SUCESS
+            );
           })
-          .catch((err) => {
-            addToast(err, "error");
+          .catch(() => {
+            addToast(
+              `Não foi possível vincular os medicamentos ao paciente ${name}, tente novamente mais tarde`,
+              ToastTypes.ERROR
+            );
           });
       });
+      handleClearAll();
     } else {
       addToast("Selecione ao menos um exame");
     }

@@ -153,10 +153,16 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
         examDelete
           .delete({ id: examId })
           .then(() => {
-            addToast("Paciente apagado", ToastTypes.SUCESS);
+            addToast(
+              "O exame foi apagado do histórico desse paciente",
+              ToastTypes.SUCESS
+            );
           })
           .catch(() => {
-            addToast("Houve um problema", ToastTypes.ERROR);
+            addToast(
+              "Não foi possível apagar o exame do histórico deste paciente, tente novamente mais tarde",
+              ToastTypes.ERROR
+            );
           }),
     };
     showPopup(popupData);

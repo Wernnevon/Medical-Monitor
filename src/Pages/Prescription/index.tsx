@@ -22,6 +22,7 @@ import {
   makeLocalPrescriptionStore,
 } from "../../Factories";
 import { PrescriptionSatus } from "../../Infra/Entities/Prescription";
+import { ToastTypes } from "../../Hooks/useToast/ToastConfigs";
 
 const Prescription: React.FC = () => {
   const { id } = useParams();
@@ -52,7 +53,7 @@ const Prescription: React.FC = () => {
 
   function clean() {
     handleClear();
-    addToast("Limpo", "sucess");
+    addToast("Limpo", ToastTypes.SUCESS);
   }
 
   function handleAddPrecription() {
@@ -68,11 +69,17 @@ const Prescription: React.FC = () => {
             },
           })
           .then(() => {
-            addToast("Sucesso", "sucess");
-            clean();
+            addToast(
+              `Medicamentos vinculados ao paciente ${name}`,
+              ToastTypes.SUCESS
+            );
+            handleClear();
           })
-          .catch((err) => {
-            addToast(err, "error");
+          .catch(() => {
+            addToast(
+              `Não foi possível vincular os medicamentos ao paciente ${name}, tente novamente mais tarde`,
+              ToastTypes.ERROR
+            );
           });
       });
     } else {
