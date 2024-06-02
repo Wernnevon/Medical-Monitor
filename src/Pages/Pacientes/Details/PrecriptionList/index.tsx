@@ -1,14 +1,22 @@
 import { useEffect, useState } from "react";
+import { LuClipboardEdit, LuClipboardX } from "react-icons/lu";
+
 import Table from "../../../../Components/Table";
 import { List } from "../../../../Infra/Interfaces";
 import { PaginationType } from "../../../../Components/Pagination";
 import { DataFilter } from "../../../../Components/Filters";
 import { handleFilter } from "../../../../Utils/filterAdpater";
-import { makeLocalPrescriptionList } from "../../../../Factories";
+import {
+  makeLocalPrescriptionDelete,
+  makeLocalPrescriptionList,
+} from "../../../../Factories";
 import { formmatDate } from "../../../../Utils/dateUtils";
 import { Prescription } from "../../../../Infra/Entities";
 import { PrescriptionSatus } from "../../../../Infra/Entities/Prescription";
-import { LuClipboardEdit } from "react-icons/lu";
+import Toggle from "../../../../Components/Toggle";
+import { useToast } from "../../../../Hooks";
+import { usePopup } from "../../../../Hooks/usePopup";
+import { ToastTypes } from "../../../../Hooks/useToast/ToastConfigs";
 
 type PrecriptionTableData = {
   id: number;
@@ -34,7 +42,11 @@ export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
     totalPages: 1,
   });
 
+  const addToast = useToast();
+  const { showPopup } = usePopup();
+
   const precriptionList = makeLocalPrescriptionList();
+  const precriptionDelete = makeLocalPrescriptionDelete();
 
   const filterPrescriptionTable: DataFilter[] = [
     {
@@ -67,6 +79,46 @@ export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
     { name: "Status", key: "administering", type: "text" },
     { name: "", key: "action", type: "action" },
   ];
+
+  const kebab = [
+    {
+      icon: <Toggle />,
+      name: "Mudar Situação",
+      action: (id: number) => {
+        console.log(`exame ${id}`);
+      },
+    },
+    {
+      icon: <LuClipboardX />,
+      name: "Deletar",
+      action: deleteExam,
+    },
+  ];
+
+  function deleteExam(examId: number) {
+    const popupData = {
+      data: {
+        title: "Excluir prescrição?",
+        message: `Tem certeza de que deseja excluir? Não há como desfazer esta ação!`,
+      },
+      onConfirm: () =>
+        precriptionDelete
+          .delete({ id: examId })
+          .then(() => {
+            addToast(
+              "A medicação foi apagada do histórico desse paciente",
+              ToastTypes.SUCESS
+            );
+          })
+          .catch(() => {
+            addToast(
+              "Não foi possível apagar a medicação do histórico deste paciente, tente novamente mais tarde",
+              ToastTypes.ERROR
+            );
+          }),
+    };
+    showPopup(popupData);
+  }
 
   useEffect(() => {
     precriptionList
@@ -106,7 +158,7 @@ export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
         }
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, keywords, pagination.page]);
+  }, [filters, keywords, pagination.page, addToast]);
 
   function handleChangePage(page: number) {
     setPagination((prev) => ({ ...prev, page }));
@@ -130,7 +182,7 @@ export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
         },
         navigateTo: "receitas",
       }}
-      kebabConfig={undefined}
+      kebabConfig={kebab}
     />
   );
 };
