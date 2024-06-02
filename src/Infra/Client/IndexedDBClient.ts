@@ -10,6 +10,20 @@ type DBConfig = {
   storeName: string;
 };
 
+/** Nececisade de refactor:
+ * O client tem a responsabilidade de acessar quem fornece os dados
+ * por isso esse módulu deve ser isolado para preservar o principio
+ * de responsabilidade única de uma classe
+ *
+ * Então o módulo que fornece o acesso ao banco deve ser isolado e
+ * fornecer apoenas um objeto capaz de devolver os dados, nesse caso
+ * o objectStore, de acordo com o storeName, e em outro módulo deve
+ * funcionar a execução das requests como rotas de uma api.
+ *
+ * De modo simples a solução é o uso de strategy patterns encadeados
+ *
+ */
+
 class IndexedDBClient implements Client {
   constructor(private readonly dbConfig: DBConfig) {}
 
