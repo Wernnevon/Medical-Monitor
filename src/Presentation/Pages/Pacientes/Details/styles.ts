@@ -100,5 +100,6 @@ export const TableCard = styled(Card)`
 
   main {
     border-radius: 1rem;
+    height: 40rem;
   }
 `;
