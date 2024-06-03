@@ -1,5 +1,6 @@
-import { Prescription } from "../../Entities";
-import { Client, Delete } from "../../Interfaces";
+import { Delete } from "../../Domain/UseCases";
+import { Prescription } from "../../Domain/Entities";
+import { Client } from "../../Infra/Client/Protocols/resquest";
 
 class LocalPrescriptionDelete implements Delete {
   constructor(private readonly client: Client<Prescription>) {}

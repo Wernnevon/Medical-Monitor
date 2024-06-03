@@ -1,5 +1,6 @@
-import { Exams } from "../../Entities";
-import { Client, Update } from "../../Interfaces";
+import { Exams } from "../../Domain/Entities";
+import { Client } from "../../Infra/Client/Protocols/resquest";
+import { Update } from "../../Domain/UseCases";
 
 class LocalExamsUpdate implements Update {
   constructor(private readonly client: Client<Exams>) {}

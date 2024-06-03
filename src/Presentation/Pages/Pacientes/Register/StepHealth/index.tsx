@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import GetErros from "../../../../Utils/getErrors";
 import Button from "../../../../Components/Buttons";
 import { useRegister } from "../../../../Hooks";
-import { Health } from "../../../../../Infra/Entities";
+import { Health } from "../../../../../Domain/Entities";
 import { ActionsContainer, FormContainer, FormContent } from "../styles";
 
 const StepHealth: React.FC = () => {

@@ -1,5 +1,6 @@
-import { Prescription } from "../../Entities";
-import { Client, Find } from "../../Interfaces";
+import { Find } from "../../Domain/UseCases";
+import { Prescription } from "../../Domain/Entities";
+import { Client } from "../../Infra/Client/Protocols/resquest";
 
 class LocalPrescriptionFind implements Find {
   constructor(private readonly client: Client<Prescription>) {}

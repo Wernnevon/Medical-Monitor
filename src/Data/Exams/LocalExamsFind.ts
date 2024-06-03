@@ -1,5 +1,6 @@
-import { Exams } from "../../Entities";
-import { Client, Find } from "../../Interfaces";
+import { Exams } from "../../Domain/Entities";
+import { Find } from "../../Domain/UseCases";
+import { Client } from "../../Infra/Client/Protocols/resquest";
 
 class LocalExamsFind implements Find {
   constructor(private readonly client: Client<Exams>) {}

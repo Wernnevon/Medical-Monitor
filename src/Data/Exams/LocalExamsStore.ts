@@ -1,5 +1,6 @@
-import { Exams } from "../../Entities";
-import { Client, Store } from "../../Interfaces";
+import { Exams } from "../../Domain/Entities";
+import { Store } from "../../Domain/UseCases";
+import { Client } from "../../Infra/Client/Protocols/resquest";
 
 class LocalExamsStore implements Store {
   constructor(private readonly client: Client<Exams>) {}

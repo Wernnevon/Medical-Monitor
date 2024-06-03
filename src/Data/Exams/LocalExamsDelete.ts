@@ -1,5 +1,6 @@
-import { Exams } from "../../Entities";
-import { Client, Delete } from "../../Interfaces";
+import { Delete } from "../../Domain/UseCases";
+import { Exams } from "../../Domain/Entities";
+import { Client } from "../../Infra/Client/Protocols/resquest";
 
 class LocalExamsDelete implements Delete {
   constructor(private readonly client: Client<Exams>) {}

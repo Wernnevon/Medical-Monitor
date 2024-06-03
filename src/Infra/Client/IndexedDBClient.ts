@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-useless-computed-key */
-import { Client, List } from "../Interfaces";
-import { ClientReq, ClientRes } from "../Interfaces/Protocols/resquest";
+import { List } from "../../Domain/UseCases";
+import { ClientReq, ClientRes, Client } from "./Protocols/resquest";
 import { filterBy } from "./filters";
 
 type DBConfig = {

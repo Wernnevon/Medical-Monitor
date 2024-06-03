@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import { Patient } from "../../../Infra/Entities";
+import { Patient } from "../../../Domain/Entities";
 
 interface RegisterProps {
   children: ReactNode;

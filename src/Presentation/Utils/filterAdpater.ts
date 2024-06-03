@@ -1,4 +1,4 @@
-import { List } from "../../Infra/Interfaces";
+import { List } from "../../Domain/UseCases";
 
 type Props = {
   keyFilter: string;

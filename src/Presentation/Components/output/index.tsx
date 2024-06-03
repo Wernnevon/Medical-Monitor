@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import BGLogo from "../../../assests/PNGs/logo02.png";
-import LogoSVG from "../../../assests/PNGs/logo02.png";
+import BGLogo from "../../../Assets/PNGs/logo02.png";
+import LogoSVG from "../../../Assets/PNGs/logo02.png";
 
 import {
   ReceitaCard,

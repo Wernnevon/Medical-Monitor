@@ -8,7 +8,7 @@ type Exam = {
   name: string;
   requisitionDate: Date;
   realizationDate?: Date;
-  done: ExamStatus;
+  status: ExamStatus;
   diagnosis?: string;
   id?: number;
 };

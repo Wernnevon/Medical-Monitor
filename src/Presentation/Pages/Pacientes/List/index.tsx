@@ -18,8 +18,8 @@ import {
   makeLocalPatientDelete,
   makeLocalPatientList,
 } from "../../../../Factories";
-import { List } from "../../../../Infra/Interfaces";
-import { Patient } from "../../../../Infra/Entities";
+import { List } from "../../../../Domain/UseCases";
+import { Patient } from "../../../../Domain/Entities";
 import { useToast } from "../../../Hooks";
 import { ToastTypes } from "../../../Hooks/useToast/ToastConfigs";
 import { DataFilter } from "../../../Components/Filters";

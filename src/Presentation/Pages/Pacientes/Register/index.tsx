@@ -3,8 +3,8 @@
 import React, { useCallback, useEffect } from "react";
 import StepPersonalData from "./StepPersonalData";
 import { useToast } from "../../../Hooks";
-import stepSvgNoActived from "../../../../assests/SVGs/stepCard.svg";
-import stepSvgActived from "../../../../assests/SVGs/stepCardActive.svg";
+import stepSvgNoActived from "../../../../Assets/SVGs/stepCard.svg";
+import stepSvgActived from "../../../../Assets/SVGs/stepCardActive.svg";
 
 import mock from "../../../../Infra/DB/db.json";
 

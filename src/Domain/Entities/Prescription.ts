@@ -7,7 +7,7 @@ type Prescription = {
   patientId: number;
   medicament: string;
   date: Date;
-  administering: PrescriptionSatus;
+  status: PrescriptionSatus;
   id: number;
 };
 

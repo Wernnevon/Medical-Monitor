@@ -1,5 +1,6 @@
-import { Prescription } from "../../Entities";
-import { Client, Store } from "../../Interfaces";
+import { Store } from "../../Domain/UseCases";
+import { Prescription } from "../../Domain/Entities";
+import { Client } from "../../Infra/Client/Protocols/resquest";
 
 class LocalPrescriptionStore implements Store {
   constructor(private readonly client: Client<Prescription>) {}

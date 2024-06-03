@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import GetErros from "../../../../Utils/getErrors";
 import Button from "../../../../Components/Buttons";
 import { useRegister } from "../../../../Hooks";
-import { Patient } from "../../../../../Infra/Entities";
+import { Patient } from "../../../../../Domain/Entities";
 import { useNavigate } from "react-router-dom";
 import { ActionsContainer, FormContainer, FormContent } from "../styles";
 

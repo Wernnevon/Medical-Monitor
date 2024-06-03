@@ -1,5 +1,6 @@
-import { Exams } from "../../Entities";
-import { Client, List } from "../../Interfaces";
+import { Exams } from "../../Domain/Entities";
+import { List } from "../../Domain/UseCases";
+import { Client } from "../../Infra/Client/Protocols/resquest";
 
 class LocalExamsList implements List {
   constructor(private readonly client: Client<Exams[]>) {}

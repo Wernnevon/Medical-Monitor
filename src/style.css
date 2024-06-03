@@ -1,27 +1,27 @@
 @font-face {
   font-family: "Akshar-Bold";
   src: local("Akshar-Bold"),
-    url(./assests/fonts/Akshar/static/Akshar-Bold.ttf) format("truetype");
+    url(./Assets/fonts/Akshar/static/Akshar-Bold.ttf) format("truetype");
 }
 @font-face {
   font-family: "Akshar-Light";
   src: local("Akshar-Light"),
-    url(./assests/fonts/Akshar/static/Akshar-Light.ttf) format("truetype");
+    url(./Assets/fonts/Akshar/static/Akshar-Light.ttf) format("truetype");
 }
 @font-face {
   font-family: "Akshar-Medium";
   src: local("Akshar-Medium"),
-    url(./assests/fonts/Akshar/static/Akshar-Medium.ttf) format("truetype");
+    url(./Assets/fonts/Akshar/static/Akshar-Medium.ttf) format("truetype");
 }
 @font-face {
   font-family: "Akshar-Regular";
   src: local("Akshar-Regular"),
-    url(./assests/fonts/Akshar/static/Akshar-Regular.ttf) format("truetype");
+    url(./Assets/fonts/Akshar/static/Akshar-Regular.ttf) format("truetype");
 }
 @font-face {
   font-family: "Akshar-SemiBold";
   src: local("Akshar-SemiBold"),
-    url(./assests/fonts/Akshar/static/Akshar-SemiBold.ttf) format("truetype");
+    url(./Assets/fonts/Akshar/static/Akshar-SemiBold.ttf) format("truetype");
 }
 
 body {

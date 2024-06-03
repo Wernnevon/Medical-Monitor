@@ -18,7 +18,7 @@ import {
 } from "./styles";
 import { makeLocalExamStore, makeLocalPatientFind } from "../../../Factories";
 import { useParams } from "react-router-dom";
-import { ExamStatus } from "../../../Infra/Entities/Exams";
+import { ExamStatus } from "../../../Domain/Entities/Exams";
 import { useToast } from "../../Hooks";
 import { ToastTypes } from "../../Hooks/useToast/ToastConfigs";
 

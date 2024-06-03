@@ -6,7 +6,7 @@ import GetErros from "../../../../Utils/getErrors";
 import { ActionsContainer, FormContainer, FormContent } from "../styles";
 import Button from "../../../../Components/Buttons";
 import { useRegister } from "../../../../Hooks";
-import { Adress } from "../../../../../Infra/Entities";
+import { Adress } from "../../../../../Domain/Entities";
 
 const StepAdressData: React.FC = () => {
   const formRef = useRef({} as FormHandles);

@@ -3,11 +3,12 @@ import { LuClipboardCheck, LuClipboardX } from "react-icons/lu";
 import { BiTestTube } from "react-icons/bi";
 
 import Table from "../../../../Components/Table";
-import { List } from "../../../../../Infra/Interfaces";
+import { List } from "../../../../../Domain/UseCases";
 import { PaginationType } from "../../../../Components/Pagination";
 import { DataFilter } from "../../../../Components/Filters";
 import { handleFilter } from "../../../../Utils/filterAdpater";
-import Exam, { ExamStatus } from "../../../../../Infra/Entities/Exams";
+import { Exams } from "../../../../../Domain/Entities";
+import { ExamStatus } from "../../../../../Domain/Entities/Exams";
 import {
   makeLocalExamDelete,
   makeLocalExamList,
@@ -23,7 +24,7 @@ type ExamTableData = {
   name: string;
   requisitionDate: string;
   realizationDate: string;
-  done: string;
+  status: string;
 };
 
 type Props = {
@@ -78,7 +79,7 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
     { name: "Exame", key: "name", type: "text" },
     { name: "Requisição", key: "requisitionDate", type: "text" },
     { name: "Realização", key: "realizationDate", type: "text" },
-    { name: "Situação", key: "done", type: "text" },
+    { name: "Situação", key: "status", type: "text" },
     { name: "", key: "action", type: "action" },
   ];
 
@@ -118,17 +119,17 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
           records,
         }: {
           totalRecords: number;
-          records: Exam[];
+          records: Exams[];
         }) => {
           const list: ExamTableData[] = records.map(
-            ({ id, name, requisitionDate, realizationDate, done }) => ({
+            ({ id, name, requisitionDate, realizationDate, status }) => ({
               id: id || 0,
               name,
               requisitionDate: formmatDate(requisitionDate),
               realizationDate: realizationDate
                 ? formmatDate(realizationDate)
                 : "-",
-              done,
+              status,
             })
           );
           setPagination((prev) => ({

@@ -17,7 +17,7 @@ import {
   AnamneseCard,
   TableCard,
 } from "./styles";
-import { Patient } from "../../../../Infra/Entities";
+import { Patient } from "../../../../Domain/Entities";
 import { makeLocalPatientFind } from "../../../../Factories";
 import { formmatDate, getAge } from "../../../Utils/dateUtils";
 import { ExamList } from "./ExamList";

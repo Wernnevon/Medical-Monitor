@@ -1,5 +1,6 @@
-import { Patient } from "../../Entities";
-import { Client, Update } from "../../Interfaces";
+import { Update } from "../../Domain/UseCases";
+import { Patient } from "../../Domain/Entities";
+import { Client } from "../../Infra/Client/Protocols/resquest";
 
 class LocalPatientUpdate implements Update {
   constructor(private readonly client: Client<Patient>) {}

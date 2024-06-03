@@ -1,5 +1,6 @@
-import { Patient } from "../../Entities";
-import { Client, List } from "../../Interfaces";
+import { List } from "../../Domain/UseCases";
+import { Patient } from "../../Domain/Entities";
+import { Client } from "../../Infra/Client/Protocols/resquest";
 
 class LocalPatientList implements List {
   constructor(private readonly client: Client<Patient[]>) {}

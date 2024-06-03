@@ -1,4 +1,4 @@
-import { Adress, Health } from "./";
+import { Adress, Health } from ".";
 
 type Patient = {
   id?: number;

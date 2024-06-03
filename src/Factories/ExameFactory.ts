@@ -4,7 +4,7 @@ import {
   LocalExamsDelete,
   LocalExamsFind,
   LocalExamsList,
-} from "../Infra/Data";
+} from "../Data";
 
 import makeClient from "./ClientFactory";
 

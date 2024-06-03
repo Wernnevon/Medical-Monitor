@@ -4,7 +4,7 @@ import {
   LocalPrescriptionDelete,
   LocalPrescriptionFind,
   LocalPrescriptionList,
-} from "../Infra/Data";
+} from "../Data";
 
 import makeClient from "./ClientFactory";
 

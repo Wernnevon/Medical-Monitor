@@ -1,5 +1,6 @@
-import { Patient } from "../../Entities";
-import { Client, Delete } from "../../Interfaces";
+import { Delete } from "../../Domain/UseCases";
+import { Patient } from "../../Domain/Entities";
+import { Client } from "../../Infra/Client/Protocols/resquest";
 
 class LocalPatientDelete implements Delete {
   constructor(private readonly client: Client<Patient>) {}

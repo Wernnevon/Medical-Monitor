@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { LuClipboardEdit, LuClipboardX } from "react-icons/lu";
 
 import Table from "../../../../Components/Table";
-import { List } from "../../../../../Infra/Interfaces";
+import { List } from "../../../../../Domain/UseCases";
 import { PaginationType } from "../../../../Components/Pagination";
 import { DataFilter } from "../../../../Components/Filters";
 import { handleFilter } from "../../../../Utils/filterAdpater";
@@ -11,8 +11,8 @@ import {
   makeLocalPrescriptionList,
 } from "../../../../../Factories";
 import { formmatDate } from "../../../../Utils/dateUtils";
-import { Prescription } from "../../../../../Infra/Entities";
-import { PrescriptionSatus } from "../../../../../Infra/Entities/Prescription";
+import { Prescription } from "../../../../../Domain/Entities";
+import { PrescriptionSatus } from "../../../../../Domain/Entities/Prescription";
 import Toggle from "../../../../Components/Toggle";
 import { useToast } from "../../../../Hooks";
 import { usePopup } from "../../../../Hooks/usePopup";
@@ -22,7 +22,7 @@ type PrecriptionTableData = {
   id: number;
   name: string;
   requisitionDate: string;
-  administering: string;
+  status: string;
 };
 
 type Props = {
@@ -76,7 +76,7 @@ export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
   const columnsData = [
     { name: "Medicação", key: "name", type: "text" },
     { name: "Requisição", key: "requisitionDate", type: "text" },
-    { name: "Status", key: "administering", type: "text" },
+    { name: "Status", key: "status", type: "text" },
     { name: "", key: "action", type: "action" },
   ];
 
@@ -137,16 +137,11 @@ export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
           records: Prescription[];
         }) => {
           const list: PrecriptionTableData[] = records.map(
-            ({
-              id,
-              medicament: name,
-              date: requisitionDate,
-              administering,
-            }) => ({
+            ({ id, medicament: name, date: requisitionDate, status }) => ({
               id: id || 0,
               name,
               requisitionDate: formmatDate(requisitionDate),
-              administering,
+              status,
             })
           );
           setPagination((prev) => ({

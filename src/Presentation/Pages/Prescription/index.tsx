@@ -21,7 +21,7 @@ import {
   makeLocalPatientFind,
   makeLocalPrescriptionStore,
 } from "../../../Factories";
-import { PrescriptionSatus } from "../../../Infra/Entities/Prescription";
+import { PrescriptionSatus } from "../../../Domain/Entities/Prescription";
 import { ToastTypes } from "../../Hooks/useToast/ToastConfigs";
 
 const Prescription: React.FC = () => {
