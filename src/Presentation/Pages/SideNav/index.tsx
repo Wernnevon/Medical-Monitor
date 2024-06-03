@@ -6,7 +6,7 @@ import { LuClipboardEdit } from "react-icons/lu";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { BiTestTube } from "react-icons/bi";
 
-import Logo from "../../../assests/MM.svg";
+import Logo from "../../../assests/SVGs/MM.svg";
 
 import {
   SideMenuContainer,
