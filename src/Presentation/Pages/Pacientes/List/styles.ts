@@ -34,34 +34,3 @@ export const ListPatient = styled.div`
   box-sizing: border-box;
   padding: 1rem;
 `;
-
-export const ItemPatient = styled.div`
-  display: flex;
-  align-items: center;
-  max-height: 1rem;
-  padding: 1rem;
-  margin: 0.5rem 0;
-  background-color: #fff;
-  box-shadow: 0px 3px 8px 0px #00000033;
-  border-radius: 2px;
-  :hover {
-    cursor: pointer;
-  }
-  :active {
-    transform: translateY(2px);
-  }
-  label {
-    font-family: "Akshar-Regular", sans-serif;
-    font-size: 1.3rem;
-    color: #333;
-    cursor: pointer;
-  }
-  @media (max-width: 1200px),
-    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
-    margin: 0.3rem 0;
-    padding: 0.7rem;
-    label {
-      font-size: 0.9rem;
-    }
-  }
-`;
