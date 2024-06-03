@@ -78,9 +78,9 @@
   "devDependencies": {
     "@types/styled-components": "^5.1.26",
     "cross-env": "^7.0.3",
+    "electron": "^22.1.0",
     "electron-builder": "^23.6.0",
-    "wait-on": "^7.0.1",
-    "electron": "^22.1.0"
+    "wait-on": "^7.0.1"
   },
   "author": {
     "name": "Wernnevon",
