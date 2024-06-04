@@ -1,6 +1,6 @@
 import { Patient } from "../../../Domain/Entities";
 
-export class PatientRpository {
+export class PatientRepository {
   constructor(private readonly OBJECT_STORE: IDBObjectStore) {}
 
   list(): Promise<Patient[]> {

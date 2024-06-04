@@ -1,5 +1,5 @@
 import { ExamRepository } from "./Exam";
-import { PrescriptionRepositoty } from "./Prescription";
-import { PatientRpository } from "./Patient";
+import { PrescriptionRepository } from "./Prescription";
+import { PatientRepository } from "./Patient";
 
-export { ExamRepository, PatientRpository, PrescriptionRepositoty };
+export { ExamRepository, PatientRepository, PrescriptionRepository };
