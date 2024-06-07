@@ -1,10 +1,15 @@
 import { Patient } from "../../../Domain/Entities";
+import {
+  ConnectionType,
+  getConnection,
+} from "../../Frameworks/indexedConnection";
 
 export class PatientRepository {
-  constructor(private readonly OBJECT_STORE: IDBObjectStore) {}
-
-  update(patient: Patient): Promise<void> {
-    const request = this.OBJECT_STORE.add(patient);
+  async update(patient: Patient): Promise<void> {
+    const db = await getConnection();
+    const transaction = db.transaction("patients", ConnectionType.READWRITE);
+    const objectStore = transaction.objectStore("patients");
+    const request = objectStore.put(patient);
     return new Promise((resolve, reject) => {
       request.onerror = () => {
         reject(request.error);

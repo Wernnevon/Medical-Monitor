@@ -1,17 +1,25 @@
 import { Prescription } from "../../../Domain/Entities";
 import { List } from "../../../Domain/UseCases";
 import { filterBy } from "../../Client/filters";
+import {
+  ConnectionType,
+  getConnection,
+} from "../../Frameworks/indexedConnection";
 
 export class PrescriptionRepository {
-  constructor(private readonly OBJECT_STORE: IDBObjectStore) {}
-
-  listPagination(
+  async listPagination(
     pageNumber: number,
     pageSize: number,
     keywords?: string[],
     filters?: List.Filter[]
   ): Promise<{ totalRecords: number; records: Prescription[] }> {
-    const request = this.OBJECT_STORE.getAll();
+    const db = await getConnection();
+    const transaction = db.transaction(
+      "prescriptions",
+      ConnectionType.READWRITE
+    );
+    const objectStore = transaction.objectStore("prescriptions");
+    const request = objectStore.getAll();
     return new Promise((resolve, reject) => {
       request.onerror = () => {
         reject(request.error);
@@ -46,8 +54,14 @@ export class PrescriptionRepository {
     });
   }
 
-  save(patient: Prescription): Promise<void> {
-    const request = this.OBJECT_STORE.add(patient);
+  async save(patient: Prescription): Promise<void> {
+    const db = await getConnection();
+    const transaction = db.transaction(
+      "prescriptions",
+      ConnectionType.READWRITE
+    );
+    const objectStore = transaction.objectStore("prescriptions");
+    const request = objectStore.add(patient);
     return new Promise((resolve, reject) => {
       request.onerror = () => {
         reject(request.error);

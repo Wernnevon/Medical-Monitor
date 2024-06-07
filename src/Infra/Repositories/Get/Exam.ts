@@ -1,10 +1,15 @@
 import { Exams } from "../../../Domain/Entities";
+import {
+  ConnectionType,
+  getConnection,
+} from "../../Frameworks/indexedConnection";
 
 export class ExamRepository {
-  constructor(private readonly OBJECT_STORE: IDBObjectStore) {}
-
-  list(id: number): Promise<Exams[]> {
-    const request = this.OBJECT_STORE.getAll();
+  async list(id: number): Promise<Exams[]> {
+    const db = await getConnection();
+    const transaction = db.transaction("exams", ConnectionType.READONLY);
+    const objectStore = transaction.objectStore("exams");
+    const request = objectStore.getAll();
     return new Promise((resolve, reject) => {
       request.onerror = () => {
         reject(request.error);
@@ -19,8 +24,11 @@ export class ExamRepository {
     });
   }
 
-  findById(id: number): Promise<Exams> {
-    const request = this.OBJECT_STORE.get(id);
+  async findById(id: number): Promise<Exams> {
+    const db = await getConnection();
+    const transaction = db.transaction("exams", ConnectionType.READONLY);
+    const objectStore = transaction.objectStore("exams");
+    const request = objectStore.get(id);
     return new Promise((resolve, reject) => {
       request.onerror = () => {
         reject(request.error);

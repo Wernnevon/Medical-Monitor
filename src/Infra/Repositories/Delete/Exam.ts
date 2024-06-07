@@ -1,8 +1,14 @@
-export class ExamRepository {
-  constructor(private readonly OBJECT_STORE: IDBObjectStore) {}
+import {
+  ConnectionType,
+  getConnection,
+} from "../../Frameworks/indexedConnection";
 
-  delete(id: number): Promise<void> {
-    const request = this.OBJECT_STORE.delete(id);
+export class ExamRepository {
+  async delete(id: number): Promise<void> {
+    const db = await getConnection();
+    const transaction = db.transaction("exams", ConnectionType.READWRITE);
+    const objectStore = transaction.objectStore("exams");
+    const request = objectStore.delete(id);
     return new Promise((resolve, reject) => {
       request.onerror = () => {
         reject(request.error);
