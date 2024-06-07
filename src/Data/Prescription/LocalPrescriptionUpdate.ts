@@ -6,7 +6,11 @@ class LocalPrescriptionUpdate implements Update {
   constructor(private readonly client: Client<Prescription>) {}
 
   async update(params: Update.Params): Promise<void> {
-    await this.client.request({ method: "put", data: params.data });
+    await this.client.request({
+      method: "put",
+      data: params.data,
+      url: "patient/update",
+    });
   }
 }
 

@@ -6,7 +6,11 @@ class LocalPatientDelete implements Delete {
   constructor(private readonly client: Client<Patient>) {}
 
   async delete(params: Delete.Params): Promise<void> {
-    await this.client.request({ method: "delete", data: params.id });
+    await this.client.request({
+      method: "delete",
+      data: params.id,
+      url: "patient/delete",
+    });
   }
 
   async deleteMultiple(params: Delete.Params): Promise<void> {

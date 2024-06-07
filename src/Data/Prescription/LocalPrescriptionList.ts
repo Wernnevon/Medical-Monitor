@@ -6,11 +6,19 @@ class LocalPrescriptionList implements List {
   constructor(private readonly client: Client<Prescription[]>) {}
 
   async listAll(): Promise<Prescription[]> {
-    const response = await this.client.request({ method: "get", data: null });
+    const response = await this.client.request({
+      method: "get",
+      data: null,
+      url: "precription/list",
+    });
     return response.data;
   }
   async listPerPage(params: List.Params): Promise<any> {
-    const response = await this.client.request({ method: "get", data: params });
+    const response = await this.client.request({
+      method: "get",
+      data: params,
+      url: "precription/list",
+    });
     return response.data;
   }
 }

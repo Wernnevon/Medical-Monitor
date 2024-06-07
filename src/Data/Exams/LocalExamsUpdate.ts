@@ -6,7 +6,11 @@ class LocalExamsUpdate implements Update {
   constructor(private readonly client: Client<Exams>) {}
 
   async update(params: Update.Params): Promise<void> {
-    await this.client.request({ method: "put", data: params.data });
+    await this.client.request({
+      method: "put",
+      data: params.data,
+      url: "exam/update",
+    });
   }
 }
 

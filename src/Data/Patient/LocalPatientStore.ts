@@ -6,7 +6,11 @@ class LocalPatientStore implements Store {
   constructor(private readonly client: Client<Patient>) {}
 
   async store(params: Store.Params): Promise<void> {
-    await this.client.request({ method: "post", data: params.data });
+    await this.client.request({
+      method: "post",
+      data: params.data,
+      url: "patient/save",
+    });
   }
 }
 

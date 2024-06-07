@@ -6,11 +6,19 @@ class LocalExamsList implements List {
   constructor(private readonly client: Client<Exams[]>) {}
 
   async listAll(): Promise<Exams[]> {
-    const response = await this.client.request({ method: "get", data: null });
+    const response = await this.client.request({
+      method: "get",
+      data: null,
+      url: "exam/list",
+    });
     return response.data;
   }
   async listPerPage(params: List.Params): Promise<any> {
-    const response = await this.client.request({ method: "get", data: params });
+    const response = await this.client.request({
+      method: "get",
+      data: params,
+      url: "exam/list",
+    });
     return response.data;
   }
 }

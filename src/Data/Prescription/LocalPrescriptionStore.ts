@@ -6,7 +6,11 @@ class LocalPrescriptionStore implements Store {
   constructor(private readonly client: Client<Prescription>) {}
 
   async store(params: Store.Params): Promise<void> {
-    await this.client.request({ method: "post", data: params.data });
+    await this.client.request({
+      method: "post",
+      data: params.data,
+      url: "prescription/save",
+    });
   }
 }
 
