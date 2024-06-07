@@ -1,23 +1,22 @@
-import { ConnectionType, getConnection } from "../Frameworks/indexedConnection";
 import {
   PatientRepository,
   ExamRepository,
   PrescriptionRepository,
 } from "../Repositories/Post";
 
-const connection = getConnection("exams", ConnectionType.READONLY);
+export async function postStrategies(key: any, data: any) {
+  const examPost = new ExamRepository();
+  const patientPost = new PatientRepository();
+  const prescriptionPost = new PrescriptionRepository();
 
-const postRepositories = {
-  exam: new ExamRepository(connection),
-  patient: new PatientRepository(connection),
-  prescription: new PrescriptionRepository(connection),
-};
+  const getStrategy: any = {
+    "patient/list": patientPost.listPagination,
+    "patient/save": patientPost.save,
+    "exam/list": examPost.listPagination,
+    "exam/save": examPost.save,
+    "prescription/list": prescriptionPost.listPagination,
+    "prescription/save": prescriptionPost.save,
+  };
 
-export const postStrategy = {
-  "patient/list": postRepositories.patient.listPagination,
-  "patient/save": postRepositories.patient.save,
-  "exam/list": postRepositories.exam.listPagination,
-  "exam/save": postRepositories.exam.save,
-  "prescription/list": postRepositories.prescription.listPagination,
-  "prescription/save": postRepositories.prescription.save,
-};
+  return Promise.resolve(getStrategy[key](data));
+}

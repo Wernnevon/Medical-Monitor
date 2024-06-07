@@ -1,20 +1,19 @@
-import { ConnectionType, getConnection } from "../Frameworks/indexedConnection";
 import {
   PatientRepository,
   ExamRepository,
   PrescriptionRepository,
 } from "../Repositories/Delete";
 
-const connection = getConnection("exams", ConnectionType.READONLY);
+export async function deleteStrategies(key: any, data: any) {
+  const examDelete = new ExamRepository();
+  const patientDelete = new PatientRepository();
+  const prescriptionDelete = new PrescriptionRepository();
 
-const deleteRepositories = {
-  exam: new ExamRepository(connection),
-  patient: new PatientRepository(connection),
-  prescription: new PrescriptionRepository(connection),
-};
+  const getStrategy: any = {
+    "patient/delete": patientDelete.delete,
+    "exam/delete": examDelete.delete,
+    "prescription/delete": prescriptionDelete.delete,
+  };
 
-export const deleteStrategy = {
-  "patient/delete": deleteRepositories.patient.delete,
-  "exam/delete": deleteRepositories.exam.delete,
-  "prescription/delete": deleteRepositories.prescription.delete,
-};
+  return Promise.resolve(getStrategy[key](data));
+}

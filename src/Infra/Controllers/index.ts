@@ -1,6 +1,6 @@
-import { getStrategy } from "./get";
-import { postStrategy } from "./post";
-import { putStrategy } from "./put";
-import { deleteStrategy } from "./delete";
+import { getStrategies } from "./get";
+import { postStrategies } from "./post";
+import { putStrategies } from "./put";
+import { deleteStrategies } from "./delete";
 
-export { getStrategy, postStrategy, putStrategy, deleteStrategy };
+export { getStrategies, postStrategies, putStrategies, deleteStrategies };

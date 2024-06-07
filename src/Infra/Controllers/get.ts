@@ -1,25 +1,24 @@
-import { ConnectionType, getConnection } from "../Frameworks/indexedConnection";
 import {
   PatientRepository,
   ExamRepository,
   PrescriptionRepository,
 } from "../Repositories/Get";
 
-const connection = getConnection("exams", ConnectionType.READONLY);
+export async function getStrategies(key: any, data: any) {
+  const examGet = new ExamRepository();
+  const patientGet = new PatientRepository();
+  const prescriptionGet = new PrescriptionRepository();
 
-const getRepositories = {
-  exam: new ExamRepository(connection),
-  patient: new PatientRepository(connection),
-  prescription: new PrescriptionRepository(connection),
-};
+  const getStrategy: any = {
+    "patient/list": patientGet.list,
+    "patient/findById": patientGet.findById,
+    "patient/listCities": patientGet.listCities,
+    "patient/listInsurances": patientGet.listInsurances,
+    "exam/list": examGet.list,
+    "exam/findById": examGet.findById,
+    "precription/list": prescriptionGet.list,
+    "precription/findById": prescriptionGet.findById,
+  };
 
-export const getStrategy = {
-  "patient/list": getRepositories.patient.list,
-  "patient/findById": getRepositories.patient.findById,
-  "patient/listCities": getRepositories.patient.listCities,
-  "patient/listInsurances": getRepositories.patient.listInsurances,
-  "exam/list": getRepositories.exam.list,
-  "exam/findById": getRepositories.exam.findById,
-  "precription/list": getRepositories.prescription.list,
-  "precription/findById": getRepositories.prescription.findById,
-};
+  return Promise.resolve(await getStrategy[key](data));
+}
