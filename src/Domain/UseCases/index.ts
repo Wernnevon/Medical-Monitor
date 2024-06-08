@@ -1,8 +1,9 @@
-import { Store } from "./store";
-import { List } from "./list";
-import { Find } from "./find";
-import { Update } from "./update";
-import { Delete } from "./delete";
-import { ChangeStatus } from "./changeStatus";
-
-export type { Store, Delete, Find, List, Update, ChangeStatus };
+export * from "./Add";
+export * from "./ChangeStatus";
+export * from "./Delete";
+export * from "./FindById";
+export * from "./List";
+export * from "./ListCities";
+export * from "./ListInsurances";
+export * from "./ListPagination";
+export * from "./Update";
