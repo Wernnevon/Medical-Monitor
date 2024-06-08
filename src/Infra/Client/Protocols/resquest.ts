@@ -4,9 +4,7 @@ export type ClientReq = {
   url: Url;
 };
 
-export type ClientRes<T = any> = {
-  data: T;
-};
+export type ClientRes<T = any> = T;
 
 export type Method = "post" | "get" | "put" | "delete";
 export type Url =
@@ -17,8 +15,8 @@ export type Url =
   | "patient/listInsurances"
   | "exam/list"
   | "exam/findById"
-  | "precription/list"
-  | "precription/findById"
+  | "prescription/list"
+  | "prescription/findById"
   // Post Routes
   | "patient/list"
   | "patient/save"
