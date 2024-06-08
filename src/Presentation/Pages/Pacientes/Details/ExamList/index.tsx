@@ -12,7 +12,7 @@ import { ExamStatus } from "../../../../../Domain/Entities/Exams";
 import {
   makeLocalExamDelete,
   makeLocalExamList,
-} from "../../../../../Factories";
+} from "../../../../../Main/Factories";
 import { formmatDate } from "../../../../Utils/dateUtils";
 import { ToastTypes } from "../../../../Hooks/useToast/ToastConfigs";
 import { useToast } from "../../../../Hooks";

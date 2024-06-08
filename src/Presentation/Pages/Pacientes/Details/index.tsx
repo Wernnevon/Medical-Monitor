@@ -18,7 +18,7 @@ import {
   TableCard,
 } from "./styles";
 import { Patient } from "../../../../Domain/Entities";
-import { makeLocalPatientFind } from "../../../../Factories";
+import { makeLocalPatientFind } from "../../../../Main/Factories";
 import { formmatDate, getAge } from "../../../Utils/dateUtils";
 import { ExamList } from "./ExamList";
 import { PrecriptionList } from "./PrecriptionList";

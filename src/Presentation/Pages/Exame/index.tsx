@@ -16,7 +16,10 @@ import {
   FormButtonContainer,
   ExameOutputCard,
 } from "./styles";
-import { makeLocalExamStore, makeLocalPatientFind } from "../../../Factories";
+import {
+  makeLocalExamStore,
+  makeLocalPatientFind,
+} from "../../../Main/Factories";
 import { useParams } from "react-router-dom";
 import { ExamStatus } from "../../../Domain/Entities/Exams";
 import { useToast } from "../../Hooks";

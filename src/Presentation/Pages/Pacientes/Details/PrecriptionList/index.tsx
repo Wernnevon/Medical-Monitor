@@ -9,7 +9,7 @@ import { handleFilter } from "../../../../Utils/filterAdpater";
 import {
   makeLocalPrescriptionDelete,
   makeLocalPrescriptionList,
-} from "../../../../../Factories";
+} from "../../../../../Main/Factories";
 import { formmatDate } from "../../../../Utils/dateUtils";
 import { Prescription } from "../../../../../Domain/Entities";
 import { PrescriptionSatus } from "../../../../../Domain/Entities/Prescription";

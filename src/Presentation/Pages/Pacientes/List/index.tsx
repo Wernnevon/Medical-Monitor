@@ -17,7 +17,7 @@ import Table from "../../../Components/Table";
 import {
   makeLocalPatientDelete,
   makeLocalPatientList,
-} from "../../../../Factories";
+} from "../../../../Main/Factories";
 import { List } from "../../../../Domain/UseCases";
 import { Patient } from "../../../../Domain/Entities";
 import { useToast } from "../../../Hooks";

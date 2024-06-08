@@ -20,7 +20,7 @@ import { useParams } from "react-router-dom";
 import {
   makeLocalPatientFind,
   makeLocalPrescriptionStore,
-} from "../../../Factories";
+} from "../../../Main/Factories";
 import { PrescriptionSatus } from "../../../Domain/Entities/Prescription";
 import { ToastTypes } from "../../Hooks/useToast/ToastConfigs";
 

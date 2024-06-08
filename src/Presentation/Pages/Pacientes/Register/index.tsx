@@ -26,7 +26,7 @@ import {
   makeLocalPatientFind,
   makeLocalPatientStore,
   makeLocalPatientUpdate,
-} from "../../../../Factories";
+} from "../../../../Main/Factories";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoPersonAdd } from "react-icons/io5";
 import { FaUserEdit } from "react-icons/fa";
