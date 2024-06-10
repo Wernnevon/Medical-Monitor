@@ -12,3 +12,7 @@ export function formmatDate(date: Date): string {
   const [y, m, d] = date.toString().split("-");
   return new Date(Number(y), Number(m) - 1, Number(d)).toLocaleDateString();
 }
+
+export function getStringToday(): string {
+  return new Date(Date.now()).toISOString().substring(0, 10);
+}
