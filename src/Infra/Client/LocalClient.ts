@@ -14,9 +14,8 @@ export class LocalClient implements Client {
     delete: deleteStrategies,
   };
   async request({ method, url, data }: ClientReq): Promise<ClientRes<any>> {
-    return Promise.resolve({
-      data: await this.controllerStartegy[method](url, data),
-    }).catch((err) => {
+    const response = await this.controllerStartegy[method](url, data);
+    return Promise.resolve(response).catch((err) => {
       throw new Error(err);
     });
   }

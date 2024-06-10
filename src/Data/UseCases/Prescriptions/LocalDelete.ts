@@ -1,4 +1,4 @@
-import { Delete } from "../../../Domain/UseCases2/Delete";
+import { Delete } from "../../../Domain/UseCases/Delete";
 import { Client } from "../../../Infra/Client/Protocols/resquest";
 import { HTTPVerbs } from "../../../Infra/Frameworks/HTTPVerbs";
 

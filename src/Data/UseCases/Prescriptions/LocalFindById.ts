@@ -1,5 +1,5 @@
 import { Prescription } from "../../../Domain/Entities";
-import { FindById } from "../../../Domain/UseCases2/FindById";
+import { FindById } from "../../../Domain/UseCases/FindById";
 import { Client } from "../../../Infra/Client/Protocols/resquest";
 import { HTTPVerbs } from "../../../Infra/Frameworks/HTTPVerbs";
 

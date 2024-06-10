@@ -1,4 +1,4 @@
-import { ChangeStatus } from "../../../Domain/UseCases2/ChangeStatus";
+import { ChangeStatus } from "../../../Domain/UseCases/ChangeStatus";
 import { Client } from "../../../Infra/Client/Protocols/resquest";
 
 export class LocalChangeStatus implements ChangeStatus {

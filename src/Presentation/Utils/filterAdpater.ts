@@ -1,9 +1,9 @@
-import { List } from "../../Domain/UseCases";
+import { List, ListPagination } from "../../Domain/UseCases";
 
 type Props = {
   keyFilter: string;
   filterValue: any;
-  filterArray: List.Filter[];
+  filterArray: ListPagination.Filter[];
   callback(arg: any[]): void;
 };
 

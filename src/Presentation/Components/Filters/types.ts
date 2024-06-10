@@ -1,6 +1,13 @@
 export type DataFilter = {
   type: "text" | "radio";
   placeholder: string;
-  value?: Array<{ name: string; value: any }>;
+  value?: FilterItem;
   handle: (v?: any) => void;
 };
+
+export type FilterDataProp = {
+  insurances: FilterItem;
+  cities: FilterItem;
+};
+
+export type FilterItem = Array<{ name: string; value: any }>;

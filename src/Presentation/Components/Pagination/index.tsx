@@ -1,16 +1,8 @@
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { Container, TotalLabel, PaginationContainer } from "./styles";
 
-export type PaginationType = {
-  page: number;
-  pageSize: number;
-  totalPages: number;
-  totalEntries: number;
-};
-
 type Props = {
   entityName: string;
-
   page: number;
   pageSize: number;
   totalPages: number;

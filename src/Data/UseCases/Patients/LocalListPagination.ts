@@ -1,24 +1,24 @@
 import { Patient } from "../../../Domain/Entities";
-import { ListPagination } from "../../../Domain/UseCases2/ListPagination";
+import { ListPagination } from "../../../Domain/UseCases/ListPagination";
 import { Client } from "../../../Infra/Client/Protocols/resquest";
 import { HTTPVerbs } from "../../../Infra/Frameworks/HTTPVerbs";
 
-type Response = Patient[];
 export class LocalListPagination implements ListPagination {
-  constructor(private readonly client: Client<Response>) {}
+  constructor(
+    private readonly client: Client<ListPagination.Response<Patient>>
+  ) {}
 
-  async listPagination(params: ListPagination.Params): Promise<Response> {
-    let response;
-    try {
-      response = await this.client.request({
+  async listPagination(
+    params: ListPagination.Params
+  ): Promise<ListPagination.Response<Patient>> {
+    return Promise.resolve(
+      await this.client.request({
         method: HTTPVerbs.POST,
         url: "patient/list",
         data: params,
-      });
-    } catch (err) {
-      throw new Error("falha na requisição");
-    }
-
-    return Promise.resolve(response);
+      })
+    ).catch((err) => {
+      throw new Error(err);
+    });
   }
 }

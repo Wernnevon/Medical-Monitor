@@ -1,4 +1,4 @@
-import { ListInsurance } from "../../../Domain/UseCases2/ListInsurances";
+import { ListInsurance } from "../../../Domain/UseCases/ListInsurances";
 import { Client } from "../../../Infra/Client/Protocols/resquest";
 
 export class LocalListInsurance implements ListInsurance {

@@ -1,5 +1,5 @@
 import { Patient } from "../../../Domain/Entities";
-import { List } from "../../../Domain/UseCases";
+import { ListPagination } from "../../../Domain/UseCases";
 import { filterBy } from "../../Client/filters";
 import {
   ConnectionType,
@@ -7,12 +7,12 @@ import {
 } from "../../Frameworks/indexedConnection";
 
 export class PatientRepository {
-  async listPagination(
-    pageNumber: number,
-    pageSize: number,
-    keywords?: string[],
-    filters?: List.Filter[]
-  ): Promise<{ totalRecords: number; records: Patient[] }> {
+  async listPagination({
+    page,
+    pageSize,
+    keywords,
+    filters,
+  }: ListPagination.Params): Promise<ListPagination.Response<Patient>> {
     const db = await getConnection();
     const transaction = db.transaction("patients", ConnectionType.READWRITE);
     const objectStore = transaction.objectStore("patients");
@@ -42,11 +42,11 @@ export class PatientRepository {
             )
           );
         }
-        const totalRecords = filteredRecords.length;
-        const start = (pageNumber - 1) * pageSize;
+        const totalEntries = filteredRecords.length;
+        const start = (page - 1) * pageSize;
         const end = start + pageSize;
-        const records = filteredRecords.slice(start, end);
-        resolve({ totalRecords, records });
+        const entries = filteredRecords.slice(start, end);
+        resolve({ totalEntries, entries });
       };
     });
   }

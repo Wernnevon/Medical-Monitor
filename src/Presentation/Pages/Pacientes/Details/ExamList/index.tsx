@@ -3,21 +3,16 @@ import { LuClipboardCheck, LuClipboardX } from "react-icons/lu";
 import { BiTestTube } from "react-icons/bi";
 
 import Table from "../../../../Components/Table";
-import { List } from "../../../../../Domain/UseCases";
-import { PaginationType } from "../../../../Components/Pagination";
 import { DataFilter } from "../../../../Components/Filters";
 import { handleFilter } from "../../../../Utils/filterAdpater";
 import { Exams } from "../../../../../Domain/Entities";
 import { ExamStatus } from "../../../../../Domain/Entities/Exams";
-import {
-  makeLocalExamDelete,
-  makeLocalExamList,
-} from "../../../../../Main/Factories";
 import { formmatDate } from "../../../../Utils/dateUtils";
 import { ToastTypes } from "../../../../Hooks/useToast/ToastConfigs";
 import { useToast } from "../../../../Hooks";
 import { usePopup } from "../../../../Hooks/usePopup";
 import Toggle from "../../../../Components/Toggle";
+import { Delete, ListPagination } from "../../../../../Domain/UseCases";
 
 type ExamTableData = {
   id: number;
@@ -29,26 +24,31 @@ type ExamTableData = {
 
 type Props = {
   patientId?: string;
+  list: ListPagination;
+  remove: Delete;
 };
 
-export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
+const pageSize = 5;
+
+export const ExamList: React.FC<Props> = ({
+  patientId = "0",
+  list,
+  remove,
+}: Props) => {
   const [exams, setExams] = useState<ExamTableData[]>([]);
-  const [filters, setFilters] = useState<List.Filter[]>([
+  const [filters, setFilters] = useState<ListPagination.Filter[]>([
     { key: "patientId", value: patientId },
   ]);
   const [keywords, setKeywords] = useState<string[]>([]);
-  const [pagination, setPagination] = useState<PaginationType>({
-    page: 1,
-    pageSize: 5,
+  const [pagination, setPagination] = useState({
     totalEntries: 0,
     totalPages: 1,
   });
 
+  const [page, setPage] = useState<number>(1);
+
   const addToast = useToast();
   const { showPopup } = usePopup();
-
-  const examList = makeLocalExamList();
-  const examDelete = makeLocalExamDelete();
 
   const filterExamTable: DataFilter[] = [
     {
@@ -106,46 +106,34 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
   ];
 
   useEffect(() => {
-    examList
-      .listPerPage({
-        page: pagination.page,
-        pageSize: pagination.pageSize,
+    list
+      .listPagination({
+        page,
+        pageSize,
         filters,
         keywords,
       })
-      .then(
-        ({
-          totalRecords,
-          records,
-        }: {
-          totalRecords: number;
-          records: Exams[];
-        }) => {
-          const list: ExamTableData[] = records.map(
-            ({ id, name, requisitionDate, realizationDate, status }) => ({
-              id: id || 0,
-              name,
-              requisitionDate: formmatDate(requisitionDate),
-              realizationDate: realizationDate
-                ? formmatDate(realizationDate)
-                : "-",
-              status,
-            })
-          );
-          setPagination((prev) => ({
-            ...prev,
-            totalEntries: totalRecords || 0,
-            totalPages: Math.ceil(totalRecords / pagination.pageSize) || 0,
-          }));
-          setExams(list || []);
-        }
-      );
+      .then(({ entries, totalEntries }: ListPagination.Response<Exams>) => {
+        const list: ExamTableData[] = entries.map(
+          ({ id, name, requisitionDate, realizationDate, status }) => ({
+            id: id || 0,
+            name,
+            requisitionDate: formmatDate(requisitionDate),
+            realizationDate: realizationDate
+              ? formmatDate(realizationDate)
+              : "-",
+            status,
+          })
+        );
+        setPagination((prev) => ({
+          ...prev,
+          totalEntries: totalEntries || 0,
+          totalPages: Math.ceil(totalEntries / pageSize) || 0,
+        }));
+        setExams(list || []);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, keywords, pagination.page, addToast]);
-
-  function handleChangePage(page: number) {
-    setPagination((prev) => ({ ...prev, page }));
-  }
+  }, [filters, keywords, page, addToast]);
 
   function deleteExam(examId: number) {
     const popupData = {
@@ -154,8 +142,8 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
         message: `Tem certeza de que deseja excluir? Não há como desfazer esta ação!`,
       },
       onConfirm: () =>
-        examDelete
-          .delete({ id: examId })
+        remove
+          .delete({ ids: [examId] })
           .then(() => {
             addToast(
               "O exame foi apagado do histórico desse paciente",
@@ -182,9 +170,9 @@ export const ExamList: React.FC<Props> = ({ patientId = "0" }: Props) => {
       config={{
         pagination: {
           entityName: "Exames",
-          changePage: handleChangePage,
-          actualPage: pagination.page,
-          pageSize: pagination.pageSize,
+          changePage: setPage,
+          actualPage: page,
+          pageSize: pageSize,
           totalPages: pagination.totalPages,
           totalEntries: pagination.totalEntries,
         },

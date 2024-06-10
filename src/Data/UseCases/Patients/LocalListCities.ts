@@ -1,4 +1,4 @@
-import { ListCities } from "../../../Domain/UseCases2/ListCities";
+import { ListCities } from "../../../Domain/UseCases/ListCities";
 import { Client } from "../../../Infra/Client/Protocols/resquest";
 
 export class LocalListCities implements ListCities {

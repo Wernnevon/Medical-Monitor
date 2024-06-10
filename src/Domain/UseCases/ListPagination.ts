@@ -1,5 +1,7 @@
 export interface ListPagination<R = any> {
-  listPagination(params: ListPagination.Params): Promise<R>;
+  listPagination(
+    params: ListPagination.Params
+  ): Promise<ListPagination.Response<R>>;
 }
 
 export namespace ListPagination {
@@ -13,5 +15,10 @@ export namespace ListPagination {
   export type Filter = {
     [key: string]: any;
     value: string;
+  };
+
+  export type Response<R> = {
+    totalEntries: number;
+    entries: R[];
   };
 }

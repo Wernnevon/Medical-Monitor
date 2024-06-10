@@ -1,4 +1,4 @@
-import { Update } from "../../../Domain/UseCases2/Update";
+import { Update } from "../../../Domain/UseCases/Update";
 import { Client } from "../../../Infra/Client/Protocols/resquest";
 import { HTTPVerbs } from "../../../Infra/Frameworks/HTTPVerbs";
 

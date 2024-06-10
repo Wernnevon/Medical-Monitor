@@ -18,10 +18,12 @@ import {
   TableCard,
 } from "./styles";
 import { Patient } from "../../../../Domain/Entities";
-import { makeLocalPatientFind } from "../../../../Main/Factories";
 import { formmatDate, getAge } from "../../../Utils/dateUtils";
-import { ExamList } from "./ExamList";
-import { PrecriptionList } from "./PrecriptionList";
+import { FindById } from "../../../../Domain/UseCases";
+import {
+  makeExamListPage,
+  makePrescriptionListPage,
+} from "../../../../Main/Factories/Pages";
 
 const initial: Patient = {
   anamnese: "",
@@ -47,15 +49,18 @@ const initial: Patient = {
   },
 };
 
-const Details: React.FC = () => {
+type Props = {
+  findById: FindById;
+};
+
+const Details: React.FC<Props> = ({ findById }) => {
   const [patient, setPatient] = useState<Patient>(initial);
 
   const { id } = useParams();
-  const patientFind = makeLocalPatientFind();
 
   useLayoutEffect(() => {
     if (id) {
-      patientFind.findOne({ query: id }).then(([resp]: any) => {
+      findById.findById({ id: Number(id) }).then((resp: any) => {
         setPatient(resp);
       });
     }
@@ -153,8 +158,8 @@ const Details: React.FC = () => {
           </AnamneseCard>
         </div>
         <TableCard>
-          <ExamList patientId={id} />
-          <PrecriptionList patientId={id} />
+          {makeExamListPage(id)}
+          {makePrescriptionListPage(id)}
         </TableCard>
       </PacienteCard>
     </Container>

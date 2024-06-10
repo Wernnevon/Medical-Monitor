@@ -17,26 +17,25 @@ import {
   PrescriptionOutputCard,
 } from "./styles";
 import { useParams } from "react-router-dom";
-import {
-  makeLocalPatientFind,
-  makeLocalPrescriptionStore,
-} from "../../../Main/Factories";
 import { PrescriptionSatus } from "../../../Domain/Entities/Prescription";
 import { ToastTypes } from "../../Hooks/useToast/ToastConfigs";
+import { Add, FindById } from "../../../Domain/UseCases";
 
-const Prescription: React.FC = () => {
+type Props = {
+  findById: FindById;
+  add: Add;
+};
+
+const Prescription: React.FC<Props> = ({ add, findById }) => {
   const { id } = useParams();
   const [content, setContent] = useState([]);
   const addToast = useToast();
   const [medicaments, setMedicaments] = useState("");
   const [name, setName] = useState("");
 
-  const findPatient = makeLocalPatientFind();
-  const prescriptionStore = makeLocalPrescriptionStore();
-
   useLayoutEffect(() => {
     if (id)
-      findPatient.findOne({ query: id }).then(([{ name }]: any) => {
+      findById.findById({ id: Number(id) }).then(({ name }: any) => {
         setName(name);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,7 +58,7 @@ const Prescription: React.FC = () => {
   function handleAddPrecription() {
     if (id && validate(content)) {
       content.forEach((prescription) => {
-        prescriptionStore
+        add
           .store({
             data: {
               administering: PrescriptionSatus.ADMINISTERING,

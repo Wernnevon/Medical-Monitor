@@ -16,16 +16,18 @@ import {
   FormButtonContainer,
   ExameOutputCard,
 } from "./styles";
-import {
-  makeLocalExamStore,
-  makeLocalPatientFind,
-} from "../../../Main/Factories";
 import { useParams } from "react-router-dom";
 import { ExamStatus } from "../../../Domain/Entities/Exams";
 import { useToast } from "../../Hooks";
 import { ToastTypes } from "../../Hooks/useToast/ToastConfigs";
+import { Add, FindById } from "../../../Domain/UseCases";
 
-const Exame: React.FC = () => {
+type Props = {
+  findById: FindById;
+  add: Add;
+};
+
+const Exame: React.FC<Props> = ({ add, findById }) => {
   const { id } = useParams();
   const [otherExamsText, setOtherExamsText] = useState([]);
   const [name, setName] = useState("");
@@ -33,12 +35,9 @@ const Exame: React.FC = () => {
   const addToast = useToast();
   const [otherExams, setOtherExams] = useState([]);
 
-  const findPatient = makeLocalPatientFind();
-  const examStore = makeLocalExamStore();
-
   useLayoutEffect(() => {
     if (id)
-      findPatient.findOne({ query: id }).then(([{ name }]: any) => {
+      findById.findById({ id: Number(id) }).then(({ name }: any) => {
         setName(name);
       });
   }, []);
@@ -67,7 +66,7 @@ const Exame: React.FC = () => {
     const allExams = [...selected, ...otherExams];
     if (id && allExams.length) {
       allExams.forEach((exam) => {
-        examStore
+        add
           .store({
             data: {
               patientId: parseInt(id),

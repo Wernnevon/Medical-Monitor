@@ -1,13 +1,16 @@
 import { Prescription } from "../../../Domain/Entities";
-import { ListPagination } from "../../../Domain/UseCases2/ListPagination";
+import { ListPagination } from "../../../Domain/UseCases/ListPagination";
 import { Client } from "../../../Infra/Client/Protocols/resquest";
 import { HTTPVerbs } from "../../../Infra/Frameworks/HTTPVerbs";
 
-type Response = Prescription[];
 export class LocalListPagination implements ListPagination {
-  constructor(private readonly client: Client<Response>) {}
+  constructor(
+    private readonly client: Client<ListPagination.Response<Prescription>>
+  ) {}
 
-  async listPagination(params: ListPagination.Params): Promise<Response> {
+  async listPagination(
+    params: ListPagination.Params
+  ): Promise<ListPagination.Response<Prescription>> {
     let response;
     try {
       response = await this.client.request({

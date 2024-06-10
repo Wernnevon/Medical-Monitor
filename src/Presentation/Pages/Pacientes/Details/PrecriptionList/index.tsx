@@ -2,14 +2,8 @@ import { useEffect, useState } from "react";
 import { LuClipboardEdit, LuClipboardX } from "react-icons/lu";
 
 import Table from "../../../../Components/Table";
-import { List } from "../../../../../Domain/UseCases";
-import { PaginationType } from "../../../../Components/Pagination";
 import { DataFilter } from "../../../../Components/Filters";
 import { handleFilter } from "../../../../Utils/filterAdpater";
-import {
-  makeLocalPrescriptionDelete,
-  makeLocalPrescriptionList,
-} from "../../../../../Main/Factories";
 import { formmatDate } from "../../../../Utils/dateUtils";
 import { Prescription } from "../../../../../Domain/Entities";
 import { PrescriptionSatus } from "../../../../../Domain/Entities/Prescription";
@@ -17,6 +11,7 @@ import Toggle from "../../../../Components/Toggle";
 import { useToast } from "../../../../Hooks";
 import { usePopup } from "../../../../Hooks/usePopup";
 import { ToastTypes } from "../../../../Hooks/useToast/ToastConfigs";
+import { Delete, ListPagination } from "../../../../../Domain/UseCases";
 
 type PrecriptionTableData = {
   id: number;
@@ -27,26 +22,31 @@ type PrecriptionTableData = {
 
 type Props = {
   patientId?: string;
+  list: ListPagination;
+  remove: Delete;
 };
 
-export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
+const pageSize = 5;
+
+export const PrescriptionList: React.FC<Props> = ({
+  patientId,
+  list,
+  remove,
+}: Props) => {
   const [prescription, setPrescription] = useState<PrecriptionTableData[]>([]);
-  const [filters, setFilters] = useState<List.Filter[]>([
+  const [filters, setFilters] = useState<ListPagination.Filter[]>([
     { key: "patientId", value: patientId || "0" },
   ]);
   const [keywords, setKeywords] = useState<string[]>([]);
-  const [pagination, setPagination] = useState<PaginationType>({
-    page: 1,
-    pageSize: 5,
+  const [pagination, setPagination] = useState({
     totalEntries: 0,
     totalPages: 1,
   });
 
+  const [page, setPage] = useState<number>(1);
+
   const addToast = useToast();
   const { showPopup } = usePopup();
-
-  const precriptionList = makeLocalPrescriptionList();
-  const precriptionDelete = makeLocalPrescriptionDelete();
 
   const filterPrescriptionTable: DataFilter[] = [
     {
@@ -102,8 +102,8 @@ export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
         message: `Tem certeza de que deseja excluir? Não há como desfazer esta ação!`,
       },
       onConfirm: () =>
-        precriptionDelete
-          .delete({ id: examId })
+        remove
+          .delete({ ids: [examId] })
           .then(() => {
             addToast(
               "A medicação foi apagada do histórico desse paciente",
@@ -121,22 +121,16 @@ export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
   }
 
   useEffect(() => {
-    precriptionList
-      .listPerPage({
-        page: pagination.page,
-        pageSize: pagination.pageSize,
+    list
+      .listPagination({
+        page: page,
+        pageSize,
         filters,
         keywords,
       })
       .then(
-        ({
-          totalRecords,
-          records,
-        }: {
-          totalRecords: number;
-          records: Prescription[];
-        }) => {
-          const list: PrecriptionTableData[] = records.map(
+        ({ entries, totalEntries }: ListPagination.Response<Prescription>) => {
+          const list: PrecriptionTableData[] = entries.map(
             ({ id, medicament: name, date: requisitionDate, status }) => ({
               id: id || 0,
               name,
@@ -144,20 +138,16 @@ export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
               status,
             })
           );
-          setPagination((prev) => ({
+          setPagination((prev: any) => ({
             ...prev,
-            totalEntries: totalRecords || 0,
-            totalPages: Math.ceil(totalRecords / pagination.pageSize) || 0,
+            totalEntries: totalEntries || 0,
+            totalPages: Math.ceil(totalEntries / pageSize) || 0,
           }));
           setPrescription(list || []);
         }
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, keywords, pagination.page, addToast]);
-
-  function handleChangePage(page: number) {
-    setPagination((prev) => ({ ...prev, page }));
-  }
+  }, [filters, keywords, page, addToast]);
 
   return (
     <Table
@@ -169,9 +159,9 @@ export const PrecriptionList: React.FC<Props> = ({ patientId }: Props) => {
       config={{
         pagination: {
           entityName: "Prescrições",
-          changePage: handleChangePage,
-          actualPage: pagination.page,
-          pageSize: pagination.pageSize,
+          changePage: setPage,
+          actualPage: page,
+          pageSize: pageSize,
           totalPages: pagination.totalPages,
           totalEntries: pagination.totalEntries,
         },

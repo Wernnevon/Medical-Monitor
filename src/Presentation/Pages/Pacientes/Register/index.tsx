@@ -22,20 +22,22 @@ import EndPhase from "./StepEndPhase";
 import { useRegister } from "../../../Hooks";
 import { PacienteCard, PacienteContainer } from "../List/styles";
 
-import {
-  makeLocalPatientFind,
-  makeLocalPatientStore,
-  makeLocalPatientUpdate,
-} from "../../../../Main/Factories";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoPersonAdd } from "react-icons/io5";
 import { FaUserEdit } from "react-icons/fa";
+import { Add, FindById, Update } from "../../../../Domain/UseCases";
 
 type StepProps = {
   [key: number]: any;
 };
 
-const Register: React.FC = () => {
+type Props = {
+  findById: FindById;
+  add: Add;
+  update: Update;
+};
+
+const Register: React.FC<Props> = ({ add, findById, update }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { step, patient, addData } = useRegister();
@@ -44,9 +46,6 @@ const Register: React.FC = () => {
     store: "Paciente cadastrado com sucesso",
     update: "Dados do paciente foram atualizados com sucesso",
   };
-  const patientStore = makeLocalPatientStore();
-  const patientFind = makeLocalPatientFind();
-  const patientUpdate = makeLocalPatientUpdate();
 
   // on dev mode
   function fillPatientDB() {
@@ -54,13 +53,13 @@ const Register: React.FC = () => {
       data.birthday = new Date(Date.parse(data.birthday))
         .toISOString()
         .substring(0, 10);
-      patientStore.store({ data });
+      add.store({ data });
     });
   }
 
   useEffect(() => {
     if (id) {
-      patientFind.findOne({ query: id }).then(([data]: any) => {
+      findById.findById({ id: Number(id) }).then((data: any) => {
         addData({ ...data });
       });
     }
@@ -69,7 +68,7 @@ const Register: React.FC = () => {
   const submit = useCallback(async () => {
     console.log(patient);
     if (id) {
-      await patientUpdate
+      await update
         .update({ data: patient })
         .then(() => {
           addToast(sucessMensage.update, ToastTypes.SUCESS);
@@ -80,7 +79,7 @@ const Register: React.FC = () => {
           console.error(err);
         });
     } else {
-      await patientStore
+      await add
         .store({ data: patient })
         .then(() => {
           addToast(sucessMensage.store, ToastTypes.SUCESS);

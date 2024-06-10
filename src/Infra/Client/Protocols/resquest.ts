@@ -1,6 +1,6 @@
 export type ClientReq = {
   method: Method;
-  data: any | null;
+  data: any;
   url: Url;
 };
 
