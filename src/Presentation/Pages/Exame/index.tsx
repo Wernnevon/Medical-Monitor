@@ -21,6 +21,7 @@ import { ExamStatus } from "../../../Domain/Entities/Exams";
 import { useToast } from "../../Hooks";
 import { ToastTypes } from "../../Hooks/useToast/ToastConfigs";
 import { Add, FindById } from "../../../Domain/UseCases";
+import { getStringToday } from "../../Utils/dateUtils";
 
 type Props = {
   findById: FindById;
@@ -71,10 +72,8 @@ const Exame: React.FC<Props> = ({ add, findById }) => {
             data: {
               patientId: parseInt(id),
               name: exam,
-              requisitionDate: new Date(Date.now())
-                .toISOString()
-                .substring(0, 10),
-              done: ExamStatus.IN_PROGRESS,
+              status: ExamStatus.IN_PROGRESS,
+              requisitionDate: getStringToday(),
             },
           })
           .then(() => {

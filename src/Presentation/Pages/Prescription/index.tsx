@@ -17,9 +17,10 @@ import {
   PrescriptionOutputCard,
 } from "./styles";
 import { useParams } from "react-router-dom";
-import { PrescriptionSatus } from "../../../Domain/Entities/Prescription";
+import { PrescriptionStatus } from "../../../Domain/Entities/Prescription";
 import { ToastTypes } from "../../Hooks/useToast/ToastConfigs";
 import { Add, FindById } from "../../../Domain/UseCases";
+import { getStringToday } from "../../Utils/dateUtils";
 
 type Props = {
   findById: FindById;
@@ -61,8 +62,8 @@ const Prescription: React.FC<Props> = ({ add, findById }) => {
         add
           .store({
             data: {
-              administering: PrescriptionSatus.ADMINISTERING,
-              date: new Date(Date.now()).toISOString().substring(0, 10),
+              status: PrescriptionStatus.ADMINISTERING,
+              date: getStringToday(),
               medicament: prescription,
               patientId: parseInt(id),
             },
