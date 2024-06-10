@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 import { LuClipboardEdit, LuClipboardX } from "react-icons/lu";
+import { IoMdSwitch } from "react-icons/io";
 
 import Table from "../../../../Components/Table";
 import { DataFilter } from "../../../../Components/Filters";
 import { handleFilter } from "../../../../Utils/filterAdpater";
 import { formmatDate } from "../../../../Utils/dateUtils";
 import { Prescription } from "../../../../../Domain/Entities";
-import { PrescriptionSatus } from "../../../../../Domain/Entities/Prescription";
-import Toggle from "../../../../Components/Toggle";
+import { PrescriptionStatus } from "../../../../../Domain/Entities/Prescription";
 import { useToast } from "../../../../Hooks";
 import { usePopup } from "../../../../Hooks/usePopup";
 import { ToastTypes } from "../../../../Hooks/useToast/ToastConfigs";
-import { Delete, ListPagination } from "../../../../../Domain/UseCases";
+import {
+  ChangeStatus,
+  Delete,
+  ListPagination,
+} from "../../../../../Domain/UseCases";
 
 type PrecriptionTableData = {
   id: number;
@@ -24,6 +28,7 @@ type Props = {
   patientId?: string;
   list: ListPagination;
   remove: Delete;
+  status: ChangeStatus;
 };
 
 const pageSize = 5;
@@ -32,6 +37,7 @@ export const PrescriptionList: React.FC<Props> = ({
   patientId,
   list,
   remove,
+  status,
 }: Props) => {
   const [prescription, setPrescription] = useState<PrecriptionTableData[]>([]);
   const [filters, setFilters] = useState<ListPagination.Filter[]>([
@@ -60,8 +66,8 @@ export const PrescriptionList: React.FC<Props> = ({
           callback: setFilters,
         }),
       value: [
-        { name: "administering", value: PrescriptionSatus.ADMINISTERING },
-        { name: "administering", value: PrescriptionSatus.SUSPENDED },
+        { name: "administering", value: PrescriptionStatus.ADMINISTERING },
+        { name: "administering", value: PrescriptionStatus.SUSPENDED },
       ],
     },
     {
@@ -82,11 +88,9 @@ export const PrescriptionList: React.FC<Props> = ({
 
   const kebab = [
     {
-      icon: <Toggle />,
+      icon: <IoMdSwitch />,
       name: "Mudar Situação",
-      action: (id: number) => {
-        console.log(`exame ${id}`);
-      },
+      action: changeStatus,
     },
     {
       icon: <LuClipboardX />,
@@ -113,6 +117,32 @@ export const PrescriptionList: React.FC<Props> = ({
           .catch(() => {
             addToast(
               "Não foi possível apagar a medicação do histórico deste paciente, tente novamente mais tarde",
+              ToastTypes.ERROR
+            );
+          }),
+    };
+    showPopup(popupData);
+  }
+
+  function changeStatus(examId: number) {
+    const popupData = {
+      data: {
+        title: "Alterar situação?",
+        message: `Tem certeza de que deseja alterar a situação?`,
+      },
+      onConfirm: () =>
+        status
+          .changeStatus({ id: examId })
+          .then(() => {
+            addToast(
+              "A atual situação do do tratamento com farmaco foi atualizada no histórico desse paciente",
+              ToastTypes.SUCESS
+            );
+          })
+          .catch((err) => {
+            console.error(err);
+            addToast(
+              "Não foi possível mudar a atual situação do tratamento com farmaco no histórico deste paciente, tente novamente mais tarde",
               ToastTypes.ERROR
             );
           }),
