@@ -40,15 +40,19 @@ export const Toast = styled.div`
   background-color: #f9f9f9;
   font-size: 1.2rem;
   gap: 1rem;
-  width: 18rem;
+  width: 20rem;
   /* font-weight: 300; */
   font-family: "Akshar-Light", sans-serif;
   border: 1px solid
     ${({ toastType }: ToastProps) => ToastColorStartegy[toastType]};
   padding: 1rem;
   box-shadow: 0px 3px 13px 5px #00000021;
-
   border-radius: 5px;
+
+  svg {
+    min-height: 40px;
+    min-width: 40px;
+  }
   @media (max-width: 1200px),
     (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.8rem;

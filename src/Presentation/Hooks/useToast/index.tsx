@@ -16,26 +16,18 @@ interface ToastProps {
   children: ReactNode;
 }
 
-const { innerWidth: width } = window;
-
 export const IconStartegy = {
   [ToastTypes.ERROR]: (
-    <VscError
-      size={width < 1025 ? 20 : 32}
-      color={ToastColorStartegy[ToastTypes.ERROR]}
-    />
+    <VscError size={32} color={ToastColorStartegy[ToastTypes.ERROR]} />
   ),
   [ToastTypes.SUCESS]: (
     <AiOutlineCheckCircle
-      size={width < 1025 ? 20 : 32}
+      size={32}
       color={ToastColorStartegy[ToastTypes.SUCESS]}
     />
   ),
   [ToastTypes.WARNING]: (
-    <FiAlertTriangle
-      size={width < 1025 ? 18 : 30}
-      color={ToastColorStartegy[ToastTypes.WARNING]}
-    />
+    <FiAlertTriangle size={30} color={ToastColorStartegy[ToastTypes.WARNING]} />
   ),
 };
 
