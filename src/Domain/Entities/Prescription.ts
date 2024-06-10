@@ -1,4 +1,4 @@
-export enum PrescriptionSatus {
+export enum PrescriptionStatus {
   SUSPENDED = "Suspenso",
   ADMINISTERING = "Administrando",
 }
@@ -7,7 +7,7 @@ type Prescription = {
   patientId: number;
   medicament: string;
   date: Date;
-  status: PrescriptionSatus;
+  status: PrescriptionStatus;
   id: number;
 };
 
