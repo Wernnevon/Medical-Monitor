@@ -5,6 +5,7 @@ import {
   LocalFindByIdPrescriptions,
   LocalListPaginationPrescriptions,
 } from "../../../Data";
+import { LocalChangeStatus } from "../../../Data/UseCases/Prescriptions/LocalChangeStatus";
 
 import makeClient from "../Client/ClientFactory";
 
@@ -31,6 +32,10 @@ function makePrescriptionsListPagination() {
   return new LocalListPaginationPrescriptions(prescriptionsClient);
 }
 
+function makePrescriptionChangeStatus() {
+  return new LocalChangeStatus(prescriptionsClient);
+}
+
 export {
   // NEW FACTORIES
   makePrescriptionsListPagination,
@@ -38,4 +43,5 @@ export {
   makePrescriptionsAdd,
   makePrescriptionsUpdate,
   makePrescriptionsFindById,
+  makePrescriptionChangeStatus,
 };
