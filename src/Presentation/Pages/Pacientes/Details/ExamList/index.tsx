@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { LuClipboardCheck, LuClipboardX } from "react-icons/lu";
 import { BiTestTube } from "react-icons/bi";
+import { IoMdSwitch } from "react-icons/io";
 
 import Table from "../../../../Components/Table";
 import { DataFilter } from "../../../../Components/Filters";
@@ -11,8 +12,11 @@ import { formmatDate } from "../../../../Utils/dateUtils";
 import { ToastTypes } from "../../../../Hooks/useToast/ToastConfigs";
 import { useToast } from "../../../../Hooks";
 import { usePopup } from "../../../../Hooks/usePopup";
-import Toggle from "../../../../Components/Toggle";
-import { Delete, ListPagination } from "../../../../../Domain/UseCases";
+import {
+  ChangeStatus,
+  Delete,
+  ListPagination,
+} from "../../../../../Domain/UseCases";
 
 type ExamTableData = {
   id: number;
@@ -26,6 +30,7 @@ type Props = {
   patientId?: string;
   list: ListPagination;
   remove: Delete;
+  status: ChangeStatus;
 };
 
 const pageSize = 5;
@@ -34,6 +39,7 @@ export const ExamList: React.FC<Props> = ({
   patientId = "0",
   list,
   remove,
+  status,
 }: Props) => {
   const [exams, setExams] = useState<ExamTableData[]>([]);
   const [filters, setFilters] = useState<ListPagination.Filter[]>([
@@ -92,11 +98,9 @@ export const ExamList: React.FC<Props> = ({
       },
     },
     {
-      icon: <Toggle />,
+      icon: <IoMdSwitch />,
       name: "Mudar Situação",
-      action: (id: number) => {
-        console.log(`exame ${id}`);
-      },
+      action: changeStatus,
     },
     {
       icon: <LuClipboardX />,
@@ -153,6 +157,32 @@ export const ExamList: React.FC<Props> = ({
           .catch(() => {
             addToast(
               "Não foi possível apagar o exame do histórico deste paciente, tente novamente mais tarde",
+              ToastTypes.ERROR
+            );
+          }),
+    };
+    showPopup(popupData);
+  }
+
+  function changeStatus(examId: number) {
+    const popupData = {
+      data: {
+        title: "Alterar situação do exame?",
+        message: `Tem certeza de que deseja alterar a situação?`,
+      },
+      onConfirm: () =>
+        status
+          .changeStatus({ id: examId })
+          .then(() => {
+            addToast(
+              "A atual situação do exame foi atualizada no histórico desse paciente",
+              ToastTypes.SUCESS
+            );
+          })
+          .catch((err) => {
+            console.error(err);
+            addToast(
+              "Não foi possível mudar a atual situação do exame no histórico deste paciente, tente novamente mais tarde",
               ToastTypes.ERROR
             );
           }),
