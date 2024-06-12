@@ -2,9 +2,11 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  align-items: center;
-  width: 85.7vw;
-  margin-left: -0.7vw;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffffeb;
   box-sizing: border-box;
 `;
 
@@ -18,16 +20,19 @@ export const PacienteCard = styled.div`
   margin-left: 10px;
   width: 100%;
   height: 100vh;
-  padding: 2rem;
-  background-color: #ffffffeb;
-  gap: 2rem;
+  padding: 0 1rem 2rem;
 
-  > div {
-    gap: 2rem;
-    display: flex;
-    width: 100%;
-    height: max-content;
+  > div:first-child {
+    margin-bottom: 1rem;
+    margin-left: 0;
   }
+`;
+
+export const DataArea = styled.div`
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  height: max-content;
 `;
 
 export const Card = styled.div`
@@ -35,15 +40,17 @@ export const Card = styled.div`
   flex-direction: column;
   padding: 1rem;
   box-sizing: border-box;
-  border-radius: 1rem;
+  border-radius: 4px;
   box-shadow: 0px 3px 13px 5px #00000021;
   background-color: #fff;
+  margin-bottom: 2rem;
 `;
 
-export const TitleCard = styled(Card)`
-  flex-direction: row;
+export const TitleCard = styled.div`
+  display: flex;
   align-items: center;
-  gap: 1rem !important;
+  gap: 1rem;
+  margin-bottom: 1rem;
 `;
 export const Title = styled.label`
   font-family: "Akshar-Light";
@@ -94,12 +101,11 @@ export const AnamneseCard = styled(Card)`
 export const TableCard = styled(Card)`
   margin: 0;
   padding: 0;
-  border-radius: 4px;
   background-color: transparent;
   box-shadow: none;
+  gap: 2rem;
 
   main {
-    border-radius: 1rem;
     height: 40rem;
   }
 `;

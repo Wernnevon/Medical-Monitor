@@ -11,7 +11,7 @@ export const SideMenuContainer = styled.div`
   justify-content: start;
   align-items: start;
   min-width: 150px;
-  width: 15vw;
+  width: 15rem;
   padding: 10px 0;
   overflow: hidden;
   border: none;

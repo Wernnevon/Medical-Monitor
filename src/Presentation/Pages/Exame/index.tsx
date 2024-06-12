@@ -15,6 +15,7 @@ import {
   FormButtonClear,
   FormButtonContainer,
   ExameOutputCard,
+  GridPanel,
 } from "./styles";
 import { useParams } from "react-router-dom";
 import { ExamStatus } from "../../../Domain/Entities/Exams";
@@ -22,6 +23,7 @@ import { useToast } from "../../Hooks";
 import { ToastTypes } from "../../Hooks/useToast/ToastConfigs";
 import { Add, FindById } from "../../../Domain/UseCases";
 import { getStringToday } from "../../Utils/dateUtils";
+import { Breadcrumb } from "../../Components/Breadcrumb";
 
 type Props = {
   findById: FindById;
@@ -35,6 +37,14 @@ const Exame: React.FC<Props> = ({ add, findById }) => {
   const { exames, selected, handleClear } = useExame();
   const addToast = useToast();
   const [otherExams, setOtherExams] = useState([]);
+
+  const breadcrumbItems = id
+    ? [
+        { label: "Pacientes", path: "/" },
+        { label: "Detalhes", path: `/pacientes/detalhes/${id}` },
+        { label: "Exames", path: "" },
+      ]
+    : [{ label: "Exames", path: "" }];
 
   useLayoutEffect(() => {
     if (id)
@@ -97,42 +107,45 @@ const Exame: React.FC<Props> = ({ add, findById }) => {
 
   return (
     <ExameContainer>
-      <ExameCard>
-        <ExamesContent>
-          {name}
-          <LabelHeader>Selecione os exames:</LabelHeader>
-          {exames.map((exame) => (
-            <Dropdown
-              key={exame.type}
-              type={exame.type}
-              exames={exame.exames}
-            />
-          ))}
-          <CheckoutContent
-            style={{
-              flexDirection: "column",
-              alignItems: "flex-start",
-              width: "95%",
-              margin: "10px 0px 20px 0px",
-            }}
-          >
-            <LabelHeader>Outros Exames:</LabelHeader>
-            <InputData
-              value={otherExamsText}
-              onChange={(e) => handleOtherExams(e)}
-            />
-          </CheckoutContent>
-        </ExamesContent>
-        <FormButtonContainer>
-          <FormButtonClear onClick={clean}>Limpar</FormButtonClear>
-          {id && (
-            <FormButtonSave onClick={handleAddExam}>Salvar</FormButtonSave>
-          )}
-        </FormButtonContainer>
-      </ExameCard>
-      <ExameOutputCard>
-        <Output exames={[...selected, ...otherExams]} patientName={name} />
-      </ExameOutputCard>
+      <Breadcrumb items={breadcrumbItems} />
+      <GridPanel>
+        <ExameCard>
+          <ExamesContent>
+            {name}
+            <LabelHeader>Selecione os exames:</LabelHeader>
+            {exames.map((exame) => (
+              <Dropdown
+                key={exame.type}
+                type={exame.type}
+                exames={exame.exames}
+              />
+            ))}
+            <CheckoutContent
+              style={{
+                flexDirection: "column",
+                alignItems: "flex-start",
+                width: "95%",
+                margin: "10px 0px 20px 0px",
+              }}
+            >
+              <LabelHeader>Outros Exames:</LabelHeader>
+              <InputData
+                value={otherExamsText}
+                onChange={(e) => handleOtherExams(e)}
+              />
+            </CheckoutContent>
+          </ExamesContent>
+          <FormButtonContainer>
+            <FormButtonClear onClick={clean}>Limpar</FormButtonClear>
+            {id && (
+              <FormButtonSave onClick={handleAddExam}>Salvar</FormButtonSave>
+            )}
+          </FormButtonContainer>
+        </ExameCard>
+        <ExameOutputCard>
+          <Output exames={[...selected, ...otherExams]} patientName={name} />
+        </ExameOutputCard>
+      </GridPanel>
     </ExameContainer>
   );
 };

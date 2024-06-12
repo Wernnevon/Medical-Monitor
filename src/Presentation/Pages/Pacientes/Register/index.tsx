@@ -26,6 +26,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { IoPersonAdd } from "react-icons/io5";
 import { FaUserEdit } from "react-icons/fa";
 import { Add, FindById, Update } from "../../../../Domain/UseCases";
+import { Breadcrumb } from "../../../Components/Breadcrumb";
 
 type StepProps = {
   [key: number]: any;
@@ -46,6 +47,16 @@ const Register: React.FC<Props> = ({ add, findById, update }) => {
     store: "Paciente cadastrado com sucesso",
     update: "Dados do paciente foram atualizados com sucesso",
   };
+
+  const breadcrumbItems = id
+    ? [
+        { label: "Pacientes", path: "/pacientes" },
+        { label: "Editar", path: "" },
+      ]
+    : [
+        { label: "Pacientes", path: "/pacientes" },
+        { label: "Novo", path: "" },
+      ];
 
   // on dev mode
   function fillPatientDB() {
@@ -111,8 +122,10 @@ const Register: React.FC<Props> = ({ add, findById, update }) => {
   }
   return (
     <PacienteContainer>
+      <Breadcrumb items={breadcrumbItems} />
+
       <button
-        style={{ position: "absolute", top: "0.5rem", left: "16vw" }}
+        style={{ position: "absolute", top: "0.5rem", right: "1rem" }}
         onClick={fillPatientDB}
       >
         fill
@@ -133,7 +146,7 @@ const Register: React.FC<Props> = ({ add, findById, update }) => {
                 style={{ position: "relative", bottom: ".15rem" }}
               />
             )}
-            <label>Novo Paciente</label>
+            <label>{id ? "Editar Paciente" : "Novo Paciente"}</label>
           </TitleWrapper>
           <StepProgressContainer>
             <StepProgressCard color={handleSetColor(1)}>

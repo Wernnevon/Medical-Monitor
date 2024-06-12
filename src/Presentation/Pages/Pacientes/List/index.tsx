@@ -28,6 +28,7 @@ import {
 } from "../../../../Domain/UseCases";
 import { Patient } from "../../../../Domain/Entities";
 import { FilterDataProp } from "../../../Components/Filters/types";
+import { Breadcrumb } from "../../../Components/Breadcrumb";
 
 type PatientTableData = {
   id: number;
@@ -67,6 +68,8 @@ const Paciente: React.FC<Props> = ({
     cities: [],
     insurances: [],
   });
+
+  const breadcrumbItems = [{ label: "Pacientes", path: "" }];
 
   const fetchPatients = useCallback(async () => {
     try {
@@ -227,6 +230,7 @@ const Paciente: React.FC<Props> = ({
     <PacienteContainer>
       <PacienteCard>
         <PatientSection>
+          <Breadcrumb items={breadcrumbItems} />
           <ListPatient>
             <Table
               title="Pacientes"

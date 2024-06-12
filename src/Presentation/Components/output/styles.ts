@@ -9,6 +9,7 @@ export const ReceitaCard = styled.div`
   width: 100%;
   box-sizing: border-box;
   position: relative;
+  border-radius: 4px;
 `;
 
 export const Item = styled.div`

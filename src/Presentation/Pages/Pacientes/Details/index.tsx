@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 
 import { FaAllergies, FaWeightHanging } from "react-icons/fa";
 import { GiBodyHeight } from "react-icons/gi";
-import { IoPerson } from "react-icons/io5";
 
 import {
   Container,
@@ -16,6 +15,7 @@ import {
   Title,
   AnamneseCard,
   TableCard,
+  DataArea,
 } from "./styles";
 import { Patient } from "../../../../Domain/Entities";
 import { formmatDate, getAge } from "../../../Utils/dateUtils";
@@ -24,6 +24,8 @@ import {
   makeExamListPage,
   makePrescriptionListPage,
 } from "../../../../Main/Factories/Pages";
+import { Breadcrumb } from "../../../Components/Breadcrumb";
+import { RiFileUserFill } from "react-icons/ri";
 
 const initial: Patient = {
   anamnese: "",
@@ -54,6 +56,11 @@ type Props = {
 };
 
 const Details: React.FC<Props> = ({ findById }) => {
+  const breadcrumbItems = [
+    { label: "Pacientes", path: "/pacientes" },
+    { label: "Detalhes", path: "" },
+  ];
+
   const [patient, setPatient] = useState<Patient>(initial);
 
   const { id } = useParams();
@@ -69,20 +76,18 @@ const Details: React.FC<Props> = ({ findById }) => {
   return (
     <Container>
       <PacienteCard>
-        <TitleCard>
-          <IoPerson
-            color="#03a696"
-            size={40}
-            style={{ position: "relative", bottom: ".15rem" }}
-          />
-          <Title>{patient.name}</Title>
-        </TitleCard>
-        <div>
+        <Breadcrumb items={breadcrumbItems} />
+
+        <DataArea>
           <PersonalDataCard>
-            <CardText>
-              <label>Nome: </label>
-              <label>{patient.name}</label>
-            </CardText>
+            <TitleCard>
+              <RiFileUserFill
+                color="#03a696"
+                size={40}
+                style={{ position: "relative", bottom: ".15rem" }}
+              />
+              <Title>{patient.name}</Title>
+            </TitleCard>
             <div>
               <span>
                 {/* Dados Pessoais */}
@@ -156,7 +161,7 @@ const Details: React.FC<Props> = ({ findById }) => {
           <AnamneseCard>
             <textarea name="" id=""></textarea>
           </AnamneseCard>
-        </div>
+        </DataArea>
         <TableCard>
           {makeExamListPage(id)}
           {makePrescriptionListPage(id)}

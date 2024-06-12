@@ -1,15 +1,25 @@
 import styled from "styled-components";
 
 export const ReceitaContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffffeb;
+  box-sizing: border-box;
+`;
+
+export const GridPanel = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: flex-start;
-  width: 85vw;
-  margin-left: -0.027vw;
+  width: 100%;
   height: 100%;
   box-sizing: border-box;
   position: relative;
   gap: 1rem;
+  padding: 1rem;
 `;
 
 export const PrescriptionOutputCard = styled.div`
@@ -17,18 +27,22 @@ export const PrescriptionOutputCard = styled.div`
   justify-content: flex-start;
   box-sizing: border-box;
   height: 100%;
+  border-radius: 4px;
+  box-shadow: 0px 3px 13px 5px #00000021;
+
   @media print {
     position: absolute;
     top: 0px;
     width: 190mm;
     max-height: 290mm;
+    border-radius: 0;
+    box-shadow: none;
   }
 `;
 
 export const ReceitaCard = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   box-sizing: border-box;
   background-color: rgba(255, 255, 255, 0.92);
   padding: 20px;
@@ -36,6 +50,9 @@ export const ReceitaCard = styled.div`
   text-align: center;
   height: 100%;
   position: relative;
+  border-radius: 4px;
+  box-shadow: 0px 3px 13px 5px #00000021;
+
   @media print {
     display: none;
   }
@@ -56,16 +73,24 @@ export const LabelHeader = styled.label`
 export const ReceituarioContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 100%;
+
+  span {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 export const Receituario = styled.textarea`
   display: flex;
   justify-content: center;
   background: none;
-  width: 90%;
+  width: 100%;
   height: 37.7%;
   outline: none;
   border: 1px solid #329bbc;

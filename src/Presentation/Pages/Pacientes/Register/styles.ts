@@ -13,8 +13,8 @@ export const RegisterCard = styled.main`
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0px 3px 13px 5px #00000021;
-  margin: 2rem;
-  padding: 2rem;
+  margin: 1rem;
+  padding: 1rem;
 `;
 
 export const TitleWrapper = styled.div`
@@ -22,7 +22,7 @@ export const TitleWrapper = styled.div`
   gap: 1rem;
   width: 100%;
   align-items: center;
-  margin: 1rem 0;
+  margin: 0.5rem 0 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #747474;
 

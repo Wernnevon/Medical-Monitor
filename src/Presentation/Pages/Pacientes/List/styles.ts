@@ -2,10 +2,12 @@ import styled from "styled-components";
 
 export const PacienteContainer = styled.div`
   display: flex;
-  align-items: center;
-  width: 85.7vw;
-  margin-left: -0.7vw;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
   height: 100%;
+  background-color: #ffffffeb;
+  box-sizing: border-box;
 `;
 
 export const PacienteCard = styled.div`
@@ -13,10 +15,8 @@ export const PacienteCard = styled.div`
   flex-direction: row;
   font-size: 2rem;
   text-align: center;
-  margin-left: 10px;
   height: 100vh;
   width: 100%;
-  background-color: #ffffffeb;
 `;
 
 export const PatientSection = styled.div`

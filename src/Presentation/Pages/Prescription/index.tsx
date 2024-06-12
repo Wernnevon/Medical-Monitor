@@ -3,7 +3,7 @@ import React, { useLayoutEffect, useState } from "react";
 import { useToast } from "../../Hooks";
 
 import Output from "../../Components/output";
-import { patientExist, validate } from "../../Utils/midlleware";
+import { validate } from "../../Utils/midlleware";
 
 import {
   ReceitaContainer,
@@ -15,12 +15,14 @@ import {
   FormButtonClear,
   FormButtonContainer,
   PrescriptionOutputCard,
+  GridPanel,
 } from "./styles";
 import { useParams } from "react-router-dom";
 import { PrescriptionStatus } from "../../../Domain/Entities/Prescription";
 import { ToastTypes } from "../../Hooks/useToast/ToastConfigs";
 import { Add, FindById } from "../../../Domain/UseCases";
 import { getStringToday } from "../../Utils/dateUtils";
+import { Breadcrumb } from "../../Components/Breadcrumb";
 
 type Props = {
   findById: FindById;
@@ -33,6 +35,14 @@ const Prescription: React.FC<Props> = ({ add, findById }) => {
   const addToast = useToast();
   const [medicaments, setMedicaments] = useState("");
   const [name, setName] = useState("");
+
+  const breadcrumbItems = id
+    ? [
+        { label: "Pacientes", path: "/" },
+        { label: "Detalhes", path: `/pacientes/detalhes/${id}` },
+        { label: "Prescrição", path: "" },
+      ]
+    : [{ label: "Prescrição", path: "/receitas" }];
 
   useLayoutEffect(() => {
     if (id)
@@ -89,27 +99,32 @@ const Prescription: React.FC<Props> = ({ add, findById }) => {
 
   return (
     <ReceitaContainer>
-      <ReceitaCard>
-        {name}
-        <ReceituarioContainer>
-          <LabelHeader>Informe as medicações:</LabelHeader>
-          <Receituario
-            value={medicaments}
-            onChange={(text) => handleContent(text)}
-          />
-          <FormButtonContainer>
-            <FormButtonClear onClick={clean}>Limpar</FormButtonClear>
-            {id && (
-              <FormButtonSave onClick={handleAddPrecription}>
-                Salvar
-              </FormButtonSave>
-            )}
-          </FormButtonContainer>
-        </ReceituarioContainer>
-      </ReceitaCard>
-      <PrescriptionOutputCard>
-        <Output prescription={[...content]} patientName={name} />
-      </PrescriptionOutputCard>
+      <Breadcrumb items={breadcrumbItems} />
+      <GridPanel>
+        <ReceitaCard>
+          {name}
+          <ReceituarioContainer>
+            <span>
+              <LabelHeader>Informe as medicações:</LabelHeader>
+              <Receituario
+                value={medicaments}
+                onChange={(text) => handleContent(text)}
+              />
+            </span>
+            <FormButtonContainer>
+              <FormButtonClear onClick={clean}>Limpar</FormButtonClear>
+              {id && (
+                <FormButtonSave onClick={handleAddPrecription}>
+                  Salvar
+                </FormButtonSave>
+              )}
+            </FormButtonContainer>
+          </ReceituarioContainer>
+        </ReceitaCard>
+        <PrescriptionOutputCard>
+          <Output prescription={[...content]} patientName={name} />
+        </PrescriptionOutputCard>
+      </GridPanel>
     </ReceitaContainer>
   );
 };
