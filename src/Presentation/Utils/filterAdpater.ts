@@ -1,4 +1,4 @@
-import { List, ListPagination } from "../../Domain/UseCases";
+import { ListPagination } from "../../Domain/UseCases";
 
 type Props = {
   keyFilter: string;
