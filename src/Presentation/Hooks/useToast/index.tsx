@@ -11,10 +11,17 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 
 import { Toast, ToastWrapper } from "./styles";
 import { ToastColorStartegy, ToastTypes } from "./ToastConfigs";
+import { v4 as uuidv4 } from "uuid";
 
-interface ToastProps {
+type ToastProps = {
   children: ReactNode;
-}
+};
+
+type ToastMessage = {
+  id: string;
+  message: string;
+  type: ToastTypes;
+};
 
 export const IconStartegy = {
   [ToastTypes.ERROR]: (
@@ -31,31 +38,36 @@ export const IconStartegy = {
   ),
 };
 
-const ToastContext = createContext({} as Function);
+const ToastContext = createContext(
+  {} as (toast: string, type?: ToastTypes) => void
+);
 
 export default ToastContext;
 
 export function ToastContextProvider({ children }: ToastProps) {
-  const [toasts, setToasts] = useState<string[]>([]);
-  const [toastType, setToastType] = useState<ToastTypes>(ToastTypes.WARNING);
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
   const addToast = useCallback(
-    function (toast: string, type: ToastTypes = ToastTypes.WARNING) {
-      setToasts([...toasts, toast]);
-      setTimeout(() => setToasts((toasts: any) => toasts.slice(1)), 2000);
-      setToastType(type);
+    (message: string, type: ToastTypes = ToastTypes.WARNING) => {
+      const id = uuidv4();
+      setToasts((prevToasts) => [...prevToasts, { id, message, type }]);
+      setTimeout(() => {
+        setToasts((prevToasts) =>
+          prevToasts.filter((toast) => toast.id !== id)
+        );
+      }, 2000);
     },
-    [toasts]
+    []
   );
 
   return (
     <ToastContext.Provider value={addToast}>
       {children}
       <ToastWrapper>
-        {toasts.map((toast) => (
-          <Toast toastType={toastType} key={toast}>
-            {IconStartegy[toastType]}
-            <span>{toast}</span>
+        {toasts.map(({ id, message, type }) => (
+          <Toast toastType={type} key={id}>
+            {IconStartegy[type]}
+            <span>{message}</span>
           </Toast>
         ))}
       </ToastWrapper>
