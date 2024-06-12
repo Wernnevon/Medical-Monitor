@@ -41,7 +41,11 @@ export class PrescriptionRepository {
         if (keywords) {
           filteredRecords = filteredRecords.filter((record) =>
             keywords.every((keyword) =>
-              filterBy({ key: "text", value: keyword, record })
+              filterBy({
+                key: "text",
+                value: keyword,
+                record: record.medicament,
+              })
             )
           );
         }
