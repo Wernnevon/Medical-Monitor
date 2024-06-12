@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { LuClipboardCheck, LuClipboardX } from "react-icons/lu";
 import { BiTestTube } from "react-icons/bi";
@@ -62,14 +63,14 @@ export const ExamList: React.FC<Props> = ({
       placeholder: "Situação",
       handle: (filterValue: any) =>
         handleFilter({
-          keyFilter: "done",
+          keyFilter: "status",
           filterValue,
           filterArray: filters,
           callback: setFilters,
         }),
       value: [
-        { name: "done", value: ExamStatus.IN_PROGRESS },
-        { name: "done", value: ExamStatus.DONE },
+        { name: "status", value: ExamStatus.IN_PROGRESS },
+        { name: "status", value: ExamStatus.DONE },
       ],
     },
     {
@@ -92,7 +93,7 @@ export const ExamList: React.FC<Props> = ({
   const kebab = [
     {
       icon: <LuClipboardCheck />,
-      name: "Diagnótico",
+      name: "Diagnóstico",
       action: (id: number) => {
         console.log(`exame ${id}`);
       },
@@ -109,86 +110,84 @@ export const ExamList: React.FC<Props> = ({
     },
   ];
 
-  useEffect(() => {
-    list
-      .listPagination({
-        page,
-        pageSize,
-        filters,
-        keywords,
+  async function fetchExams() {
+    const response = await list.listPagination({
+      page,
+      pageSize,
+      filters,
+      keywords,
+    });
+    const { entries, totalEntries } = response;
+    const examList: ExamTableData[] = entries.map(
+      ({ id, name, requisitionDate, realizationDate, status }: Exams) => ({
+        id: id || 0,
+        name,
+        requisitionDate: formmatDate(requisitionDate),
+        realizationDate: realizationDate ? formmatDate(realizationDate) : "-",
+        status,
       })
-      .then(({ entries, totalEntries }: ListPagination.Response<Exams>) => {
-        const list: ExamTableData[] = entries.map(
-          ({ id, name, requisitionDate, realizationDate, status }) => ({
-            id: id || 0,
-            name,
-            requisitionDate: formmatDate(requisitionDate),
-            realizationDate: realizationDate
-              ? formmatDate(realizationDate)
-              : "-",
-            status,
-          })
-        );
-        setPagination((prev) => ({
-          ...prev,
-          totalEntries: totalEntries || 0,
-          totalPages: Math.ceil(totalEntries / pageSize) || 0,
-        }));
-        setExams(list || []);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, keywords, page, addToast]);
+    );
+    setPagination({
+      totalEntries: totalEntries || 0,
+      totalPages: Math.ceil(totalEntries / pageSize) || 0,
+    });
+    setExams(examList || []);
+  }
 
-  function deleteExam(examId: number) {
+  async function deleteExam(examId: number) {
     const popupData = {
       data: {
         title: "Excluir exame?",
         message: `Tem certeza de que deseja excluir? Não há como desfazer esta ação!`,
       },
-      onConfirm: () =>
-        remove
-          .delete({ ids: [examId] })
-          .then(() => {
-            addToast(
-              "O exame foi apagado do histórico desse paciente",
-              ToastTypes.SUCESS
-            );
-          })
-          .catch(() => {
-            addToast(
-              "Não foi possível apagar o exame do histórico deste paciente, tente novamente mais tarde",
-              ToastTypes.ERROR
-            );
-          }),
+      onConfirm: async () => {
+        try {
+          await remove.delete({ ids: [examId] });
+          addToast(
+            "O exame foi apagado do histórico desse paciente",
+            ToastTypes.SUCESS
+          );
+          fetchExams();
+        } catch {
+          addToast(
+            "Não foi possível apagar o exame do histórico deste paciente, tente novamente mais tarde",
+            ToastTypes.ERROR
+          );
+        }
+      },
     };
     showPopup(popupData);
   }
 
-  function changeStatus(examId: number) {
+  async function changeStatus(examId: number) {
     const popupData = {
       data: {
         title: "Alterar situação do exame?",
         message: `Tem certeza de que deseja alterar a situação?`,
       },
-      onConfirm: () =>
-        status
-          .changeStatus({ id: examId })
-          .then(() => {
-            addToast(
-              "A atual situação do exame foi atualizada no histórico desse paciente",
-              ToastTypes.SUCESS
-            );
-          })
-          .catch((err) => {
-            console.error(err);
-            addToast(
-              "Não foi possível mudar a atual situação do exame no histórico deste paciente, tente novamente mais tarde",
-              ToastTypes.ERROR
-            );
-          }),
+      onConfirm: async () => {
+        try {
+          await status.changeStatus({ id: examId });
+          addToast(
+            "A atual situação do exame foi atualizada no histórico desse paciente",
+            ToastTypes.SUCESS
+          );
+          fetchExams();
+        } catch (err) {
+          console.error(err);
+          addToast(
+            "Não foi possível mudar a atual situação do exame no histórico deste paciente, tente novamente mais tarde",
+            ToastTypes.ERROR
+          );
+        }
+      },
     };
     showPopup(popupData);
   }
+
+  useEffect(() => {
+    fetchExams();
+  }, [filters, keywords, page]);
 
   return (
     <Table
