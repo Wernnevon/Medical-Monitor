@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserEdit } from "react-icons/fa";
 import { RiFileUserFill } from "react-icons/ri";
@@ -53,41 +53,84 @@ const Paciente: React.FC<Props> = ({
 }) => {
   const addToast = useToast();
   const { showPopup } = usePopup();
-
   const navigate = useNavigate();
 
   const [pacientes, setPacientes] = useState<PatientTableData[]>([]);
-
   const [pagination, setPagination] = useState({
     totalEntries: 0,
     totalPages: 1,
   });
-
   const [page, setPage] = useState<number>(1);
-
   const [filters, setFilters] = useState<ListPagination.Filter[]>([]);
   const [keywords, setKeywords] = useState<string[]>([]);
-
   const [filtersData, setFiltersData] = useState<FilterDataProp>({
     cities: [],
     insurances: [],
   });
 
+  const fetchPatients = useCallback(async () => {
+    try {
+      const { entries, totalEntries } = await list.listPagination({
+        page,
+        pageSize,
+        keywords,
+        filters,
+      });
+      const patientList: PatientTableData[] = entries.map(
+        ({
+          id,
+          name,
+          adress: { city },
+          health: { healthInsurance },
+        }: Patient) => ({
+          id: id || 0,
+          name,
+          city,
+          healthInsurance,
+        })
+      );
+      setPacientes(patientList);
+      setPagination({
+        totalEntries: totalEntries || 0,
+        totalPages: Math.ceil(totalEntries / pageSize) || 0,
+      });
+    } catch (error) {
+      addToast("Erro ao carregar pacientes", ToastTypes.ERROR);
+    }
+  }, [page, pageSize, keywords, filters, list, addToast]);
+
+  const fetchFiltersData = useCallback(async () => {
+    try {
+      const cities = await listCities.listCities();
+      const insurances = await listInsurances.listInsurance();
+      setFiltersData({
+        cities: cities.map((city) => ({ name: "city", value: city })),
+        insurances: insurances.map((insurance) => ({
+          name: "healthInsurance",
+          value: insurance,
+        })),
+      });
+    } catch (error) {
+      addToast("Erro ao carregar dados de filtros", ToastTypes.ERROR);
+    }
+  }, [listCities, listInsurances, addToast]);
+
   const deleteUser = (value: number) => {
     const popupData = {
       data: {
         title: "Excluir Paciente?",
-        message: `Tem certeza de que deseja excluir? Não há como desfazer esta ação!`,
+        message:
+          "Tem certeza de que deseja excluir? Não há como desfazer esta ação!",
       },
-      onConfirm: () =>
-        remove
-          .delete({ ids: [value] })
-          .then(() => {
-            addToast("Paciente apagado", ToastTypes.SUCESS);
-          })
-          .catch(() => {
-            addToast("Houve um problema", ToastTypes.ERROR);
-          }),
+      onConfirm: async () => {
+        try {
+          await remove.delete({ ids: [value] });
+          addToast("Paciente apagado", ToastTypes.SUCESS);
+          fetchPatients();
+        } catch {
+          addToast("Houve um problema ao apagar o paciente", ToastTypes.ERROR);
+        }
+      },
     };
     showPopup(popupData);
   };
@@ -96,30 +139,22 @@ const Paciente: React.FC<Props> = ({
     {
       icon: <RiFileUserFill />,
       name: "Ver detalhes",
-      action: (id: number) => {
-        navigate(`detalhes/${id}`);
-      },
+      action: (id: number) => navigate(`detalhes/${id}`),
     },
     {
       icon: <FaUserEdit />,
       name: "Editar",
-      action: (id: number) => {
-        navigate(`editar/${id}`);
-      },
+      action: (id: number) => navigate(`editar/${id}`),
     },
     {
       icon: <LuClipboardEdit />,
-      name: "Precrever",
-      action: (id: number) => {
-        navigate(`detalhes/${id}/receitas`);
-      },
+      name: "Prescrever",
+      action: (id: number) => navigate(`detalhes/${id}/receitas`),
     },
     {
       icon: <BiTestTube />,
       name: "Exame",
-      action: (id: number) => {
-        navigate(`detalhes/${id}/exames`);
-      },
+      action: (id: number) => navigate(`detalhes/${id}/exames`),
     },
     {
       icon: <TiUserDelete />,
@@ -130,7 +165,7 @@ const Paciente: React.FC<Props> = ({
 
   const tableFilters: DataFilter[] = [
     {
-      placeholder: "Convenio",
+      placeholder: "Convênio",
       type: "radio",
       handle: (filterValue: any) =>
         handleFilter({
@@ -156,9 +191,7 @@ const Paciente: React.FC<Props> = ({
     {
       placeholder: "Buscar",
       type: "text",
-      handle: (v: string) => {
-        setKeywords(v.split(" "));
-      },
+      handle: (v: string) => setKeywords(v.split(" ")),
     },
   ];
 
@@ -183,48 +216,12 @@ const Paciente: React.FC<Props> = ({
   };
 
   useLayoutEffect(() => {
-    list
-      .listPagination({
-        page,
-        pageSize,
-        keywords,
-        filters,
-      })
-      .then(({ entries, totalEntries }: ListPagination.Response<Patient>) => {
-        const list: PatientTableData[] = entries.map(
-          ({
-            id,
-            name,
-            adress: { city },
-            health: { healthInsurance },
-          }: Patient) => ({ id: id || 0, name, city, healthInsurance })
-        );
-        setPacientes(list || []);
-        setPagination({
-          ...pagination,
-          totalEntries: totalEntries || 0,
-          totalPages: Math.ceil(totalEntries / 10) || 0,
-        });
-      });
-  }, [page, filters, keywords, addToast]);
+    fetchPatients();
+  }, [fetchPatients]);
 
   useLayoutEffect(() => {
-    listCities.listCities().then((res) => {
-      setFiltersData((prev) => ({
-        ...prev,
-        cities: res.map((city) => ({ name: "city", value: city })),
-      }));
-    });
-    listInsurances.listInsurance().then((res) => {
-      setFiltersData((prev) => ({
-        ...prev,
-        insurances: res.map((insurance) => ({
-          name: "insurance",
-          value: insurance,
-        })),
-      }));
-    });
-  }, []);
+    fetchFiltersData();
+  }, [fetchFiltersData]);
 
   return (
     <PacienteContainer>
