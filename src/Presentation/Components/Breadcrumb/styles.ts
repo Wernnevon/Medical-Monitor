@@ -17,7 +17,7 @@ const BreadcrumbList = styled.ul`
   list-style-type: none;
   padding: 0;
   margin: 0;
-  border-left: 4px solid #037353;
+  border-left: 4px solid #4ba68c;
 `;
 
 const BreadcrumbItem = styled.li`
@@ -26,7 +26,7 @@ const BreadcrumbItem = styled.li`
 
   &:after {
     content: "\\2771";
-    color: #037353;
+    color: #4ba68c;
   }
 
   &:last-child:after {
