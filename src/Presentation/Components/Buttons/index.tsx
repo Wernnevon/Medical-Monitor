@@ -8,7 +8,8 @@ interface PropBtn {
   typeBtn?: ButtonType;
   typeStyle: string;
   children?: ReactNode;
-  handle?: any;
+  handle?(): any;
+  disabled?: boolean;
 }
 
 const Button: React.FC<PropBtn> = ({
@@ -16,9 +17,19 @@ const Button: React.FC<PropBtn> = ({
   handle,
   typeBtn,
   typeStyle,
+  disabled,
 }: PropBtn) => {
+  function handleClick() {
+    if (handle && !disabled) handle();
+  }
+
   return (
-    <Container type={typeBtn?.type} typeButton={typeStyle} onClick={handle}>
+    <Container
+      disabled={disabled}
+      type={typeBtn?.type}
+      typeButton={typeStyle}
+      onClick={handleClick}
+    >
       {children}
     </Container>
   );

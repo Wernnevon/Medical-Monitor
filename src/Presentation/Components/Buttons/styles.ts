@@ -36,6 +36,14 @@ export const Container = styled.button<PropsButton>`
   :active {
     transform: translateY(2px);
   }
+
+  :disabled {
+    cursor: not-allowed;
+    background-color: #bbb;
+    :active {
+      transform: none;
+    }
+  }
   @media (max-width: 1200px),
     (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.9rem;
