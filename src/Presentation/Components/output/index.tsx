@@ -29,14 +29,14 @@ import {
 } from "./styles";
 import PDFButton from "../PDFButton";
 
-interface AtestadoData {
+export type AtestadoData = {
   patientName: string;
-  CID: string;
-  days: number;
-  date: Date;
+  cid: string;
+  days: string;
+  date: string;
   city: string;
   state: string;
-}
+};
 
 interface Params {
   prescription?: any;
@@ -128,15 +128,14 @@ const Output: React.FC<Params> = ({
               {
                 <AtestadoOutputContainer>
                   <AtestadoOutput>
-                    ATESTO para os devidos fins de DIREITO que o (a){" "}
-                    {atestado.patientName} foi atendido(a) neste Noscômico,
-                    portador(a) da entidade Nosológica-CID {atestado.CID}{" "}
-                    devendo permanecer afastado (a) de suas atividades habituais
-                    pelo período de {atestado.days} dias
+                    ATESTO para os devidos fins de DIREITO que o (a) Sr. (a){" "}
+                    {atestado.patientName.toLocaleUpperCase()} foi atendido(a)
+                    neste Noscômico, portador(a) da entidade Nosológica-CID{" "}
+                    {atestado.cid} devendo permanecer afastado (a) de suas
+                    atividades habituais pelo período de {atestado.days} dias
                   </AtestadoOutput>
                   <AtestadoDateOutput>
-                    {atestado.city}-{atestado.state},{" "}
-                    {atestado.date.toLocaleDateString("pt-BR")}
+                    {atestado.city}-{atestado.state}, {atestado.date}
                   </AtestadoDateOutput>
                 </AtestadoOutputContainer>
               }

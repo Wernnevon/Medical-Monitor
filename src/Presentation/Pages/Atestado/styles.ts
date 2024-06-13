@@ -1,21 +1,45 @@
 import styled from "styled-components";
 
 export const AtestadoContainer = styled.div`
-  display: grid;
-  grid-template-columns: 50% 50%;
-  align-items: center;
-  width: 85vw;
-  margin-left: -0.7vw;
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffffeb;
   box-sizing: border-box;
+
+  > div:first-child {
+    margin-top: 1.5rem;
+  }
 `;
+
+export const GridPanel = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  gap: 1rem;
+  padding: 1rem;
+`;
+
 export const AtestadoCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
   background-color: rgba(255, 255, 255, 0.92);
-  padding: 20px;
+  padding: 2rem 2rem 1.5rem;
   font-size: 30px;
   text-align: center;
-  margin: 0 10px;
-  height: 100%;
+  height: 98.3%;
+  position: relative;
+  border-radius: 4px;
+  box-shadow: 0px 3px 13px 5px #00000021;
+
   @media print {
     display: none;
   }
@@ -24,12 +48,18 @@ export const AtestadoCard = styled.div`
 export const AtestadoCardOutput = styled.div`
   display: flex;
   justify-content: flex-start;
-  height: 100%;
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0px 3px 13px 5px #00000021;
+  height: 98.3%;
+
   @media print {
     position: absolute;
     top: 0px;
     width: 190mm;
     max-height: 290mm;
+    border-radius: 0;
+    box-shadow: none;
   }
 `;
 
@@ -38,7 +68,6 @@ export const FormContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 70%;
   position: relative;
   @media (max-width: 1200px),
     (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
@@ -105,5 +134,69 @@ export const Input = styled.input`
   @media (max-width: 1200px),
     (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
     font-size: 0.8rem;
+  }
+`;
+
+export const FormButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 2rem;
+  justify-content: flex-end;
+  box-sizing: border-box;
+`;
+
+export const FormButtonSave = styled.button`
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  background-color: #03a696;
+  color: #fff;
+  padding: 0.4rem 2rem;
+  font-size: 1rem;
+  /* font-weight: 400; */
+  transition: 40ms ease-in;
+  box-shadow: 0px 3px 8px 0px #00000033;
+  font-family: "Akshar-Regular", sans-serif;
+
+  :hover {
+    cursor: pointer;
+  }
+  :active {
+    transform: translateY(2px);
+  }
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 0.8rem;
+    padding: 0.2rem 1.5rem;
+    height: 28px;
+    margin: 0 0.5rem;
+  }
+`;
+
+export const FormButtonClear = styled.button`
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  background-color: #fff;
+  color: #000;
+  padding: 0.4rem 2rem;
+  font-size: 1rem;
+  /* font-weight: 400; */
+  transition: 40ms ease-in;
+  box-shadow: 0px 3px 8px 0px #00000033;
+  font-family: "Akshar-Regular", sans-serif;
+  :hover {
+    cursor: pointer;
+  }
+  :active {
+    transform: translateY(2px);
+  }
+  @media (max-width: 1200px),
+    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+    font-size: 0.8rem;
+    padding: 0.2rem 1.5rem;
+    height: 28px;
+    margin: 0 0.5rem;
   }
 `;
