@@ -26,6 +26,7 @@ import {
 } from "../../../../Main/Factories/Pages";
 import { Breadcrumb } from "../../../Components/Breadcrumb";
 import { RiFileUserFill } from "react-icons/ri";
+import { Anamnese } from "./Anamnese";
 
 const initial: Patient = {
   anamnese: "",
@@ -159,7 +160,7 @@ const Details: React.FC<Props> = ({ findById }) => {
             </div>
           </PersonalDataCard>
           <AnamneseCard>
-            <textarea name="" id=""></textarea>
+            <Anamnese anamnese={patient.anamnese} />
           </AnamneseCard>
         </DataArea>
         <TableCard>
