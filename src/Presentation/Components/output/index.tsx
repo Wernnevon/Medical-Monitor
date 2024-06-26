@@ -76,23 +76,24 @@ const Output: React.FC<Params> = ({
       />
       <Content>
         <ReceitaOutputCard src={BGLogo} />
+        {/* Dados ficticios */}
         <Header>
           <Logo src={LogoSVG} />
-          <LabelHeader>DR. BERTRANDY ANACLETO</LabelHeader>
+          <LabelHeader>DR. JOÃO SILVA</LabelHeader>
           <LabelHeaderContent style={{ letterSpacing: "3px" }}>
-            MEDICINA GERIÁTRICA
+            MEDICINA GERAL
           </LabelHeaderContent>
           <LabelHeaderContent style={{ fontSize: ".6rem", fontWeight: "bold" }}>
-            CRM/PB: 9647 | CRM/RN: 8103
+            CRM/SP: 12345 | CRM/RJ: 67890
           </LabelHeaderContent>
           <LabelHeaderContent style={{ fontSize: ".7rem" }}>
-            (83) 9 9929-2209 | (83) 9 9844-1379
+            (11) 9 8765-4321 | (21) 9 1234-5678
           </LabelHeaderContent>
           <LabelHeaderContent style={{ fontSize: ".6rem", fontWeight: "bold" }}>
-            Rua Lourival Ribeiro da Nóbrega, 11, Centro, São João do Rio do
-            Peixe - PB
+            Rua Fictícia, 123, Centro, Cidade Imaginária - SP
           </LabelHeaderContent>
         </Header>
+
         <ReceituarioOutputContainer>
           {prescription && (
             <ExamsContent>
