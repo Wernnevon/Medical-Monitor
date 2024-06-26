@@ -2,12 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./style.css";
 
-import "./assests/fonts/Akshar/static/Akshar-Bold.ttf";
-import "./assests/fonts/Akshar/static/Akshar-Light.ttf";
-import "./assests/fonts/Akshar/static/Akshar-Medium.ttf";
-import "./assests/fonts/Akshar/static/Akshar-Regular.ttf";
-import "./assests/fonts/Akshar/static/Akshar-SemiBold.ttf";
-import App from "./App";
+import "./Assets/fonts/Akshar/static/Akshar-Bold.ttf";
+import "./Assets/fonts/Akshar/static/Akshar-Light.ttf";
+import "./Assets/fonts/Akshar/static/Akshar-Medium.ttf";
+import "./Assets/fonts/Akshar/static/Akshar-Regular.ttf";
+import "./Assets/fonts/Akshar/static/Akshar-SemiBold.ttf";
+import App from "./Presentation/App";
 
 document
   .querySelector("meta[name=viewport]")
