@@ -12,7 +12,7 @@ import { ExamStatus } from "../../../../../Domain/Entities/Exams";
 import { formmatDate } from "../../../../Utils/dateUtils";
 import { ToastTypes } from "../../../../Hooks/useToast/ToastConfigs";
 import { useToast } from "../../../../Hooks";
-import { usePopup } from "../../../../Hooks/usePopup";
+import { usePopup, useModalDiagnosis } from "../../../../Hooks";
 import {
   ChangeStatus,
   Delete,
@@ -56,6 +56,7 @@ export const ExamList: React.FC<Props> = ({
 
   const addToast = useToast();
   const { showPopup } = usePopup();
+  const { showDiagnosis } = useModalDiagnosis();
 
   const filterExamTable: DataFilter[] = [
     {
@@ -95,7 +96,7 @@ export const ExamList: React.FC<Props> = ({
       icon: <LuClipboardCheck />,
       name: "Diagnóstico",
       action: (id: number) => {
-        console.log(`exame ${id}`);
+        showDiagnosis({ diagnosisId: id, onConfirm: () => {} });
       },
     },
     {
