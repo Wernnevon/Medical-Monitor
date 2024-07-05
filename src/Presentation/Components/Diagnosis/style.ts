@@ -16,6 +16,7 @@ export const Header = styled.header`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid #777;
 
   > svg {
@@ -36,7 +37,7 @@ export const Main = styled.main`
   flex-direction: column;
   align-items: start;
   width: 50rem;
-  padding: 1rem 0.5rem;
+  padding: 0 0.5rem 1rem;
   gap: 0.5rem;
 
   > label {
