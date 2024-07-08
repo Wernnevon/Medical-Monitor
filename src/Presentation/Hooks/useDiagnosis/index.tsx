@@ -1,10 +1,8 @@
 import { createContext, useContext, useState } from "react";
-import { Diagnosis } from "../../Components/Diagnosis";
+import { makeDiagnosisModalComponent } from "../../../Main/Factories/Components";
 
 type ModalDiagnosisProps = {
   diagnosisId: number;
-  onConfirm(): void;
-  onCancel?(): void;
 };
 type ContextProps = {
   showDiagnosis(props: ModalDiagnosisProps): void;
@@ -13,14 +11,11 @@ type ContextProps = {
 type SettingsProps = {
   visible: boolean;
   diagnosisId: number;
-  confirmCallback(): void;
-  cancelCalback?(): void;
 };
 
 const initialSettings: SettingsProps = {
   visible: false,
   diagnosisId: 0,
-  confirmCallback: () => {},
 };
 
 const Context = createContext({} as ContextProps);
@@ -28,16 +23,10 @@ const Context = createContext({} as ContextProps);
 export const ModalDiagnosisProvider = ({ children }: any) => {
   const [settings, setSettings] = useState(initialSettings);
 
-  function showDiagnosis({
-    diagnosisId,
-    onConfirm,
-    onCancel,
-  }: ModalDiagnosisProps) {
+  function showDiagnosis({ diagnosisId }: ModalDiagnosisProps) {
     setSettings({
       visible: true,
       diagnosisId,
-      confirmCallback: onConfirm,
-      cancelCalback: onCancel,
     });
   }
 
@@ -45,25 +34,14 @@ export const ModalDiagnosisProvider = ({ children }: any) => {
     setSettings((prev) => ({ ...prev, visible: false }));
   }
 
-  function confirm() {
-    close();
-    settings.confirmCallback();
-  }
-
-  function cancel() {
-    close();
-    if (settings.cancelCalback) settings.cancelCalback();
-  }
-
   return (
     <Context.Provider value={{ showDiagnosis }}>
-      {children}
-      <Diagnosis
-        diagnosisId={settings.diagnosisId}
-        onConfirm={confirm}
-        onCancel={cancel}
-        isVisible={settings.visible}
-      />
+      {children}{" "}
+      {makeDiagnosisModalComponent({
+        isVisible: settings.visible,
+        diagnosisId: settings.diagnosisId,
+        close,
+      })}
     </Context.Provider>
   );
 };

@@ -96,7 +96,7 @@ export const ExamList: React.FC<Props> = ({
       icon: <LuClipboardCheck />,
       name: "Diagnóstico",
       action: (id: number) => {
-        showDiagnosis({ diagnosisId: id, onConfirm: () => {} });
+        showDiagnosis({ diagnosisId: id });
       },
     },
     {

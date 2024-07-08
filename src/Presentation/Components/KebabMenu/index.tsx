@@ -24,6 +24,7 @@ const KebabMenu: React.FC<Props> = ({ items, rowId }: Props) => {
 
   function handleAction(onAction: (param: any) => void) {
     if (onAction) onAction(rowId);
+    closeKebab();
   }
 
   return (
