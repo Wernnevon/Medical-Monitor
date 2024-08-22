@@ -1,4 +1,21 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+const badgeStrategy: any = {
+  negative: css`
+    background: #ffd5d1;
+
+    &:before {
+      background: #ff4436;
+    }
+  `,
+  positive: css`
+    background: #b4eda0;
+
+    &:before {
+      background: #6bc167;
+    }
+  `,
+};
 
 export const TableContainer = styled.main`
   display: flex;
@@ -108,4 +125,37 @@ export const Cell = styled.div<any>`
   text-align: ${({ align }) => align};
   position: relative;
   width: ${({ widthCol }) => widthCol};
+`;
+
+export const Badge = styled.small<any>`
+  align-items: center;
+  font-family: "Akshar-Regular";
+  display: inline-block;
+  height: 100%;
+  white-space: nowrap;
+  width: auto;
+
+  position: relative;
+  border-radius: 100px;
+  line-height: 1;
+  overflow: hidden;
+  padding: 0.2rem 1.5rem 0.2rem 2rem;
+  text-overflow: ellipsis;
+  line-height: 1.25rem;
+  color: #595959;
+
+  word-break: break-word;
+
+  &:before {
+    border-radius: 50%;
+    content: "";
+    width: 10px;
+    height: 10px;
+    left: 0.6rem;
+    margin-top: -5px;
+    position: absolute;
+    top: 50%;
+  }
+
+  ${({ status }) => badgeStrategy[status]}
 `;
