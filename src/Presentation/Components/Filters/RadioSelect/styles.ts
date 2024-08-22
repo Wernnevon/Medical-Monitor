@@ -12,8 +12,19 @@ export const Container = styled.div<any>`
     collapsed ? "none" : "1px solid #747474"};
   border-radius: ${({ collapsed }) => (collapsed ? "5px 5px 0 0" : "5px")};
   min-width: 15rem;
+  border-color: ${({ collapsed }) => (collapsed ? "#03a696" : "inherit")};
+
   label {
     pointer-events: none;
+  }
+  > div:first-child {
+    color: ${({ collapsed }) => (collapsed ? "#03a696" : "inherit")};
+  }
+  :hover {
+    border-color: #03a696;
+    form {
+      border-color: #03a696;
+    }
   }
 `;
 
@@ -24,7 +35,6 @@ export const Header = styled.div<any>`
   gap: 1rem;
   height: 3rem;
   padding: 0 1rem;
-  border-radius: ${({ collapsed }) => (collapsed ? "5px 5px 0 0" : "5px")};
 
   span {
     display: flex;
@@ -33,8 +43,7 @@ export const Header = styled.div<any>`
   }
 
   :hover {
-    background-color: #ededed;
-    color: #03a696;
+    color: #03a696 !important;
     cursor: pointer;
   }
 `;
@@ -52,6 +61,7 @@ export const Body = styled.form<any>`
   z-index: 10;
   max-height: 15rem;
   visibility: ${({ collapsed }) => (collapsed ? "visible" : "hidden")};
+  border-color: ${({ collapsed }) => (collapsed ? "#03a696" : "inherit")};
   span {
     overflow-y: auto;
   }
