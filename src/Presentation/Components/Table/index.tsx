@@ -1,7 +1,6 @@
 /* eslint-disable no-useless-computed-key */
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { FaPlus } from "react-icons/fa";
-import KebabMenu from "../KebabMenu";
 import {
   AddButton,
   Cell,
@@ -15,6 +14,7 @@ import {
 import { RadioSelect, SearchTextFilter } from "../Filters";
 import Pagination from "../Pagination";
 import { useNavigate } from "react-router-dom";
+import { cellStrategy } from "./cell";
 
 type Props<T> = {
   icon?: any;
@@ -102,24 +102,7 @@ const Table: React.FC<Props<any>> = ({
             {data.map((item, index) => (
               <Row key={item.id} isOdd={index % 2 !== 0}>
                 {columns.map(({ key, type }, i) =>
-                  type !== "action" ? (
-                    <Cell
-                      key={key + i}
-                      widthCol={config.columnWidth && config.columnWidth[i]}
-                      align="left"
-                    >
-                      {item[key]}
-                    </Cell>
-                  ) : (
-                    <Cell
-                      key={key + i}
-                      widthCol={config.columnWidth && config.columnWidth[i]}
-                      align="right"
-                      isAction={true}
-                    >
-                      <KebabMenu rowId={item.id} items={kebabConfig} />
-                    </Cell>
-                  )
+                  cellStrategy[type]({ item, key, config, i, kebabConfig })
                 )}
               </Row>
             ))}
