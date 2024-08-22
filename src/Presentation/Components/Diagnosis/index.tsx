@@ -49,6 +49,7 @@ const Diagnosis: React.FC<Props> = ({
         console.error(error);
       } finally {
         await fetchExam();
+        close();
       }
     }
   }
