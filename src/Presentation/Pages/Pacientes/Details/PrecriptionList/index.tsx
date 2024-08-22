@@ -83,7 +83,7 @@ export const PrescriptionList: React.FC<Props> = ({
   const columnsData = [
     { name: "Medicação", key: "name", type: "text" },
     { name: "Requisição", key: "requisitionDate", type: "text" },
-    { name: "Status", key: "status", type: "text" },
+    { name: "Situação", key: "status", type: "status" },
     { name: "", key: "action", type: "action" },
   ];
 

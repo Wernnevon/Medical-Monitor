@@ -87,7 +87,7 @@ export const ExamList: React.FC<Props> = ({
     { name: "Exame", key: "name", type: "text" },
     { name: "Requisição", key: "requisitionDate", type: "text" },
     { name: "Realização", key: "realizationDate", type: "text" },
-    { name: "Situação", key: "status", type: "text" },
+    { name: "Situação", key: "status", type: "status" },
     { name: "", key: "action", type: "action" },
   ];
 
