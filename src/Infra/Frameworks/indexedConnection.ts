@@ -30,13 +30,13 @@ function openDB(): Promise<IDBDatabase> {
         db.createObjectStore("exams", {
           keyPath: "id",
           autoIncrement: true,
-        });
+        }).createIndex("patientId", "patientId", { unique: false });
       }
       if (!db.objectStoreNames.contains("prescriptions")) {
         db.createObjectStore("prescriptions", {
           keyPath: "id",
           autoIncrement: true,
-        });
+        }).createIndex("patientId", "patientId", { unique: false });
       }
     };
   });
