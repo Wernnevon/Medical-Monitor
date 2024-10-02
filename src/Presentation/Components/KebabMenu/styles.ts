@@ -1,11 +1,18 @@
 import { GoKebabHorizontal } from "react-icons/go";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Container = styled.div<any>`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 1rem;
+  ${({ overflowed }) =>
+    overflowed
+      ? css`
+          bottom: 0.5rem;
+        `
+      : css`
+          top: 1rem;
+        `}
   right: 4rem;
   visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")};
   background-color: #fff;

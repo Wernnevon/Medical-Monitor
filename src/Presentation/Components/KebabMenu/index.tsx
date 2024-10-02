@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Container, Item, Kebab } from "./styles";
 import useOutsideAlerter from "../../Hooks/useOutsideAlert";
 
@@ -15,8 +15,22 @@ type KebabItem = {
 
 const KebabMenu: React.FC<Props> = ({ items, rowId }: Props) => {
   const [open, setOpen] = useState(false);
-  const wrapperRef = useRef(null);
+  const [overflowed, setOverflowed] = useState(false);
+  const wrapperRef = useRef<HTMLSpanElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   useOutsideAlerter(wrapperRef, closeKebab);
+
+  useEffect(() => {
+    if (open && wrapperRef.current && containerRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      // Ajusta se o menu excede a altura da tela
+      if (containerRect.y + containerRect.height > viewportHeight) {
+        setOverflowed(true);
+      }
+    }
+  }, [open]);
 
   function closeKebab() {
     if (open) setOpen(false);
@@ -30,7 +44,11 @@ const KebabMenu: React.FC<Props> = ({ items, rowId }: Props) => {
   return (
     <span ref={wrapperRef}>
       <Kebab onClick={() => setOpen(!open)} />
-      <Container isOpen={open && items && items.length}>
+      <Container
+        ref={containerRef}
+        isOpen={open && items && items.length}
+        overflowed={overflowed}
+      >
         {items &&
           items.length &&
           items.map(({ icon, name, action }) => (
