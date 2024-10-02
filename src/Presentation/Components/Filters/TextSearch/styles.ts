@@ -7,7 +7,7 @@ export const SearchBar = styled.div`
   align-items: center;
   justify-content: start;
   border: 1px solid #747474;
-  border-radius: 5em;
+  border-radius: 5px;
   padding: 0;
   box-sizing: border-box;
   position: relative;
