@@ -12,7 +12,7 @@ export const Container = styled.div<any>`
     collapsed ? "none" : "1px solid #747474"};
   border-radius: ${({ collapsed }) => (collapsed ? "5px 5px 0 0" : "5px")};
   min-width: 15rem;
-  border-color: ${({ collapsed }) => (collapsed ? "#03a696" : "inherit")};
+  border-color: ${({ collapsed }) => (collapsed ? "#03a696" : "#747474")};
 
   label {
     pointer-events: none;
@@ -40,6 +40,17 @@ export const Header = styled.div<any>`
     display: flex;
     align-items: center;
     gap: 1rem;
+    width: 100%;
+    overflow: hidden;
+
+    label {
+      width: 100%;
+      overflow: hidden;
+      text-align: left;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      direction: ltr;
+    }
   }
 
   :hover {
@@ -52,7 +63,7 @@ export const Body = styled.form<any>`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 100%;
+  top: calc(100% - 1px);
   left: -1px;
   background-color: #fff;
   border: 1px solid #747474;

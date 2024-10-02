@@ -18,7 +18,7 @@ const RadioSelect: React.FC<Props> = ({
   onSelect,
 }: Props) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [item, setItem] = useState();
+  const [item, setItem] = useState("");
   const wrapperRef = useRef(null);
 
   useOutsideAlert(wrapperRef, collapse);
@@ -32,15 +32,20 @@ const RadioSelect: React.FC<Props> = ({
     if (onSelect) onSelect(value);
   }
 
+  const iconSize = 30;
+
   return (
     <Container ref={wrapperRef} collapsed={isCollapsed}>
       <Header onClick={() => setIsCollapsed(!isCollapsed)}>
         <span>
-          {" "}
-          <IoFilter />
-          <label>{placeholder ? placeholder : "Placeholder"} </label>
+          <IoFilter size={iconSize} />
+          <label>{item || placeholder} </label>
         </span>
-        {isCollapsed ? <BsChevronUp /> : <BsChevronDown />}
+        {isCollapsed ? (
+          <BsChevronUp size={iconSize} />
+        ) : (
+          <BsChevronDown size={iconSize} />
+        )}
       </Header>
       <Body collapsed={isCollapsed}>
         <span>
