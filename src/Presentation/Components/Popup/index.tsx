@@ -1,4 +1,4 @@
-import { MdOutlineDeleteOutline } from "react-icons/md";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 import Button from "../Buttons";
 import Modal from "../Modal";
 import { Container, Footer, Header, Main } from "./styles";
@@ -18,7 +18,7 @@ type PopupData = {
 };
 
 export function Popup({ isVisible, data, onConfirm, onCancel }: Props) {
-  const icon = data.icon ? data.icon : <MdOutlineDeleteOutline />;
+  const icon = data.icon ? data.icon : <IoMdInformationCircleOutline />;
   if (!isVisible) return null;
   return (
     <Modal
