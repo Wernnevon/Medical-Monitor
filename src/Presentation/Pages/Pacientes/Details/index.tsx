@@ -78,7 +78,6 @@ const Details: React.FC<Props> = ({ findById }) => {
     <Container>
       <PacienteCard>
         <Breadcrumb items={breadcrumbItems} />
-
         <DataArea>
           <PersonalDataCard>
             <TitleCard>

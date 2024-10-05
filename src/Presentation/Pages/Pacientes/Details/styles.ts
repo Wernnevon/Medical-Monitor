@@ -17,7 +17,6 @@ export const PacienteCard = styled.div`
   flex-direction: column;
   font-size: 2rem;
   text-align: center;
-  margin-left: 10px;
   width: 100%;
   height: 100vh;
   padding: 0 1rem 2rem;
@@ -106,6 +105,6 @@ export const TableCard = styled(Card)`
   gap: 2rem;
 
   main {
-    height: 40rem;
+    height: 41rem;
   }
 `;
