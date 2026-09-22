@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem;
+  font-family: 'Akshar-Light';
+  font-size: 1.5rem;
+  gap: 2rem;
+  user-select: none;
+}
+
+.total {
+  background-color: #eee;
+  line-height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: 5px;
+}
+
+.pager {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  label {
+    font-size: 1.2rem;
+  }
+
+  button {
+    display: inline-flex;
+    border: none;
+    background: none;
+    padding: 0;
+    color: #111;
+    line-height: 0;
+
+    &:hover:not(:disabled) {
+      cursor: pointer;
+      color: #03a696;
+    }
+
+    &:disabled {
+      color: #ddd;
+      cursor: not-allowed;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #00786d;
+      outline-offset: 2px;
+    }
+  }
+}
+
+.pager--disabled button {
+  color: #ddd;
+  pointer-events: none;
+}

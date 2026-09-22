@@ -1,0 +1,134 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  font-family: 'Akshar-Light';
+  font-size: 1.5rem;
+  border: 1px solid #747474;
+  border-radius: 5px;
+  min-width: 15rem;
+
+  &:hover {
+    border-color: #03a696;
+  }
+}
+
+.container--open {
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+  border-color: #03a696;
+
+  .header {
+    color: #03a696;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 3rem;
+  padding: 0 1rem;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    overflow: hidden;
+
+    label {
+      width: 100%;
+      overflow: hidden;
+      text-align: left;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      pointer-events: none;
+    }
+  }
+
+  &:hover {
+    color: #03a696;
+    cursor: pointer;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #00786d;
+    outline-offset: -2px;
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: calc(100% - 1px);
+  left: -1px;
+  background-color: #fff;
+  border: 1px solid #747474;
+  border-radius: 0 0 5px 5px;
+  width: 100%;
+  z-index: 10;
+  max-height: 15rem;
+  visibility: hidden;
+
+  .options {
+    overflow-y: auto;
+  }
+}
+
+.body--open {
+  visibility: visible;
+  border-color: #03a696;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+  border: none;
+  background: none;
+  font: inherit;
+  width: 100%;
+  box-sizing: border-box;
+
+  &:hover {
+    background-color: #ededed;
+    cursor: pointer;
+    color: #00786d;
+  }
+
+  label {
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+  }
+
+  input[type='radio'] {
+    width: 1.5rem;
+    height: 1.5rem;
+    accent-color: #03a696;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.clear {
+  background-color: #fff;
+  position: sticky;
+  bottom: 0;
+  border-radius: 0 0 5px 5px;
+  color: #03a696;
+}

@@ -1,0 +1,74 @@
+.sidenav {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  min-width: 150px;
+  width: 15rem;
+  padding: 10px 0;
+  overflow: hidden;
+  border: none;
+
+  @media print {
+    display: none;
+  }
+}
+
+.logo {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+
+  img {
+    width: 80%;
+    border-radius: 50%;
+    margin: 3rem 1rem 1rem;
+  }
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  outline: none;
+  text-decoration: none;
+  margin: 10px 0;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  // Largura cheia para a área de clique cobrir o item inteiro. No projeto
+  // React o link tinha `width: 0` e quem recebia o clique era um <button>
+  // interno que transbordava; sem esse botão, a área clicável encolhia para
+  // o padding. É o fundo, e não a largura, que distingue o item ativo.
+  width: 100%;
+  background-color: transparent;
+  border-right: 0 solid #fff;
+  transition: 300ms linear;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+
+  span {
+    font-size: 1.3rem;
+    font-family: 'Akshar-Regular', sans-serif;
+
+    @media (max-width: 1200px),
+      (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
+      font-size: 1rem;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: -2px;
+  }
+}
+
+.link--active {
+  width: 98%;
+  background-color: #0000004d;
+  border-right: 5px solid #fff;
+}
