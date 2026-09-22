@@ -8,7 +8,7 @@
   border: 1px solid transparent;
   border-radius: var(--raio-pill);
   font-size: var(--texto-md);
-  font-weight: var(--fonte-peso-medio);
+  font-weight: var(--peso-medio);
   color: var(--cor-texto-invertido);
   transition: background-color var(--transicao);
 
@@ -27,10 +27,10 @@
 }
 
 .btn--submit {
-  background-color: var(--cor-marca);
+  background-color: var(--cor-acao);
 
   &:hover:not(:disabled) {
-    background-color: var(--cor-marca-escura);
+    background-color: var(--cor-acao-hover);
   }
 }
 

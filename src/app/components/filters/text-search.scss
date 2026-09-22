@@ -15,8 +15,8 @@
   transition: border-color var(--transicao), color var(--transicao);
 
   &:focus-within {
-    color: var(--cor-marca);
-    border-color: var(--cor-marca);
+    color: var(--cor-acao);
+    border-color: var(--cor-acao);
   }
 }
 

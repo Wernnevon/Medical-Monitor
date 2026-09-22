@@ -15,7 +15,7 @@ type NavEntry = {
   template: `
     <nav class="sidenav" aria-label="Navegação principal">
       <div class="logo">
-        <img src="/MM.svg" alt="Medical Monitor" draggable="false" />
+        <img src="/assets/logo_vittaly.svg" alt="Vittaly" draggable="false" />
       </div>
       @for (entry of entries; track entry.path) {
         <a

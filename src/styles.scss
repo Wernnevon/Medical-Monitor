@@ -1,17 +1,33 @@
 @use 'styles/tokens';
 
 /**
- * Uma família com eixo de peso variável, no lugar das cinco famílias
- * separadas do projeto React (`Akshar-Bold`, `Akshar-Light`...). Declarar
- * famílias distintas por peso impede o navegador de escolher o peso certo
- * sozinho e obriga cada regra a nomear o arquivo — por isso `font-weight`
- * não tinha efeito em lugar nenhum. Um arquivo de 200KB substitui cinco
- * somando 638KB.
+ * Poppins em três pesos, servida do próprio domínio.
+ *
+ * Não vem do CDN do Google Fonts de propósito: o app é uma PWA que precisa
+ * abrir sem rede, e uma fonte remota deixaria a interface trocando de fonte
+ * (ou sem ela) justamente quando o usuário está offline. Os três pesos
+ * somam 24KB — menos que qualquer um dos cinco arquivos da fonte anterior.
  */
 @font-face {
-  font-family: 'Akshar';
-  src: url('/fonts/akshar/Akshar-VariableFont_wght.ttf') format('truetype-variations');
-  font-weight: 300 700;
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/poppins-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/poppins-latin-500-normal.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/poppins-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
@@ -33,15 +49,31 @@ body {
   color: var(--cor-texto);
   font-family: var(--fonte);
   font-size: var(--texto-md);
-  font-weight: var(--fonte-peso-normal);
+  font-weight: var(--peso-corpo);
   line-height: var(--altura-linha);
   -webkit-font-smoothing: antialiased;
 }
 
+/* Títulos em 600, conforme a hierarquia. */
 h1,
 h2,
 h3,
-h4,
+h4 {
+  margin: 0;
+  font-weight: var(--peso-forte);
+  line-height: var(--altura-linha-apertada);
+}
+
+h1 {
+  font-size: var(--texto-2xl);
+}
+h2 {
+  font-size: var(--texto-xl);
+}
+h3 {
+  font-size: var(--texto-lg);
+}
+
 p,
 figure {
   margin: 0;
@@ -60,17 +92,24 @@ svg {
   max-width: 100%;
 }
 
-/* Um anel de foco consistente em toda a interface. O projeto React removia o
-   outline com `outline: none` sem repor nada, deixando a navegação por
-   teclado sem indicação nenhuma de onde estava. */
+/* Números tabulares: em coluna de dados, dígitos de larguras diferentes
+   fazem os valores dançarem de linha para linha. */
+td,
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Um anel de foco consistente em toda a interface. O projeto React removia
+   o outline com `outline: none` sem repor nada, deixando a navegação por
+   teclado sem indicação de onde estava. */
 :focus-visible {
   outline: 2px solid var(--cor-foco);
   outline-offset: 2px;
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -78,12 +117,12 @@ svg {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(92 92 92 / 20%);
+  background: var(--cor-borda-forte);
   border-radius: var(--raio-pill);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #8d8d8d;
+  background: var(--cor-texto-fraco);
 }
 
 @media print {

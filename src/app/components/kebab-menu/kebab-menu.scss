@@ -9,11 +9,11 @@
   border: none;
   border-radius: 50%;
   background: none;
-  color: var(--cor-marca-escura);
+  color: var(--cor-acao-hover);
 
   &:hover {
     cursor: pointer;
-    color: var(--cor-marca);
+    color: var(--cor-acao);
     background-color: var(--cor-superficie-forte);
   }
 }

@@ -49,11 +49,11 @@
 
   label {
     font-size: var(--texto-xl);
-    font-weight: var(--fonte-peso-medio);
+    font-weight: var(--peso-medio);
   }
 
   app-icon {
-    color: var(--cor-marca);
+    color: var(--cor-acao);
   }
 }
 
@@ -82,16 +82,16 @@
   padding: var(--esp-2) var(--esp-5);
   border: none;
   border-radius: var(--raio-pill);
-  background-color: var(--cor-marca);
+  background-color: var(--cor-acao);
   color: var(--cor-texto-invertido);
   font-size: var(--texto-lg);
-  font-weight: var(--fonte-peso-medio);
+  font-weight: var(--peso-medio);
   white-space: nowrap;
   transition: background-color var(--transicao);
 
   &:hover {
     cursor: pointer;
-    background-color: var(--cor-marca-escura);
+    background-color: var(--cor-acao-hover);
   }
 
   &:active {
@@ -128,7 +128,7 @@ thead th {
   z-index: 1;
   background-color: var(--cor-superficie-forte);
   font-size: var(--texto-lg);
-  font-weight: var(--fonte-peso-medio);
+  font-weight: var(--peso-medio);
 }
 
 tbody tr {

@@ -1,10 +1,21 @@
+/* O host é a célula do grid; sem altura cheia aqui, a faixa da marca para
+   no último item do menu e deixa o resto da coluna com o fundo neutro. */
+:host {
+  display: block;
+  height: 100%;
+}
+
 .sidenav {
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: var(--esp-1);
   padding: var(--esp-2) 0;
   overflow: hidden auto;
+  /* O fundo da aplicação passou a ser neutro, então a cor da marca vive
+     aqui: é o que mantém a identidade sem tingir a área de trabalho. */
+  background-color: var(--cor-marca);
 
   @media print {
     display: none;
@@ -18,8 +29,7 @@
 
   img {
     width: 100%;
-    max-width: 11rem;
-    border-radius: 50%;
+    max-width: 7rem;
   }
 }
 
@@ -39,12 +49,12 @@
   text-decoration: none;
   text-transform: uppercase;
   font-size: var(--texto-lg);
-  font-weight: var(--fonte-peso-normal);
+  font-weight: var(--peso-corpo);
   white-space: nowrap;
   transition: background-color var(--transicao), border-color var(--transicao);
 
   &:hover {
-    background-color: rgb(0 0 0 / 15%);
+    background-color: rgb(255 255 255 / 10%);
   }
 
   &:focus-visible {
@@ -54,9 +64,9 @@
 }
 
 .link--active {
-  background-color: rgb(0 0 0 / 30%);
+  background-color: rgb(255 255 255 / 16%);
   border-right-color: var(--cor-texto-invertido);
-  font-weight: var(--fonte-peso-medio);
+  font-weight: var(--peso-medio);
 }
 
 /* Tablet: só os ícones. O rótulo sai do fluxo mas continua legível por
@@ -90,8 +100,8 @@
     flex-direction: row;
     gap: 0;
     padding: 0;
-    background-color: rgb(0 0 0 / 20%);
     padding-bottom: env(safe-area-inset-bottom, 0);
+    box-shadow: var(--sombra-lg);
   }
 
   .logo {
