@@ -1,0 +1,190 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background-color: var(--cor-superficie);
+  border-radius: var(--raio-md);
+  box-shadow: var(--sombra-md);
+  overflow: hidden;
+}
+
+.titulo {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  padding: var(--esp-4) var(--esp-4) var(--esp-3);
+  border-bottom: 1px solid var(--cor-borda);
+
+  app-icon {
+    color: var(--cor-acao);
+  }
+
+  h1 {
+    font-size: var(--texto-xl);
+  }
+}
+
+/* Trilha de etapas. O projeto React desenhava cada etapa com um SVG de
+   fundo trocado por estado; aqui é CSS, então acompanha o tema e escala
+   sem depender de imagem. */
+.etapas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+  list-style: none;
+  margin: 0;
+  padding: var(--esp-4);
+  counter-reset: etapa;
+}
+
+.etapa {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  padding: var(--esp-2) var(--esp-3);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-pill);
+  background: var(--cor-superficie);
+  color: var(--cor-texto-fraco);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  white-space: nowrap;
+
+  &:not(:disabled):hover {
+    cursor: pointer;
+    border-color: var(--cor-acao);
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+.numero {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--cor-superficie-forte);
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-xs);
+}
+
+.etapa--atual {
+  border-color: var(--cor-acao);
+  background: var(--cor-marca-suave);
+  color: var(--cor-acao);
+
+  .numero {
+    background: var(--cor-acao);
+    color: var(--cor-texto-invertido);
+  }
+}
+
+.etapa--feita {
+  color: var(--cor-texto-suave);
+
+  .numero {
+    background: var(--cor-sucesso);
+    color: var(--cor-texto-invertido);
+  }
+}
+
+.conteudo {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 var(--esp-4) var(--esp-4);
+}
+
+.campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--esp-4) var(--esp-5);
+  align-items: start;
+}
+
+.resumo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: var(--esp-5);
+
+  h2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--esp-2);
+    padding-bottom: var(--esp-2);
+    margin-bottom: var(--esp-3);
+    border-bottom: 1px solid var(--cor-borda);
+    font-size: var(--texto-lg);
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--esp-2) var(--esp-3);
+    margin: 0;
+  }
+
+  dt {
+    color: var(--cor-texto-fraco);
+    font-size: var(--texto-sm);
+  }
+
+  dd {
+    margin: 0;
+    font-weight: var(--peso-medio);
+    overflow-wrap: anywhere;
+  }
+}
+
+.editar {
+  border: none;
+  background: none;
+  padding: var(--esp-1) var(--esp-2);
+  border-radius: var(--raio-sm);
+  color: var(--cor-acao);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+
+  &:hover {
+    cursor: pointer;
+    background: var(--cor-marca-suave);
+  }
+}
+
+.acoes {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  padding: var(--esp-4);
+  border-top: 1px solid var(--cor-borda);
+}
+
+@media (max-width: 640px) {
+  .acoes {
+    flex-direction: column-reverse;
+
+    app-button,
+    app-button .btn {
+      width: 100%;
+    }
+  }
+
+  .etapa .rotulo {
+    display: none;
+  }
+}

@@ -1,0 +1,143 @@
+<app-breadcrumb [items]="breadcrumb()" />
+
+<div class="card">
+  <header class="titulo">
+    <app-icon [name]="edicao() ? 'FaUserEdit' : 'RiFileUserFill'" size="2rem" />
+    <h1>{{ edicao() ? 'Editar Paciente' : 'Novo Paciente' }}</h1>
+  </header>
+
+  <ol class="etapas">
+    @for (passo of etapas; track passo.titulo; let i = $index) {
+      <li>
+        <button
+          type="button"
+          class="etapa"
+          [class.etapa--atual]="i === etapa()"
+          [class.etapa--feita]="i < etapa()"
+          [disabled]="i > etapa()"
+          [attr.aria-current]="i === etapa() ? 'step' : null"
+          (click)="irPara(i)"
+        >
+          <span class="numero">{{ i + 1 }}</span>
+          <span class="rotulo">{{ passo.titulo }}</span>
+        </button>
+      </li>
+    }
+  </ol>
+
+  <div class="conteudo">
+    @switch (etapa()) {
+      @case (0) {
+        <div class="campos">
+          <app-field [campo]="formulario.name" rotulo="Nome completo" />
+          <app-field [campo]="formulario.motherName" rotulo="Nome da mãe" />
+          <app-field [campo]="formulario.fatherName" rotulo="Nome do pai" />
+          <app-field [campo]="formulario.birthday" rotulo="Data de nascimento" tipo="date" />
+          <app-field [campo]="formulario.rg" rotulo="RG" mascara="rg" modo="numeric" />
+          <app-field [campo]="formulario.cpf" rotulo="CPF" mascara="cpf" modo="numeric" />
+          <app-field [campo]="formulario.gender" rotulo="Gênero" />
+          <app-field [campo]="formulario.phone" rotulo="Telefone" mascara="telefone" tipo="tel" />
+        </div>
+      }
+      @case (1) {
+        <div class="campos">
+          <app-field [campo]="formulario.adress.street" rotulo="Rua" />
+          <app-field
+            [campo]="formulario.adress.number"
+            rotulo="Número"
+            dica='Digite "0" para sem número'
+            modo="numeric"
+          />
+          <app-field [campo]="formulario.adress.neighborhood" rotulo="Bairro" />
+          <app-field [campo]="formulario.adress.complement" rotulo="Complemento" />
+          <app-field [campo]="formulario.adress.city" rotulo="Cidade" />
+        </div>
+      }
+      @case (2) {
+        <div class="campos">
+          <app-field [campo]="formulario.health.healthInsurance" rotulo="Convênio" />
+          <app-field [campo]="formulario.health.allergy" rotulo="Alergias" />
+          <app-field
+            [campo]="formulario.health.weight"
+            rotulo="Peso"
+            dica="Peso em quilos (kg)"
+            modo="decimal"
+          />
+          <app-field
+            [campo]="formulario.health.height"
+            rotulo="Altura"
+            dica="Altura em centímetros (cm)"
+            modo="numeric"
+          />
+        </div>
+      }
+      @case (3) {
+        <div class="resumo">
+          <section>
+            <h2>
+              Dados pessoais
+              <button type="button" class="editar" (click)="etapa.set(0)">Editar</button>
+            </h2>
+            <dl>
+              <dt>Nome</dt><dd>{{ resumo().name }}</dd>
+              <dt>Nascimento</dt><dd>{{ resumo().birthday || '—' }}</dd>
+              <dt>Nome do pai</dt><dd>{{ resumo().fatherName }}</dd>
+              <dt>Nome da mãe</dt><dd>{{ resumo().motherName }}</dd>
+              <dt>Gênero</dt><dd>{{ resumo().gender }}</dd>
+              <dt>Contato</dt><dd>{{ resumo().phone || 'Não informado' }}</dd>
+              <dt>CPF</dt><dd>{{ resumo().cpf }}</dd>
+              <dt>RG</dt><dd>{{ resumo().rg }}</dd>
+            </dl>
+          </section>
+
+          <section>
+            <h2>
+              Endereço
+              <button type="button" class="editar" (click)="etapa.set(1)">Editar</button>
+            </h2>
+            <dl>
+              <dt>Rua</dt><dd>{{ resumo().adress.street }}</dd>
+              <dt>Número</dt><dd>{{ resumo().adress.number || 'S/N' }}</dd>
+              <dt>Bairro</dt><dd>{{ resumo().adress.neighborhood }}</dd>
+              <dt>Cidade</dt><dd>{{ resumo().adress.city }}</dd>
+              <dt>Complemento</dt><dd>{{ resumo().adress.complement || 'Sem complemento' }}</dd>
+            </dl>
+          </section>
+
+          <section>
+            <h2>
+              Saúde
+              <button type="button" class="editar" (click)="etapa.set(2)">Editar</button>
+            </h2>
+            <dl>
+              <dt>Convênio</dt><dd>{{ resumo().health.healthInsurance || 'Não informado' }}</dd>
+              <dt>Alergias</dt><dd>{{ resumo().health.allergy || 'Não informado' }}</dd>
+              @if (resumo().health.height) {
+                <dt>Altura</dt><dd>{{ resumo().health.height }} cm</dd>
+              }
+              @if (resumo().health.weight) {
+                <dt>Peso</dt><dd>{{ resumo().health.weight }} kg</dd>
+              }
+            </dl>
+          </section>
+        </div>
+      }
+    }
+  </div>
+
+  <footer class="acoes">
+    @if (etapa() === 0) {
+      <app-button styleType="back" (pressed)="cancelar()">Cancelar</app-button>
+    } @else {
+      <app-button styleType="back" (pressed)="voltar()">Voltar</app-button>
+    }
+
+    @if (etapa() < etapas.length - 1) {
+      <app-button styleType="submit" (pressed)="avancar()">Avançar</app-button>
+    } @else {
+      <app-button styleType="submit" [disabled]="salvando()" (pressed)="concluir()">
+        {{ salvando() ? 'Salvando…' : 'Concluir' }}
+      </app-button>
+    }
+  </footer>
+</div>

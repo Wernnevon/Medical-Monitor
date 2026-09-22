@@ -96,3 +96,10 @@ TC-17:
   # Create remote register to patients;
 
 Utilizar generic ao gateway, para simplificar os gateways em apenas unm quinteto ao invés de 3. A diferenciação vai acontecer nas factories que é onde será passado os tipos
+
+---
+
+Cabe um refactor na infra pra simplificar e deixar mais simples
+Cabe um refactor na IndexedDB pra ficar mais escalavel e mais simples de acordo com oq fiz na vox
+Cabe um refactor no clena architecture pra facilitar esses contratos igual tem no arda-vtt
+Cabe um remaster visual e funcional na ui/ux

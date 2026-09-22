@@ -31,17 +31,17 @@ export const routes: Routes = [
       },
       {
         path: 'novo',
-        ...pendente('Cadastrar Paciente', 'Pages/Pacientes/Register', [
-          pacientes,
-          { label: 'Novo', path: '' },
-        ]),
+        loadComponent: () =>
+          import('./pages/patients/patient-register').then(
+            (m) => m.PatientRegister,
+          ),
       },
       {
         path: 'editar/:id',
-        ...pendente('Editar Paciente', 'Pages/Pacientes/Register', [
-          pacientes,
-          { label: 'Editar', path: '' },
-        ]),
+        loadComponent: () =>
+          import('./pages/patients/patient-register').then(
+            (m) => m.PatientRegister,
+          ),
       },
       {
         path: 'detalhes/:id',
