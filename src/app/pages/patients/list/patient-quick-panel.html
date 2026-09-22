@@ -1,0 +1,106 @@
+@if (patient(); as p) {
+  <aside class="painel">
+    <header class="topo">
+      <div class="avatar">{{ iniciais() }}</div>
+      <div class="identificacao">
+        <h2>{{ p.name }}</h2>
+        <span class="status">Ativo</span>
+      </div>
+    </header>
+
+    <dl class="linha-rapida">
+      <div>
+        <dt>CPF</dt>
+        <dd>{{ p.cpf }}</dd>
+      </div>
+      @if (idade() !== null) {
+        <div>
+          <dt>Idade</dt>
+          <dd>{{ idade() }} anos</dd>
+        </div>
+      }
+    </dl>
+
+    <div class="acoes">
+      <button type="button" class="acao acao--principal" (click)="irPara('')">
+        <app-icon name="RiFileUserFill" />
+        Ver Detalhes
+      </button>
+      <button type="button" class="acao" (click)="irPara('exames')">
+        <app-icon name="BiTestTube" />
+        Exames
+      </button>
+      <button type="button" class="acao" (click)="irPara('receitas')">
+        <app-icon name="LuClipboardEdit" />
+        Receitas
+      </button>
+      <button type="button" class="acao" (click)="irPara('historico')">
+        <app-icon name="BsClockHistory" />
+        Histórico
+      </button>
+    </div>
+
+    <section class="secao">
+      <h3>Informações do paciente</h3>
+      <ul class="info-lista">
+        @if (p.phone) {
+          <li>
+            <app-icon name="BsTelephone" size="1rem" />
+            {{ p.phone }}
+          </li>
+        }
+        @if (enderecoResumo()) {
+          <li>
+            <app-icon name="BsGeoAlt" size="1rem" />
+            {{ enderecoResumo() }}
+          </li>
+        }
+        @if (p.health.healthInsurance) {
+          <li>
+            <app-icon name="AiOutlineAudit" size="1rem" />
+            {{ p.health.healthInsurance }}
+          </li>
+        }
+      </ul>
+    </section>
+
+    <section class="secao">
+      <h3>Últimos atendimentos</h3>
+      @if (atendimentosRecentes().length) {
+        <ul class="atendimentos">
+          @for (item of atendimentosRecentes(); track item.titulo + item.data) {
+            <li>
+              <app-icon [name]="item.icone" size="1.25rem" />
+              <div>
+                <strong>{{ item.titulo }}</strong>
+                <span>{{ formatar(item.data) }}</span>
+              </div>
+              <small class="tipo tipo--{{ item.tipo }}">{{ item.status }}</small>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="vazio">Nenhum atendimento registrado ainda.</p>
+      }
+    </section>
+
+    @if (totalExames() + totalReceitas() > 0) {
+      <div class="aviso">
+        <app-icon name="IoMdInformationCircleOutline" size="1.25rem" />
+        <p>
+          Este paciente possui {{ totalExames() }}
+          {{ totalExames() === 1 ? 'exame' : 'exames' }} e {{ totalReceitas() }}
+          {{ totalReceitas() === 1 ? 'receita' : 'receitas' }} registrados.
+          <button type="button" class="link" (click)="irPara('historico')">
+            Acesse o histórico completo
+          </button>
+        </p>
+      </div>
+    }
+  </aside>
+} @else {
+  <aside class="painel painel--vazio">
+    <app-icon name="HiOutlineUserGroup" size="3rem" />
+    <p>Selecione um paciente na lista para ver os detalhes rápidos.</p>
+  </aside>
+}

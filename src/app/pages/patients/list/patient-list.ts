@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Breadcrumb } from '@app/shared/components/breadcrumb/breadcrumb';
 import type { KebabItem } from '@app/shared/components/kebab-menu/kebab-menu';
@@ -10,6 +10,7 @@ import {
 import { PatientsFacade } from '@app/pages/patients/patients-facade';
 import { PopupService } from '@app/shared/services/popup';
 import { ToastService, ToastType } from '@app/shared/services/toast';
+import { PatientQuickPanel } from './patient-quick-panel';
 
 type PatientRow = {
   id: string;
@@ -20,21 +21,27 @@ type PatientRow = {
 
 @Component({
   selector: 'app-patient-list',
-  imports: [Breadcrumb, Table],
+  imports: [Breadcrumb, Table, PatientQuickPanel],
   template: `
     <app-breadcrumb [items]="breadcrumb" />
-    <div class="list">
-      <app-table
-        title="Pacientes"
-        icon="HiOutlineUserGroup"
-        [rows]="rows()"
-        [columns]="columns"
-        [filters]="filters()"
-        [pagination]="pagination()"
-        [kebabItems]="kebabItems"
-        (pageChange)="patients.page.set($event)"
-        (add)="router.navigate(['/pacientes/novo'])"
-      />
+    <div class="conteudo">
+      <div class="list">
+        <app-table
+          title="Pacientes"
+          icon="HiOutlineUserGroup"
+          [rows]="rows()"
+          [columns]="columns"
+          [filters]="filters()"
+          [pagination]="pagination()"
+          [kebabItems]="kebabItems"
+          [selectable]="true"
+          [selectedId]="selecionadoId()"
+          (rowSelect)="selecionar($event)"
+          (pageChange)="patients.page.set($event)"
+          (add)="router.navigate(['/pacientes/novo'])"
+        />
+      </div>
+      <app-patient-quick-panel [patient]="pacienteSelecionado()" />
     </div>
   `,
   styleUrl: './patient-list.scss',
@@ -47,6 +54,20 @@ export class PatientList {
   private readonly popup = inject(PopupService);
 
   protected readonly breadcrumb = [{ label: 'Pacientes', path: '' }];
+
+  /** Paciente em destaque no painel lateral. Começa com a primeira linha da
+   *  página atual, como no protótipo, e segue o clique do usuário depois. */
+  protected readonly selecionadoId = signal<string | null>(null);
+
+  protected selecionar(id: string | number): void {
+    this.selecionadoId.set(String(id));
+  }
+
+  protected readonly pacienteSelecionado = computed(() => {
+    const lista = this.patients.patients();
+    if (!lista.length) return null;
+    return lista.find((p) => p.id === this.selecionadoId()) ?? lista[0];
+  });
 
   constructor() {
     effect(() => {

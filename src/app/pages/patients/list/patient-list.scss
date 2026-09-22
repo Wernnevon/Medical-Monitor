@@ -12,6 +12,14 @@
   height: 100%;
 }
 
+.conteudo {
+  display: flex;
+  gap: var(--esp-4);
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+
 .list {
   display: flex;
   flex: 1;
