@@ -23,31 +23,16 @@ const razao = (a, b) => {
   return (x + 0.05) / (y + 0.05);
 };
 
-// Escala derivada de #071C55 (matiz ~224°), do mais claro ao mais escuro.
-const AZUL = {
-  50: '#F2F5FC',
-  100: '#E1E8F7',
-  200: '#C2CFEE',
-  300: '#93A9DC',
-  400: '#5F7CC3',
-  500: '#3A57A8',
-  600: '#27418C',
-  700: '#1A2F73',
-  800: '#0F2364',
-  900: '#071C55',
-};
-
+const PRIMARIA = { base: '#071C55', escura: '#04143D', clara: '#102E78' };
+const ACENTO = { base: '#CBB590', clara: '#E4D8C2', escura: '#A68F67' };
 const NEUTRO = {
-  fundo: '#F4F6FA',
-  superficie: '#FEFEFE',
-  superficieAlt: '#F7F9FC',
-  borda: '#DCE3EF',
-  bordaForte: '#7F8FB0',
-  texto: '#0E1B33',
-  textoSuave: '#4A5875',
-  textoFraco: '#667391',
+  fundo: '#F8F8F6',
+  superficie: '#FFFFFF',
+  texto: '#1C2430',
+  textoSuave: '#667085',
+  borda: '#E4E7EC',
+  bordaForte: '#7C89A0',
 };
-
 const ESTADO = {
   erro: '#C02616',
   erroFundo: '#FDE4E0',
@@ -59,19 +44,19 @@ const ESTADO = {
 
 const pares = [
   ['texto sobre superfície', NEUTRO.texto, NEUTRO.superficie, 4.5],
-  ['texto suave sobre superfície', NEUTRO.textoSuave, NEUTRO.superficie, 4.5],
-  ['texto fraco sobre superfície', NEUTRO.textoFraco, NEUTRO.superficie, 4.5],
   ['texto sobre fundo do app', NEUTRO.texto, NEUTRO.fundo, 4.5],
-  ['texto sobre linha alternada', NEUTRO.texto, NEUTRO.superficieAlt, 4.5],
-  ['branco sobre menu (azul 900)', '#FEFEFE', AZUL[900], 4.5],
-  ['branco sobre item ativo (azul 700)', '#FEFEFE', AZUL[700], 4.5],
-  ['branco sobre botão primário (azul 600)', '#FEFEFE', AZUL[600], 4.5],
-  ['branco sobre botão hover (azul 700)', '#FEFEFE', AZUL[700], 4.5],
-  ['azul 600 sobre superfície (link)', AZUL[600], NEUTRO.superficie, 4.5],
-  ['azul 700 sobre azul 50 (chip)', AZUL[700], AZUL[50], 4.5],
+  ['texto suave sobre superfície', NEUTRO.textoSuave, NEUTRO.superficie, 4.5],
+  ['branco sobre primária (menu/botão)', '#FEFEFE', PRIMARIA.base, 4.5],
+  ['branco sobre primária escura (hover)', '#FEFEFE', PRIMARIA.escura, 4.5],
+  ['primária sobre superfície (link)', PRIMARIA.base, NEUTRO.superficie, 4.5],
+  ['texto sobre acento claro (badge premium)', NEUTRO.texto, ACENTO.clara, 4.5],
+  ['primária sobre acento claro (badge premium)', PRIMARIA.base, ACENTO.clara, 4.5],
+  // O dourado é decorativo: só precisa passar como ícone/divisor (3:1), e só
+  // sobre o navy do menu — nunca como texto ou fundo de botão sobre claro.
+  ['acento sobre primária (ícone/detalhe no menu)', ACENTO.base, PRIMARIA.base, 3],
+  ['acento claro sobre primária (destaque no menu)', ACENTO.clara, PRIMARIA.base, 3],
   ['borda forte sobre superfície', NEUTRO.bordaForte, NEUTRO.superficie, 3],
-  ['anel de foco sobre superfície', AZUL[600], NEUTRO.superficie, 3],
-  ['anel de foco sobre menu', '#FEFEFE', AZUL[900], 3],
+  ['anel de foco (primária) sobre superfície', PRIMARIA.base, NEUTRO.superficie, 3],
   ['erro sobre fundo de erro', ESTADO.erro, ESTADO.erroFundo, 4.5],
   ['sucesso sobre fundo de sucesso', ESTADO.sucesso, ESTADO.sucessoFundo, 4.5],
   ['alerta sobre fundo de alerta', ESTADO.alerta, ESTADO.alertaFundo, 4.5],
@@ -87,5 +72,9 @@ for (const [nome, fg, bg, min] of pares) {
     `${ok ? 'PASS' : 'FALHA'}  ${r.toFixed(2).padStart(5)}:1  (min ${min})  ${nome}`,
   );
 }
-console.log(falhas === 0 ? '\nTODOS OS PARES ATENDEM A WCAG AA' : `\n${falhas} PAR(ES) ABAIXO DO MÍNIMO`);
+console.log(
+  falhas === 0
+    ? '\nTODOS OS PARES ATENDEM A WCAG AA'
+    : `\n${falhas} PAR(ES) ABAIXO DO MÍNIMO`,
+);
 process.exit(falhas ? 1 : 0);

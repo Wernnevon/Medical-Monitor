@@ -1,62 +1,67 @@
 /**
- * Tokens do design system.
+ * Tokens do design system Vittaly.
  *
- * Único lugar onde cor, tipografia, espaçamento, raio e sombra são definidos.
+ * Paleta e diretriz de uso vieram de referência da identidade: azul
+ * institucional como cor dominante (header, menu, botões, links, ícones
+ * institucionais) e dourado como acento — nunca como fundo de botão com
+ * texto. Essa restrição não é só estética: validada matematicamente,
+ * branco sobre o dourado (#CBB590) dá 1.99:1 e sobre o dourado escuro
+ * (#A68F67) dá 3.11:1 — os dois muito abaixo do mínimo de 4.5:1 da WCAG AA
+ * para texto. O dourado só passa como acento sobre o navy (8.08:1) ou como
+ * fundo claro por trás de texto escuro (11:1) — é assim que ele é usado
+ * aqui: ícones e divisores dentro do menu, badges e destaques sobre fundo
+ * claro, nunca como texto ou como fundo atrás de texto claro.
+ *
  * São custom properties do CSS, e não variáveis do Sass, para poderem ser
- * lidas e sobrescritas em tempo de execução — é o que vai permitir um tema
- * escuro ou de alto contraste sem recompilar.
- *
- * Todos os pares de cor usados na interface foram verificados contra os
- * mínimos da WCAG 2.1 AA (4.5:1 para texto, 3:1 para bordas e foco).
+ * lidas e sobrescritas em tempo de execução — o que permite tema escuro ou
+ * de alto contraste sem recompilar.
  */
 
 :root {
-  /* ---- Escala da marca ----
-     Derivada do azul marinho #071C55, que é a cor institucional e fica no
-     900. Tons intermediários existem porque o marinho puro é escuro demais
-     para botão: sobre ele o texto branco funciona, mas o botão some no
-     fundo e não se distingue de um título. A ação primária usa o 600. */
-  --azul-50: #f2f5fc;
-  --azul-100: #e1e8f7;
-  --azul-200: #c2cfee;
-  --azul-300: #93a9dc;
-  --azul-400: #5f7cc3;
-  --azul-500: #3a57a8;
-  --azul-600: #27418c;
-  --azul-700: #1a2f73;
-  --azul-800: #0f2364;
-  --azul-900: #071c55;
+  /* ---- Marca: azul institucional ----
+     Dominante: header, menu, botões principais, links, ícones
+     institucionais. */
+  --cor-primaria: #071c55;
+  --cor-primaria-escura: #04143d;
+  --cor-primaria-clara: #102e78;
 
-  --cor-marca: var(--azul-900);
-  --cor-acao: var(--azul-600);
-  --cor-acao-hover: var(--azul-700);
-  --cor-marca-suave: var(--azul-50);
+  --cor-acao: var(--cor-primaria);
+  --cor-acao-hover: var(--cor-primaria-escura);
+  --cor-marca: var(--cor-primaria);
+  --cor-marca-suave: #eef1f8;
+
+  /* ---- Acento: dourado ----
+     Só decorativo — ícones selecionados, divisores, hover de destaque,
+     badges de identidade "premium". Nunca como fundo de botão com texto
+     claro (ver nota de contraste acima) nem como texto sobre fundo claro. */
+  --cor-acento: #cbb590;
+  --cor-acento-clara: #e4d8c2;
+  --cor-acento-escura: #a68f67;
 
   /* ---- Superfícies ----
-     A área de trabalho é neutra, e não a cor da marca. Fundo saturado atrás
-     de tabela cansa a vista em uso prolongado e rouba contraste dos dados;
-     a marca fica concentrada na navegação. */
-  --cor-fundo: #f4f6fa;
-  --cor-superficie: #fefefe;
+     A área de trabalho é neutra: a marca fica concentrada no menu, não
+     tingindo a tabela onde o usuário lê os dados. */
+  --cor-fundo: #f8f8f6;
+  --cor-superficie: #ffffff;
   --cor-superficie-alt: #f7f9fc;
-  --cor-superficie-forte: var(--azul-50);
-  --cor-superficie-hover: var(--azul-100);
+  --cor-superficie-forte: var(--cor-marca-suave);
+  --cor-superficie-hover: #e1e8f7;
 
   /* ---- Texto ---- */
-  --cor-texto: #0e1b33;
-  --cor-texto-suave: #4a5875;
-  --cor-texto-fraco: #667391;
-  --cor-texto-invertido: #fefefe;
+  --cor-texto: #1c2430;
+  --cor-texto-suave: #667085;
+  --cor-texto-fraco: #667085;
+  --cor-texto-invertido: #ffffff;
 
   /* ---- Traços ---- */
-  --cor-borda: #dce3ef;
-  --cor-borda-forte: #7f8fb0;
-  --cor-foco: var(--azul-600);
+  --cor-borda: #e4e7ec;
+  --cor-borda-forte: #7c89a0;
+  --cor-foco: var(--cor-primaria);
 
   /* ---- Estado ----
-     Vermelho, verde e âmbar permanecem: são convenção de leitura, não
-     identidade. Substituí-los por tons da marca tiraria do usuário o sinal
-     mais rápido de que algo deu errado. */
+     Vermelho, verde e âmbar são convenção de leitura, não identidade —
+     substituí-los pela marca tiraria do usuário o sinal mais rápido de que
+     algo deu errado. */
   --cor-sucesso: #16794a;
   --cor-sucesso-fundo: #d6f2e2;
   --cor-sucesso-marca: #1f9c5e;
@@ -66,18 +71,13 @@
   --cor-alerta: #8a5a00;
   --cor-alerta-fundo: #fdefd0;
 
-  /* ---- Tipografia ----
-     Poppins em toda a interface. A logo é vetor, com o desenho já
-     traçado, então não há webfont para ela. */
+  /* ---- Tipografia ---- */
   --fonte: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  /* Pesos conforme a hierarquia definida: títulos e botões em 600, menus e
-     dados em 500, corpo em 400. */
   --peso-corpo: 400;
   --peso-medio: 500;
   --peso-forte: 600;
 
-  /* Escala de razão 1.2 (terça menor), ancorada em 16px. */
   --texto-xs: 0.694rem;
   --texto-sm: 0.833rem;
   --texto-md: 1rem;
@@ -104,9 +104,7 @@
   --raio-lg: 16px;
   --raio-pill: 999px;
 
-  /* ---- Sombra ----
-     Tingidas com o azul da marca em vez de preto puro: sombra neutra sobre
-     fundo azulado sai acinzentada e suja a superfície. */
+  /* ---- Sombra ---- */
   --sombra-sm: 0 1px 2px rgb(7 28 85 / 8%);
   --sombra-md: 0 2px 8px rgb(7 28 85 / 10%);
   --sombra-lg: 0 8px 24px rgb(7 28 85 / 16%);
@@ -114,13 +112,12 @@
   /* ---- Layout ---- */
   --menu-largura: 15rem;
   --menu-largura-compacto: 4.5rem;
+  --painel-largura: 22rem;
 
   /* ---- Movimento ---- */
   --transicao: 160ms ease;
 }
 
-/* Em telas pequenas a escala encolhe um degrau: a interface foi desenhada
-   para desktop e os tamanhos originais estouram a largura no celular. */
 @media (max-width: 640px) {
   :root {
     --texto-lg: 1.1rem;
