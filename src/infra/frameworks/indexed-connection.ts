@@ -7,58 +7,116 @@ export const STORES = {
   patients: 'patients',
   exams: 'exams',
   prescriptions: 'prescriptions',
+  meta: 'meta',
+} as const;
+
+/** Índices disponíveis, por store. Centralizados para não haver string solta. */
+export const INDEXES = {
+  patients: {
+    name: 'name',
+    city: 'adress.city',
+    healthInsurance: 'health.healthInsurance',
+    updatedAt: 'updatedAt',
+  },
+  exams: {
+    patientId: 'patientId',
+    status: 'status',
+    updatedAt: 'updatedAt',
+  },
+  prescriptions: {
+    patientId: 'patientId',
+    status: 'status',
+    updatedAt: 'updatedAt',
+  },
 } as const;
 
 const DB_NAME = 'mmdb';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 let dbPromise: Promise<IDBDatabase> | null = null;
+
+/**
+ * Migrações em escada.
+ *
+ * Cada passo leva o banco de uma versão à seguinte e roda em sequência a
+ * partir da versão que o usuário tem. O projeto React tinha um único bloco
+ * de `if (!contains) create`, que só sabia criar do zero: um banco já
+ * existente nunca ganhava índice novo, porque os stores já existiam e o
+ * bloco não fazia nada. Bastava alguém já ter aberto o app uma vez para o
+ * schema congelar.
+ *
+ * Um passo só pode usar a API síncrona do IndexedDB — a transação de upgrade
+ * é abortada se o controle voltar ao loop de eventos.
+ */
+const MIGRATIONS: Record<number, (db: IDBDatabase, tx: IDBTransaction) => void> = {
+  // v1: schema original do projeto React, com chave autoincremental.
+  1: (db) => {
+    db.createObjectStore(STORES.patients, { keyPath: 'id', autoIncrement: true });
+    db.createObjectStore(STORES.exams, { keyPath: 'id', autoIncrement: true })
+      .createIndex('patientId', 'patientId', { unique: false });
+    db.createObjectStore(STORES.prescriptions, { keyPath: 'id', autoIncrement: true })
+      .createIndex('patientId', 'patientId', { unique: false });
+  },
+
+  // v2: chave passa a ser UUID gerado no cliente, entram os índices de
+  // consulta e o store de metadados.
+  2: (db) => {
+    // A chave muda de inteiro autoincremental para UUID, e `keyPath` é
+    // imutável depois que o store existe — então os três são recriados.
+    // Não há migração de dados porque não existe base em produção; quando
+    // houver, o caminho será exportar antes e reimportar depois.
+    for (const nome of [STORES.patients, STORES.exams, STORES.prescriptions]) {
+      if (db.objectStoreNames.contains(nome)) db.deleteObjectStore(nome);
+    }
+
+    const patients = db.createObjectStore(STORES.patients, { keyPath: 'id' });
+    for (const [nome, caminho] of Object.entries(INDEXES.patients)) {
+      patients.createIndex(nome, caminho, { unique: false });
+    }
+
+    for (const nome of [STORES.exams, STORES.prescriptions] as const) {
+      const store = db.createObjectStore(nome, { keyPath: 'id' });
+      for (const [indice, caminho] of Object.entries(INDEXES[nome])) {
+        store.createIndex(indice, caminho, { unique: false });
+      }
+    }
+
+    // Guarda estado que não pertence a nenhuma entidade: data do último
+    // backup, identificador deste dispositivo, marcadores de sync.
+    if (!db.objectStoreNames.contains(STORES.meta)) {
+      db.createObjectStore(STORES.meta, { keyPath: 'key' });
+    }
+  },
+};
 
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-    request.onerror = () => {
-      reject(request.error);
-    };
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result);
 
-    request.onsuccess = () => {
-      resolve(request.result);
-    };
+    // Dispara quando outra aba segura a versão antiga. Sem isto o upgrade
+    // fica pendurado em silêncio até a outra aba fechar.
+    request.onblocked = () =>
+      reject(
+        new Error(
+          'O banco está aberto em outra aba. Feche as demais abas do Medical Monitor e recarregue.',
+        ),
+      );
 
     request.onupgradeneeded = (event) => {
-      const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
+      const db = (event.target as IDBOpenDBRequest).result;
+      const tx = (event.target as IDBOpenDBRequest).transaction!;
+      const de = event.oldVersion;
 
-      if (!db.objectStoreNames.contains(STORES.patients)) {
-        db.createObjectStore(STORES.patients, {
-          keyPath: 'id',
-          autoIncrement: true,
-        });
-      }
-      if (!db.objectStoreNames.contains(STORES.exams)) {
-        db.createObjectStore(STORES.exams, {
-          keyPath: 'id',
-          autoIncrement: true,
-        }).createIndex('patientId', 'patientId', { unique: false });
-      }
-      if (!db.objectStoreNames.contains(STORES.prescriptions)) {
-        db.createObjectStore(STORES.prescriptions, {
-          keyPath: 'id',
-          autoIncrement: true,
-        }).createIndex('patientId', 'patientId', { unique: false });
+      for (let versao = de + 1; versao <= DB_VERSION; versao++) {
+        MIGRATIONS[versao]?.(db, tx);
       }
     };
   });
 }
 
-/**
- * Conexão única e memoizada.
- *
- * O projeto React abria um `indexedDB.open` novo a cada operação de
- * repositório. Funciona, mas cada chamada custa um handshake e deixa
- * conexões penduradas; reusar a mesma promise é equivalente em
- * comportamento e evita esse desperdício.
- */
 export async function getConnection(): Promise<IDBDatabase> {
   dbPromise ??= openDB().catch((error) => {
     dbPromise = null;

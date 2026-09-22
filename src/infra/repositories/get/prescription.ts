@@ -10,7 +10,7 @@ import { backfilled } from '../stamp';
 
 @Service()
 export class PrescriptionGetRepository {
-  async list(patientId: number): Promise<Prescription[]> {
+  async list(patientId: string): Promise<Prescription[]> {
     const db = await getConnection();
     const store = db
       .transaction(STORES.prescriptions, ConnectionType.READONLY)
@@ -21,7 +21,7 @@ export class PrescriptionGetRepository {
     );
   }
 
-  async findById(id: number): Promise<Prescription> {
+  async findById(id: string): Promise<Prescription> {
     const db = await getConnection();
     const store = db
       .transaction(STORES.prescriptions, ConnectionType.READONLY)

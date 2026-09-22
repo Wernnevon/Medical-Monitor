@@ -22,7 +22,7 @@ export class PatientGetRepository {
     return this.readAll();
   }
 
-  async findById(id: number): Promise<Patient> {
+  async findById(id: string): Promise<Patient> {
     const db = await getConnection();
     const store = db
       .transaction(STORES.patients, ConnectionType.READONLY)

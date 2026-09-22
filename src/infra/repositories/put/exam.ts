@@ -24,7 +24,7 @@ export class ExamPutRepository {
     await fromRequest(store.put(stamped(exam)));
   }
 
-  async changeStatus(id: number): Promise<void> {
+  async changeStatus(id: string): Promise<void> {
     const exam = await this.examGet.findById(id);
 
     const next: Exams = {

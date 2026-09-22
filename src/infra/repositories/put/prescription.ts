@@ -24,7 +24,7 @@ export class PrescriptionPutRepository {
     await fromRequest(store.put(stamped(prescription)));
   }
 
-  async changeStatus(id: number): Promise<void> {
+  async changeStatus(id: string): Promise<void> {
     const prescription = await this.prescriptionGet.findById(id);
 
     await this.update({

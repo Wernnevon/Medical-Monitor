@@ -6,7 +6,7 @@ import {
   STORES,
   fromRequest,
   getConnection,
-} from '@infra/frameworks/indexed-connection';
+} from '../../frameworks/indexed-connection';
 import { paginateStore } from '../paginate';
 import { stamped } from '../stamp';
 
@@ -15,7 +15,15 @@ export class ExamPostRepository {
   async listPagination(
     params: ListPagination.Params,
   ): Promise<ListPagination.Response<Exams>> {
-    return paginateStore<Exams>(STORES.exams, 'name', params);
+    return paginateStore<Exams>(
+      STORES.exams,
+      {
+        keywordField: 'name',
+        orderBy: 'name',
+        indexed: { patientId: 'patientId', status: 'status' },
+      },
+      params,
+    );
   }
 
   async save(exam: Exams): Promise<void> {

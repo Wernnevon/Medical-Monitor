@@ -4,6 +4,6 @@ export interface ChangeStatus {
 
 export namespace ChangeStatus {
   export type Params = {
-    id: number;
+    id: string;
   };
 }

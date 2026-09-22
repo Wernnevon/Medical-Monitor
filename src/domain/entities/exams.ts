@@ -6,13 +6,12 @@ export enum ExamStatus {
 }
 
 type Exam = Syncable & {
-  patientId: number;
+  patientId: string;
   name: string;
   requisitionDate: Date;
   realizationDate?: Date;
   status: ExamStatus;
   diagnosis?: string;
-  id?: number;
 };
 
 export default Exam;

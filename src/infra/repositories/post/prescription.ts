@@ -6,7 +6,7 @@ import {
   STORES,
   fromRequest,
   getConnection,
-} from '@infra/frameworks/indexed-connection';
+} from '../../frameworks/indexed-connection';
 import { paginateStore } from '../paginate';
 import { stamped } from '../stamp';
 
@@ -17,7 +17,11 @@ export class PrescriptionPostRepository {
   ): Promise<ListPagination.Response<Prescription>> {
     return paginateStore<Prescription>(
       STORES.prescriptions,
-      'medicament',
+      {
+        keywordField: 'medicament',
+        orderBy: 'updatedAt',
+        indexed: { patientId: 'patientId', status: 'status' },
+      },
       params,
     );
   }

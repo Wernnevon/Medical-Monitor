@@ -14,7 +14,7 @@ export class PatientDeleteRepository {
    * Tudo corre numa única transação sobre as três stores: se qualquer passo
    * falhar, o IndexedDB aborta o conjunto e nenhum registro órfão sobra.
    */
-  async delete(ids: number[]): Promise<void> {
+  async delete(ids: string[]): Promise<void> {
     const db = await getConnection();
     const transaction = db.transaction(
       [STORES.patients, STORES.exams, STORES.prescriptions],
@@ -36,7 +36,7 @@ export class PatientDeleteRepository {
 /** Varre o índice `patientId` de um store e apaga tudo que casar. */
 function deleteByPatientIndex(
   store: IDBObjectStore,
-  patientId: number,
+  patientId: string,
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const request = store.index('patientId').openCursor(patientId);

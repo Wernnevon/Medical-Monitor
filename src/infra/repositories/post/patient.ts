@@ -6,7 +6,7 @@ import {
   STORES,
   fromRequest,
   getConnection,
-} from '@infra/frameworks/indexed-connection';
+} from '../../frameworks/indexed-connection';
 import { paginateStore } from '../paginate';
 import { stamped } from '../stamp';
 
@@ -15,7 +15,17 @@ export class PatientPostRepository {
   async listPagination(
     params: ListPagination.Params,
   ): Promise<ListPagination.Response<Patient>> {
-    return paginateStore<Patient>(STORES.patients, 'name', params);
+    return paginateStore<Patient>(
+      STORES.patients,
+      {
+        keywordField: 'name',
+        orderBy: 'name',
+        // Filtrar por cidade ou convênio parte do índice, em vez de ler
+        // todos os pacientes para depois descartar a maioria.
+        indexed: { city: 'city', healthInsurance: 'healthInsurance' },
+      },
+      params,
+    );
   }
 
   async save(patient: Patient): Promise<void> {

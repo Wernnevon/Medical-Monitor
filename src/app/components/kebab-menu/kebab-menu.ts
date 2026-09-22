@@ -6,7 +6,7 @@ import type { IconName } from '../icon/icons';
 export type KebabItem = {
   icon: IconName;
   name: string;
-  action: (rowId: number) => void;
+  action: (rowId: string) => void;
 };
 
 @Component({
@@ -43,7 +43,7 @@ export type KebabItem = {
   styleUrl: './kebab-menu.scss',
 })
 export class KebabMenu {
-  readonly rowId = input.required<number>();
+  readonly rowId = input.required<string>();
   readonly items = input.required<KebabItem[]>();
 
   private readonly menu = viewChild<ElementRef<HTMLDivElement>>('menu');

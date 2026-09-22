@@ -8,7 +8,7 @@ import {
 
 @Service()
 export class PrescriptionDeleteRepository {
-  async delete(ids: number[]): Promise<void> {
+  async delete(ids: string[]): Promise<void> {
     const db = await getConnection();
     const store = db
       .transaction(STORES.prescriptions, ConnectionType.READWRITE)

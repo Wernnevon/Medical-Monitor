@@ -74,7 +74,7 @@ export class PatientsFacade {
     this.page.set(1);
   }
 
-  async remove(ids: number[]): Promise<void> {
+  async remove(ids: string[]): Promise<void> {
     await this.deleteUseCase.delete({ ids });
     this.listing.reload();
     // As opções de filtro derivam dos próprios pacientes, então uma exclusão

@@ -17,8 +17,10 @@ const filterInsurance = (healthInsurance: string, patient: Patient) =>
 const filterText = (name: string, compareName: string) =>
   compareName.toLocaleLowerCase().includes(name.toLocaleLowerCase());
 
+// Compara como string: os identificadores passaram a ser UUID, então a
+// coerção numérica do projeto React (Number(patientId)) daria NaN.
 const filterByPatient = (patientId: string, entity: any) =>
-  Number(patientId) === entity.patientId;
+  patientId === entity.patientId;
 
 const filterByStatus = (done: string, entity: any) => done === entity.status;
 

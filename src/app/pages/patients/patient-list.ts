@@ -12,7 +12,7 @@ import { PopupService } from '@app/services/popup';
 import { ToastService, ToastType } from '@app/services/toast';
 
 type PatientRow = {
-  id: number;
+  id: string;
   name: string;
   city: string;
   healthInsurance: string;
@@ -63,7 +63,7 @@ export class PatientList {
 
   protected readonly rows = computed<PatientRow[]>(() =>
     this.patients.patients().map(({ id, name, adress, health }) => ({
-      id: id ?? 0,
+      id,
       name,
       city: adress.city,
       healthInsurance: health.healthInsurance,
@@ -135,7 +135,7 @@ export class PatientList {
     },
   ];
 
-  private confirmDelete(id: number): void {
+  private confirmDelete(id: string): void {
     this.popup.show({
       data: {
         title: 'Excluir Paciente?',

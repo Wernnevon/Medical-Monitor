@@ -10,6 +10,8 @@ import { ExamPutRepository, PatientPutRepository } from './put';
 
 function makePatient(name: string, city = 'Recife'): Patient {
   return {
+    // `id` vazio: o repositório gera o UUID na gravação.
+    id: '',
     name,
     anamnese: 'sem queixas',
     birthday: '1990-05-14' as unknown as Date,
@@ -48,14 +50,26 @@ describe('repositórios IndexedDB', () => {
     examsPut = TestBed.inject(ExamPutRepository);
   });
 
-  it('carimba updatedAt ao gravar', async () => {
+  it('gera um UUID e carimba updatedAt ao gravar', async () => {
     const before = new Date().toISOString();
     await patientsPost.save(makePatient('Ana'));
 
     const [stored] = await patientsGet.list();
 
+    expect(stored.id).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+    );
     expect(stored.updatedAt).toBeDefined();
     expect(stored.updatedAt! >= before).toBe(true);
+  });
+
+  it('gera identificadores distintos para registros distintos', async () => {
+    await patientsPost.save(makePatient('Ana'));
+    await patientsPost.save(makePatient('Bruno'));
+
+    const ids = (await patientsGet.list()).map((p) => p.id);
+
+    expect(new Set(ids).size).toBe(2);
   });
 
   it('avança updatedAt ao atualizar', async () => {
@@ -73,7 +87,7 @@ describe('repositórios IndexedDB', () => {
   it('faz backfill de updatedAt em registro legado', async () => {
     // Grava direto no store, sem passar pelo repositório — é assim que os
     // registros gravados antes do campo existir estão no banco do usuário.
-    const legacy = makePatient('Registro Antigo');
+    const legacy = { ...makePatient('Registro Antigo'), id: 'legado-1' };
     const db = await getConnection();
     await new Promise<void>((resolve, reject) => {
       const tx = db.transaction('patients', 'readwrite');
@@ -114,42 +128,47 @@ describe('repositórios IndexedDB', () => {
   it('apaga exames e prescrições junto com o paciente', async () => {
     await patientsPost.save(makePatient('Ana'));
     await patientsPost.save(makePatient('Bruno'));
+    const [ana, bruno] = await patientsGet.list();
 
     await examsPost.save({
-      patientId: 1,
+      id: '',
+      patientId: ana.id,
       name: 'Hemograma',
       requisitionDate: '2026-01-10' as unknown as Date,
       status: ExamStatus.IN_PROGRESS,
     });
     await examsPost.save({
-      patientId: 2,
+      id: '',
+      patientId: bruno.id,
       name: 'Glicemia',
       requisitionDate: '2026-01-12' as unknown as Date,
       status: ExamStatus.DONE,
     });
 
-    await patientsDelete.delete([1]);
+    await patientsDelete.delete([ana.id]);
 
     expect(await patientsGet.list()).toHaveLength(1);
-    expect(await examsGet.list(1)).toHaveLength(0);
-    expect(await examsGet.list(2)).toHaveLength(1);
+    expect(await examsGet.list(ana.id)).toHaveLength(0);
+    expect(await examsGet.list(bruno.id)).toHaveLength(1);
   });
 
   it('alterna o status do exame e preenche a data de realização', async () => {
     await examsPost.save({
-      patientId: 1,
+      id: '',
+      patientId: 'paciente-1',
       name: 'Hemograma',
       requisitionDate: '2026-01-10' as unknown as Date,
       status: ExamStatus.IN_PROGRESS,
     });
+    const [exame] = await examsGet.list('paciente-1');
 
-    await examsPut.changeStatus(1);
-    const done = await examsGet.findById(1);
+    await examsPut.changeStatus(exame.id);
+    const done = await examsGet.findById(exame.id);
     expect(done.status).toBe(ExamStatus.DONE);
     expect(done.realizationDate).toBeDefined();
 
-    await examsPut.changeStatus(1);
-    const back = await examsGet.findById(1);
+    await examsPut.changeStatus(exame.id);
+    const back = await examsGet.findById(exame.id);
     expect(back.status).toBe(ExamStatus.IN_PROGRESS);
     expect(back.realizationDate).toBeUndefined();
   });

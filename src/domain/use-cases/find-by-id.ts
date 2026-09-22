@@ -4,6 +4,6 @@ export interface FindById<R = any> {
 
 export namespace FindById {
   export type Params = {
-    id: number;
+    id: string;
   };
 }

@@ -6,11 +6,10 @@ export enum PrescriptionStatus {
 }
 
 type Prescription = Syncable & {
-  patientId: number;
+  patientId: string;
   medicament: string;
   date: Date;
   status: PrescriptionStatus;
-  id: number;
 };
 
 export default Prescription;
