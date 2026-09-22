@@ -134,6 +134,7 @@ thead th {
 tbody tr {
   background-color: var(--cor-superficie);
   font-size: var(--texto-md);
+  border-left: 3px solid transparent;
 
   &.odd {
     background-color: var(--cor-superficie-alt);
@@ -141,6 +142,19 @@ tbody tr {
 
   &:hover {
     background-color: var(--cor-marca-suave);
+  }
+
+  &.selecionavel {
+    cursor: pointer;
+  }
+
+  /* Acento dourado como tinta de fundo, não como texto ou borda isolada: o
+     dourado puro falha o contraste mínimo (1.99:1) como elemento gráfico
+     sozinho sobre branco. O indicador de estado real é a borda esquerda em
+     azul, que passa com folga (16:1). */
+  &.selecionada {
+    background-color: var(--cor-acento-clara);
+    border-left-color: var(--cor-primaria);
   }
 }
 

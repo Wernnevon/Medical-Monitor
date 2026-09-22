@@ -54,9 +54,17 @@ export class Table {
   readonly pagination = input.required<TablePagination>();
   readonly kebabItems = input<KebabItem[]>([]);
   readonly addLabel = input('Novo');
+  /** Mostra o botão de criação no cabeçalho. Telas sem fluxo de criação
+   *  ainda pronto (como as abas do paciente) escondem com `[showAdd]="false"`. */
+  readonly showAdd = input(true);
+  /** Habilita clique na linha — usado pela lista de pacientes para
+   *  alimentar o painel de acesso rápido sem precisar de uma coluna extra. */
+  readonly selectable = input(false);
+  readonly selectedId = input<string | number | null>(null);
 
   readonly pageChange = output<number>();
   readonly add = output<void>();
+  readonly rowSelect = output<string | number>();
 
   protected tone(value: unknown): string {
     return STATUS_TONE[String(value)] ?? 'negative';

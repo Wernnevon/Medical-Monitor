@@ -23,10 +23,12 @@
             }
           }
         }
-        <button type="button" class="add" (click)="add.emit()">
-          <app-icon name="FaPlus" />
-          {{ addLabel() }}
-        </button>
+        @if (showAdd()) {
+          <button type="button" class="add" (click)="add.emit()">
+            <app-icon name="FaPlus" />
+            {{ addLabel() }}
+          </button>
+        }
       </div>
     </div>
 
@@ -47,7 +49,12 @@
           </thead>
           <tbody>
             @for (row of rows(); track row['id']; let odd = $odd) {
-              <tr [class.odd]="odd">
+              <tr
+                [class.odd]="odd"
+                [class.selecionavel]="selectable()"
+                [class.selecionada]="selectable() && row['id'] === selectedId()"
+                (click)="selectable() && rowSelect.emit(row['id'])"
+              >
                 @for (column of columns(); track column.key) {
                   <td
                     [style.width]="column.width"
