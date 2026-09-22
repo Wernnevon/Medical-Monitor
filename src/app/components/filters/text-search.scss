@@ -1,47 +1,45 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
 .bar {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: start;
-  border: 1px solid #747474;
-  border-radius: 5px;
-  padding: 0;
-  box-sizing: border-box;
   position: relative;
-  color: #747474;
-  transition: 100ms linear;
   width: 100%;
+  min-width: 0;
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio-sm);
+  color: var(--cor-texto-fraco);
+  transition: border-color var(--transicao), color var(--transicao);
 
   &:focus-within {
-    color: #03a696;
-    border-color: #03a696;
+    color: var(--cor-marca);
+    border-color: var(--cor-marca);
   }
 }
 
 input {
+  flex: 1;
+  min-width: 0;
+  height: 2.75rem;
+  padding: 0 var(--esp-8) 0 var(--esp-3);
   border: none;
   outline: none;
-  padding: 0 2.4rem 0 0;
   background: none;
-  height: 40px;
-  width: 100%;
-  margin: 0 10px 0 15px;
-  font-size: 1rem;
+  font-size: var(--texto-md);
+  color: var(--cor-texto);
 
-  @media (max-width: 1200px),
-    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
-    font-size: 0.85rem;
-    height: 28px;
+  /* O X nativo do input[type=search] some: já existe o botão "Limpar" nos
+     filtros, e o ícone de lupa ocuparia o mesmo canto. */
+  &::-webkit-search-cancel-button {
+    display: none;
   }
 }
 
 app-icon {
   position: absolute;
-  right: 1rem;
+  right: var(--esp-3);
   pointer-events: none;
-
-  @media (max-width: 1200px),
-    (max-width: 960px) and (-webkit-device-pixel-ratio: 1.25) {
-    right: 0.8rem;
-  }
 }

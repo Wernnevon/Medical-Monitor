@@ -7,10 +7,11 @@ export enum ToastType {
   SUCESS = 'SUCESS',
 }
 
+/** Referencia os tokens do design system em vez de repetir os hexadecimais. */
 export const TOAST_COLOR: Record<ToastType, string> = {
-  [ToastType.WARNING]: '#FC0',
-  [ToastType.ERROR]: '#C30',
-  [ToastType.SUCESS]: '#390',
+  [ToastType.WARNING]: 'var(--cor-alerta)',
+  [ToastType.ERROR]: 'var(--cor-erro)',
+  [ToastType.SUCESS]: 'var(--cor-sucesso)',
 };
 
 export const TOAST_ICON: Record<ToastType, IconName> = {

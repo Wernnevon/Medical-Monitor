@@ -1,61 +1,76 @@
+@use 'styles/tokens';
+
+/**
+ * Uma família com eixo de peso variável, no lugar das cinco famílias
+ * separadas do projeto React (`Akshar-Bold`, `Akshar-Light`...). Declarar
+ * famílias distintas por peso impede o navegador de escolher o peso certo
+ * sozinho e obriga cada regra a nomear o arquivo — por isso `font-weight`
+ * não tinha efeito em lugar nenhum. Um arquivo de 200KB substitui cinco
+ * somando 638KB.
+ */
 @font-face {
-  font-family: 'Akshar-Bold';
-  src:
-    local('Akshar-Bold'),
-    url('/fonts/akshar/Akshar-Bold.ttf') format('truetype');
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Akshar-Light';
-  src:
-    local('Akshar-Light'),
-    url('/fonts/akshar/Akshar-Light.ttf') format('truetype');
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Akshar-Medium';
-  src:
-    local('Akshar-Medium'),
-    url('/fonts/akshar/Akshar-Medium.ttf') format('truetype');
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Akshar-Regular';
-  src:
-    local('Akshar-Regular'),
-    url('/fonts/akshar/Akshar-Regular.ttf') format('truetype');
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Akshar-SemiBold';
-  src:
-    local('Akshar-SemiBold'),
-    url('/fonts/akshar/Akshar-SemiBold.ttf') format('truetype');
+  font-family: 'Akshar';
+  src: url('/fonts/akshar/Akshar-VariableFont_wght.ttf') format('truetype-variations');
+  font-weight: 300 700;
+  font-style: normal;
   font-display: swap;
 }
 
-html,
-body {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
   height: 100%;
 }
 
 body {
-  background-color: #03a696;
+  height: 100%;
   margin: 0;
-  display: flex;
-  overflow: hidden;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  font-family: var(--fonte);
+  font-size: var(--texto-md);
+  font-weight: var(--fonte-peso-normal);
+  line-height: var(--altura-linha);
+  -webkit-font-smoothing: antialiased;
 }
 
-app-root {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+h1,
+h2,
+h3,
+h4,
+p,
+figure {
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+/* Um anel de foco consistente em toda a interface. O projeto React removia o
+   outline com `outline: none` sem repor nada, deixando a navegação por
+   teclado sem indicação nenhuma de onde estava. */
+:focus-visible {
+  outline: 2px solid var(--cor-foco);
+  outline-offset: 2px;
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -63,10 +78,16 @@ app-root {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #5c5c5c33;
-  border-radius: 5px;
+  background: rgb(92 92 92 / 20%);
+  border-radius: var(--raio-pill);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #8d8d8d;
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
 }

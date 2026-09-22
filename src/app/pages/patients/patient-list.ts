@@ -22,24 +22,20 @@ type PatientRow = {
   selector: 'app-patient-list',
   imports: [Breadcrumb, Table],
   template: `
-    <section class="page">
-      <div class="card">
-        <app-breadcrumb [items]="breadcrumb" />
-        <div class="list">
-          <app-table
-            title="Pacientes"
-            icon="HiOutlineUserGroup"
-            [rows]="rows()"
-            [columns]="columns"
-            [filters]="filters()"
-            [pagination]="pagination()"
-            [kebabItems]="kebabItems"
-            (pageChange)="patients.page.set($event)"
-            (add)="router.navigate(['/pacientes/novo'])"
-          />
-        </div>
-      </div>
-    </section>
+    <app-breadcrumb [items]="breadcrumb" />
+    <div class="list">
+      <app-table
+        title="Pacientes"
+        icon="HiOutlineUserGroup"
+        [rows]="rows()"
+        [columns]="columns"
+        [filters]="filters()"
+        [pagination]="pagination()"
+        [kebabItems]="kebabItems"
+        (pageChange)="patients.page.set($event)"
+        (add)="router.navigate(['/pacientes/novo'])"
+      />
+    </div>
   `,
   styleUrl: './patient-list.scss',
 })

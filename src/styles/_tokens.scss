@@ -1,0 +1,118 @@
+/**
+ * Tokens do design system.
+ *
+ * Único lugar onde cor, tipografia, espaçamento, raio e sombra são definidos.
+ * O projeto React repetia `#03a696` em onze arquivos, `#747474` em seis e
+ * tinha onze tamanhos de fonte diferentes em `rem` escolhidos caso a caso.
+ *
+ * São custom properties do CSS, e não variáveis do Sass, para poderem ser
+ * lidas e sobrescritas em tempo de execução — é o que vai permitir um tema
+ * escuro ou de alto contraste sem recompilar.
+ */
+
+:root {
+  /* ---- Marca ---- */
+  --cor-marca: #03a696;
+  --cor-marca-escura: #00786d;
+  --cor-marca-clara: #4ba68c;
+  --cor-marca-suave: #e6f5f3;
+
+  /* ---- Superfícies ---- */
+  --cor-fundo: var(--cor-marca);
+  --cor-superficie: #ffffff;
+  --cor-superficie-alt: #f6f6f6;
+  --cor-superficie-forte: #e1e1e1;
+  --cor-superficie-hover: #ededed;
+
+  /* ---- Texto ---- */
+  --cor-texto: #1a1a1a;
+  --cor-texto-suave: #555555;
+  --cor-texto-fraco: #747474;
+  --cor-texto-invertido: #ffffff;
+
+  /* ---- Traços ---- */
+  --cor-borda: #d4d4d4;
+  --cor-borda-forte: #747474;
+  --cor-foco: var(--cor-marca-escura);
+
+  /* ---- Estado ---- */
+  --cor-sucesso: #339900;
+  --cor-sucesso-fundo: #b4eda0;
+  --cor-sucesso-marca: #6bc167;
+  --cor-erro: #cc3300;
+  --cor-erro-fundo: #ffd5d1;
+  --cor-erro-marca: #ff4436;
+  --cor-alerta: #ffcc00;
+  --cor-alerta-texto: #333333;
+
+  /* ---- Tipografia ----
+     Akshar para a interface, com pilha de fallback real: se a fonte não
+     carregar, o texto cai em algo com métrica parecida em vez do serif
+     padrão do navegador. */
+  --fonte: 'Akshar', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fonte-peso-leve: 300;
+  --fonte-peso-normal: 400;
+  --fonte-peso-medio: 500;
+  --fonte-peso-forte: 600;
+
+  /* Escala tipográfica de razão 1.2 (terça menor), ancorada em 16px.
+     O projeto React misturava 0.85, 1, 1.2, 1.3, 1.5, 1.8, 2, 2.5rem sem
+     relação entre si. */
+  --texto-xs: 0.694rem; /* 11px */
+  --texto-sm: 0.833rem; /* 13px */
+  --texto-md: 1rem; /* 16px */
+  --texto-lg: 1.2rem; /* 19px */
+  --texto-xl: 1.44rem; /* 23px */
+  --texto-2xl: 1.728rem; /* 28px */
+  --texto-3xl: 2.074rem; /* 33px */
+
+  --altura-linha-apertada: 1.2;
+  --altura-linha: 1.5;
+
+  /* ---- Espaçamento (passo de 4px) ---- */
+  --esp-1: 0.25rem;
+  --esp-2: 0.5rem;
+  --esp-3: 0.75rem;
+  --esp-4: 1rem;
+  --esp-5: 1.5rem;
+  --esp-6: 2rem;
+  --esp-8: 3rem;
+
+  /* ---- Raio ---- */
+  --raio-sm: 4px;
+  --raio-md: 8px;
+  --raio-lg: 16px;
+  --raio-pill: 999px;
+
+  /* ---- Sombra ---- */
+  --sombra-sm: 0 1px 3px rgb(0 0 0 / 12%);
+  --sombra-md: 0 2px 8px rgb(0 0 0 / 12%);
+  --sombra-lg: 0 4px 16px rgb(0 0 0 / 16%);
+
+  /* ---- Layout ---- */
+  --menu-largura: 15rem;
+  --menu-largura-compacto: 4.5rem;
+
+  /* ---- Movimento ---- */
+  --transicao: 160ms ease;
+}
+
+/* Em telas pequenas a escala encolhe um degrau: a interface foi desenhada
+   para desktop e os tamanhos originais estouram a largura no celular. */
+@media (max-width: 640px) {
+  :root {
+    --texto-lg: 1.1rem;
+    --texto-xl: 1.25rem;
+    --texto-2xl: 1.44rem;
+    --texto-3xl: 1.728rem;
+    --esp-5: 1rem;
+    --esp-6: 1.5rem;
+    --esp-8: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transicao: 0ms;
+  }
+}

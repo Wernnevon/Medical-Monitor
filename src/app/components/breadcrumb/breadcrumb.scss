@@ -1,9 +1,8 @@
 nav {
   display: flex;
   width: max-content;
-  margin: 0.5rem 1rem 0;
-  font-size: 1.2rem;
-  font-family: 'Akshar-Light';
+  max-width: 100%;
+  font-size: var(--texto-md);
 
   @media print {
     display: none;
@@ -12,19 +11,20 @@ nav {
 
 ul {
   display: flex;
-  list-style-type: none;
-  padding: 0;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0 0 0 var(--esp-2);
   margin: 0;
-  border-left: 4px solid #4ba68c;
+  border-left: 4px solid var(--cor-marca-clara);
 }
 
 li {
   display: flex;
-  margin-left: 5px;
+  gap: var(--esp-1);
 
   &::after {
     content: '\2771';
-    color: #4ba68c;
+    color: var(--cor-marca-clara);
   }
 
   &:last-child::after {
@@ -34,8 +34,11 @@ li {
 
 a {
   text-decoration: none;
-  color: #333;
-  margin-top: 2px;
+  color: var(--cor-texto-invertido);
   text-transform: uppercase;
   font-variant: small-caps;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

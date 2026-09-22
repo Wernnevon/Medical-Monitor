@@ -1,5 +1,5 @@
 <main class="table-container">
-  <span class="body">
+  <div class="body">
     <div class="header">
       <div class="title">
         <app-icon [name]="icon()" size="2.5rem" />
@@ -31,50 +31,52 @@
     </div>
 
     @if (rows().length) {
-      <table>
-        <thead>
-          <tr>
-            @for (column of columns(); track column.key) {
-              <th
-                [style.width]="column.width"
-                [style.text-align]="column.align ?? 'left'"
-              >
-                {{ column.name }}
-              </th>
-            }
-          </tr>
-        </thead>
-        <tbody>
-          @for (row of rows(); track row['id']; let odd = $odd) {
-            <tr [class.odd]="odd">
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
               @for (column of columns(); track column.key) {
-                <td
+                <th
                   [style.width]="column.width"
                   [style.text-align]="column.align ?? 'left'"
                 >
-                  @switch (column.type) {
-                    @case ('status') {
-                      <small class="badge" [class]="'badge--' + tone(row[column.key])">
-                        {{ row[column.key] }}
-                      </small>
-                    }
-                    @case ('action') {
-                      <app-kebab-menu [rowId]="row['id']" [items]="kebabItems()" />
-                    }
-                    @default {
-                      {{ row[column.key] }}
-                    }
-                  }
-                </td>
+                  {{ column.name }}
+                </th>
               }
             </tr>
-          }
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            @for (row of rows(); track row['id']; let odd = $odd) {
+              <tr [class.odd]="odd">
+                @for (column of columns(); track column.key) {
+                  <td
+                    [style.width]="column.width"
+                    [style.text-align]="column.align ?? 'left'"
+                  >
+                    @switch (column.type) {
+                      @case ('status') {
+                        <small class="badge" [class]="'badge--' + tone(row[column.key])">
+                          {{ row[column.key] }}
+                        </small>
+                      }
+                      @case ('action') {
+                        <app-kebab-menu [rowId]="row['id']" [items]="kebabItems()" />
+                      }
+                      @default {
+                        {{ row[column.key] }}
+                      }
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     } @else {
       <label class="empty">Sem dados</label>
     }
-  </span>
+  </div>
 
   <app-pagination
     [entityName]="pagination().entityName"

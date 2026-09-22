@@ -1,26 +1,30 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
 .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
-  font-family: 'Akshar-Light';
-  font-size: 1.5rem;
-  border: 1px solid #747474;
-  border-radius: 5px;
-  min-width: 15rem;
+  min-width: 0;
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio-sm);
+  transition: border-color var(--transicao);
 
   &:hover {
-    border-color: #03a696;
+    border-color: var(--cor-marca);
   }
 }
 
 .container--open {
   border-bottom: none;
-  border-radius: 5px 5px 0 0;
-  border-color: #03a696;
+  border-radius: var(--raio-sm) var(--raio-sm) 0 0;
+  border-color: var(--cor-marca);
 
   .header {
-    color: #03a696;
+    color: var(--cor-marca);
   }
 }
 
@@ -28,23 +32,25 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  height: 3rem;
-  padding: 0 1rem;
+  gap: var(--esp-2);
+  width: 100%;
+  min-width: 0;
+  height: 2.75rem;
+  padding: 0 var(--esp-3);
   border: none;
   background: none;
-  font: inherit;
+  font-size: var(--texto-md);
   color: inherit;
 
   span {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    width: 100%;
+    gap: var(--esp-2);
+    min-width: 0;
     overflow: hidden;
 
     label {
-      width: 100%;
+      min-width: 0;
       overflow: hidden;
       text-align: left;
       white-space: nowrap;
@@ -54,70 +60,68 @@
   }
 
   &:hover {
-    color: #03a696;
+    color: var(--cor-marca);
     cursor: pointer;
-  }
-
-  &:focus-visible {
-    outline: 2px solid #00786d;
-    outline-offset: -2px;
   }
 }
 
 .body {
-  display: flex;
+  display: none;
   flex-direction: column;
   position: absolute;
   top: calc(100% - 1px);
   left: -1px;
-  background-color: #fff;
-  border: 1px solid #747474;
-  border-radius: 0 0 5px 5px;
-  width: 100%;
+  right: -1px;
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-marca);
+  border-radius: 0 0 var(--raio-sm) var(--raio-sm);
+  box-shadow: var(--sombra-md);
   z-index: 10;
   max-height: 15rem;
-  visibility: hidden;
 
   .options {
     overflow-y: auto;
   }
 }
 
+/* `display: none` em vez de `visibility: hidden` como no projeto React: assim
+   os itens do menu fechado ficam fora da ordem de tabulação, em vez de
+   receberem foco invisível. */
 .body--open {
-  visibility: visible;
-  border-color: #03a696;
+  display: flex;
 }
 
 .item {
   display: flex;
   align-items: center;
-  padding: 0.5rem 1rem;
-  gap: 1rem;
+  gap: var(--esp-3);
+  width: 100%;
+  padding: var(--esp-2) var(--esp-3);
   border: none;
   background: none;
-  font: inherit;
-  width: 100%;
-  box-sizing: border-box;
+  font-size: var(--texto-md);
+  text-align: left;
 
   &:hover {
-    background-color: #ededed;
+    background-color: var(--cor-superficie-hover);
     cursor: pointer;
-    color: #00786d;
+    color: var(--cor-marca-escura);
   }
 
   label {
+    min-width: 0;
     width: 100%;
-    text-align: left;
-    white-space: nowrap;
     overflow: hidden;
+    white-space: nowrap;
     text-overflow: ellipsis;
     pointer-events: none;
   }
 
   input[type='radio'] {
-    width: 1.5rem;
-    height: 1.5rem;
-    accent-color: #03a696;
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+    accent-color: var(--cor-marca);
 
     &:hover {
       cursor: pointer;
@@ -126,9 +130,10 @@
 }
 
 .clear {
-  background-color: #fff;
   position: sticky;
   bottom: 0;
-  border-radius: 0 0 5px 5px;
-  color: #03a696;
+  background-color: var(--cor-superficie);
+  border-top: 1px solid var(--cor-borda);
+  border-radius: 0 0 var(--raio-sm) var(--raio-sm);
+  color: var(--cor-marca);
 }
