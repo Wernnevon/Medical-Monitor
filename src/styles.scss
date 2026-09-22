@@ -1,0 +1,72 @@
+@font-face {
+  font-family: 'Akshar-Bold';
+  src:
+    local('Akshar-Bold'),
+    url('/fonts/akshar/Akshar-Bold.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Akshar-Light';
+  src:
+    local('Akshar-Light'),
+    url('/fonts/akshar/Akshar-Light.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Akshar-Medium';
+  src:
+    local('Akshar-Medium'),
+    url('/fonts/akshar/Akshar-Medium.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Akshar-Regular';
+  src:
+    local('Akshar-Regular'),
+    url('/fonts/akshar/Akshar-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Akshar-SemiBold';
+  src:
+    local('Akshar-SemiBold'),
+    url('/fonts/akshar/Akshar-SemiBold.ttf') format('truetype');
+  font-display: swap;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: #03a696;
+  margin: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+app-root {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5c5c5c33;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8d8d8d;
+}
