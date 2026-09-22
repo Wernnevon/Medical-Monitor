@@ -1,6 +1,5 @@
 import type { Routes } from '@angular/router';
 
-const pacientes = { label: 'Pacientes', path: '/pacientes' };
 
 /**
  * Espelha `legacy/src/Presentation/routes.tsx`.
@@ -18,6 +17,21 @@ const pendente = (title: string, reference: string, crumbs: unknown[] = []) => (
   loadComponent: () =>
     import('./pages/pending/pending-page').then((m) => m.PendingPage),
   data: { title, reference, crumbs },
+});
+
+/**
+ * Uma das 5 abas da página de Detalhes do Paciente. Todas carregam o mesmo
+ * componente; a aba ativa chega como `route.data.aba`, ligada ao input
+ * `aba` do componente pelo `withComponentInputBinding` — o mesmo mecanismo
+ * que já entrega `:id`. Trocar de aba navega de verdade, então a URL e o
+ * botão voltar do navegador continuam significando algo.
+ */
+const detalhesAba = (aba: string) => ({
+  loadComponent: () =>
+    import('./pages/patients/details/patient-details').then(
+      (m) => m.PatientDetails,
+    ),
+  data: { aba },
 });
 
 export const routes: Routes = [
@@ -46,27 +60,11 @@ export const routes: Routes = [
       {
         path: 'detalhes/:id',
         children: [
-          {
-            path: '',
-            ...pendente('Detalhes do Paciente', 'Pages/Pacientes/Details', [
-              pacientes,
-              { label: 'Detalhes', path: '' },
-            ]),
-          },
-          {
-            path: 'exames',
-            ...pendente('Exames do Paciente', 'Pages/Exame', [
-              pacientes,
-              { label: 'Exames', path: '' },
-            ]),
-          },
-          {
-            path: 'receitas',
-            ...pendente('Receitas do Paciente', 'Pages/Prescription', [
-              pacientes,
-              { label: 'Receitas', path: '' },
-            ]),
-          },
+          { path: '', ...detalhesAba('resumo') },
+          { path: 'exames', ...detalhesAba('exames') },
+          { path: 'receitas', ...detalhesAba('receitas') },
+          { path: 'atestados', ...detalhesAba('atestados') },
+          { path: 'historico', ...detalhesAba('historico') },
         ],
       },
     ],

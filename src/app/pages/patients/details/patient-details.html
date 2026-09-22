@@ -1,0 +1,181 @@
+<app-breadcrumb [items]="breadcrumb()" />
+
+<div class="card">
+  @if (facade.loadingPatient() && !facade.patient()) {
+    <div class="carregando">Carregando paciente…</div>
+  } @else if (!facade.patient()) {
+    <div class="carregando">Paciente não encontrado.</div>
+  } @else {
+    @let paciente = facade.patient()!;
+
+    <header class="topo">
+      <div class="avatar">{{ paciente.name.charAt(0) }}</div>
+      <div class="identificacao">
+        <div class="nome-status">
+          <h1>{{ paciente.name }}</h1>
+          <span class="status">Ativo</span>
+        </div>
+        <p class="meta">
+          CPF {{ paciente.cpf }}
+          @if (idade() !== null) {
+            &nbsp;·&nbsp;{{ idade() }} anos
+          }
+        </p>
+      </div>
+    </header>
+
+    <nav class="abas">
+      <a
+        [routerLink]="['/pacientes/detalhes', id()]"
+        routerLinkActive="aba--ativa"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Resumo
+      </a>
+      <a [routerLink]="['/pacientes/detalhes', id(), 'exames']" routerLinkActive="aba--ativa">
+        Exames
+      </a>
+      <a [routerLink]="['/pacientes/detalhes', id(), 'receitas']" routerLinkActive="aba--ativa">
+        Receitas
+      </a>
+      <a [routerLink]="['/pacientes/detalhes', id(), 'atestados']" routerLinkActive="aba--ativa">
+        Atestados
+      </a>
+      <a [routerLink]="['/pacientes/detalhes', id(), 'historico']" routerLinkActive="aba--ativa">
+        Histórico
+      </a>
+    </nav>
+
+    <div class="conteudo-aba">
+      @switch (aba()) {
+        @case ('resumo') {
+          <div class="resumo">
+            <div class="acoes-rapidas">
+              <a class="acao" [routerLink]="['/pacientes/detalhes', id(), 'exames']">
+                <app-icon name="BiTestTube" />
+                Ver exames
+              </a>
+              <a class="acao" [routerLink]="['/pacientes/detalhes', id(), 'receitas']">
+                <app-icon name="LuClipboardEdit" />
+                Ver receitas
+              </a>
+              <a class="acao acao--principal" [routerLink]="['/pacientes/editar', id()]">
+                <app-icon name="FaUserEdit" />
+                Editar dados
+              </a>
+            </div>
+
+            <section class="secao">
+              <h2>Dados pessoais</h2>
+              <dl class="grade-campos">
+                <div><dt>Nome completo</dt><dd>{{ paciente.name }}</dd></div>
+                <div><dt>CPF</dt><dd>{{ paciente.cpf }}</dd></div>
+                <div><dt>RG</dt><dd>{{ paciente.rg }}</dd></div>
+                <div><dt>Data de nascimento</dt><dd>{{ formatar(paciente.birthday) }}</dd></div>
+                <div><dt>Gênero</dt><dd>{{ paciente.gender }}</dd></div>
+                <div><dt>Telefone</dt><dd>{{ paciente.phone || 'Não informado' }}</dd></div>
+                <div><dt>Nome do pai</dt><dd>{{ paciente.fatherName }}</dd></div>
+                <div><dt>Nome da mãe</dt><dd>{{ paciente.motherName }}</dd></div>
+              </dl>
+            </section>
+
+            <section class="secao">
+              <h2>Endereço</h2>
+              <p class="paragrafo">
+                {{ paciente.adress.street }}, {{ paciente.adress.number || 'S/N' }} —
+                {{ paciente.adress.neighborhood }}, {{ paciente.adress.city }}
+                @if (paciente.adress.complement) {
+                  ({{ paciente.adress.complement }})
+                }
+              </p>
+            </section>
+
+            <section class="secao">
+              <h2>Convênio e saúde</h2>
+              <dl class="grade-campos">
+                <div>
+                  <dt>Convênio</dt>
+                  <dd>{{ paciente.health.healthInsurance || 'Não informado' }}</dd>
+                </div>
+                <div>
+                  <dt>Alergias</dt>
+                  <dd>{{ paciente.health.allergy || 'Não informado' }}</dd>
+                </div>
+                @if (paciente.health.weight) {
+                  <div><dt>Peso</dt><dd>{{ paciente.health.weight }} kg</dd></div>
+                }
+                @if (paciente.health.height) {
+                  <div><dt>Altura</dt><dd>{{ paciente.health.height }} cm</dd></div>
+                }
+              </dl>
+            </section>
+
+            @if (ultimoAtendimento(); as u) {
+              <section class="secao">
+                <h2>Último atendimento</h2>
+                <div class="ultimo-atendimento">
+                  <app-icon [name]="u.tipo === 'exame' ? 'BiTestTube' : 'LuClipboardEdit'" />
+                  <div>
+                    <strong>{{ u.titulo }}</strong>
+                    <span>{{ formatar(u.data) }} · {{ u.status }}</span>
+                  </div>
+                </div>
+              </section>
+            }
+          </div>
+        }
+        @case ('exames') {
+          <app-table
+            title="Exames do paciente"
+            icon="BiTestTube"
+            [rows]="examRows()"
+            [columns]="examColumns"
+            [pagination]="examPagination()"
+            [showAdd]="false"
+            (pageChange)="facade.examPage.set($event)"
+          />
+        }
+        @case ('receitas') {
+          <app-table
+            title="Receitas do paciente"
+            icon="LuClipboardEdit"
+            [rows]="prescriptionRows()"
+            [columns]="prescriptionColumns"
+            [pagination]="prescriptionPagination()"
+            [showAdd]="false"
+            (pageChange)="facade.prescriptionPage.set($event)"
+          />
+        }
+        @case ('atestados') {
+          <div class="pendente">
+            <app-icon name="AiOutlineAudit" size="3rem" />
+            <h2>Atestados</h2>
+            <p>
+              O gerador de atestados do app anterior não guardava vínculo com o
+              paciente — era uma impressão avulsa. Emitir e listar atestados por
+              paciente é um recurso novo, ainda não construído.
+            </p>
+          </div>
+        }
+        @case ('historico') {
+          @if (facade.historico().length) {
+            <ul class="linha-do-tempo">
+              @for (item of facade.historico(); track item.titulo + item.data) {
+                <li>
+                  <app-icon [name]="item.tipo === 'exame' ? 'BiTestTube' : 'LuClipboardEdit'" />
+                  <div>
+                    <strong>{{ item.titulo }}</strong>
+                    <span>{{ formatar(item.data) }}</span>
+                  </div>
+                  <small class="tipo tipo--{{ item.tipo }}">{{ item.status }}</small>
+                </li>
+              }
+            </ul>
+          } @else {
+            <p class="paragrafo">Nenhum exame ou receita registrado para este paciente.</p>
+          }
+        }
+      }
+    </div>
+  }
+</div>
