@@ -1,8 +1,8 @@
 import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Breadcrumb, type BreadcrumbItem } from '@app/components/breadcrumb/breadcrumb';
-import { Button } from '@app/components/button/button';
-import { Icon } from '@app/components/icon/icon';
+import { Breadcrumb, type BreadcrumbItem } from '@app/shared/components/breadcrumb/breadcrumb';
+import { Button } from '@app/shared/components/button/button';
+import { Icon } from '@app/shared/components/icon/icon';
 
 /**
  * Marcador para as telas ainda não portadas do projeto React.

@@ -1,5 +1,5 @@
 import { Component, ElementRef, input, signal, viewChild } from '@angular/core';
-import { ClickOutside } from '@app/directives/click-outside';
+import { ClickOutside } from '@app/shared/directives/click-outside';
 import { Icon } from '../icon/icon';
 import type { IconName } from '../icon/icons';
 

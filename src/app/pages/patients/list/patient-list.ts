@@ -1,15 +1,15 @@
 import { Component, computed, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Breadcrumb } from '@app/components/breadcrumb/breadcrumb';
-import type { KebabItem } from '@app/components/kebab-menu/kebab-menu';
+import { Breadcrumb } from '@app/shared/components/breadcrumb/breadcrumb';
+import type { KebabItem } from '@app/shared/components/kebab-menu/kebab-menu';
 import {
   Table,
   type DataColumn,
   type DataFilter,
-} from '@app/components/table/table';
-import { PatientsFacade } from '@app/services/patients-facade';
-import { PopupService } from '@app/services/popup';
-import { ToastService, ToastType } from '@app/services/toast';
+} from '@app/shared/components/table/table';
+import { PatientsFacade } from '@app/pages/patients/patients-facade';
+import { PopupService } from '@app/shared/services/popup';
+import { ToastService, ToastType } from '@app/shared/services/toast';
 
 type PatientRow = {
   id: string;

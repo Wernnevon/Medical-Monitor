@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Popup } from './components/popup/popup';
-import { Toast } from './components/toast/toast';
-import { SideNav } from './pages/side-nav/side-nav';
+import { Popup } from './shared/components/popup/popup';
+import { Toast } from './shared/components/toast/toast';
+import { SideNav } from './shell/side-nav/side-nav';
 
 @Component({
   selector: 'app-root',

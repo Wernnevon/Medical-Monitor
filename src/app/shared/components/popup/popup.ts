@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
-import { PopupService } from '@app/services/popup';
+import { PopupService } from '@app/shared/services/popup';
 
 /**
  * Diálogo de confirmação global.

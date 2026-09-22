@@ -27,19 +27,19 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import('./pages/patients/patient-list').then((m) => m.PatientList),
+          import('./pages/patients/list/patient-list').then((m) => m.PatientList),
       },
       {
         path: 'novo',
         loadComponent: () =>
-          import('./pages/patients/patient-register').then(
+          import('./pages/patients/register/patient-register').then(
             (m) => m.PatientRegister,
           ),
       },
       {
         path: 'editar/:id',
         loadComponent: () =>
-          import('./pages/patients/patient-register').then(
+          import('./pages/patients/register/patient-register').then(
             (m) => m.PatientRegister,
           ),
       },

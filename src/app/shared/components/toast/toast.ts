@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Icon } from '../icon/icon';
-import { TOAST_COLOR, TOAST_ICON, ToastService } from '@app/services/toast';
+import { TOAST_COLOR, TOAST_ICON, ToastService } from '@app/shared/services/toast';
 
 @Component({
   selector: 'app-toast',

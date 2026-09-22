@@ -8,12 +8,12 @@ import {
 } from '@angular/core';
 import { form, submit } from '@angular/forms/signals';
 import { Router } from '@angular/router';
-import { Breadcrumb } from '@app/components/breadcrumb/breadcrumb';
-import { Button } from '@app/components/button/button';
-import { Field } from '@app/components/field/field';
-import { Icon } from '@app/components/icon/icon';
+import { Breadcrumb } from '@app/shared/components/breadcrumb/breadcrumb';
+import { Button } from '@app/shared/components/button/button';
+import { Field } from '@app/shared/components/field/field';
+import { Icon } from '@app/shared/components/icon/icon';
 import { PatientAdd, PatientFindById, PatientUpdate } from '@domain/tokens';
-import { ToastService, ToastType } from '@app/services/toast';
+import { ToastService, ToastType } from '@app/shared/services/toast';
 import {
   daEntidade,
   formularioVazio,

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { Icon } from '@app/components/icon/icon';
-import type { IconName } from '@app/components/icon/icons';
+import { Icon } from '@app/shared/components/icon/icon';
+import type { IconName } from '@app/shared/components/icon/icons';
 
 type NavEntry = {
   path: string;

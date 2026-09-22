@@ -1,5 +1,5 @@
 import { Component, input, output, signal } from '@angular/core';
-import { ClickOutside } from '@app/directives/click-outside';
+import { ClickOutside } from '@app/shared/directives/click-outside';
 import { Icon } from '../icon/icon';
 
 @Component({
