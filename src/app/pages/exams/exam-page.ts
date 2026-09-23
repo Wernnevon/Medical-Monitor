@@ -34,8 +34,9 @@ export class ExamPage {
   protected readonly catalogo = CATALOGO_EXAMES;
   protected readonly categoriaAberta = signal<string | null>(null);
   protected readonly selecionados = signal(new Set<string>());
-  /** Dentes marcados no odontograma, pela numeração FDI — vira item da
-   *  lista de exames como "Odontograma — Dente NN" no computed abaixo. */
+  /** Dentes marcados no odontograma, pela numeração FDI. O odontograma é
+   *  UM exame só, não um por dente — os dentes marcados são o detalhe
+   *  desse exame, não itens soltos na lista (ver `odontogramaItem`). */
   protected readonly dentesSelecionados = signal(new Set<number>());
   protected readonly outrosTexto = signal('');
   protected readonly nomePaciente = signal('');
@@ -52,15 +53,17 @@ export class ExamPage {
       .filter(Boolean),
   );
 
-  protected readonly dentesRotulados = computed(() =>
-    [...this.dentesSelecionados()]
-      .sort((a, b) => a - b)
-      .map((dente) => `Odontograma — Dente ${dente}`),
-  );
+  /** Um item só pro odontograma inteiro, não um por dente — os dentes
+   *  marcados viram o detalhe desse único exame na pré-visualização
+   *  ("Odontograma — Dentes: 16, 36"), não vira N exames separados. */
+  protected readonly odontogramaItem = computed(() => {
+    const dentes = [...this.dentesSelecionados()].sort((a, b) => a - b);
+    return dentes.length ? `Odontograma — Dentes: ${dentes.join(', ')}` : null;
+  });
 
   protected readonly todosSelecionados = computed(() => [
     ...this.selecionados(),
-    ...this.dentesRotulados(),
+    ...(this.odontogramaItem() ? [this.odontogramaItem()!] : []),
     ...this.outros(),
   ]);
 
