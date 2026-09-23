@@ -66,10 +66,19 @@ const saude = schema<PatientForm['health']>((h) => {
 
   validate(h.weight, positivo('Peso'));
   validate(h.height, positivo('Altura'));
+
+  validate(h.bloodType, ({ value }) => {
+    const bruto = value().trim().toUpperCase();
+    if (!bruto) return undefined;
+    return /^(A|B|AB|O)[+-]$/.test(bruto)
+      ? undefined
+      : { kind: 'tipo-sanguineo', message: 'Use o formato A+, B-, AB+ ou O-' };
+  });
 });
 
 export const patientSchema = schema<PatientForm>((p) => {
   apply(p, dadosPessoais);
   apply(p.adress, endereco);
   apply(p.health, saude);
+  maxLength(p.anamnese, 2000, { message: 'Anamnese muito longa' });
 });

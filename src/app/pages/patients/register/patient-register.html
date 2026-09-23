@@ -1,5 +1,3 @@
-<app-breadcrumb [items]="breadcrumb()" />
-
 <div class="card">
   <header class="titulo">
     <app-icon [name]="edicao() ? 'FaUserEdit' : 'RiFileUserFill'" size="2rem" />
@@ -69,6 +67,11 @@
             dica="Altura em centímetros (cm)"
             modo="numeric"
           />
+          <app-field
+            [campo]="formulario.health.bloodType"
+            rotulo="Tipo Sanguíneo"
+            dica="Ex.: O+, A-, AB+"
+          />
         </div>
       }
       @case (3) {
@@ -117,6 +120,9 @@
               }
               @if (resumo().health.weight) {
                 <dt>Peso</dt><dd>{{ resumo().health.weight }} kg</dd>
+              }
+              @if (resumo().health.bloodType) {
+                <dt>Tipo Sanguíneo</dt><dd>{{ resumo().health.bloodType }}</dd>
               }
             </dl>
           </section>

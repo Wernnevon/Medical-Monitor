@@ -8,10 +8,10 @@ import {
 } from '@angular/core';
 import { form, submit } from '@angular/forms/signals';
 import { Router } from '@angular/router';
-import { Breadcrumb } from '@app/shared/components/breadcrumb/breadcrumb';
 import { Button } from '@app/shared/components/button/button';
 import { Field } from '@app/shared/components/field/field';
 import { Icon } from '@app/shared/components/icon/icon';
+import type { Patient } from '@domain/entities';
 import { PatientAdd, PatientFindById, PatientUpdate } from '@domain/tokens';
 import { ToastService, ToastType } from '@app/shared/services/toast';
 import {
@@ -31,7 +31,7 @@ const ETAPAS = [
 
 @Component({
   selector: 'app-patient-register',
-  imports: [Breadcrumb, Button, Field, Icon],
+  imports: [Button, Field, Icon],
   templateUrl: './patient-register.html',
   styleUrl: './patient-register.scss',
 })
@@ -54,10 +54,10 @@ export class PatientRegister {
 
   protected readonly edicao = computed(() => !!this.id());
 
-  protected readonly breadcrumb = computed(() => [
-    { label: 'Pacientes', path: '/pacientes' },
-    { label: this.edicao() ? 'Editar' : 'Novo', path: '' },
-  ]);
+  /** Paciente como veio do banco, só pra recuperar campos que o formulário
+   *  de cadastro não edita (ex.: histórico de pressão arterial) na hora de
+   *  regravar — sem isto, salvar uma edição apagaria esse histórico. */
+  private readonly pacienteOriginal = signal<Patient | null>(null);
 
   constructor() {
     effect(() => {
@@ -65,7 +65,10 @@ export class PatientRegister {
       if (!id) return;
       this.buscar
         .findById({ id })
-        .then((patient) => this.modelo.set(daEntidade(patient)))
+        .then((patient) => {
+          this.pacienteOriginal.set(patient);
+          this.modelo.set(daEntidade(patient));
+        })
         .catch(() =>
           this.toast.add('Não foi possível carregar o paciente', ToastType.ERROR),
         );
@@ -87,7 +90,7 @@ export class PatientRegister {
       case 1:
         return [f.adress.street, f.adress.neighborhood, f.adress.city];
       case 2:
-        return [f.health.allergy, f.health.weight, f.health.height];
+        return [f.health.allergy, f.health.weight, f.health.height, f.health.bloodType];
       default:
         return [];
     }
@@ -125,6 +128,8 @@ export class PatientRegister {
     this.salvando.set(true);
     await submit(this.formulario, async (f) => {
       const dados = paraEntidade(f().value(), this.id());
+      dados.health.bloodPressureReadings =
+        this.pacienteOriginal()?.health.bloodPressureReadings;
       try {
         if (this.edicao()) {
           await this.atualizar.update({ data: dados });

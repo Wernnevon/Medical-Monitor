@@ -32,7 +32,9 @@ export type PatientForm = {
     allergy: string;
     weight: string;
     height: string;
+    bloodType: string;
   };
+  anamnese: string;
 };
 
 export const formularioVazio = (): PatientForm => ({
@@ -51,7 +53,8 @@ export const formularioVazio = (): PatientForm => ({
     complement: '',
     city: '',
   },
-  health: { healthInsurance: '', allergy: '', weight: '', height: '' },
+  health: { healthInsurance: '', allergy: '', weight: '', height: '', bloodType: '' },
+  anamnese: '',
 });
 
 const texto = (valor: unknown): string => (valor == null ? '' : String(valor));
@@ -89,7 +92,9 @@ export function daEntidade(patient: Patient): PatientForm {
       allergy: texto(patient.health?.allergy),
       weight: texto(patient.health?.weight),
       height: texto(patient.health?.height),
+      bloodType: texto(patient.health?.bloodType),
     },
+    anamnese: texto(patient.anamnese),
   };
 }
 
@@ -112,7 +117,7 @@ export function paraEntidade(dados: PatientForm, id = ''): Patient {
     cpf: dados.cpf.trim(),
     gender: dados.gender.trim(),
     phone: opcional(dados.phone),
-    anamnese: '',
+    anamnese: dados.anamnese.trim(),
     adress: {
       street: dados.adress.street.trim(),
       number: numero(dados.adress.number) ?? 0,
@@ -125,6 +130,7 @@ export function paraEntidade(dados: PatientForm, id = ''): Patient {
       allergy: opcional(dados.health.allergy),
       weight: numero(dados.health.weight),
       height: numero(dados.health.height),
+      bloodType: opcional(dados.health.bloodType)?.toUpperCase(),
     },
   };
 }
