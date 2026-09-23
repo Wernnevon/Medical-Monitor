@@ -1,6 +1,5 @@
 import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Breadcrumb, type BreadcrumbItem } from '@app/shared/components/breadcrumb/breadcrumb';
 import { Button } from '@app/shared/components/button/button';
 import { Icon } from '@app/shared/components/icon/icon';
 
@@ -16,9 +15,8 @@ import { Icon } from '@app/shared/components/icon/icon';
  */
 @Component({
   selector: 'app-pending-page',
-  imports: [Breadcrumb, Button, Icon],
+  imports: [Button, Icon],
   template: `
-    <app-breadcrumb [items]="crumbs()" />
     <div class="card">
       <div class="body">
         <app-icon name="LuClipboardEdit" size="4rem" />
@@ -40,7 +38,6 @@ import { Icon } from '@app/shared/components/icon/icon';
 export class PendingPage {
   readonly title = input('Em migração');
   readonly reference = input('');
-  readonly crumbs = input<BreadcrumbItem[]>([]);
 
   private readonly router = inject(Router);
 

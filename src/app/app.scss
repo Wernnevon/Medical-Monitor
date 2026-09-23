@@ -13,9 +13,28 @@
 
 .content {
   display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
   min-width: 0;
   min-height: 0;
-  padding: var(--esp-4) var(--esp-4) var(--esp-4) 0;
+  padding: var(--esp-6) var(--esp-6) var(--esp-6) var(--esp-5);
+
+  @media print {
+    gap: 0;
+  }
+}
+
+app-top-bar {
+  @media print {
+    display: none;
+  }
+}
+
+.pagina {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
 }
 
 /* Tablet: o menu encolhe para só ícones. */

@@ -1,0 +1,35 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--esp-3);
+
+  app-radio-select {
+    flex: 1 1 10rem;
+    min-width: 0;
+    max-width: 14rem;
+  }
+
+  app-text-search {
+    flex: 2 1 18rem;
+    min-width: 0;
+    max-width: 28rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .filtros {
+    justify-content: stretch;
+
+    app-radio-select,
+    app-text-search {
+      flex-basis: 100%;
+      max-width: none;
+    }
+  }
+}

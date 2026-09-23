@@ -69,6 +69,26 @@
   font-weight: var(--peso-medio);
 }
 
+/* Fica preso ao fim da coluna via margin-top: auto — não importa quantos
+   itens o menu acima tenha, o ícone do profissional sempre ancora embaixo,
+   como no protótipo. */
+.profissional {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  margin-top: auto;
+  padding: var(--esp-4);
+  border-top: 1px solid rgb(255 255 255 / 12%);
+  color: var(--cor-texto-invertido);
+  font-size: var(--texto-md);
+  font-weight: var(--peso-medio);
+
+  app-icon {
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+}
+
 /* Tablet: só os ícones. O rótulo sai do fluxo mas continua legível por
    leitores de tela. */
 @media (max-width: 1024px) {
@@ -91,6 +111,22 @@
     clip-path: inset(50%);
     white-space: nowrap;
   }
+
+  .profissional {
+    justify-content: center;
+    padding: var(--esp-3) 0;
+
+    span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
 }
 
 /* Celular: barra horizontal no rodapé, com os rótulos de volta em corpo
@@ -105,6 +141,10 @@
   }
 
   .logo {
+    display: none;
+  }
+
+  .profissional {
     display: none;
   }
 

@@ -28,6 +28,10 @@ type NavEntry = {
           <span>{{ entry.label }}</span>
         </a>
       }
+      <div class="profissional">
+        <app-icon name="HiOutlineUserCircle" size="2rem" />
+        <span>Profissional</span>
+      </div>
     </nav>
   `,
   styleUrl: './side-nav.scss',

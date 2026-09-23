@@ -1,0 +1,18 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.agora {
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-sm);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .agora {
+    display: none;
+  }
+}
