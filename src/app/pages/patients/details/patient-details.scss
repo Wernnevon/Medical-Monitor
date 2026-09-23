@@ -238,18 +238,30 @@
   gap: var(--esp-2);
 }
 
+/* No cabeçalho do card o rótulo "Filtrar por tipo" é redundante com o título
+   "Últimos Atendimentos" ao lado — some visualmente, mas continua lido por
+   leitor de tela. Sem padding-bottom de erro porque este select não valida. */
 .filtro-tipo {
-  padding: var(--esp-1) var(--esp-3);
-  border: 1px solid var(--cor-borda);
-  border-radius: var(--raio-sm);
-  background: var(--cor-superficie);
-  color: var(--cor-texto);
-  font: inherit;
-  font-size: var(--texto-sm);
+  width: 10rem;
 
-  &:focus {
-    outline: none;
-    border-color: var(--cor-marca-texto);
+  ::ng-deep .campo {
+    padding-bottom: 0;
+  }
+
+  ::ng-deep .rotulo {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  ::ng-deep .gatilho {
+    height: 2.25rem;
   }
 }
 

@@ -1,8 +1,10 @@
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { form } from '@angular/forms/signals';
 import { Router, RouterLink } from '@angular/router';
 import { Button } from '@app/shared/components/button/button';
 import { Icon } from '@app/shared/components/icon/icon';
 import { KebabMenu, type KebabItem } from '@app/shared/components/kebab-menu/kebab-menu';
+import { Select, type SelectOption } from '@app/shared/components/select/select';
 import { AuthService } from '@app/shared/services/auth';
 import { PopupService } from '@app/shared/services/popup';
 import { ToastService, ToastType } from '@app/shared/services/toast';
@@ -50,7 +52,7 @@ const HISTORICO_COLUMNS: DataColumn[] = [
  */
 @Component({
   selector: 'app-patient-details',
-  imports: [Button, Icon, KebabMenu, RouterLink, Table],
+  imports: [Button, Icon, KebabMenu, RouterLink, Select, Table],
   // Instância própria por navegação, mesmo a classe sendo `@Service()`
   // (`providedIn: 'root'`, singleton por padrão): sem isso, voltar pra cá
   // pro MESMO paciente (ex.: depois de registrar uma receita em `/receitas`)
@@ -87,13 +89,21 @@ export class PatientDetails {
 
   protected readonly ultimoAtendimento = computed(() => this.facade.historico()[0] ?? null);
 
-  /** Filtro por tipo de atendimento na aba Histórico. */
-  protected readonly historicoFiltro = signal<'todos' | 'exame' | 'receita'>('todos');
+  /** Filtro por tipo de atendimento na aba Histórico — sem schema, é só um
+   *  select sem validação, então basta o `form()` como fonte de um FieldTree
+   *  pro `app-select` escrever, sem passar por um `<form>` de verdade. */
+  protected readonly filtroOpcoes: SelectOption[] = [
+    { value: 'todos', label: 'Todos' },
+    { value: 'exame', label: 'Exames' },
+    { value: 'receita', label: 'Receitas' },
+  ];
+  protected readonly filtroModelo = signal({ tipo: 'todos' as 'todos' | 'exame' | 'receita' });
+  protected readonly filtroForm = form(this.filtroModelo);
 
   protected readonly historicoRows = computed(() =>
     this.facade
       .historico()
-      .filter((item) => this.historicoFiltro() === 'todos' || item.tipo === this.historicoFiltro())
+      .filter((item) => this.filtroModelo().tipo === 'todos' || item.tipo === this.filtroModelo().tipo)
       .map((item) => ({
         ...item,
         tipo: item.tipo === 'exame' ? 'Exame' : 'Receita',

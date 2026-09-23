@@ -235,16 +235,12 @@
         <section class="cartao">
           <div class="cartao-cabecalho">
             <h2>Últimos Atendimentos</h2>
-            <select
+            <app-select
               class="filtro-tipo"
-              aria-label="Filtrar por tipo"
-              [value]="historicoFiltro()"
-              (change)="historicoFiltro.set($any($event.target).value)"
-            >
-              <option value="todos">Todos</option>
-              <option value="exame">Exames</option>
-              <option value="receita">Receitas</option>
-            </select>
+              [campo]="filtroForm.tipo"
+              rotulo="Filtrar por tipo"
+              [options]="filtroOpcoes"
+            />
           </div>
           @if (historicoRows().length) {
             <app-table
