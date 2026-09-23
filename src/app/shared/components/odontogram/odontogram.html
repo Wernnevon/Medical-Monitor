@@ -1,0 +1,61 @@
+<div class="odontograma">
+  <div class="arco arco--superior">
+    <div class="quadrante">
+      @for (dente of superiorDireito; track dente) {
+        <button
+          type="button"
+          class="dente"
+          [class.dente--selecionado]="selecionados().has(dente)"
+          [attr.aria-pressed]="selecionados().has(dente)"
+          (click)="denteToggle.emit(dente)"
+        >
+          {{ dente }}
+        </button>
+      }
+    </div>
+    <div class="linha-media"></div>
+    <div class="quadrante">
+      @for (dente of superiorEsquerdo; track dente) {
+        <button
+          type="button"
+          class="dente"
+          [class.dente--selecionado]="selecionados().has(dente)"
+          [attr.aria-pressed]="selecionados().has(dente)"
+          (click)="denteToggle.emit(dente)"
+        >
+          {{ dente }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="arco arco--inferior">
+    <div class="quadrante">
+      @for (dente of inferiorDireito; track dente) {
+        <button
+          type="button"
+          class="dente"
+          [class.dente--selecionado]="selecionados().has(dente)"
+          [attr.aria-pressed]="selecionados().has(dente)"
+          (click)="denteToggle.emit(dente)"
+        >
+          {{ dente }}
+        </button>
+      }
+    </div>
+    <div class="linha-media"></div>
+    <div class="quadrante">
+      @for (dente of inferiorEsquerdo; track dente) {
+        <button
+          type="button"
+          class="dente"
+          [class.dente--selecionado]="selecionados().has(dente)"
+          [attr.aria-pressed]="selecionados().has(dente)"
+          (click)="denteToggle.emit(dente)"
+        >
+          {{ dente }}
+        </button>
+      }
+    </div>
+  </div>
+</div>

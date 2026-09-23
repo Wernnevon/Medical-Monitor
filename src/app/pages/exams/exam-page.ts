@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, signal } from '@angular/cor
 import { RouterLink } from '@angular/router';
 import { Button } from '@app/shared/components/button/button';
 import { Icon } from '@app/shared/components/icon/icon';
+import { Odontogram } from '@app/shared/components/odontogram/odontogram';
 import { PrintOutput } from '@app/shared/components/print-output/print-output';
 import { ToastService, ToastType } from '@app/shared/services/toast';
 import { getLocalDateInput } from '@core/utils/date-utils';
@@ -19,7 +20,7 @@ import { CATALOGO_EXAMES } from './exam-catalog';
  */
 @Component({
   selector: 'app-exam-page',
-  imports: [Button, Icon, PrintOutput, RouterLink],
+  imports: [Button, Icon, Odontogram, PrintOutput, RouterLink],
   templateUrl: './exam-page.html',
   styleUrl: './exam-page.scss',
 })
@@ -33,6 +34,9 @@ export class ExamPage {
   protected readonly catalogo = CATALOGO_EXAMES;
   protected readonly categoriaAberta = signal<string | null>(null);
   protected readonly selecionados = signal(new Set<string>());
+  /** Dentes marcados no odontograma, pela numeração FDI — vira item da
+   *  lista de exames como "Odontograma — Dente NN" no computed abaixo. */
+  protected readonly dentesSelecionados = signal(new Set<number>());
   protected readonly outrosTexto = signal('');
   protected readonly nomePaciente = signal('');
   protected readonly salvando = signal(false);
@@ -48,8 +52,15 @@ export class ExamPage {
       .filter(Boolean),
   );
 
+  protected readonly dentesRotulados = computed(() =>
+    [...this.dentesSelecionados()]
+      .sort((a, b) => a - b)
+      .map((dente) => `Odontograma — Dente ${dente}`),
+  );
+
   protected readonly todosSelecionados = computed(() => [
     ...this.selecionados(),
+    ...this.dentesRotulados(),
     ...this.outros(),
   ]);
 
@@ -80,6 +91,16 @@ export class ExamPage {
     this.salvo.set(false);
   }
 
+  protected alternarDente(dente: number): void {
+    this.dentesSelecionados.update((atual) => {
+      const proximo = new Set(atual);
+      if (proximo.has(dente)) proximo.delete(dente);
+      else proximo.add(dente);
+      return proximo;
+    });
+    this.salvo.set(false);
+  }
+
   protected editarOutros(valor: string): void {
     this.outrosTexto.set(valor);
     this.salvo.set(false);
@@ -87,6 +108,7 @@ export class ExamPage {
 
   protected limpar(): void {
     this.selecionados.set(new Set());
+    this.dentesSelecionados.set(new Set());
     this.outrosTexto.set('');
     this.salvo.set(false);
     this.toast.add('Limpo', ToastType.SUCESS);

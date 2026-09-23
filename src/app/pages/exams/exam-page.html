@@ -40,6 +40,23 @@
             }
           </div>
         }
+
+        <div class="categoria" [class.categoria--aberta]="categoriaAberta() === 'Odontograma'">
+          <button type="button" class="categoria-cabecalho" (click)="alternarCategoria('Odontograma')">
+            <span>
+              Odontograma
+              @if (dentesSelecionados().size) {
+                ({{ dentesSelecionados().size }})
+              }
+            </span>
+            <app-icon [name]="categoriaAberta() === 'Odontograma' ? 'BsChevronUp' : 'BsChevronDown'" size="0.9rem" />
+          </button>
+          @if (categoriaAberta() === 'Odontograma') {
+            <div class="categoria-itens categoria-itens--odontograma">
+              <app-odontogram [selecionados]="dentesSelecionados()" (denteToggle)="alternarDente($event)" />
+            </div>
+          }
+        </div>
       </div>
 
       <label class="outros">

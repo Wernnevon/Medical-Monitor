@@ -118,6 +118,12 @@
   padding: var(--esp-2) var(--esp-3) var(--esp-3);
 }
 
+.categoria-itens--odontograma {
+  display: block;
+  padding: var(--esp-3);
+  overflow-x: auto;
+}
+
 .item-checkbox {
   display: flex;
   align-items: center;
