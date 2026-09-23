@@ -3,12 +3,14 @@ import { Router, RouterLink } from '@angular/router';
 import { Button } from '@app/shared/components/button/button';
 import { Icon } from '@app/shared/components/icon/icon';
 import { KebabMenu, type KebabItem } from '@app/shared/components/kebab-menu/kebab-menu';
+import { AuthService } from '@app/shared/services/auth';
 import { PopupService } from '@app/shared/services/popup';
 import { ToastService, ToastType } from '@app/shared/services/toast';
 import { Table, type DataColumn } from '@app/shared/components/table/table';
 import { getAge, formmatDate, getLocalDateInput, getLocalTimeInput } from '@core/utils/date-utils';
 import { mascaraPressao } from '@core/utils/masks';
 import type { BloodPressureReading, Exams, Patient } from '@domain/entities';
+import { ProfessionalRole } from '@domain/entities';
 import {
   ExamChangeStatus,
   ExamFindById,
@@ -67,6 +69,13 @@ export class PatientDetails {
   protected readonly facade = inject(PatientDetailsFacade);
   private readonly toast = inject(ToastService);
   private readonly popup = inject(PopupService);
+  private readonly auth = inject(AuthService);
+
+  /** Assistente não prescreve nem solicita exame — os atalhos somem, em vez
+   *  de ficarem visíveis só para esbarrar no guard de rota. */
+  protected readonly ehProfissional = computed(
+    () => this.auth.usuarioAtual()?.role === ProfessionalRole.PROFISSIONAL,
+  );
 
   protected readonly formatar = (data: unknown) =>
     data ? formmatDate(data as unknown as Date) : '—';

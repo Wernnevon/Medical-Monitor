@@ -13,14 +13,16 @@
         <app-icon name="RiFileUserFill" />
         Ver Detalhes
       </button>
-      <button type="button" class="acao" (click)="irPara('exames')">
-        <app-icon name="BiTestTube" />
-        Exames
-      </button>
-      <button type="button" class="acao" (click)="irPara('receitas')">
-        <app-icon name="LuClipboardEdit" />
-        Receitas
-      </button>
+      @if (ehProfissional()) {
+        <button type="button" class="acao" (click)="irPara('exames')">
+          <app-icon name="BiTestTube" />
+          Exames
+        </button>
+        <button type="button" class="acao" (click)="irPara('receitas')">
+          <app-icon name="LuClipboardEdit" />
+          Receitas
+        </button>
+      }
       <button type="button" class="acao acao--larga" (click)="irPara('historico')">
         <app-icon name="BsClockHistory" />
         Ver Histórico

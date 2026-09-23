@@ -1,0 +1,64 @@
+:host {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 100dvh;
+  padding: var(--esp-5);
+  background: var(--cor-fundo);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--esp-2);
+  width: 100%;
+  max-width: 24rem;
+  padding: var(--esp-6) var(--esp-5);
+  background-color: var(--cor-superficie);
+  border-radius: var(--raio-lg);
+  box-shadow: var(--sombra-lg);
+}
+
+.logo {
+  width: 8rem;
+  margin: 0 auto var(--esp-3);
+}
+
+h1 {
+  text-align: center;
+  font-size: var(--texto-2xl);
+}
+
+.subtitulo {
+  margin: 0 0 var(--esp-4);
+  text-align: center;
+  color: var(--cor-texto-suave);
+}
+
+.campos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+.erro-geral {
+  margin: 0;
+  padding: var(--esp-2) var(--esp-3);
+  border-radius: var(--raio-sm);
+  background: var(--cor-erro-fundo);
+  color: var(--cor-erro);
+  font-size: var(--texto-sm);
+}
+
+.rodape {
+  margin: var(--esp-4) 0 0;
+  text-align: center;
+  font-size: var(--texto-sm);
+  color: var(--cor-texto-suave);
+
+  a {
+    color: var(--cor-marca-texto);
+    font-weight: var(--peso-medio);
+  }
+}

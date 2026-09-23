@@ -8,11 +8,13 @@ import {
   ExamGetRepository,
   PatientGetRepository,
   PrescriptionGetRepository,
+  ProfessionalGetRepository,
 } from '../repositories/get';
 import {
   ExamPostRepository,
   PatientPostRepository,
   PrescriptionPostRepository,
+  ProfessionalPostRepository,
 } from '../repositories/post';
 import {
   ExamPutRepository,
@@ -36,10 +38,12 @@ export class LocalClient implements Client {
   private readonly patientGet = inject(PatientGetRepository);
   private readonly examGet = inject(ExamGetRepository);
   private readonly prescriptionGet = inject(PrescriptionGetRepository);
+  private readonly professionalGet = inject(ProfessionalGetRepository);
 
   private readonly patientPost = inject(PatientPostRepository);
   private readonly examPost = inject(ExamPostRepository);
   private readonly prescriptionPost = inject(PrescriptionPostRepository);
+  private readonly professionalPost = inject(ProfessionalPostRepository);
 
   private readonly patientPut = inject(PatientPutRepository);
   private readonly examPut = inject(ExamPutRepository);
@@ -65,6 +69,9 @@ export class LocalClient implements Client {
       // "getStrategy[key] is not a function".
       'prescription/list': (patientId) => this.prescriptionGet.list(patientId),
       'prescription/findById': (id) => this.prescriptionGet.findById(id),
+      'professional/findById': (id) => this.professionalGet.findById(id),
+      'professional/findByUsername': (username) =>
+        this.professionalGet.findByUsername(username),
     },
     post: {
       'patient/list': (params) => this.patientPost.listPagination(params),
@@ -75,6 +82,7 @@ export class LocalClient implements Client {
         this.prescriptionPost.listPagination(params),
       'prescription/save': (prescription) =>
         this.prescriptionPost.save(prescription),
+      'professional/save': (professional) => this.professionalPost.save(professional),
     },
     put: {
       'patient/update': (patient) => this.patientPut.update(patient),

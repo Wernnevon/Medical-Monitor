@@ -25,6 +25,11 @@ import {
   LocalUpdatePrescription,
 } from '@data/use-cases/prescriptions';
 import {
+  LocalAddProfessional,
+  LocalFindByIdProfessional,
+  LocalFindByUsernameProfessional,
+} from '@data/use-cases/professionals';
+import {
   ExamAdd,
   ExamChangeStatus,
   ExamDelete,
@@ -44,6 +49,9 @@ import {
   PrescriptionFindById,
   PrescriptionListPagination,
   PrescriptionUpdate,
+  ProfessionalAdd,
+  ProfessionalFindById,
+  ProfessionalFindByUsername,
 } from '@domain/tokens';
 
 /**
@@ -85,4 +93,9 @@ export const dataProviders: Provider[] = [
     useClass: LocalListPaginationPrescription,
   },
   { provide: PrescriptionChangeStatus, useClass: LocalChangeStatusPrescription },
+
+  // Profissionais (contas de acesso)
+  { provide: ProfessionalAdd, useClass: LocalAddProfessional },
+  { provide: ProfessionalFindById, useClass: LocalFindByIdProfessional },
+  { provide: ProfessionalFindByUsername, useClass: LocalFindByUsernameProfessional },
 ];

@@ -33,7 +33,7 @@
   border-radius: var(--raio-sm);
 
   &:hover {
-    color: var(--cor-primaria);
+    color: var(--cor-marca-texto);
     background-color: var(--cor-superficie-alt);
   }
 }
@@ -91,8 +91,7 @@
 }
 
 .linha-crm,
-.linha-contato,
-.linha-endereco {
+.linha-contato {
   font-size: var(--texto-xs);
   font-weight: 600;
 }

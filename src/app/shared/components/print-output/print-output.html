@@ -8,11 +8,18 @@
   <div class="conteudo">
     <header class="cabecalho">
       <img class="logo" src="/assets/logo_vittaly.svg" alt="Vittaly" />
-      <strong class="medico">DR. JOÃO SILVA</strong>
-      <span class="especialidade">MEDICINA GERAL</span>
-      <span class="linha-crm">CRM/SP: 12345 | CRM/RJ: 67890</span>
-      <span class="linha-contato">(11) 9 8765-4321 | (21) 9 1234-5678</span>
-      <span class="linha-endereco">Rua Fictícia, 123, Centro, Cidade Imaginária - SP</span>
+      @if (nomeMedico()) {
+        <strong class="medico">{{ nomeMedico() }}</strong>
+      }
+      @if (especialidade()) {
+        <span class="especialidade">{{ especialidade() }}</span>
+      }
+      @if (conselho()) {
+        <span class="linha-crm">{{ conselho() }}</span>
+      }
+      @if (telefone()) {
+        <span class="linha-contato">{{ telefone() }}</span>
+      }
     </header>
 
     @if (patientName()) {

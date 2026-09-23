@@ -89,6 +89,51 @@
   }
 }
 
+.dados {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.nome {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.role {
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-corpo);
+  color: rgb(255 255 255 / 70%);
+}
+
+.sair {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: var(--esp-2);
+  border: none;
+  border-radius: var(--raio-sm);
+  background: none;
+  color: var(--cor-texto-invertido);
+  opacity: 0.85;
+  transition: background-color var(--transicao), opacity var(--transicao);
+
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+    background-color: rgb(255 255 255 / 10%);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cor-texto-invertido);
+    outline-offset: 1px;
+  }
+}
+
 /* Tablet: só os ícones. O rótulo sai do fluxo mas continua legível por
    leitores de tela. */
 @media (max-width: 1024px) {

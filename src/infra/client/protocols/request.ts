@@ -24,10 +24,13 @@ export type Url =
   | 'exam/findById'
   | 'prescription/list'
   | 'prescription/findById'
+  | 'professional/findById'
+  | 'professional/findByUsername'
   // Post
   | 'patient/save'
   | 'exam/save'
   | 'prescription/save'
+  | 'professional/save'
   // Put
   | 'patient/update'
   | 'exam/update'

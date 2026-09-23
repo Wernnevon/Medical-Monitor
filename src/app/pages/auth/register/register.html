@@ -1,0 +1,59 @@
+<div class="card">
+  <img class="logo" src="/assets/logo_vittaly.svg" alt="Vittaly" draggable="false" />
+  <h1>Criar conta</h1>
+  <p class="subtitulo">Cadastre seu acesso ao Medical Monitor.</p>
+
+  <form class="campos" (submit)="$event.preventDefault(); cadastrar()">
+    <app-select
+      [campo]="formulario.role"
+      rotulo="Tipo de acesso"
+      placeholder="Selecione o tipo de acesso"
+      [options]="roleOptions"
+    />
+
+    <app-field [campo]="formulario.name" rotulo="Nome completo" />
+    <app-field [campo]="formulario.phone" rotulo="Telefone" mascara="telefone" tipo="tel" />
+
+    @if (ehProfissional()) {
+      <app-select
+        [campo]="formulario.gender"
+        rotulo="Gênero"
+        placeholder="Selecione o gênero"
+        [options]="genderOptions"
+      />
+
+      <app-field [campo]="formulario.specialty" rotulo="Especialidade" />
+
+      <div class="linha-conselho">
+        <app-select
+          [campo]="formulario.councilType"
+          rotulo="Conselho de classe"
+          placeholder="Selecione o conselho"
+          [options]="councilOptions"
+        />
+        <app-field [campo]="formulario.councilNumber" rotulo="Número de registro" modo="numeric" />
+      </div>
+    }
+
+    <app-field
+      [campo]="formulario.username"
+      rotulo="Usuário de acesso"
+      dica="É o que você vai usar para entrar — não precisa ser e-mail"
+    />
+
+    <app-password-field [campo]="formulario.password" rotulo="Senha" />
+    <app-password-field [campo]="formulario.confirmPassword" rotulo="Confirme a senha" />
+
+    @if (erro()) {
+      <p class="erro-geral" role="alert">{{ erro() }}</p>
+    }
+
+    <app-button type="submit" styleType="submit" [disabled]="cadastrando()">
+      {{ cadastrando() ? 'Cadastrando…' : 'Criar conta' }}
+    </app-button>
+  </form>
+
+  <p class="rodape">
+    Já tem conta? <a routerLink="/entrar">Entrar</a>
+  </p>
+</div>

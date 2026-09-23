@@ -2,20 +2,18 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Popup } from './shared/components/popup/popup';
 import { Toast } from './shared/components/toast/toast';
-import { SideNav } from './shell/side-nav/side-nav';
-import { TopBar } from './shell/top-bar/top-bar';
 
+/**
+ * Raiz do app. Só o essencial que vale para toda rota, autenticada ou não:
+ * o `router-outlet` e as camadas globais de feedback (toast, popup). O menu
+ * lateral e a barra superior vivem em `Shell`, que só entra nas rotas
+ * protegidas — ver `app.routes.ts`.
+ */
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SideNav, TopBar, Toast, Popup],
+  imports: [RouterOutlet, Toast, Popup],
   template: `
-    <app-side-nav />
-    <main class="content">
-      <app-top-bar />
-      <div class="pagina">
-        <router-outlet />
-      </div>
-    </main>
+    <router-outlet />
     <app-toast />
     <app-popup />
   `,

@@ -279,22 +279,24 @@
         <section class="cartao">
           <h2>Ações Rápidas</h2>
           <div class="acoes-lista">
-            <a [routerLink]="['/exames']" [queryParams]="{ patientId: id() }">
-              <app-icon name="BiTestTube" />
-              <span>
-                <strong>Exames</strong>
-                <small>Solicitar novo exame</small>
-              </span>
-              <app-icon name="BsChevronRight" size="0.9rem" />
-            </a>
-            <a [routerLink]="['/receitas']" [queryParams]="{ patientId: id() }">
-              <app-icon name="LuClipboardEdit" />
-              <span>
-                <strong>Receitas</strong>
-                <small>Prescrever receita</small>
-              </span>
-              <app-icon name="BsChevronRight" size="0.9rem" />
-            </a>
+            @if (ehProfissional()) {
+              <a [routerLink]="['/exames']" [queryParams]="{ patientId: id() }">
+                <app-icon name="BiTestTube" />
+                <span>
+                  <strong>Exames</strong>
+                  <small>Solicitar novo exame</small>
+                </span>
+                <app-icon name="BsChevronRight" size="0.9rem" />
+              </a>
+              <a [routerLink]="['/receitas']" [queryParams]="{ patientId: id() }">
+                <app-icon name="LuClipboardEdit" />
+                <span>
+                  <strong>Receitas</strong>
+                  <small>Prescrever receita</small>
+                </span>
+                <app-icon name="BsChevronRight" size="0.9rem" />
+              </a>
+            }
             <a [routerLink]="['/pacientes/editar', id()]">
               <app-icon name="FaUserEdit" />
               <span>

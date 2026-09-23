@@ -7,6 +7,7 @@ export const STORES = {
   patients: 'patients',
   exams: 'exams',
   prescriptions: 'prescriptions',
+  professionals: 'professionals',
   meta: 'meta',
 } as const;
 
@@ -28,10 +29,14 @@ export const INDEXES = {
     status: 'status',
     updatedAt: 'updatedAt',
   },
+  professionals: {
+    username: 'username',
+    updatedAt: 'updatedAt',
+  },
 } as const;
 
 const DB_NAME = 'mmdb';
-const DB_VERSION = 2;
+const DB_VERSION = 4;
 
 let dbPromise: Promise<IDBDatabase> | null = null;
 
@@ -85,6 +90,33 @@ const MIGRATIONS: Record<number, (db: IDBDatabase, tx: IDBTransaction) => void> 
     // backup, identificador deste dispositivo, marcadores de sync.
     if (!db.objectStoreNames.contains(STORES.meta)) {
       db.createObjectStore(STORES.meta, { keyPath: 'key' });
+    }
+  },
+
+  // v3: cadastro e login de profissional/assistente, numa store própria —
+  // conta de acesso é um agregado diferente de paciente, com ciclo de vida
+  // próprio, mas convive no mesmo banco local.
+  3: (db) => {
+    const professionals = db.createObjectStore(STORES.professionals, { keyPath: 'id' });
+    professionals.createIndex('email', 'email', { unique: true });
+    professionals.createIndex('updatedAt', 'updatedAt', { unique: false });
+  },
+
+  // v4: login deixa de ser por e-mail e passa a ser por usuário (o
+  // profissional normalmente usa o próprio registro no conselho; o
+  // assistente não tem conselho, então precisava de um campo próprio de
+  // qualquer forma). `email` não existe mais na entidade, então o índice
+  // antigo é trocado — não só renomeado, porque um índice já criado não
+  // pode ser reaproveitado com outro `keyPath`.
+  4: (db) => {
+    if (db.objectStoreNames.contains(STORES.professionals)) {
+      db.deleteObjectStore(STORES.professionals);
+    }
+    const professionals = db.createObjectStore(STORES.professionals, { keyPath: 'id' });
+    for (const [nome, caminho] of Object.entries(INDEXES.professionals)) {
+      // `username` é único: é a chave de login, duas contas com o mesmo
+      // usuário tornariam o índice ambíguo na hora de autenticar.
+      professionals.createIndex(nome, caminho, { unique: nome === 'username' });
     }
   },
 };

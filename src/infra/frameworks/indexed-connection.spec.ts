@@ -17,11 +17,11 @@ describe('schema do IndexedDB', () => {
     const db = await getConnection();
 
     expect([...db.objectStoreNames].sort()).toEqual(
-      ['exams', 'meta', 'patients', 'prescriptions'].sort(),
+      ['exams', 'meta', 'patients', 'prescriptions', 'professionals'].sort(),
     );
 
     const tx = db.transaction(
-      [STORES.patients, STORES.exams, STORES.prescriptions],
+      [STORES.patients, STORES.exams, STORES.prescriptions, STORES.professionals],
       'readonly',
     );
     expect([...tx.objectStore(STORES.patients).indexNames].sort()).toEqual(
@@ -30,6 +30,18 @@ describe('schema do IndexedDB', () => {
     expect([...tx.objectStore(STORES.exams).indexNames].sort()).toEqual(
       Object.keys(INDEXES.exams).sort(),
     );
+    expect([...tx.objectStore(STORES.professionals).indexNames].sort()).toEqual(
+      Object.keys(INDEXES.professionals).sort(),
+    );
+  });
+
+  it('exige usuário único de profissional', async () => {
+    const db = await getConnection();
+    const store = db
+      .transaction(STORES.professionals, 'readonly')
+      .objectStore(STORES.professionals);
+
+    expect(store.index('username').unique).toBe(true);
   });
 
   it('indexa por caminho aninhado, e não pelo nome do índice', async () => {
@@ -75,11 +87,49 @@ describe('schema do IndexedDB', () => {
     resetConnection();
     const db = await getConnection();
 
-    expect(db.version).toBe(2);
+    expect(db.version).toBe(4);
     expect(db.objectStoreNames.contains(STORES.meta)).toBe(true);
+    expect(db.objectStoreNames.contains(STORES.professionals)).toBe(true);
 
     const store = db.transaction(STORES.patients, 'readonly').objectStore(STORES.patients);
     expect(store.autoIncrement).toBe(false);
     expect([...store.indexNames].sort()).toEqual(Object.keys(INDEXES.patients).sort());
+  });
+
+  /**
+   * O login trocou de e-mail para usuário depois que a v3 já tinha saído —
+   * quem abriu o app nesse meio tempo ficou com o índice antigo (`email`)
+   * gravado no navegador, e a v4 precisa trocá-lo, não só torcer para que
+   * ninguém tenha aberto a v3 ainda.
+   */
+  it('migra um banco que já existia na versão 3, com o índice antigo de e-mail', async () => {
+    await new Promise<void>((resolve, reject) => {
+      const req = indexedDB.open('mmdb', 3);
+      req.onerror = () => reject(req.error);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        db.createObjectStore('patients', { keyPath: 'id' });
+        db.createObjectStore('exams', { keyPath: 'id' });
+        db.createObjectStore('prescriptions', { keyPath: 'id' });
+        db.createObjectStore('meta', { keyPath: 'key' });
+        db.createObjectStore('professionals', { keyPath: 'id' }).createIndex('email', 'email', {
+          unique: true,
+        });
+      };
+      req.onsuccess = () => {
+        req.result.close();
+        resolve();
+      };
+    });
+
+    resetConnection();
+    const db = await getConnection();
+
+    expect(db.version).toBe(4);
+    const store = db
+      .transaction(STORES.professionals, 'readonly')
+      .objectStore(STORES.professionals);
+    expect([...store.indexNames].sort()).toEqual(Object.keys(INDEXES.professionals).sort());
+    expect(store.index('username').unique).toBe(true);
   });
 });

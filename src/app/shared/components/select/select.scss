@@ -1,0 +1,121 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+  position: relative;
+  padding-bottom: 1.25rem;
+}
+
+.rotulo {
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  color: var(--cor-texto-suave);
+}
+
+.select {
+  position: relative;
+  min-width: 0;
+}
+
+.gatilho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-2);
+  width: 100%;
+  min-width: 0;
+  height: 2.75rem;
+  padding: 0 var(--esp-3);
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio-sm);
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto);
+  font-size: var(--texto-md);
+  font-family: inherit;
+  transition: border-color var(--transicao);
+
+  &:hover {
+    border-color: var(--cor-marca-texto);
+    cursor: pointer;
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--cor-marca-texto);
+    box-shadow: 0 0 0 3px var(--cor-marca-suave);
+  }
+}
+
+.select--open .gatilho {
+  border-color: var(--cor-marca-texto);
+  box-shadow: 0 0 0 3px var(--cor-marca-suave);
+}
+
+.valor {
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.valor--vazio {
+  color: var(--cor-texto-fraco);
+}
+
+.lista {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + var(--esp-1));
+  left: 0;
+  right: 0;
+  max-height: 15rem;
+  overflow-y: auto;
+  margin: 0;
+  padding: var(--esp-1);
+  list-style: none;
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-md);
+  box-shadow: var(--sombra-md);
+}
+
+.opcao {
+  padding: var(--esp-2) var(--esp-3);
+  border-radius: var(--raio-sm);
+  font-size: var(--texto-md);
+  color: var(--cor-texto);
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.opcao--ativa {
+  background-color: var(--cor-superficie-hover);
+}
+
+.opcao--selecionada {
+  color: var(--cor-marca-texto);
+  font-weight: var(--peso-medio);
+}
+
+.erro {
+  position: absolute;
+  bottom: 0;
+  font-size: var(--texto-sm);
+  color: var(--cor-erro);
+}
+
+.campo--erro .gatilho {
+  border-color: var(--cor-erro);
+}
+
+.campo--erro .select--open .gatilho {
+  box-shadow: 0 0 0 3px var(--cor-erro-fundo);
+}

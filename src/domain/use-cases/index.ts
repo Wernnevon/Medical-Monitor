@@ -2,6 +2,7 @@ export * from './add';
 export * from './change-status';
 export * from './delete';
 export * from './find-by-id';
+export * from './find-by-username';
 export * from './list';
 export * from './list-cities';
 export * from './list-insurances';

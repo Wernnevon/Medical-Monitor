@@ -1,0 +1,22 @@
+<div class="card">
+  <img class="logo" src="/assets/logo_vittaly.svg" alt="Vittaly" draggable="false" />
+  <h1>Entrar</h1>
+  <p class="subtitulo">Acesse com o usuário cadastrado.</p>
+
+  <form class="campos" (submit)="$event.preventDefault(); entrar()">
+    <app-field [campo]="formulario.username" rotulo="Usuário" />
+    <app-password-field [campo]="formulario.password" rotulo="Senha" />
+
+    @if (erro()) {
+      <p class="erro-geral" role="alert">{{ erro() }}</p>
+    }
+
+    <app-button type="submit" styleType="submit" [disabled]="entrando()">
+      {{ entrando() ? 'Entrando…' : 'Entrar' }}
+    </app-button>
+  </form>
+
+  <p class="rodape">
+    Ainda não tem conta? <a routerLink="/cadastro">Cadastre-se</a>
+  </p>
+</div>

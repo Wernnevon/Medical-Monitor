@@ -103,3 +103,4 @@ Cabe um refactor na infra pra simplificar e deixar mais simples
 Cabe um refactor na IndexedDB pra ficar mais escalavel e mais simples de acordo com oq fiz na vox
 Cabe um refactor no clena architecture pra facilitar esses contratos igual tem no arda-vtt
 Cabe um remaster visual e funcional na ui/ux
+tela de cadastro e login para coletar as roles e os dados de crm/cro/crf nome especialidade telefone.

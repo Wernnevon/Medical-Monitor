@@ -2,8 +2,10 @@ import { Component, computed, inject, input, resource } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Icon } from '@app/shared/components/icon/icon';
 import type { IconName } from '@app/shared/components/icon/icons';
+import { AuthService } from '@app/shared/services/auth';
 import { getAge, formmatDate } from '@core/utils/date-utils';
 import type { Patient } from '@domain/entities';
+import { ProfessionalRole } from '@domain/entities';
 import { ExamListPagination } from '@domain/tokens';
 import { PrescriptionListPagination } from '@domain/tokens';
 
@@ -47,6 +49,11 @@ export class PatientQuickPanel {
   private readonly router = inject(Router);
   private readonly examUseCase = inject(ExamListPagination);
   private readonly prescriptionUseCase = inject(PrescriptionListPagination);
+  private readonly auth = inject(AuthService);
+
+  protected readonly ehProfissional = computed(
+    () => this.auth.usuarioAtual()?.role === ProfessionalRole.PROFISSIONAL,
+  );
 
   protected readonly iniciais = computed(() =>
     this.patient() ? iniciais(this.patient()!.name) : '',
