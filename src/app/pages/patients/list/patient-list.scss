@@ -5,7 +5,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  gap: var(--esp-2);
+  gap: var(--esp-5);
   width: 100%;
   min-width: 0;
   min-height: 0;
@@ -25,4 +25,36 @@
   flex: 1;
   min-height: 0;
   min-width: 0;
+}
+
+/* Atalho só de desenvolvimento. Fica fora do fluxo da página — `fixed` no
+   canto — porque não existe no protótipo: entrar na ordem normal do layout
+   (entre os filtros e a tabela) empurrava tudo pra baixo e desalinhava a
+   página inteira em relação à referência. Listra tracejada deixa claro que
+   não é parte do produto, mesmo antes de ler o texto. */
+.seed-dev {
+  display: inline-flex;
+  position: fixed;
+  right: var(--esp-4);
+  bottom: var(--esp-4);
+  z-index: 20;
+  align-items: center;
+  gap: var(--esp-2);
+  padding: var(--esp-2) var(--esp-4);
+  border: 1px dashed var(--cor-borda-forte);
+  border-radius: var(--raio-pill);
+  background: var(--cor-superficie);
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-sm);
+  box-shadow: var(--sombra-md);
+
+  &:hover {
+    cursor: pointer;
+    border-color: var(--cor-primaria);
+    color: var(--cor-primaria);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }

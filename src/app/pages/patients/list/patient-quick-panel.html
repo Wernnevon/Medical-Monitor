@@ -8,19 +8,6 @@
       </div>
     </header>
 
-    <dl class="linha-rapida">
-      <div>
-        <dt>CPF</dt>
-        <dd>{{ p.cpf }}</dd>
-      </div>
-      @if (idade() !== null) {
-        <div>
-          <dt>Idade</dt>
-          <dd>{{ idade() }} anos</dd>
-        </div>
-      }
-    </dl>
-
     <div class="acoes">
       <button type="button" class="acao acao--principal" (click)="irPara('')">
         <app-icon name="RiFileUserFill" />
@@ -34,51 +21,76 @@
         <app-icon name="LuClipboardEdit" />
         Receitas
       </button>
-      <button type="button" class="acao" (click)="irPara('historico')">
+      <button type="button" class="acao acao--larga" (click)="irPara('historico')">
         <app-icon name="BsClockHistory" />
-        Histórico
+        Ver Histórico
       </button>
     </div>
 
     <section class="secao">
-      <h3>Informações do paciente</h3>
-      <ul class="info-lista">
+      <div class="secao-cabecalho">
+        <h3>Dados Pessoais</h3>
+        <a class="link" [routerLink]="['/pacientes/editar', p.id]">
+          <app-icon name="FiEdit" size="0.875rem" />
+          Editar
+        </a>
+      </div>
+      <dl class="dados">
+        <div>
+          <dt>Nome completo</dt>
+          <dd>{{ p.name }}</dd>
+        </div>
+        <div>
+          <dt>CPF</dt>
+          <dd>{{ p.cpf }}</dd>
+        </div>
+        @if (idade() !== null) {
+          <div>
+            <dt>Data de nascimento</dt>
+            <dd>{{ formatar(p.birthday) }} ({{ idade() }} anos)</dd>
+          </div>
+        }
         @if (p.phone) {
-          <li>
-            <app-icon name="BsTelephone" size="1rem" />
-            {{ p.phone }}
-          </li>
+          <div>
+            <dt>Telefone</dt>
+            <dd>{{ p.phone }}</dd>
+          </div>
         }
         @if (enderecoResumo()) {
-          <li>
-            <app-icon name="BsGeoAlt" size="1rem" />
-            {{ enderecoResumo() }}
-          </li>
+          <div>
+            <dt>Endereço</dt>
+            <dd>{{ enderecoResumo() }}</dd>
+          </div>
         }
-        @if (p.health.healthInsurance) {
-          <li>
-            <app-icon name="AiOutlineAudit" size="1rem" />
-            {{ p.health.healthInsurance }}
-          </li>
-        }
-      </ul>
+      </dl>
     </section>
 
+    @if (p.health.healthInsurance) {
+      <div class="convenio">
+        <app-icon name="AiOutlineAudit" size="1.5rem" />
+        <div>
+          <strong>{{ p.health.healthInsurance }}</strong>
+          <span>Plano titular</span>
+        </div>
+      </div>
+    }
+
     <section class="secao">
-      <h3>Últimos atendimentos</h3>
-      @if (atendimentosRecentes().length) {
-        <ul class="atendimentos">
-          @for (item of atendimentosRecentes(); track item.titulo + item.data) {
-            <li>
-              <app-icon [name]="item.icone" size="1.25rem" />
-              <div>
-                <strong>{{ item.titulo }}</strong>
-                <span>{{ formatar(item.data) }}</span>
-              </div>
-              <small class="tipo tipo--{{ item.tipo }}">{{ item.status }}</small>
-            </li>
-          }
-        </ul>
+      <div class="secao-cabecalho">
+        <h3>Último Atendimento</h3>
+        @if (atendimentosRecentes().length) {
+          <button type="button" class="link" (click)="irPara('historico')">Ver todos</button>
+        }
+      </div>
+      @if (atendimentosRecentes()[0]; as item) {
+        <div class="atendimento">
+          <app-icon [name]="item.icone" size="1.25rem" />
+          <div>
+            <strong>{{ item.titulo }}</strong>
+            <span>{{ formatar(item.data) }}</span>
+          </div>
+          <small class="tipo tipo--{{ item.tipo }}">{{ item.status }}</small>
+        </div>
       } @else {
         <p class="vazio">Nenhum atendimento registrado ainda.</p>
       }
@@ -100,7 +112,43 @@
   </aside>
 } @else {
   <aside class="painel painel--vazio">
-    <app-icon name="HiOutlineUserGroup" size="3rem" />
-    <p>Selecione um paciente na lista para ver os detalhes rápidos.</p>
+    <header class="topo">
+      <div class="avatar avatar--vazio">
+        <app-icon name="HiOutlineUserGroup" size="1.5rem" />
+      </div>
+      <div class="identificacao">
+        <h2>Nenhum paciente selecionado</h2>
+        <span class="status status--vazio">Aguardando seleção</span>
+      </div>
+    </header>
+
+    <div class="acoes" inert>
+      <button type="button" class="acao acao--principal">
+        <app-icon name="RiFileUserFill" />
+        Ver Detalhes
+      </button>
+      <button type="button" class="acao">
+        <app-icon name="BiTestTube" />
+        Exames
+      </button>
+      <button type="button" class="acao">
+        <app-icon name="LuClipboardEdit" />
+        Receitas
+      </button>
+      <button type="button" class="acao acao--larga">
+        <app-icon name="BsClockHistory" />
+        Ver Histórico
+      </button>
+    </div>
+
+    <section class="secao">
+      <h3>Dados Pessoais</h3>
+      <p class="vazio">Selecione um paciente na lista para ver os dados aqui.</p>
+    </section>
+
+    <section class="secao">
+      <h3>Último Atendimento</h3>
+      <p class="vazio">Nenhum paciente selecionado.</p>
+    </section>
   </aside>
 }

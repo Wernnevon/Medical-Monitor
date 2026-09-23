@@ -81,6 +81,12 @@ export class PatientsFacade {
     // pode esvaziar uma cidade ou convênio da lista.
     this.options.reload();
   }
+
+  /** Força releitura da listagem e das opções de filtro após escrita externa. */
+  reload(): void {
+    this.listing.reload();
+    this.options.reload();
+  }
 }
 
 /**

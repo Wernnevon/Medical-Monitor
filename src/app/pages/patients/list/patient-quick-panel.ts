@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, resource } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Icon } from '@app/shared/components/icon/icon';
 import type { IconName } from '@app/shared/components/icon/icons';
 import { getAge, formmatDate } from '@core/utils/date-utils';
@@ -37,7 +37,7 @@ function iniciais(nome: string): string {
  */
 @Component({
   selector: 'app-patient-quick-panel',
-  imports: [Icon],
+  imports: [Icon, RouterLink],
   templateUrl: './patient-quick-panel.html',
   styleUrl: './patient-quick-panel.scss',
 })
@@ -103,7 +103,7 @@ export class PatientQuickPanel {
       .slice(0, 3);
   });
 
-  protected formatar(data: string): string {
+  protected formatar(data: string | Date): string {
     return formmatDate(data as unknown as Date);
   }
 

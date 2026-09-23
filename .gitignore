@@ -55,3 +55,6 @@ ToDo.txt
 
 # Configuração local do Claude Code
 .claude/settings.local.json
+
+# Dados fictícios pra popular o app em desenvolvimento — nunca commitados
+public/dev-data/

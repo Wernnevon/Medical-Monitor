@@ -1,6 +1,10 @@
+/* Mais largo que o padrão dos outros painéis (`--painel-largura`, 22rem):
+   este é o único lugar que mostra prévia de dados inteira — nome, contato,
+   convênio e atendimentos — junto da tabela, então precisa de mais fôlego
+   pra não truncar tudo. */
 :host {
   display: flex;
-  width: var(--painel-largura);
+  width: 26rem;
   flex-shrink: 0;
 }
 
@@ -14,17 +18,42 @@
   border-radius: var(--raio-md);
   box-shadow: var(--sombra-md);
   overflow-y: auto;
+  overflow-anchor: none;
 }
 
+/* O card vazio segue a mesma estrutura do card preenchido — cabeçalho,
+   linha rápida, ações e seções —, só que com conteúdo neutro. Um card
+   diferente (ícone central + frase) quebraria a moldura do protótipo. */
 .painel--vazio {
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: var(--esp-3);
+  .acoes {
+    opacity: 0.5;
+  }
+
+  .acao {
+    cursor: not-allowed;
+
+    &:hover {
+      border-color: var(--cor-borda);
+      background: var(--cor-superficie);
+    }
+  }
+
+  .acao--principal:hover {
+    background: var(--cor-primaria);
+  }
+}
+
+.avatar--vazio {
+  background: var(--cor-superficie-alt);
+  color: var(--cor-texto-fraco);
+}
+
+.status--vazio {
+  background: var(--cor-superficie-alt);
   color: var(--cor-texto-fraco);
 
-  app-icon {
-    color: var(--cor-borda-forte);
+  &::before {
+    background: var(--cor-borda-forte);
   }
 }
 
@@ -82,28 +111,14 @@
   }
 }
 
-.linha-rapida {
-  display: flex;
-  gap: var(--esp-5);
-  margin: 0;
-  padding-bottom: var(--esp-3);
-  border-bottom: 1px solid var(--cor-borda);
-
-  dt {
-    font-size: var(--texto-xs);
-    color: var(--cor-texto-fraco);
-  }
-
-  dd {
-    margin: 0;
-    font-weight: var(--peso-medio);
-  }
-}
-
 .acoes {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--esp-2);
+}
+
+.acao--larga {
+  grid-column: 1 / -1;
 }
 
 .acao {
@@ -138,8 +153,11 @@
 }
 
 .secao {
+  padding-top: var(--esp-3);
+  border-top: 1px solid var(--cor-borda);
+
   h3 {
-    margin: 0 0 var(--esp-2);
+    margin: 0;
     font-size: var(--texto-sm);
     font-weight: var(--peso-medio);
     color: var(--cor-texto-fraco);
@@ -148,44 +166,71 @@
   }
 }
 
-.info-lista {
+.secao-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-2);
+  margin-bottom: var(--esp-2);
+}
+
+.dados {
   display: flex;
   flex-direction: column;
   gap: var(--esp-2);
   margin: 0;
-  padding: 0;
-  list-style: none;
 
-  li {
-    display: flex;
-    align-items: center;
-    gap: var(--esp-2);
-    font-size: var(--texto-sm);
-    color: var(--cor-texto);
+  dt {
+    font-size: var(--texto-xs);
+    color: var(--cor-texto-fraco);
   }
 
-  app-icon {
-    color: var(--cor-texto-fraco);
-    flex-shrink: 0;
+  dd {
+    margin: 0;
+    font-size: var(--texto-sm);
+    font-weight: var(--peso-medio);
   }
 }
 
-.atendimentos {
+.convenio {
   display: flex;
-  flex-direction: column;
-  gap: var(--esp-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  align-items: center;
+  gap: var(--esp-3);
+  padding: var(--esp-3);
+  border-radius: var(--raio-sm);
+  background: var(--cor-superficie-alt);
 
-  li {
-    display: flex;
-    align-items: center;
-    gap: var(--esp-3);
-    padding: var(--esp-2);
-    border-radius: var(--raio-sm);
-    background: var(--cor-superficie-alt);
+  app-icon {
+    flex-shrink: 0;
+    color: var(--cor-primaria);
   }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    strong {
+      font-size: var(--texto-sm);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    span {
+      font-size: var(--texto-xs);
+      color: var(--cor-texto-fraco);
+    }
+  }
+}
+
+.atendimento {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  padding: var(--esp-2);
+  border-radius: var(--raio-sm);
+  background: var(--cor-superficie-alt);
 
   app-icon {
     color: var(--cor-primaria);
@@ -255,17 +300,23 @@
 }
 
 .link {
-  display: inline;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
   padding: 0;
   border: none;
   background: none;
   color: var(--cor-primaria);
   font: inherit;
+  font-size: var(--texto-sm);
   font-weight: var(--peso-medio);
-  text-decoration: underline;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
 
   &:hover {
     cursor: pointer;
+    text-decoration: underline;
   }
 }
 
