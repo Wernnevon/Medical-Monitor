@@ -132,6 +132,8 @@
           autocomplete="off"
           placeholder="Ex.: 1 comprimido"
           required
+          appInputMask
+          [mask]="'numero-unidade'"
           [value]="item().dose"
           [class.invalido]="erroDose()"
           [attr.aria-invalid]="erroDose() || null"
@@ -165,6 +167,8 @@
             autocomplete="off"
             placeholder="Ex.: a cada 6 horas"
             required
+            appInputMask
+            [mask]="'texto-numerico'"
             [attr.list]="'sugestoes-frequencia-' + id()"
             [value]="item().frequency"
             [class.invalido]="erroFrequencia()"
@@ -213,6 +217,8 @@
             type="text"
             autocomplete="off"
             placeholder="Ex.: 7 dias"
+            appInputMask
+            [mask]="'numero-unidade'"
             [attr.list]="'sugestoes-duracao-' + id()"
             [value]="item().duration"
             (input)="editar('duration', $event)"
@@ -228,7 +234,7 @@
 
       <div class="campo campo--quantidade">
         <div class="label-com-tooltip">
-          <label [for]="'medicamento-quantidade-' + id()">Quantidade total a dispensar</label>
+          <label [for]="'medicamento-quantidade-' + id()">Quantidade a dispensar</label>
           <button
             type="button"
             class="icone-info"
@@ -246,6 +252,8 @@
           type="text"
           autocomplete="off"
           placeholder="Ex.: 1 caixa com 20 comprimidos"
+          appInputMask
+          [mask]="'numero-unidade'"
           [value]="item().quantity"
           (input)="editar('quantity', $event)"
         />

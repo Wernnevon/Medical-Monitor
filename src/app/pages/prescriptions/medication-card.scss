@@ -224,9 +224,12 @@
   display: flex;
   align-items: center;
   gap: var(--esp-1);
+  flex-wrap: wrap;
 
   label {
     margin: 0;
+    flex: 1;
+    min-width: auto;
   }
 }
 

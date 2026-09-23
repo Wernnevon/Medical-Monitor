@@ -1,6 +1,7 @@
 import { Component, computed, input, output, signal } from '@angular/core';
 import { Icon } from '@app/shared/components/icon/icon';
 import { Tooltip, TooltipTriggerDirective } from '@app/shared/components/tooltip';
+import { InputMaskDirective } from '@app/shared/directives';
 import {
   LIMITE_ORIENTACOES_ITEM,
   SUGESTOES,
@@ -18,7 +19,7 @@ export type MedicationChange = { campo: MedicationField; valor: string };
  */
 @Component({
   selector: 'app-medication-card',
-  imports: [Icon, Tooltip, TooltipTriggerDirective],
+  imports: [Icon, Tooltip, TooltipTriggerDirective, InputMaskDirective],
   templateUrl: './medication-card.html',
   styleUrl: './medication-card.scss',
 })

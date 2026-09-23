@@ -34,17 +34,17 @@ import { NgTemplateOutlet } from '@angular/common';
     .tooltip {
       position: fixed;
       z-index: 1000;
-      padding: var(--esp-2) var(--esp-3);
+      padding: var(--esp-3) var(--esp-4);
       border-radius: var(--tooltip-raio);
-      background-color: var(--tooltip-bg);
-      color: var(--tooltip-text);
-      font-size: var(--texto-xs);
+      background-color: var(--cor-texto);
+      color: var(--cor-superficie);
+      font-size: var(--texto-sm);
       font-weight: var(--peso-medio);
       white-space: nowrap;
       opacity: 0;
       pointer-events: none;
       transition: opacity 200ms ease-out;
-      box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+      box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
     }
 
     .tooltip--visivel {
