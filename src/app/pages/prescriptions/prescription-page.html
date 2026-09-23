@@ -1,56 +1,264 @@
-<div class="pagina-receita">
-  <a class="voltar" routerLink="/pacientes">
-    <app-icon name="BsChevronLeft" size="1rem" />
-    Voltar para a lista de pacientes
-  </a>
+<div class="pagina">
+  <div class="principal">
+    <nav class="trilha" aria-label="Trilha de navegação">
+      <a class="voltar" routerLink="/pacientes" aria-label="Voltar para pacientes">
+        <app-icon name="BsChevronLeft" size="0.9rem" />
+      </a>
+      <ol>
+        <li><a routerLink="/pacientes">Pacientes</a></li>
+        @if (paciente(); as p) {
+          <li>
+            <a [routerLink]="['/pacientes/detalhes', p.id]">{{ p.name }}</a>
+          </li>
+        }
+        <li><span aria-current="page">Receita</span></li>
+      </ol>
+    </nav>
 
-  <header class="cabecalho">
-    <h1>Prescrição de Receita</h1>
-    @if (nomePaciente()) {
-      <span class="paciente-vinculado">
-        <app-icon name="HiOutlineUserCircle" size="1.1rem" />
-        {{ nomePaciente() }}
-      </span>
-    }
-  </header>
+    <header class="titulo">
+      <div class="titulo-linha">
+        <h1>Nova receita</h1>
+        <span class="status" [class.status--emitida]="emitida()">
+          {{ emitida() ? 'Emitida' : 'Rascunho' }}
+        </span>
+      </div>
+      <p>
+        @if (emitida()) {
+          Receita emitida e vinculada ao prontuário do paciente.
+        } @else {
+          Prescreva os medicamentos e orientações do paciente. A receita será vinculada ao
+          prontuário após a emissão.
+        }
+      </p>
+    </header>
 
-  <div class="corpo">
-    <section class="cartao">
-      <h2>Informe as medicações</h2>
-      <label class="medicamentos">
-        <span>Um medicamento por linha:</span>
-        <textarea
-          rows="10"
-          placeholder="Ex.: Dipirona 500mg — 1 comprimido a cada 6 horas"
-          [value]="medicamentosTexto()"
-          (input)="editarTexto($any($event.target).value)"
-        ></textarea>
-      </label>
+    <section class="cartao paciente" aria-label="Paciente">
+      @if (paciente(); as p) {
+        <span class="avatar" aria-hidden="true">{{ iniciais() }}</span>
+        <div class="paciente-dados">
+          <div class="paciente-nome">
+            <h2>{{ p.name }}</h2>
+            <span class="selo-selecionado">
+              <app-icon name="AiOutlineCheckCircle" size="0.75rem" />
+              Paciente selecionado
+            </span>
+          </div>
+          <dl class="paciente-meta">
+            <div>
+              <dt>CPF</dt>
+              <dd>{{ p.cpf }}</dd>
+            </div>
+            <div>
+              <dt>Nasc.</dt>
+              <dd>{{ nascimento() }}</dd>
+            </div>
+            @if (p.health.healthInsurance) {
+              <div>
+                <dt>Convênio</dt>
+                <dd>{{ p.health.healthInsurance }}</dd>
+              </div>
+            }
+          </dl>
+        </div>
+        <a class="ver-prontuario" [routerLink]="['/pacientes/detalhes', p.id]">
+          Ver prontuário
+          <app-icon name="FiExternalLink" size="1rem" />
+        </a>
+      } @else {
+        <span class="avatar" aria-hidden="true">
+          <app-icon name="HiOutlineUserCircle" size="1.5rem" />
+        </span>
+        <div class="paciente-dados">
+          <h2>Nenhum paciente selecionado</h2>
+          <p class="ajuda">Abra a receita a partir do prontuário para vinculá-la ao paciente.</p>
+        </div>
+        <a class="ver-prontuario" routerLink="/pacientes">Escolher paciente</a>
+      }
+    </section>
 
-      <div class="acoes">
-        <app-button styleType="back" (pressed)="limpar()">Limpar</app-button>
-        @if (patientId()) {
-          <app-button
-            styleType="submit"
-            [disabled]="salvando() || salvo() || !medicamentos().length"
-            (pressed)="salvar()"
-          >
-            {{ salvando() ? 'Salvando…' : salvo() ? 'Salvo' : 'Salvar' }}
-          </app-button>
+    <section class="cartao" aria-labelledby="titulo-medicamentos">
+      <header class="secao-cabecalho">
+        <app-icon class="secao-icone" name="LuPillBottle" size="1.6rem" />
+        <div>
+          <h2 id="titulo-medicamentos">Medicamentos</h2>
+          <p class="ajuda">
+            Um bloco para cada medicamento. Nome, dose e frequência
+            <span aria-hidden="true">*</span> são obrigatórios — o resto é opcional.
+          </p>
+        </div>
+        @if (!emitida()) {
+          <button type="button" class="botao-acento" (click)="adicionarMedicamento()">
+            <app-icon name="FaPlus" size="0.85rem" />
+            Adicionar medicamento
+          </button>
+        }
+      </header>
+
+      <div class="lista-medicamentos">
+        @for (item of medicamentos(); track item.key; let i = $index) {
+          <app-medication-card
+            [item]="item"
+            [indice]="i"
+            [expandido]="expandido() === item.key"
+            [mostrarErros]="tentouEmitir()"
+            [podeMover]="medicamentos().length > 1"
+            [somenteLeitura]="emitida()"
+            [podeSalvarRascunho]="!!patientId()"
+            (alterado)="alterarMedicamento(item.key, $event)"
+            (alternar)="alternar(item.key)"
+            (remover)="removerMedicamento(item.key)"
+            (mover)="moverMedicamento(i)"
+            (salvarRascunho)="salvarRascunho()"
+          />
+        }
+
+        @if (!emitida()) {
+          <div class="novo-item">
+            <span class="numero" aria-hidden="true">{{ medicamentos().length + 1 }}</span>
+            <button type="button" class="novo-item-botao" (click)="adicionarMedicamento()">
+              <app-icon class="novo-item-icone" name="FiPlusCircle" size="1.6rem" />
+              <span class="novo-item-texto">
+                <strong>Adicionar medicamento</strong>
+                <span>Nome, dose e frequência bastam pra começar.</span>
+              </span>
+              <app-icon name="BsChevronRight" size="0.9rem" />
+            </button>
+          </div>
         }
       </div>
     </section>
 
-    <app-print-output class="saida" [patientName]="nomePaciente()">
-      @if (medicamentos().length) {
-        <ul class="saida-lista">
-          @for (medicamento of medicamentos(); track medicamento) {
-            <li>● {{ medicamento }}</li>
+    <section class="cartao" aria-labelledby="titulo-orientacoes">
+      <header class="secao-cabecalho">
+        <app-icon class="secao-icone" name="LuClipboardList" size="1.6rem" />
+        <div>
+          <h2 id="titulo-orientacoes">Orientações gerais</h2>
+          <p class="ajuda" id="ajuda-orientacoes">
+            Instruções que valem para a receita toda, como repouso ou retorno.
+          </p>
+        </div>
+      </header>
+      <textarea
+        class="orientacoes"
+        rows="3"
+        aria-labelledby="titulo-orientacoes"
+        aria-describedby="ajuda-orientacoes contador-orientacoes"
+        placeholder="Ex.: Manter repouso, evitar esforço físico, retornar em caso de piora dos sintomas."
+        [attr.maxlength]="limiteOrientacoes"
+        [disabled]="emitida()"
+        [value]="orientacoesGerais()"
+        (input)="editarOrientacoesGerais($event)"
+      ></textarea>
+      <span class="contador" id="contador-orientacoes">
+        {{ orientacoesGerais().length }}/{{ limiteOrientacoes }}
+      </span>
+    </section>
+
+    <div class="barra-acoes">
+      @if (!emitida()) {
+        <p class="status-salvamento" [class.status-salvamento--pendente]="temAlteracoesNaoSalvas()">
+          <app-icon [name]="temAlteracoesNaoSalvas() ? 'FiAlertTriangle' : 'AiOutlineCheckCircle'" size="1rem" />
+          @if (ultimaAtualizacao(); as data) {
+            @if (temAlteracoesNaoSalvas()) {
+              Alterações não salvas — último rascunho às {{ formatarHora(data) }}
+            } @else {
+              Rascunho salvo às {{ formatarHora(data) }}
+            }
+          } @else {
+            Nenhuma alteração salva ainda
           }
-        </ul>
-      } @else {
-        <p class="paragrafo paragrafo--vazio">Nenhuma medicação informada ainda.</p>
+        </p>
       }
-    </app-print-output>
+
+      @if (emitida()) {
+        <button type="button" class="botao-contorno" (click)="visualizarPdf()">
+          <app-icon name="FiPrinter" size="1rem" />
+          Imprimir
+        </button>
+        @if (paciente(); as p) {
+          <a class="botao-principal" [routerLink]="['/pacientes/detalhes', p.id]">
+            Voltar ao prontuário
+          </a>
+        }
+      } @else {
+        <button type="button" class="botao-contorno" (click)="visualizarPdf()">
+          <app-icon name="HiOutlineEye" size="1rem" />
+          Visualizar PDF
+        </button>
+        <button
+          #botaoEmitir
+          type="button"
+          class="botao-principal"
+          [disabled]="!patientId() || emitindo() || (tentouEmitir() && !valida())"
+          (click)="solicitarEmissao()"
+        >
+          <app-icon name="FiSend" size="1rem" />
+          Emitir receita
+        </button>
+      }
+    </div>
   </div>
+
+  <app-prescription-preview
+    class="previa"
+    [paciente]="paciente()"
+    [medicamentos]="medicamentos()"
+    [orientacoesGerais]="orientacoesGerais()"
+    (imprimir)="visualizarPdf()"
+  />
+
+  @if (modalAberto()) {
+    <div class="overlay" (click)="emitindo() ? null : cancelarEmissao()">
+      <section
+        #modal
+        class="modal"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="modal-titulo"
+        aria-describedby="modal-descricao"
+        (click)="$event.stopPropagation()"
+        (keydown)="prenderFoco($event)"
+      >
+        <h2 id="modal-titulo">Emitir receita?</h2>
+        <div id="modal-descricao">
+          <p>
+            Você está emitindo uma receita para <strong>{{ paciente()?.name }}</strong>.
+          </p>
+          <p>
+            A receita será vinculada ao prontuário de {{ paciente()?.name }} e ficará disponível
+            no histórico do paciente.
+          </p>
+        </div>
+        <p class="modal-pergunta">Deseja imprimir a receita após a emissão?</p>
+        <div class="modal-acoes">
+          <button
+            type="button"
+            class="botao-contorno"
+            [disabled]="emitindo()"
+            (click)="cancelarEmissao()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="botao-contorno"
+            [disabled]="emitindo()"
+            (click)="confirmarEmissao(false)"
+          >
+            Emitir sem imprimir
+          </button>
+          <button
+            type="button"
+            class="botao-principal"
+            data-foco-inicial
+            [disabled]="emitindo()"
+            (click)="confirmarEmissao(true)"
+          >
+            <app-icon name="FiPrinter" size="1rem" />
+            {{ emitindo() ? 'Emitindo…' : 'Emitir e imprimir' }}
+          </button>
+        </div>
+      </section>
+    </div>
+  }
 </div>

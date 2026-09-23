@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { AuthService } from '@app/shared/services/auth';
-import { ProfessionalGender, ProfessionalRole } from '@domain/entities';
+import { ProfessionalGender, ProfessionalRole, type Professional } from '@domain/entities';
 import { Icon } from '../icon/icon';
 
 const PREFIXO_POR_GENERO: Record<ProfessionalGender, string> = {
@@ -41,17 +41,7 @@ export class PrintOutput {
 
   private readonly usuario = inject(AuthService).usuarioAtual;
 
-  protected readonly nomeMedico = computed(() => {
-    const u = this.usuario();
-    if (!u) return '';
-    // "Dr(a)." genérico só sobra pra cadastro antigo, de antes do campo de
-    // gênero existir — daqui pra frente, todo profissional novo tem um.
-    const prefixo =
-      u.role === ProfessionalRole.PROFISSIONAL
-        ? (u.gender && PREFIXO_POR_GENERO[u.gender]) || 'Dr(a). '
-        : '';
-    return `${prefixo}${u.name}`.toUpperCase();
-  });
+  protected readonly nomeMedico = computed(() => nomeComTitulo(this.usuario()).toUpperCase());
 
   protected readonly especialidade = computed(() => this.usuario()?.specialty?.toUpperCase() ?? '');
 
@@ -70,6 +60,17 @@ export class PrintOutput {
   protected imprimir(): void {
     window.print();
   }
+}
+
+export function nomeComTitulo(u: Professional | null): string {
+  if (!u) return '';
+  // "Dr(a)." genérico só sobra pra cadastro antigo, de antes do campo de
+  // gênero existir — daqui pra frente, todo profissional novo tem um.
+  const prefixo =
+    u.role === ProfessionalRole.PROFISSIONAL
+      ? (u.gender && PREFIXO_POR_GENERO[u.gender]) || 'Dr(a). '
+      : '';
+  return `${prefixo}${u.name}`;
 }
 
 function formatarDataExtenso(data: Date): string {

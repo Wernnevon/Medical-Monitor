@@ -1,0 +1,271 @@
+<article class="card" [class.card--aberto]="expandido()">
+  <header class="cabecalho">
+    <span class="numero" aria-hidden="true">{{ indice() + 1 }}</span>
+    <button
+      type="button"
+      class="titulo"
+      [attr.aria-expanded]="expandido()"
+      [attr.aria-controls]="'medicamento-campos-' + id()"
+      (click)="alternar.emit()"
+    >
+      <span class="sr-only">Medicamento {{ indice() + 1 }}:</span>
+      <strong>{{ titulo() }}</strong>
+      @if (resumo()) {
+        <span class="resumo">{{ resumo() }}</span>
+      }
+    </button>
+    @if (!somenteLeitura()) {
+      @if (podeMover()) {
+        <button
+          type="button"
+          class="icone-acao"
+          [attr.aria-label]="'Mudar posição do medicamento ' + (indice() + 1)"
+          (click)="mover.emit()"
+        >
+          <app-icon name="LuArrowUpDown" size="1.15rem" />
+        </button>
+      }
+      @if (podeSalvarRascunho()) {
+        <button
+          type="button"
+          class="icone-acao"
+          [attr.aria-label]="'Salvar rascunho'"
+          title="Salvar rascunho"
+          (click)="salvarRascunho.emit()"
+        >
+          <app-icon name="FiSave" size="1.15rem" />
+        </button>
+      }
+      <button
+        type="button"
+        class="icone-acao icone-acao--perigo"
+        [attr.aria-label]="'Remover medicamento ' + (indice() + 1)"
+        (click)="remover.emit()"
+      >
+        <app-icon name="RiDeleteBin6Line" size="1.15rem" />
+      </button>
+    }
+  </header>
+
+  @if (expandido()) {
+    <fieldset class="campos" [id]="'medicamento-campos-' + id()" [disabled]="somenteLeitura()">
+      <legend class="sr-only">Dados do medicamento {{ indice() + 1 }}</legend>
+
+      <div class="campo campo--nome">
+        <label [for]="'medicamento-nome-' + id()">Nome do medicamento <span aria-hidden="true">*</span></label>
+        <div class="controle">
+          <input
+            [id]="'medicamento-nome-' + id()"
+            type="text"
+            autocomplete="off"
+            placeholder="Ex.: Dipirona Sódica 500mg"
+            required
+            [value]="item().name"
+            [class.invalido]="erroNome()"
+            [attr.aria-invalid]="erroNome() || null"
+            [attr.aria-describedby]="erroNome() ? 'erro-nome-' + id() : null"
+            (input)="editar('name', $event)"
+          />
+          @if (item().name && !somenteLeitura()) {
+            <button type="button" class="limpar" aria-label="Limpar medicamento" (click)="limparNome()">
+              ×
+            </button>
+          }
+        </div>
+        @if (erroNome()) {
+          <span class="erro" [id]="'erro-nome-' + id()">Informe o medicamento.</span>
+        }
+      </div>
+
+      <div class="campo campo--apresentacao">
+        <div class="label-com-tooltip">
+          <label [for]="'medicamento-apresentacao-' + id()">Apresentação</label>
+          <button
+            type="button"
+            class="icone-info"
+            appTooltipTrigger
+            [tooltipId]="'dica-apresentacao-' + id()"
+            (tooltipVisivel)="marcarTooltip('apresentacao', $event)"
+            aria-label="Informações sobre apresentação"
+          >
+            <app-icon name="FiInfo" size="0.9rem" />
+          </button>
+          <app-tooltip [conteudo]="'Forma do medicamento'" [visivel]="tooltipVisivel()['apresentacao']" [id]="'dica-apresentacao-' + id()"/>
+        </div>
+        <div class="controle controle--lista">
+          <input
+            [id]="'medicamento-apresentacao-' + id()"
+            type="text"
+            autocomplete="off"
+            placeholder="Ex.: Comprimido"
+            [attr.list]="'sugestoes-apresentacao-' + id()"
+            [value]="item().presentation"
+            (input)="editar('presentation', $event)"
+          />
+          <app-icon class="seta" name="BsChevronDown" size="0.8rem" />
+        </div>
+        <datalist [id]="'sugestoes-apresentacao-' + id()">
+          @for (opcao of sugestoes.presentation; track opcao) {
+            <option [value]="opcao"></option>
+          }
+        </datalist>
+      </div>
+
+      <div class="campo campo--dose">
+        <div class="label-com-tooltip">
+          <label [for]="'medicamento-dose-' + id()">Dose por tomada <span aria-hidden="true">*</span></label>
+          <button
+            type="button"
+            class="icone-info"
+            appTooltipTrigger
+            [tooltipId]="'dica-dose-' + id()"
+            (tooltipVisivel)="marcarTooltip('dose', $event)"
+            aria-label="Informações sobre dose"
+          >
+            <app-icon name="FiInfo" size="0.9rem" />
+          </button>
+          <app-tooltip [conteudo]="'Quanto o paciente toma de cada vez'" [visivel]="tooltipVisivel()['dose']" [id]="'dica-dose-' + id()"/>
+        </div>
+        <input
+          [id]="'medicamento-dose-' + id()"
+          type="text"
+          autocomplete="off"
+          placeholder="Ex.: 1 comprimido"
+          required
+          [value]="item().dose"
+          [class.invalido]="erroDose()"
+          [attr.aria-invalid]="erroDose() || null"
+          [attr.aria-describedby]="erroDose() ? 'erro-dose-' + id() : null"
+          (input)="editar('dose', $event)"
+        />
+        @if (erroDose()) {
+          <span class="erro" [id]="'erro-dose-' + id()">Informe a dose por tomada.</span>
+        }
+      </div>
+
+      <div class="campo campo--frequencia">
+        <div class="label-com-tooltip">
+          <label [for]="'medicamento-frequencia-' + id()">Frequência <span aria-hidden="true">*</span></label>
+          <button
+            type="button"
+            class="icone-info"
+            appTooltipTrigger
+            [tooltipId]="'dica-frequencia-' + id()"
+            (tooltipVisivel)="marcarTooltip('frequencia', $event)"
+            aria-label="Informações sobre frequência"
+          >
+            <app-icon name="FiInfo" size="0.9rem" />
+          </button>
+          <app-tooltip [conteudo]="'Intervalo entre as tomadas'" [visivel]="tooltipVisivel()['frequencia']" [id]="'dica-frequencia-' + id()"/>
+        </div>
+        <div class="controle controle--lista">
+          <input
+            [id]="'medicamento-frequencia-' + id()"
+            type="text"
+            autocomplete="off"
+            placeholder="Ex.: a cada 6 horas"
+            required
+            [attr.list]="'sugestoes-frequencia-' + id()"
+            [value]="item().frequency"
+            [class.invalido]="erroFrequencia()"
+            [attr.aria-invalid]="erroFrequencia() || null"
+            [attr.aria-describedby]="erroFrequencia() ? 'erro-frequencia-' + id() : null"
+            (input)="editar('frequency', $event)"
+          />
+          <app-icon class="seta" name="BsChevronDown" size="0.8rem" />
+        </div>
+        <datalist [id]="'sugestoes-frequencia-' + id()">
+          @for (opcao of sugestoes.frequency; track opcao) {
+            <option [value]="opcao"></option>
+          }
+        </datalist>
+        @if (erroFrequencia()) {
+          <span class="erro" [id]="'erro-frequencia-' + id()">Informe a frequência.</span>
+        }
+      </div>
+
+      <div class="campo campo--via">
+        <label [for]="'medicamento-via-' + id()">Via de administração</label>
+        <div class="controle controle--lista">
+          <input
+            [id]="'medicamento-via-' + id()"
+            type="text"
+            autocomplete="off"
+            placeholder="Ex.: Via oral"
+            [attr.list]="'sugestoes-via-' + id()"
+            [value]="item().route"
+            (input)="editar('route', $event)"
+          />
+          <app-icon class="seta" name="BsChevronDown" size="0.8rem" />
+        </div>
+        <datalist [id]="'sugestoes-via-' + id()">
+          @for (opcao of sugestoes.route; track opcao) {
+            <option [value]="opcao"></option>
+          }
+        </datalist>
+      </div>
+
+      <div class="campo campo--duracao">
+        <label [for]="'medicamento-duracao-' + id()">Duração do tratamento</label>
+        <div class="controle controle--lista">
+          <input
+            [id]="'medicamento-duracao-' + id()"
+            type="text"
+            autocomplete="off"
+            placeholder="Ex.: 7 dias"
+            [attr.list]="'sugestoes-duracao-' + id()"
+            [value]="item().duration"
+            (input)="editar('duration', $event)"
+          />
+          <app-icon class="seta" name="BsChevronDown" size="0.8rem" />
+        </div>
+        <datalist [id]="'sugestoes-duracao-' + id()">
+          @for (opcao of sugestoes.duration; track opcao) {
+            <option [value]="opcao"></option>
+          }
+        </datalist>
+      </div>
+
+      <div class="campo campo--quantidade">
+        <div class="label-com-tooltip">
+          <label [for]="'medicamento-quantidade-' + id()">Quantidade total a dispensar</label>
+          <button
+            type="button"
+            class="icone-info"
+            appTooltipTrigger
+            [tooltipId]="'dica-quantidade-' + id()"
+            (tooltipVisivel)="marcarTooltip('quantidade', $event)"
+            aria-label="Informações sobre quantidade"
+          >
+            <app-icon name="FiInfo" size="0.9rem" />
+          </button>
+          <app-tooltip [conteudo]="'Quanto o paciente deve comprar'" [visivel]="tooltipVisivel()['quantidade']" [id]="'dica-quantidade-' + id()"/>
+        </div>
+        <input
+          [id]="'medicamento-quantidade-' + id()"
+          type="text"
+          autocomplete="off"
+          placeholder="Ex.: 1 caixa com 20 comprimidos"
+          [value]="item().quantity"
+          (input)="editar('quantity', $event)"
+        />
+      </div>
+
+      <div class="campo campo--orientacoes">
+        <label [for]="'medicamento-orientacoes-' + id()">Observações deste medicamento (opcional)</label>
+        <textarea
+          [id]="'medicamento-orientacoes-' + id()"
+          rows="2"
+          placeholder="Ex.: Tomar com alimento se houver desconforto gástrico."
+          [attr.maxlength]="limiteOrientacoes"
+          [attr.aria-describedby]="'contador-orientacoes-' + id()"
+          [value]="item().instructions"
+          (input)="editar('instructions', $event)"
+        ></textarea>
+        <span class="contador" [id]="'contador-orientacoes-' + id()">
+          {{ item().instructions.length }}/{{ limiteOrientacoes }}
+        </span>
+      </div>
+    </fieldset>
+  }
+</article>

@@ -1,0 +1,284 @@
+:host {
+  display: block;
+}
+
+.card {
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-md);
+  background-color: var(--cor-superficie);
+  overflow: hidden;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  padding: var(--esp-3) var(--esp-4);
+
+  .card--aberto & {
+    background-color: var(--cor-superficie-alt);
+    border-bottom: 1px solid var(--cor-borda);
+  }
+}
+
+.numero {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--cor-acento-clara);
+  color: var(--cor-texto);
+  font-size: var(--texto-md);
+  font-weight: var(--peso-forte);
+}
+
+.titulo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: var(--esp-1) 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  strong {
+    font-size: var(--texto-md);
+    font-weight: var(--peso-forte);
+    color: var(--cor-marca-texto);
+  }
+}
+
+.resumo {
+  font-size: var(--texto-sm);
+  color: var(--cor-texto-suave);
+}
+
+.icone-acao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: none;
+  border-radius: var(--raio-sm);
+  background: none;
+  color: var(--cor-marca-texto);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--cor-superficie-hover);
+  }
+}
+
+.icone-acao--perigo {
+  color: var(--cor-texto-suave);
+
+  &:hover {
+    color: var(--cor-erro);
+    background-color: var(--cor-erro-fundo);
+  }
+}
+
+/* 24 colunas pra reproduzir as larguras desiguais do protótipo: na segunda
+   linha a quantidade é estreita e as orientações ocupam o resto. */
+.campos {
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+  gap: var(--esp-4) var(--esp-4);
+  margin: 0;
+  padding: var(--esp-4) var(--esp-4) var(--esp-3);
+  border: none;
+  min-width: 0;
+}
+
+.campo--nome,
+.campo--via {
+  grid-column: span 7;
+}
+
+.campo--apresentacao,
+.campo--duracao {
+  grid-column: span 5;
+}
+
+.campo--dose,
+.campo--frequencia {
+  grid-column: span 6;
+}
+
+.campo--quantidade {
+  grid-column: span 3;
+}
+
+.campo--orientacoes {
+  grid-column: span 9;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  min-width: 0;
+
+  label {
+    font-size: var(--texto-sm);
+    color: var(--cor-texto);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    min-height: 2.5rem;
+    padding: var(--esp-2) var(--esp-3);
+    border: 1px solid var(--cor-borda-forte);
+    border-radius: var(--raio-sm);
+    background-color: var(--cor-superficie);
+    color: var(--cor-texto);
+    font: inherit;
+    font-size: var(--texto-sm);
+
+    &::placeholder {
+      color: var(--cor-texto-suave);
+    }
+
+    &:focus {
+      border-color: var(--cor-marca-texto);
+    }
+
+    &:disabled {
+      background-color: var(--cor-superficie-alt);
+      cursor: default;
+    }
+
+    &.invalido {
+      border-color: var(--cor-erro);
+      box-shadow: 0 0 0 1px var(--cor-erro);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 3.25rem;
+  }
+}
+
+.controle {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  input {
+    padding-right: 2.25rem;
+  }
+}
+
+/* O indicador nativo do `<datalist>` só aparece no hover; fica invisível
+   (mas clicável) e a seta desenhada por cima dá o visual do protótipo. */
+.controle--lista input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  cursor: pointer;
+}
+
+.seta {
+  position: absolute;
+  right: var(--esp-3);
+  color: var(--cor-texto-suave);
+  pointer-events: none;
+}
+
+.limpar {
+  position: absolute;
+  right: var(--esp-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--cor-texto-suave);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--cor-superficie-hover);
+  }
+}
+
+.erro {
+  font-size: var(--texto-xs);
+  color: var(--cor-erro);
+}
+
+.label-com-tooltip {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-1);
+
+  label {
+    margin: 0;
+  }
+}
+
+.icone-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--cor-texto-suave);
+  cursor: help;
+
+  &:hover {
+    color: var(--cor-marca-texto);
+  }
+
+  app-icon {
+    display: flex;
+  }
+}
+
+.contador {
+  align-self: flex-end;
+  font-size: var(--texto-xs);
+  color: var(--cor-texto-suave);
+}
+
+@media (max-width: 1280px) {
+  .campo--nome,
+  .campo--apresentacao,
+  .campo--dose,
+  .campo--frequencia,
+  .campo--via,
+  .campo--duracao {
+    grid-column: span 12;
+  }
+
+  .campo--quantidade {
+    grid-column: span 8;
+  }
+
+  .campo--orientacoes {
+    grid-column: span 16;
+  }
+}
+
+@media (max-width: 640px) {
+  .campos > .campo {
+    grid-column: 1 / -1;
+  }
+}
