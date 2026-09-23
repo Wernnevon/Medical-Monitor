@@ -41,6 +41,14 @@ const HISTORICO_COLUMNS: DataColumn[] = [
 @Component({
   selector: 'app-patient-details',
   imports: [Button, Icon, KebabMenu, RouterLink, Table],
+  // Instância própria por navegação, mesmo a classe sendo `@Service()`
+  // (`providedIn: 'root'`, singleton por padrão): sem isso, voltar pra cá
+  // pro MESMO paciente (ex.: depois de registrar uma receita em `/receitas`)
+  // reaproveita a instância antiga e o `effect` que seta `patientId` vira
+  // um no-op — o valor não mudou — então o histórico nunca recarrega e
+  // mostra dado velho. Um provider aqui força recriar o facade (e os
+  // `resource()` dele) do zero a cada entrada na rota.
+  providers: [PatientDetailsFacade],
   templateUrl: './patient-details.html',
   styleUrl: './patient-details.scss',
 })
