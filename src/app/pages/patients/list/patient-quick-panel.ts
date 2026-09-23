@@ -107,8 +107,20 @@ export class PatientQuickPanel {
     return formmatDate(data as unknown as Date);
   }
 
-  protected irPara(sufixo: string): void {
+  /**
+   * `exames`/`receitas` são rotas gerais, não filhas de `detalhes/:id` — ver
+   * `app.routes.ts`. `historico` não é uma rota própria: os últimos
+   * atendimentos vivem direto na página de detalhes, então cai no mesmo
+   * destino do "Ver Detalhes".
+   */
+  protected irPara(destino: '' | 'exames' | 'receitas' | 'historico'): void {
     const id = this.patient()?.id;
-    if (id) this.router.navigate(['/pacientes/detalhes', id, ...(sufixo ? [sufixo] : [])]);
+    if (!id) return;
+
+    if (destino === 'exames' || destino === 'receitas') {
+      this.router.navigate([`/${destino}`], { queryParams: { patientId: id } });
+      return;
+    }
+    this.router.navigate(['/pacientes/detalhes', id]);
   }
 }
