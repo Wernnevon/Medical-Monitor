@@ -126,14 +126,17 @@
 }
 
 .rodape-data {
-  /* Espaço em branco de propósito entre a data e a linha: é onde a caneta
-     assina depois de impresso — colado na linha, não dava pra assinar. */
-  margin-bottom: var(--esp-8);
+  align-self: flex-end;
+  width: 90%;
+  margin-top: var(--esp-2);
+  text-align: right;
 }
 
 .linha-assinatura {
+  /* Espaço em branco de propósito acima da linha: é onde a caneta assina
+     depois de impresso. */
+  margin-top: var(--esp-8);
   width: 90%;
-  margin-bottom: var(--esp-1);
   border-bottom: 1px solid var(--cor-texto);
 }
 
