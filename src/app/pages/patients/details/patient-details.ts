@@ -9,7 +9,14 @@ import { Table, type DataColumn } from '@app/shared/components/table/table';
 import { getAge, formmatDate, getLocalDateInput, getLocalTimeInput } from '@core/utils/date-utils';
 import { mascaraPressao } from '@core/utils/masks';
 import type { BloodPressureReading, Exams, Patient } from '@domain/entities';
-import { ExamFindById, ExamUpdate, PatientDelete, PatientUpdate } from '@domain/tokens';
+import {
+  ExamChangeStatus,
+  ExamFindById,
+  ExamUpdate,
+  PatientDelete,
+  PatientUpdate,
+  PrescriptionChangeStatus,
+} from '@domain/tokens';
 import { PatientDetailsFacade } from './patient-details-facade';
 
 /**
@@ -20,10 +27,11 @@ import { PatientDetailsFacade } from './patient-details-facade';
  * a coluna preenchida com traço seria pior que não ter a coluna.
  */
 const HISTORICO_COLUMNS: DataColumn[] = [
-  { name: 'Atendimento', key: 'titulo', type: 'text', width: '35%' },
-  { name: 'Tipo', key: 'tipo', type: 'text', width: '15%' },
-  { name: 'Data', key: 'data', type: 'text', width: '18%' },
-  { name: 'Status', key: 'status', type: 'status', width: '20%' },
+  { name: 'Atendimento', key: 'titulo', type: 'text', width: '28%' },
+  { name: 'Tipo', key: 'tipo', type: 'text', width: '12%' },
+  { name: 'Data', key: 'data', type: 'text', width: '14%' },
+  { name: 'Status', key: 'status', type: 'status', width: '16%', editable: true },
+  { name: 'Atualizado em', key: 'atualizadoEmFormatado', type: 'text', width: '18%' },
   { name: '', key: 'action', type: 'action', width: '12%', align: 'center' },
 ];
 
@@ -81,6 +89,15 @@ export class PatientDetails {
         ...item,
         tipo: item.tipo === 'exame' ? 'Exame' : 'Receita',
         data: this.formatar(item.data),
+        atualizadoEmFormatado: item.atualizadoEm
+          ? new Date(item.atualizadoEm).toLocaleString('pt-BR', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            })
+          : '—',
         // Só exame tem anotação — a ação fica escondida na linha de receita.
         _semAcao: item.tipo !== 'exame',
       })),
@@ -126,6 +143,32 @@ export class PatientDetails {
 
   protected fecharAnotacao(): void {
     this.anotacaoAberta.set(false);
+  }
+
+  /**
+   * Alterna o status de um exame ou receita — `ChangeStatus` no domínio é um
+   * alternador entre os dois valores possíveis (Em Andamento/Realizado,
+   * Administrando/Suspenso), não uma seleção livre, então clicar no selo
+   * basta. `stamped()` já carimba `updatedAt` na escrita, então a coluna
+   * "Atualizado em" reflete a troca de status sem nenhum código a mais.
+   */
+  private readonly alternarStatusExame = inject(ExamChangeStatus);
+  private readonly alternarStatusReceita = inject(PrescriptionChangeStatus);
+
+  protected async alterarStatus(id: string | number): Promise<void> {
+    const item = this.facade.historico().find((registro) => registro.id === id);
+    if (!item) return;
+
+    try {
+      if (item.tipo === 'exame') {
+        await this.alternarStatusExame.changeStatus({ id: String(id) });
+      } else {
+        await this.alternarStatusReceita.changeStatus({ id: String(id) });
+      }
+      this.facade.reloadHistorico();
+    } catch {
+      this.toast.add('Não foi possível alterar o status', ToastType.ERROR);
+    }
   }
 
   protected async salvarAnotacao(): Promise<void> {

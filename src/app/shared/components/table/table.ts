@@ -14,6 +14,11 @@ export type DataColumn = {
   /** Só pro tipo `stacked`: chave da linha exibida como legenda, embaixo do
    *  valor principal (ex.: CPF embaixo do nome). */
   subtitleKey?: string;
+  /** Só pro tipo `status`: vira botão em vez de selo estático, emitindo
+   *  `statusChange` no clique — usado onde o status é um alternador de dois
+   *  valores (ex.: exame Em Andamento/Realizado), não em toda listagem que
+   *  mostra status (ex.: Ativo/Inativo de paciente continua só leitura). */
+  editable?: boolean;
 };
 
 export type TablePagination = {
@@ -70,6 +75,9 @@ export class Table {
   readonly pageChange = output<number>();
   readonly rowSelect = output<string | number>();
   readonly rowAction = output<string | number>();
+  /** Emitido quando o selo de status editável é clicado — quem escuta
+   *  decide o que "trocar o status" significa pra aquela linha. */
+  readonly statusChange = output<string | number>();
 
   protected tone(value: unknown): string {
     return STATUS_TONE[String(value)] ?? 'negative';

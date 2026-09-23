@@ -52,6 +52,7 @@ export class PatientDetailsFacade {
           titulo: e.name,
           data: e.requisitionDate,
           status: e.status,
+          atualizadoEm: e.updatedAt,
         })),
         ...receitas.entries.map((r: any) => ({
           id: r.id,
@@ -59,6 +60,7 @@ export class PatientDetailsFacade {
           titulo: r.medicament,
           data: r.date,
           status: r.status,
+          atualizadoEm: r.updatedAt,
         })),
       ];
       return linhaDoTempo.sort((a, b) => String(b.data).localeCompare(String(a.data)));

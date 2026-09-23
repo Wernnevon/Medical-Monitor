@@ -38,9 +38,21 @@
                         </div>
                       }
                       @case ('status') {
-                        <small class="badge" [class]="'badge--' + tone(row[column.key])">
-                          {{ row[column.key] }}
-                        </small>
+                        @if (column.editable) {
+                          <button
+                            type="button"
+                            class="badge badge--editavel"
+                            [class]="'badge--' + tone(row[column.key])"
+                            [attr.aria-label]="'Alternar status: ' + row[column.key]"
+                            (click)="$event.stopPropagation(); statusChange.emit(row['id'])"
+                          >
+                            {{ row[column.key] }}
+                          </button>
+                        } @else {
+                          <small class="badge" [class]="'badge--' + tone(row[column.key])">
+                            {{ row[column.key] }}
+                          </small>
+                        }
                       }
                       @case ('action') {
                         @if (rowActionIcon() && !row['_semAcao']) {

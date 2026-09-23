@@ -207,6 +207,18 @@ tbody tr {
   }
 }
 
+.badge--editavel {
+  border: none;
+  font: inherit;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    outline: 2px solid var(--cor-primaria);
+    outline-offset: 1px;
+  }
+}
+
 @media (max-width: 640px) {
   .scroll {
     padding: 0 var(--esp-2) var(--esp-2);

@@ -254,6 +254,7 @@
               rowActionIcon="FiEdit"
               rowActionLabel="Anotação"
               (rowAction)="abrirAnotacao($event)"
+              (statusChange)="alterarStatus($event)"
             />
           } @else {
             <p class="paragrafo paragrafo--vazio">Nenhum exame ou receita registrado para este paciente.</p>
