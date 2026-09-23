@@ -58,7 +58,8 @@ export class MedicationCard {
   );
 
   protected editar(campo: MedicationField, evento: Event): void {
-    this.alterado.emit({ campo, valor: (evento.target as HTMLInputElement).value });
+    const alvo = evento.target as HTMLInputElement | HTMLTextAreaElement;
+    this.alterado.emit({ campo, valor: alvo.value });
   }
 
   protected limparNome(): void {

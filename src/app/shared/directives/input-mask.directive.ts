@@ -1,13 +1,15 @@
-import { Directive, HostListener, input } from '@angular/core';
+import { Directive, input } from '@angular/core';
 
 @Directive({
   selector: 'input[appInputMask]',
+  host: {
+    '(input)': 'aoDigitar($event)',
+  },
 })
 export class InputMaskDirective {
   readonly mask = input<'numero' | 'numero-unidade' | 'texto-numerico'>('texto-numerico');
 
-  @HostListener('input', ['$event'])
-  aoDigitar(evento: Event): void {
+  protected aoDigitar(evento: Event): void {
     const input = evento.target as HTMLInputElement;
     const tipo = this.mask();
 
@@ -15,9 +17,11 @@ export class InputMaskDirective {
       case 'numero':
         input.value = input.value.replace(/[^\d]/g, '');
         break;
+      // "número + unidade" (ex.: "7 dias") e texto numérico livre (ex.:
+      // "a cada 6 horas") aceitam o mesmo conjunto de caracteres — a
+      // diferença entre os dois é só o placeholder/rótulo do campo, não a
+      // máscara em si.
       case 'numero-unidade':
-        input.value = input.value.replace(/[^0-9a-záàâãéèêíïóôõöúçñA-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ\s]/g, '');
-        break;
       case 'texto-numerico':
         input.value = input.value.replace(/[^0-9a-záàâãéèêíïóôõöúçñA-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ\s]/g, '');
         break;

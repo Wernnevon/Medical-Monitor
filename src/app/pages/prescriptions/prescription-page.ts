@@ -100,6 +100,13 @@ export class PrescriptionPage {
     this.tentouEmitir.set(false);
     this.temAlteracoesNaoSalvas.set(false);
     this.ultimaAtualizacao.set(null);
+    // Reseta pro estado vazio antes de olhar o rascunho do paciente novo —
+    // sem isto, trocar de paciente sem rascunho salvo deixava na tela os
+    // medicamentos digitados (e não salvos) pro paciente anterior.
+    this.proximaChave = 1;
+    this.medicamentos.set([medicamentoVazio('m0')]);
+    this.orientacoesGerais.set('');
+    this.expandido.set('m0');
     if (!id) return;
 
     this.findPatient.findById({ id }).then((paciente) => this.paciente.set(paciente));
