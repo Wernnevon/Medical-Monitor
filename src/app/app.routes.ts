@@ -1,6 +1,5 @@
 import type { Routes } from '@angular/router';
 
-
 /**
  * Espelha `legacy/src/Presentation/routes.tsx`.
  *
@@ -8,17 +7,11 @@ import type { Routes } from '@angular/router';
  * aponta direto para o componente, que resolve as próprias dependências com
  * `inject()`.
  *
- * As telas ainda não portadas são rotas de verdade, servidas por `PendingPage`,
- * e não um redirecionamento silencioso — assim o menu acende, o botão "Novo"
- * leva a algum lugar e fica visível o que falta migrar. Conforme cada tela for
- * portada, troca-se o `loadComponent` e removem-se os `data`.
+ * `exames`/`receitas`/`atestados` são rotas gerais, não filhas de
+ * `detalhes/:id`: `patientId` chega como query param oculto (ver "Ações
+ * Rápidas" em `patient-details`), não como segmento de rota — assim as
+ * mesmas telas também funcionam soltas, para quem chega direto do menu.
  */
-const pendente = (title: string, reference: string) => ({
-  loadComponent: () =>
-    import('./pages/pending/pending-page').then((m) => m.PendingPage),
-  data: { title, reference },
-});
-
 export const routes: Routes = [
   {
     path: 'pacientes',
@@ -53,15 +46,18 @@ export const routes: Routes = [
   },
   {
     path: 'receitas',
-    ...pendente('Receitas', 'Pages/Prescription'),
+    loadComponent: () =>
+      import('./pages/prescriptions/prescription-page').then((m) => m.PrescriptionPage),
   },
   {
     path: 'exames',
-    ...pendente('Exames', 'Pages/Exame'),
+    loadComponent: () =>
+      import('./pages/exams/exam-page').then((m) => m.ExamPage),
   },
   {
     path: 'atestados',
-    ...pendente('Atestados', 'Pages/Atestado'),
+    loadComponent: () =>
+      import('./pages/certificates/certificate-page').then((m) => m.CertificatePage),
   },
   { path: '', pathMatch: 'full', redirectTo: 'pacientes' },
   { path: '**', redirectTo: 'pacientes' },

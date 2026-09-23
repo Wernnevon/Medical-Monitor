@@ -1,0 +1,66 @@
+<div class="pagina-receita">
+  <a class="voltar" routerLink="/pacientes">
+    <app-icon name="BsChevronLeft" size="1rem" />
+    Voltar para a lista de pacientes
+  </a>
+
+  <header class="cabecalho">
+    <h1>Prescrição de Receita</h1>
+    @if (nomePaciente()) {
+      <span class="paciente-vinculado">
+        <app-icon name="HiOutlineUserCircle" size="1.1rem" />
+        {{ nomePaciente() }}
+      </span>
+    }
+  </header>
+
+  <div class="corpo">
+    <section class="cartao">
+      <h2>Informe as medicações</h2>
+      <label class="medicamentos">
+        <span>Um medicamento por linha:</span>
+        <textarea
+          rows="10"
+          placeholder="Ex.: Dipirona 500mg — 1 comprimido a cada 6 horas"
+          [value]="medicamentosTexto()"
+          (input)="medicamentosTexto.set($any($event.target).value)"
+        ></textarea>
+      </label>
+
+      <div class="acoes">
+        <app-button styleType="back" (pressed)="limpar()">Limpar</app-button>
+        @if (patientId()) {
+          <app-button
+            styleType="submit"
+            [disabled]="salvando() || !medicamentos().length"
+            (pressed)="salvar()"
+          >
+            {{ salvando() ? 'Salvando…' : 'Salvar' }}
+          </app-button>
+        }
+      </div>
+    </section>
+
+    <section class="cartao cartao-saida">
+      <div class="saida-cabecalho">
+        <h2>Pré-visualização</h2>
+        <button type="button" class="imprimir" (click)="imprimir()">
+          <app-icon name="FiPrinter" size="1rem" />
+          Imprimir
+        </button>
+      </div>
+      @if (nomePaciente()) {
+        <p class="saida-paciente">Paciente: {{ nomePaciente() }}</p>
+      }
+      @if (medicamentos().length) {
+        <ul class="saida-lista">
+          @for (medicamento of medicamentos(); track medicamento) {
+            <li>● {{ medicamento }}</li>
+          }
+        </ul>
+      } @else {
+        <p class="paragrafo paragrafo--vazio">Nenhuma medicação informada ainda.</p>
+      }
+    </section>
+  </div>
+</div>
