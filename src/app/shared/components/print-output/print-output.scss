@@ -116,7 +116,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--esp-1);
   /* `margin-top: auto` e não só o `flex: 1` do `.corpo`: gruda no rodapé da
      folha mesmo se o conteúdo acima for curto — o `.corpo` sozinho só
      empurra o rodapé se ele tiver algo que valha a pena crescer. */
@@ -126,9 +125,15 @@
   color: var(--cor-texto-suave);
 }
 
+.rodape-data {
+  /* Espaço em branco de propósito entre a data e a linha: é onde a caneta
+     assina depois de impresso — colado na linha, não dava pra assinar. */
+  margin-bottom: var(--esp-8);
+}
 
 .linha-assinatura {
   width: 90%;
+  margin-bottom: var(--esp-1);
   border-bottom: 1px solid var(--cor-texto);
 }
 
@@ -156,5 +161,9 @@
 
   .corpo {
     overflow: visible;
+  }
+
+  .marca-dagua {
+    width: 480px;
   }
 }
