@@ -16,36 +16,11 @@
 
   <div class="corpo">
     <section class="cartao">
-      <h2>Selecione as medicações</h2>
-      <div class="categorias">
-        @for (categoria of catalogo; track categoria.tipo) {
-          <div class="categoria" [class.categoria--aberta]="categoriaAberta() === categoria.tipo">
-            <button type="button" class="categoria-cabecalho" (click)="alternarCategoria(categoria.tipo)">
-              <span>{{ categoria.tipo }}</span>
-              <app-icon [name]="categoriaAberta() === categoria.tipo ? 'BsChevronUp' : 'BsChevronDown'" size="0.9rem" />
-            </button>
-            @if (categoriaAberta() === categoria.tipo) {
-              <div class="categoria-itens">
-                @for (nome of categoria.medicamentos; track nome) {
-                  <label class="item-checkbox">
-                    <input
-                      type="checkbox"
-                      [checked]="selecionados().has(nome)"
-                      (change)="alternarMedicamento(nome)"
-                    />
-                    {{ nome }}
-                  </label>
-                }
-              </div>
-            }
-          </div>
-        }
-      </div>
-
+      <h2>Informe as medicações</h2>
       <label class="medicamentos">
-        <span>Outras medicações (uma por linha):</span>
+        <span>Um medicamento por linha:</span>
         <textarea
-          rows="6"
+          rows="10"
           placeholder="Ex.: Dipirona 500mg — 1 comprimido a cada 6 horas"
           [value]="medicamentosTexto()"
           (input)="editarTexto($any($event.target).value)"
