@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, signal } from '@angular/cor
 import { RouterLink } from '@angular/router';
 import { Button } from '@app/shared/components/button/button';
 import { Icon } from '@app/shared/components/icon/icon';
+import { PrintOutput } from '@app/shared/components/print-output/print-output';
 import { ToastService, ToastType } from '@app/shared/services/toast';
 import { getLocalDateInput } from '@core/utils/date-utils';
 import { PrescriptionStatus } from '@domain/entities';
@@ -13,7 +14,7 @@ import { PatientFindById, PrescriptionAdd } from '@domain/tokens';
  */
 @Component({
   selector: 'app-prescription-page',
-  imports: [Button, Icon, RouterLink],
+  imports: [Button, Icon, PrintOutput, RouterLink],
   templateUrl: './prescription-page.html',
   styleUrl: './prescription-page.scss',
 })
@@ -86,9 +87,5 @@ export class PrescriptionPage {
     } finally {
       this.salvando.set(false);
     }
-  }
-
-  protected imprimir(): void {
-    window.print();
   }
 }

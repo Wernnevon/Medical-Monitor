@@ -2,6 +2,7 @@ import { Component, computed, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Button } from '@app/shared/components/button/button';
 import { Icon } from '@app/shared/components/icon/icon';
+import { PrintOutput } from '@app/shared/components/print-output/print-output';
 import { getLocalDateInput } from '@core/utils/date-utils';
 
 type AtestadoForm = {
@@ -31,7 +32,7 @@ const vazio = (): AtestadoForm => ({
  */
 @Component({
   selector: 'app-certificate-page',
-  imports: [Button, Icon, RouterLink],
+  imports: [Button, Icon, PrintOutput, RouterLink],
   templateUrl: './certificate-page.html',
   styleUrl: './certificate-page.scss',
 })
@@ -49,9 +50,5 @@ export class CertificatePage {
 
   protected limpar(): void {
     this.form.set(vazio());
-  }
-
-  protected imprimir(): void {
-    window.print();
   }
 }

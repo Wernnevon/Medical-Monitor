@@ -73,14 +73,7 @@
       </div>
     </section>
 
-    <section class="cartao cartao-saida">
-      <div class="saida-cabecalho">
-        <h2>Pré-visualização</h2>
-        <button type="button" class="imprimir" (click)="imprimir()">
-          <app-icon name="FiPrinter" size="1rem" />
-          Imprimir
-        </button>
-      </div>
+    <app-print-output class="saida">
       @if (preenchido()) {
         <p class="atestado-texto">
           ATESTO para os devidos fins de DIREITO que o(a) Sr.(a)
@@ -96,6 +89,6 @@
       } @else {
         <p class="paragrafo paragrafo--vazio">Preencha os dados do paciente para gerar o atestado.</p>
       }
-    </section>
+    </app-print-output>
   </div>
 </div>

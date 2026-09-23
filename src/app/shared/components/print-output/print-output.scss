@@ -1,0 +1,141 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.folha {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 520px;
+  padding: var(--esp-4);
+  background-color: var(--cor-superficie);
+  border-radius: var(--raio-md);
+  box-shadow: var(--sombra-md);
+  overflow: hidden;
+}
+
+.imprimir {
+  position: absolute;
+  top: var(--esp-3);
+  right: var(--esp-3);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: none;
+  border: none;
+  color: var(--cor-texto-suave);
+  cursor: pointer;
+  border-radius: var(--raio-sm);
+
+  &:hover {
+    color: var(--cor-primaria);
+    background-color: var(--cor-superficie-alt);
+  }
+}
+
+.marca-dagua {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 260px;
+  /* A marca é branca sólida (pensada pro fundo navy do menu) — em papel
+     branco ela precisaria de um selo escuro atrás pra aparecer. Aqui ela é
+     só marca d'água, então preenchê-la de preto via filtro e deixá-la quase
+     transparente resolve sem precisar de outro arquivo de logo. */
+  filter: brightness(0);
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.conteudo {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.logo {
+  width: 70px;
+  height: auto;
+  margin-bottom: var(--esp-1);
+  /* Mesma marca branca do menu — precisa virar escura pra aparecer sobre o
+     papel branco do timbrado. Ver `.marca-dagua`. */
+  filter: brightness(0);
+}
+
+.medico {
+  font-size: var(--texto-lg);
+  letter-spacing: 0.5px;
+}
+
+.especialidade {
+  font-size: var(--texto-sm);
+  letter-spacing: 2px;
+}
+
+.linha-crm,
+.linha-contato,
+.linha-endereco {
+  font-size: var(--texto-xs);
+  font-weight: 600;
+}
+
+.paciente {
+  margin: var(--esp-4) 0 0;
+  font-size: var(--texto-sm);
+}
+
+.corpo {
+  flex: 1;
+  min-height: 0;
+  margin-top: var(--esp-3);
+  overflow-y: auto;
+}
+
+.rodape {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--esp-1);
+  margin-top: var(--esp-4);
+  font-size: var(--texto-xs);
+  color: var(--cor-texto-suave);
+}
+
+.linha-assinatura {
+  width: 90%;
+  border-bottom: 1px solid var(--cor-texto);
+}
+
+@media print {
+  :host {
+    height: auto;
+  }
+
+  .imprimir {
+    display: none;
+  }
+
+  .folha {
+    box-shadow: none;
+    height: auto;
+    min-height: 0;
+  }
+}

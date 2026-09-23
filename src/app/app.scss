@@ -24,7 +24,8 @@
   }
 }
 
-app-top-bar {
+app-top-bar,
+app-side-nav {
   @media print {
     display: none;
   }
@@ -65,11 +66,25 @@ app-top-bar {
 }
 
 @media print {
+  /* Fora do grid/flex de tela cheia: em papel não há viewport pra `1fr`
+     preencher, então tudo que dependia de altura herdada (`flex: 1`,
+     `min-height: 0`, `100dvh`) precisa virar altura natural de conteúdo —
+     senão a página imprime em branco, sem quebrar erro nenhum. */
   :host {
     display: block;
+    height: auto;
   }
 
   .content {
+    display: block;
     padding: 0;
+    min-height: 0;
+    height: auto;
+  }
+
+  .pagina {
+    display: block;
+    min-height: 0;
+    height: auto;
   }
 }

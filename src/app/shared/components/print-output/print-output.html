@@ -1,0 +1,31 @@
+<div class="folha">
+  <button type="button" class="imprimir" aria-label="Imprimir" (click)="imprimir()">
+    <app-icon name="FiPrinter" size="1.1rem" />
+  </button>
+
+  <img class="marca-dagua" src="/assets/logo_vittaly.svg" alt="" aria-hidden="true" />
+
+  <div class="conteudo">
+    <header class="cabecalho">
+      <img class="logo" src="/assets/logo_vittaly.svg" alt="Vittaly" />
+      <strong class="medico">DR. JOÃO SILVA</strong>
+      <span class="especialidade">MEDICINA GERAL</span>
+      <span class="linha-crm">CRM/SP: 12345 | CRM/RJ: 67890</span>
+      <span class="linha-contato">(11) 9 8765-4321 | (21) 9 1234-5678</span>
+      <span class="linha-endereco">Rua Fictícia, 123, Centro, Cidade Imaginária - SP</span>
+    </header>
+
+    @if (patientName()) {
+      <p class="paciente">Paciente: {{ patientName() }}</p>
+    }
+
+    <div class="corpo">
+      <ng-content />
+    </div>
+
+    <footer class="rodape">
+      <div class="linha-assinatura"></div>
+      <span>Assinatura</span>
+    </footer>
+  </div>
+</div>
