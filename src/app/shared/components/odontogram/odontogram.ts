@@ -1,4 +1,5 @@
 import { Component, input, output } from '@angular/core';
+import { Icon } from '../icon/icon';
 
 /** Numeração FDI da dentição permanente, por quadrante — padrão usado em
  *  odontogramas no Brasil (1º quadrante = superior direito, sentido
@@ -18,6 +19,7 @@ export const QUADRANTE_INFERIOR_DIREITO = [41, 42, 43, 44, 45, 46, 47, 48];
  */
 @Component({
   selector: 'app-odontogram',
+  imports: [Icon],
   templateUrl: './odontogram.html',
   styleUrl: './odontogram.scss',
 })

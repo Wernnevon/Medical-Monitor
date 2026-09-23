@@ -1,97 +1,368 @@
-<div class="pagina-exame">
-  <a class="voltar" routerLink="/pacientes">
-    <app-icon name="BsChevronLeft" size="1rem" />
-    Voltar para a lista de pacientes
-  </a>
+<div class="pagina">
+  <div class="principal">
+    <nav class="trilha" aria-label="Trilha de navegação">
+      <a class="voltar" routerLink="/pacientes" aria-label="Voltar para pacientes">
+        <app-icon name="BsChevronLeft" size="0.9rem" />
+      </a>
+      <ol>
+        <li><a routerLink="/pacientes">Pacientes</a></li>
+        @if (paciente(); as p) {
+          <li>
+            <a [routerLink]="['/pacientes/detalhes', p.id]">{{ p.name }}</a>
+          </li>
+        }
+        <li><span aria-current="page">Exames</span></li>
+      </ol>
+    </nav>
 
-  <header class="cabecalho">
-    <h1>Solicitação de Exames</h1>
-    @if (nomePaciente()) {
-      <span class="paciente-vinculado">
-        <app-icon name="HiOutlineUserCircle" size="1.1rem" />
-        {{ nomePaciente() }}
-      </span>
-    }
-  </header>
+    <header class="titulo">
+      <div class="titulo-linha">
+        <h1>Solicitação de Exames</h1>
+        <span class="status" [class.status--emitida]="emitida()">
+          {{ emitida() ? 'Emitida' : 'Rascunho' }}
+        </span>
+      </div>
+      <p>
+        @if (emitida()) {
+          Requisição emitida e vinculada ao prontuário do paciente.
+        } @else {
+          Selecione os exames e adicione outros que não estejam no catálogo. A requisição será
+          vinculada ao prontuário após a emissão.
+        }
+      </p>
+    </header>
 
-  <div class="corpo">
-    <section class="cartao">
-      <h2>Selecione os exames</h2>
-      <div class="categorias">
-        @for (categoria of catalogo; track categoria.tipo) {
-          <div class="categoria" [class.categoria--aberta]="categoriaAberta() === categoria.tipo">
-            <button type="button" class="categoria-cabecalho" (click)="alternarCategoria(categoria.tipo)">
-              <span>{{ categoria.tipo }}</span>
-              <app-icon [name]="categoriaAberta() === categoria.tipo ? 'BsChevronUp' : 'BsChevronDown'" size="0.9rem" />
-            </button>
-            @if (categoriaAberta() === categoria.tipo) {
-              <div class="categoria-itens">
-                @for (nome of categoria.exames; track nome) {
-                  <label class="item-checkbox">
-                    <input
-                      type="checkbox"
-                      [checked]="selecionados().has(nome)"
-                      (change)="alternarExame(nome)"
-                    />
-                    {{ nome }}
-                  </label>
-                }
+    <section class="cartao paciente" aria-label="Paciente">
+      @if (paciente(); as p) {
+        <span class="avatar" aria-hidden="true">{{ iniciais() }}</span>
+        <div class="paciente-dados">
+          <div class="paciente-nome">
+            <h2>{{ p.name }}</h2>
+            <span class="selo-selecionado">
+              <app-icon name="AiOutlineCheckCircle" size="0.75rem" />
+              Paciente selecionado
+            </span>
+          </div>
+          <dl class="paciente-meta">
+            <div>
+              <dt>CPF</dt>
+              <dd>{{ p.cpf }}</dd>
+            </div>
+            <div>
+              <dt>Nasc.</dt>
+              <dd>{{ nascimento() }}</dd>
+            </div>
+            @if (p.health.healthInsurance) {
+              <div>
+                <dt>Convênio</dt>
+                <dd>{{ p.health.healthInsurance }}</dd>
               </div>
             }
-          </div>
-        }
+          </dl>
+        </div>
+        <a class="ver-prontuario" [routerLink]="['/pacientes/detalhes', p.id]">
+          Ver prontuário
+          <app-icon name="FiExternalLink" size="1rem" />
+        </a>
+      } @else {
+        <span class="avatar" aria-hidden="true">
+          <app-icon name="HiOutlineUserCircle" size="1.5rem" />
+        </span>
+        <div class="paciente-dados">
+          <h2>Nenhum paciente selecionado</h2>
+          <p class="ajuda">Abra a solicitação a partir do prontuário para vinculá-la ao paciente.</p>
+        </div>
+        <a class="ver-prontuario" routerLink="/pacientes">Escolher paciente</a>
+      }
+    </section>
 
-        <div class="categoria" [class.categoria--aberta]="categoriaAberta() === 'Odontograma'">
-          <button type="button" class="categoria-cabecalho" (click)="alternarCategoria('Odontograma')">
-            <span>
-              Odontograma
-              @if (dentesSelecionados().size) {
-                ({{ dentesSelecionados().size }})
+    <section class="cartao cartao-exames" aria-labelledby="titulo-exames">
+      <header class="secao-cabecalho">
+        <app-icon class="secao-icone" name="LuFlaskConical" size="1.6rem" />
+        <div>
+          <h2 id="titulo-exames">Selecionar exames</h2>
+          <p class="ajuda">Busque, filtre ou escolha por categoria para adicionar os exames à requisição.</p>
+        </div>
+      </header>
+
+      <label class="busca">
+        <app-icon name="BsSearch" size="0.95rem" />
+        <span class="sr-only">Buscar exame</span>
+        <input
+          type="search"
+          placeholder="Buscar exame por nome…"
+          [value]="busca()"
+          (input)="editarBusca($any($event.target).value)"
+        />
+      </label>
+
+      <div class="selecao">
+        <nav class="categorias" aria-labelledby="titulo-categorias">
+          <h3 id="titulo-categorias">Categorias</h3>
+          <ul>
+            <li>
+              <button
+                type="button"
+                class="categoria"
+                [attr.aria-current]="!busca() && categoriaAtiva() === todos ? 'true' : null"
+                (click)="alternarCategoria(todos)"
+              >
+                <app-icon class="categoria-icone" name="LuFlaskConical" size="1.1rem" />
+                <span class="categoria-nome">{{ todos }}</span>
+              </button>
+            </li>
+            @for (categoria of categorias(); track categoria.tipo) {
+              <li>
+                <button
+                  type="button"
+                  class="categoria"
+                  [attr.aria-current]="!busca() && categoriaAtiva() === categoria.tipo ? 'true' : null"
+                  (click)="alternarCategoria(categoria.tipo)"
+                >
+                  <app-icon class="categoria-icone" [name]="categoria.icone" size="1.1rem" />
+                  <span class="categoria-nome">{{ categoria.tipo }}</span>
+                  @if (selecionadosPorCategoria().get(categoria.tipo); as n) {
+                    <span class="contagem contagem--selecionados" [attr.aria-label]="n + ' selecionados'">
+                      {{ n }}
+                    </span>
+                  } @else if (categoria.total !== null) {
+                    <span class="contagem" [attr.aria-label]="categoria.total + ' exames'">
+                      {{ categoria.total }}
+                    </span>
+                  }
+                </button>
+              </li>
+            }
+          </ul>
+        </nav>
+
+        <div class="painel-exames" role="group" aria-labelledby="titulo-painel">
+          <header class="painel-cabecalho">
+            <app-icon [name]="painel().icone" size="1.4rem" />
+            <div>
+              <h3 id="titulo-painel">{{ painel().titulo }}</h3>
+              @if (painel().odontograma) {
+                <p>Marque os dentes que devem ser avaliados.</p>
+              } @else {
+                <p>{{ painel().total }} {{ painel().total === 1 ? 'exame disponível' : 'exames disponíveis' }}</p>
               }
-            </span>
-            <app-icon [name]="categoriaAberta() === 'Odontograma' ? 'BsChevronUp' : 'BsChevronDown'" size="0.9rem" />
-          </button>
-          @if (categoriaAberta() === 'Odontograma') {
-            <div class="categoria-itens categoria-itens--odontograma">
-              <app-odontogram [selecionados]="dentesSelecionados()" (denteToggle)="alternarDente($event)" />
             </div>
-          }
+          </header>
+
+          <div class="painel-lista">
+            @if (painel().odontograma) {
+              <div class="odontograma">
+                <app-odontogram [selecionados]="dentesSelecionados()" (denteToggle)="alternarDente($event)" />
+              </div>
+            } @else {
+              @for (grupo of painel().grupos; track grupo.tipo) {
+                @if (painel().grupos.length > 1) {
+                  <h4 class="grupo-titulo">{{ grupo.tipo }}</h4>
+                }
+                <ul class="exames exames--colunas">
+                  @for (nome of grupo.exames; track nome) {
+                    <li>
+                      <label class="exame" [class.exame--marcado]="selecionados().has(nome)">
+                        <input
+                          type="checkbox"
+                          [checked]="selecionados().has(nome)"
+                          [disabled]="emitida()"
+                          (change)="alternarExame(nome)"
+                        />
+                        <span>{{ nome }}</span>
+                      </label>
+                    </li>
+                  }
+                </ul>
+              } @empty {
+                <p class="sem-resultado">Nenhum exame encontrado. Se não estiver no catálogo, use "Outros exames" abaixo.</p>
+              }
+            }
+          </div>
         </div>
       </div>
 
-      <label class="outros">
-        <span>Outros exames (um por linha):</span>
+      <section class="outros" aria-labelledby="titulo-outros">
+        <header class="outros-cabecalho">
+          <app-icon name="FiEdit" size="1.2rem" />
+          <div>
+            <h3 id="titulo-outros">Outros exames</h3>
+            <p id="ajuda-outros">Adicione exames que não estão nas categorias acima. Um por linha.</p>
+          </div>
+        </header>
         <textarea
-          rows="4"
+          rows="3"
+          aria-labelledby="titulo-outros"
+          aria-describedby="ajuda-outros contador-outros"
+          [attr.maxlength]="limiteOutros"
+          [disabled]="emitida()"
+          placeholder="Ex.: Ressonância magnética de joelho&#10;Ultrassonografia abdominal total"
           [value]="outrosTexto()"
           (input)="editarOutros($any($event.target).value)"
         ></textarea>
-      </label>
+        <span class="contador" id="contador-outros">{{ outrosTexto().length }}/{{ limiteOutros }}</span>
+      </section>
 
-      <div class="acoes">
-        <app-button styleType="back" (pressed)="limpar()">Limpar</app-button>
-        @if (patientId()) {
-          <app-button
-            styleType="submit"
-            [disabled]="salvando() || salvo() || !todosSelecionados().length"
-            (pressed)="salvar()"
-          >
-            {{ salvando() ? 'Salvando…' : salvo() ? 'Salvo' : 'Salvar' }}
-          </app-button>
-        }
-      </div>
-    </section>
-
-    <app-print-output class="saida" [patientName]="nomePaciente()">
-      @if (todosSelecionados().length) {
-        <ul class="saida-lista">
-          @for (nome of todosSelecionados(); track nome) {
-            <li>● {{ nome }}</li>
+      <footer class="barra-acoes">
+        <p class="aviso">
+          <app-icon name="FiInfo" size="1.1rem" />
+          @if (emitida()) {
+            Requisição vinculada ao prontuário do paciente.
+          } @else {
+            A requisição será vinculada ao prontuário do paciente após a emissão.
           }
-        </ul>
-      } @else {
-        <p class="paragrafo paragrafo--vazio">Nenhum exame selecionado ainda.</p>
-      }
-    </app-print-output>
+        </p>
+
+        <div class="botoes">
+          @if (emitida()) {
+            <button type="button" class="botao-contorno" (click)="visualizarPdf()">
+              <app-icon name="FiPrinter" size="1rem" />
+              Imprimir
+            </button>
+            <button
+              #botaoNovaSolicitacao
+              type="button"
+              class="botao-contorno"
+              (click)="solicitarNovaSolicitacao()"
+            >
+              <app-icon name="FiPlusCircle" size="1rem" />
+              Solicitar mais exames
+            </button>
+            @if (paciente(); as p) {
+              <a class="botao-principal" [routerLink]="['/pacientes/detalhes', p.id]">
+                Voltar ao prontuário
+              </a>
+            }
+          } @else {
+            <button
+              type="button"
+              class="botao-contorno"
+              [disabled]="!todosSelecionados().length"
+              (click)="limpar()"
+            >
+              <app-icon name="RiDeleteBin6Line" size="1rem" />
+              Limpar
+            </button>
+            <button type="button" class="botao-contorno" (click)="visualizarPdf()">
+              <app-icon name="HiOutlineEye" size="1rem" />
+              Visualizar PDF
+            </button>
+            <button
+              #botaoEmitir
+              type="button"
+              class="botao-principal"
+              [disabled]="!patientId() || emitindo() || (tentouEmitir() && !valida())"
+              (click)="solicitarEmissao()"
+            >
+              <app-icon name="FiSend" size="1rem" />
+              Emitir requisição
+            </button>
+          }
+        </div>
+      </footer>
+    </section>
   </div>
+
+  <app-exam-preview
+    class="previa"
+    [paciente]="paciente()"
+    [itens]="itensPreview()"
+    [outros]="outros()"
+    (imprimir)="visualizarPdf()"
+  />
+
+  @if (modalAberto()) {
+    <div class="overlay" (click)="emitindo() ? null : cancelarEmissao()">
+      <section
+        #modal
+        class="modal"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="modal-titulo"
+        aria-describedby="modal-descricao"
+        (click)="$event.stopPropagation()"
+        (keydown)="prenderFoco($event)"
+      >
+        <h2 id="modal-titulo">Emitir requisição de exames?</h2>
+        <div id="modal-descricao">
+          <p>
+            Você está emitindo uma requisição de exames para <strong>{{ paciente()?.name }}</strong>.
+          </p>
+          <p>
+            A requisição será vinculada ao prontuário de {{ paciente()?.name }} e ficará disponível
+            no histórico do paciente.
+          </p>
+        </div>
+        <p class="modal-pergunta">Deseja imprimir a requisição após a emissão?</p>
+        <div class="modal-acoes">
+          <button
+            type="button"
+            class="botao-contorno"
+            [disabled]="emitindo()"
+            (click)="cancelarEmissao()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="botao-contorno"
+            [disabled]="emitindo()"
+            (click)="confirmarEmissao(false)"
+          >
+            Emitir sem imprimir
+          </button>
+          <button
+            type="button"
+            class="botao-principal"
+            data-foco-inicial
+            [disabled]="emitindo()"
+            (click)="confirmarEmissao(true)"
+          >
+            <app-icon name="FiPrinter" size="1rem" />
+            {{ emitindo() ? 'Emitindo…' : 'Emitir e imprimir' }}
+          </button>
+        </div>
+      </section>
+    </div>
+  }
+
+  @if (modalNovaSolicitacaoAberto()) {
+    <div class="overlay" (click)="cancelarNovaSolicitacao()">
+      <section
+        #modalNovaSolicitacao
+        class="modal"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="modal-nova-titulo"
+        aria-describedby="modal-nova-descricao"
+        (click)="$event.stopPropagation()"
+        (keydown)="prenderFocoNovaSolicitacao($event)"
+      >
+        <h2 id="modal-nova-titulo">Solicitar mais exames?</h2>
+        <div id="modal-nova-descricao">
+          <p>
+            A requisição emitida para <strong>{{ paciente()?.name }}</strong> já está salva no
+            prontuário.
+          </p>
+          <p>
+            Depois de continuar, não será mais possível imprimir esta requisição a partir desta
+            tela — um novo rascunho será aberto para a próxima solicitação.
+          </p>
+        </div>
+        <div class="modal-acoes">
+          <button type="button" class="botao-contorno" (click)="cancelarNovaSolicitacao()">
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="botao-principal"
+            data-foco-inicial
+            (click)="confirmarNovaSolicitacao()"
+          >
+            Continuar
+          </button>
+        </div>
+      </section>
+    </div>
+  }
 </div>

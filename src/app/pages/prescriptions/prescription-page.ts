@@ -18,7 +18,7 @@ import { getLocalDateInput } from '@core/utils/date-utils';
 import { PrescriptionStatus, type Patient } from '@domain/entities';
 import { PatientFindById, PrescriptionAdd } from '@domain/tokens';
 import { MedicationCard, type MedicationChange } from './medication-card';
-import { formatarNascimento, iniciais } from './patient-format';
+import { formatarNascimento, iniciais } from '@app/shared/utils/patient-format';
 import {
   LIMITE_ORIENTACOES_GERAIS,
   type MedicationDraft,

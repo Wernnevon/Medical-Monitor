@@ -1,0 +1,347 @@
+:host {
+  display: block;
+}
+
+.painel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+  padding: var(--esp-3);
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-md);
+  box-shadow: var(--sombra-sm);
+}
+
+.abas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: var(--cor-superficie-alt);
+  border-radius: var(--raio-sm);
+}
+
+.aba {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  padding: var(--esp-3);
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: var(--raio-sm) var(--raio-sm) 0 0;
+  background: none;
+  color: var(--cor-texto-suave);
+  font: inherit;
+  font-size: var(--texto-sm);
+  cursor: pointer;
+
+  &[aria-selected='true'] {
+    background-color: var(--cor-marca-suave);
+    border-bottom-color: var(--cor-marca-texto);
+    color: var(--cor-marca-texto);
+    font-weight: var(--peso-forte);
+  }
+}
+
+.impressao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+  padding: var(--esp-4);
+  font-size: var(--texto-sm);
+  color: var(--cor-texto-suave);
+
+  &[hidden] {
+    display: none;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.botao-imprimir {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  min-height: 2.5rem;
+  padding: var(--esp-2) var(--esp-4);
+  border: none;
+  border-radius: var(--raio-sm);
+  background-color: var(--cor-acao);
+  color: var(--cor-texto-invertido);
+  font: inherit;
+  font-weight: var(--peso-medio);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--cor-acao-hover);
+  }
+}
+
+.folha {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 40rem;
+  padding: var(--esp-5) var(--esp-5) var(--esp-4);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-sm);
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto);
+  font-size: var(--texto-xs);
+  overflow: hidden;
+
+  &[hidden] {
+    display: none;
+  }
+
+  > :not(.marca-dagua) {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* A marca é branca (desenhada pro menu navy) — preenchida de preto via
+   filtro e quase transparente vira marca d'água sobre o papel. */
+.marca-dagua {
+  position: absolute;
+  z-index: 0;
+  top: 32%;
+  right: -3rem;
+  width: 14rem;
+  height: auto;
+  filter: brightness(0);
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-3);
+  color: var(--cor-marca-texto);
+}
+
+.logo {
+  width: 2.75rem;
+  height: auto;
+  filter: brightness(0);
+  opacity: 0.85;
+}
+
+:host-context([data-theme='escuro']) .logo,
+:host-context([data-theme='escuro']) .marca-dagua {
+  filter: none;
+}
+
+.marca-texto {
+  display: flex;
+  flex-direction: column;
+}
+
+.marca-nome {
+  font-size: var(--texto-xl);
+  letter-spacing: 0.35em;
+  line-height: 1.1;
+}
+
+.marca-sub {
+  font-size: 0.5rem;
+  font-weight: var(--peso-forte);
+  letter-spacing: 0.12em;
+}
+
+.profissional {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 2px var(--esp-2);
+
+  > * + *::before {
+    content: '·';
+    margin-right: var(--esp-2);
+    color: var(--cor-texto-suave);
+  }
+
+  margin-top: var(--esp-4);
+  padding-bottom: var(--esp-3);
+  border-bottom: 1px solid var(--cor-borda-forte);
+
+  strong {
+    font-size: var(--texto-sm);
+    color: var(--cor-marca-texto);
+  }
+}
+
+.titulo-documento {
+  margin: var(--esp-5) 0 var(--esp-4);
+  text-align: center;
+  text-transform: uppercase;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-forte);
+  letter-spacing: 0.45em;
+  color: var(--cor-marca-texto);
+}
+
+.paciente {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--esp-1) var(--esp-3);
+  margin: 0;
+  padding-bottom: var(--esp-4);
+  border-bottom: 1px solid var(--cor-borda);
+
+  dt {
+    font-weight: var(--peso-forte);
+    color: var(--cor-marca-texto);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.exames {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: item;
+
+  li {
+    counter-increment: item;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: var(--esp-2) 0 var(--esp-2) 1.5rem;
+    border-bottom: 1px solid var(--cor-borda);
+    color: var(--cor-texto-suave);
+    break-inside: avoid;
+
+    &::before {
+      content: counter(item) '.';
+      position: absolute;
+      left: 0;
+      font-weight: var(--peso-forte);
+      color: var(--cor-marca-texto);
+    }
+  }
+
+  strong {
+    color: var(--cor-marca-texto);
+    font-size: var(--texto-sm);
+  }
+}
+
+.exames--colunas {
+  columns: 2;
+  column-gap: var(--esp-5);
+}
+
+.outros {
+  margin-top: var(--esp-4);
+
+  h4 {
+    margin: 0 0 var(--esp-2);
+    font-size: var(--texto-xs);
+    color: var(--cor-marca-texto);
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+
+.vazio {
+  margin: var(--esp-3) 0 0;
+  color: var(--cor-texto-suave);
+  font-style: italic;
+}
+
+.vazio--separado {
+  padding-bottom: var(--esp-4);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.rodape {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: var(--esp-3);
+  margin-top: auto;
+  padding-top: var(--esp-6);
+  color: var(--cor-texto-suave);
+  break-inside: avoid;
+}
+
+.assinatura {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 14rem;
+  padding-top: var(--esp-2);
+  border-top: 1px solid var(--cor-texto);
+}
+
+.assinatura-linha {
+  display: flex;
+  align-items: baseline;
+  gap: var(--esp-2);
+
+  strong {
+    color: var(--cor-marca-texto);
+  }
+}
+
+@media print {
+  .painel {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  .abas,
+  .impressao {
+    display: none !important;
+  }
+
+  /* Papel é sempre branco: no tema escuro os tokens deixariam texto claro
+     e a logo branca (sem filtro), invisíveis na impressão. */
+  .folha,
+  .folha[hidden] {
+    --cor-superficie: #fff;
+    --cor-texto: #1c2430;
+    --cor-texto-suave: #667085;
+    --cor-marca-texto: #071c55;
+    --cor-borda: #e4e7ec;
+    --cor-borda-forte: #7c89a0;
+
+    display: flex !important;
+    min-height: 100vh;
+    border: none;
+    font-size: var(--texto-sm);
+  }
+
+  .logo,
+  .marca-dagua {
+    filter: brightness(0) !important;
+    print-color-adjust: exact;
+  }
+
+  .marca-dagua {
+    top: 30%;
+    right: -18%;
+    left: auto;
+    width: 75%;
+    transform: none;
+    opacity: 0.06;
+  }
+}

@@ -39,10 +39,10 @@ import { PopupService } from '@app/shared/services/popup';
           </main>
           <footer>
             <app-button styleType="back" (pressed)="service.cancel()">
-              Cancelar
+              {{ state().data.cancelLabel ?? 'Cancelar' }}
             </app-button>
             <app-button styleType="submit" (pressed)="service.confirm()">
-              Confirmar
+              {{ state().data.confirmLabel ?? 'Confirmar' }}
             </app-button>
           </footer>
         </section>

@@ -1,61 +1,83 @@
 <div class="odontograma">
-  <div class="arco arco--superior">
-    <div class="quadrante">
-      @for (dente of superiorDireito; track dente) {
-        <button
-          type="button"
-          class="dente"
-          [class.dente--selecionado]="selecionados().has(dente)"
-          [attr.aria-pressed]="selecionados().has(dente)"
-          (click)="denteToggle.emit(dente)"
-        >
-          {{ dente }}
-        </button>
-      }
+  <section class="arco">
+    <h4 class="arco-titulo">Arco superior</h4>
+    <div class="fileira">
+      <div class="quadrante">
+        @for (dente of superiorDireito; track dente) {
+          <button
+            type="button"
+            class="dente"
+            [class.dente--selecionado]="selecionados().has(dente)"
+            [attr.aria-pressed]="selecionados().has(dente)"
+            (click)="denteToggle.emit(dente)"
+          >
+            <span class="sr-only">Dente</span>
+            {{ dente }}
+            @if (selecionados().has(dente)) {
+              <app-icon class="dente-marca" name="AiOutlineCheckCircle" size="0.9rem" />
+            }
+          </button>
+        }
+      </div>
+      <div class="linha-media" aria-hidden="true"></div>
+      <div class="quadrante">
+        @for (dente of superiorEsquerdo; track dente) {
+          <button
+            type="button"
+            class="dente"
+            [class.dente--selecionado]="selecionados().has(dente)"
+            [attr.aria-pressed]="selecionados().has(dente)"
+            (click)="denteToggle.emit(dente)"
+          >
+            <span class="sr-only">Dente</span>
+            {{ dente }}
+            @if (selecionados().has(dente)) {
+              <app-icon class="dente-marca" name="AiOutlineCheckCircle" size="0.9rem" />
+            }
+          </button>
+        }
+      </div>
     </div>
-    <div class="linha-media"></div>
-    <div class="quadrante">
-      @for (dente of superiorEsquerdo; track dente) {
-        <button
-          type="button"
-          class="dente"
-          [class.dente--selecionado]="selecionados().has(dente)"
-          [attr.aria-pressed]="selecionados().has(dente)"
-          (click)="denteToggle.emit(dente)"
-        >
-          {{ dente }}
-        </button>
-      }
-    </div>
-  </div>
+  </section>
 
-  <div class="arco arco--inferior">
-    <div class="quadrante">
-      @for (dente of inferiorDireito; track dente) {
-        <button
-          type="button"
-          class="dente"
-          [class.dente--selecionado]="selecionados().has(dente)"
-          [attr.aria-pressed]="selecionados().has(dente)"
-          (click)="denteToggle.emit(dente)"
-        >
-          {{ dente }}
-        </button>
-      }
+  <section class="arco">
+    <h4 class="arco-titulo">Arco inferior</h4>
+    <div class="fileira">
+      <div class="quadrante">
+        @for (dente of inferiorDireito; track dente) {
+          <button
+            type="button"
+            class="dente"
+            [class.dente--selecionado]="selecionados().has(dente)"
+            [attr.aria-pressed]="selecionados().has(dente)"
+            (click)="denteToggle.emit(dente)"
+          >
+            <span class="sr-only">Dente</span>
+            {{ dente }}
+            @if (selecionados().has(dente)) {
+              <app-icon class="dente-marca" name="AiOutlineCheckCircle" size="0.9rem" />
+            }
+          </button>
+        }
+      </div>
+      <div class="linha-media" aria-hidden="true"></div>
+      <div class="quadrante">
+        @for (dente of inferiorEsquerdo; track dente) {
+          <button
+            type="button"
+            class="dente"
+            [class.dente--selecionado]="selecionados().has(dente)"
+            [attr.aria-pressed]="selecionados().has(dente)"
+            (click)="denteToggle.emit(dente)"
+          >
+            <span class="sr-only">Dente</span>
+            {{ dente }}
+            @if (selecionados().has(dente)) {
+              <app-icon class="dente-marca" name="AiOutlineCheckCircle" size="0.9rem" />
+            }
+          </button>
+        }
+      </div>
     </div>
-    <div class="linha-media"></div>
-    <div class="quadrante">
-      @for (dente of inferiorEsquerdo; track dente) {
-        <button
-          type="button"
-          class="dente"
-          [class.dente--selecionado]="selecionados().has(dente)"
-          [attr.aria-pressed]="selecionados().has(dente)"
-          (click)="denteToggle.emit(dente)"
-        >
-          {{ dente }}
-        </button>
-      }
-    </div>
-  </div>
+  </section>
 </div>

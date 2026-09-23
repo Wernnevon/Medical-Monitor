@@ -1,6 +1,7 @@
 import type { Routes } from '@angular/router';
 import { authGuard, guestGuard } from './shared/guards/auth-guard';
 import { professionalOnlyGuard } from './shared/guards/role-guard';
+import { examLeaveGuard } from './pages/exams/exam-leave-guard';
 
 /**
  * Espelha `legacy/src/Presentation/routes.tsx`.
@@ -75,6 +76,7 @@ export const routes: Routes = [
       {
         path: 'exames',
         canActivate: [professionalOnlyGuard],
+        canDeactivate: [examLeaveGuard],
         loadComponent: () => import('./pages/exams/exam-page').then((m) => m.ExamPage),
       },
       {

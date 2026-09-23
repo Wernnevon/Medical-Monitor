@@ -5,6 +5,8 @@ export type PopupData = {
   icon?: IconName;
   title: string;
   message: string;
+  confirmLabel?: string;
+  cancelLabel?: string;
 };
 
 export type PopupRequest = {

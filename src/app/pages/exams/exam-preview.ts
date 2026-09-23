@@ -3,11 +3,12 @@ import { Component, computed, inject, input, output, signal } from '@angular/cor
 import { Icon } from '@app/shared/components/icon/icon';
 import { nomeComTitulo } from '@app/shared/components/print-output/print-output';
 import { AuthService } from '@app/shared/services/auth';
-import type { Patient } from '@domain/entities';
 import { formatarNascimento } from '@app/shared/utils/patient-format';
-import { type MedicationDraft, posologia, resumo } from './prescription-draft';
+import type { Patient } from '@domain/entities';
 
 type Aba = 'previa' | 'impressao';
+
+export type ExamPreviewItem = { nome: string; categoria: string };
 
 const FORMATO_DATA: Intl.DateTimeFormatOptions = {
   day: 'numeric',
@@ -16,24 +17,28 @@ const FORMATO_DATA: Intl.DateTimeFormatOptions = {
 };
 
 /**
- * Pré-visualização da receita como documento. É também o que sai na
- * impressão: a página esconde todo o resto via `@media print`, e a folha
- * aparece mesmo com a aba "Impressão" selecionada.
+ * Pré-visualização da requisição de exames como documento — mirror de
+ * `PrescriptionPreview`. Também é o que sai na impressão: a página esconde
+ * todo o resto via `@media print`, e a folha aparece mesmo com a aba
+ * "Impressão" selecionada.
  */
 @Component({
-  selector: 'app-prescription-preview',
+  selector: 'app-exam-preview',
   imports: [Icon, NgOptimizedImage],
-  templateUrl: './prescription-preview.html',
-  styleUrl: './prescription-preview.scss',
+  templateUrl: './exam-preview.html',
+  styleUrl: './exam-preview.scss',
 })
-export class PrescriptionPreview {
+export class ExamPreview {
   readonly paciente = input<Patient | null>(null);
-  readonly medicamentos = input<MedicationDraft[]>([]);
-  readonly orientacoesGerais = input('');
+  readonly itens = input<ExamPreviewItem[]>([]);
+  readonly outros = input<string[]>([]);
 
   readonly imprimir = output<void>();
 
   private readonly usuario = inject(AuthService).usuarioAtual;
+
+  /** Até aqui a lista cabe numa folha A4 em uma coluna; acima, vai para duas. */
+  protected readonly limiteUmaColuna = 10;
 
   protected readonly aba = signal<Aba>('previa');
 
@@ -43,25 +48,6 @@ export class PrescriptionPreview {
     const c = this.usuario()?.council;
     return c ? `${c.type} ${c.number}` : '';
   });
-
-  protected readonly itens = computed(() =>
-    this.medicamentos()
-      .filter((item) => item.name.trim())
-      .map((item) => ({
-        key: item.key,
-        nome: item.name.trim(),
-        resumo: resumo(item),
-        posologia: posologia(item),
-        orientacoes: item.instructions.trim(),
-      })),
-  );
-
-  protected readonly orientacoes = computed(() =>
-    this.orientacoesGerais()
-      .split('\n')
-      .map((linha) => linha.trim())
-      .filter(Boolean),
-  );
 
   protected readonly nascimento = computed(() => {
     const p = this.paciente();

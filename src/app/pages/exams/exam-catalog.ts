@@ -1,3 +1,5 @@
+import type { IconName } from '@app/shared/components/icon/icons';
+
 /**
  * Catálogo estático de exames por categoria, oferecido como checklist na
  * tela de solicitação. Espelha `legacy/src/Presentation/Hooks/useExam` —
@@ -6,12 +8,14 @@
  */
 export type CategoriaExame = {
   tipo: string;
+  icone: IconName;
   exames: string[];
 };
 
 export const CATALOGO_EXAMES: CategoriaExame[] = [
   {
     tipo: 'Hormônio',
+    icone: 'LuActivity',
     exames: [
       'TSH',
       'T3 Total',
@@ -29,6 +33,7 @@ export const CATALOGO_EXAMES: CategoriaExame[] = [
   },
   {
     tipo: 'Hematologia',
+    icone: 'LuDroplet',
     exames: [
       'Hemograma Completo',
       'Coagulograma',
@@ -45,6 +50,7 @@ export const CATALOGO_EXAMES: CategoriaExame[] = [
   },
   {
     tipo: 'Bioquímica',
+    icone: 'LuFlaskConical',
     exames: [
       'Glicose de Jejum',
       'Glicose pós Prandial',
@@ -71,6 +77,7 @@ export const CATALOGO_EXAMES: CategoriaExame[] = [
   },
   {
     tipo: 'Imunologia',
+    icone: 'LuShieldCheck',
     exames: [
       'ASLO',
       'PCR',
@@ -84,6 +91,7 @@ export const CATALOGO_EXAMES: CategoriaExame[] = [
   },
   {
     tipo: 'Parasitologia',
+    icone: 'LuBug',
     exames: [
       'Parasitológico de Fezes',
       'MIF',
@@ -95,10 +103,12 @@ export const CATALOGO_EXAMES: CategoriaExame[] = [
   },
   {
     tipo: 'Marcadores Tumorais',
+    icone: 'LuTarget',
     exames: ['CEA', 'CA 125', 'CA 19-9', 'PSA Total', 'PSA Livre'],
   },
   {
     tipo: 'Microbiologia',
+    icone: 'LuMicroscope',
     exames: [
       'Cultura de Sec. Orofaringe',
       'Cultura de Sec. Vaginal',
@@ -111,6 +121,7 @@ export const CATALOGO_EXAMES: CategoriaExame[] = [
   },
   {
     tipo: 'Urianálise',
+    icone: 'LuTestTube',
     exames: [
       'Sumário de Urina - EAS',
       'Urocultura - Cultura de Urina',

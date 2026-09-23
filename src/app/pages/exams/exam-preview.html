@@ -1,0 +1,140 @@
+<div class="painel">
+  <div class="abas" role="tablist" aria-label="Visualização da requisição" (keydown)="navegarAbas($event)">
+    <button
+      id="aba-previa"
+      type="button"
+      role="tab"
+      class="aba"
+      aria-controls="painel-previa"
+      [attr.aria-selected]="aba() === 'previa'"
+      [attr.tabindex]="aba() === 'previa' ? 0 : -1"
+      (click)="selecionar('previa')"
+    >
+      <app-icon name="FiFileText" size="1rem" />
+      Pré-visualização
+    </button>
+    <button
+      id="aba-impressao"
+      type="button"
+      role="tab"
+      class="aba"
+      aria-controls="painel-impressao"
+      [attr.aria-selected]="aba() === 'impressao'"
+      [attr.tabindex]="aba() === 'impressao' ? 0 : -1"
+      (click)="selecionar('impressao')"
+    >
+      <app-icon name="FiPrinter" size="1rem" />
+      Impressão
+    </button>
+  </div>
+
+  <div
+    id="painel-impressao"
+    class="impressao"
+    role="tabpanel"
+    aria-labelledby="aba-impressao"
+    [hidden]="aba() !== 'impressao'"
+  >
+    <p>
+      A requisição sai em uma folha A4, com o timbrado, os dados do paciente e o espaço para
+      assinatura. Para gerar o PDF, escolha "Salvar como PDF" na janela de impressão.
+    </p>
+    <button type="button" class="botao-imprimir" (click)="imprimir.emit()">
+      <app-icon name="FiPrinter" size="1rem" />
+      Imprimir requisição
+    </button>
+  </div>
+
+  <article
+    id="painel-previa"
+    class="folha"
+    role="tabpanel"
+    aria-labelledby="aba-previa"
+    [hidden]="aba() !== 'previa'"
+  >
+    <img
+      class="marca-dagua"
+      ngSrc="/assets/logo_vittaly.svg"
+      width="130"
+      height="137"
+      alt=""
+      aria-hidden="true"
+      priority
+    />
+
+    <header class="marca">
+      <img class="logo" ngSrc="/assets/logo_vittaly.svg" width="130" height="137" alt="" priority />
+      <div class="marca-texto">
+        <span class="marca-nome">VITTALY</span>
+        <span class="marca-sub">CENTRO MÉDICO ODONTOLÓGICO</span>
+      </div>
+    </header>
+
+    <div class="profissional">
+      <strong>{{ nomeProfissional() }}</strong>
+      @if (especialidade()) {
+        <span>{{ especialidade() }}</span>
+      }
+      @if (conselho()) {
+        <span>{{ conselho() }}</span>
+      }
+    </div>
+
+    <h3 class="titulo-documento">Requisição de exames</h3>
+
+    @if (paciente(); as p) {
+      <dl class="paciente">
+        <dt>Paciente:</dt>
+        <dd>{{ p.name }}</dd>
+        <dt>CPF:</dt>
+        <dd>{{ p.cpf }}</dd>
+        <dt>Data de nascimento:</dt>
+        <dd>{{ nascimento() }}</dd>
+        @if (p.health.healthInsurance) {
+          <dt>Convênio:</dt>
+          <dd>{{ p.health.healthInsurance }}</dd>
+        }
+      </dl>
+    } @else {
+      <p class="vazio">Nenhum paciente selecionado.</p>
+    }
+
+    @if (itens().length || outros().length) {
+      @if (itens().length) {
+        <ol class="exames" [class.exames--colunas]="itens().length > limiteUmaColuna">
+          @for (item of itens(); track item.nome) {
+            <li>
+              <strong>{{ item.nome }}</strong>
+              <span>{{ item.categoria }}</span>
+            </li>
+          }
+        </ol>
+      }
+
+      @if (outros().length) {
+        <section class="outros">
+          <h4>Outros exames:</h4>
+          <ul>
+            @for (linha of outros(); track $index) {
+              <li>{{ linha }}</li>
+            }
+          </ul>
+        </section>
+      }
+    } @else {
+      <p class="vazio vazio--separado">Nenhum exame selecionado ainda.</p>
+    }
+
+    <footer class="rodape">
+      <span class="data">{{ data }}, São João do Rio do Peixe - PB, CEP 58910-000</span>
+      <div class="assinatura">
+        <span class="assinatura-linha">
+          <strong>{{ nomeProfissional() }}</strong>
+          @if (conselho()) {
+            <span>{{ conselho() }}</span>
+          }
+        </span>
+      </div>
+    </footer>
+  </article>
+</div>
