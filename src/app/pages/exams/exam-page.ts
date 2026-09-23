@@ -36,6 +36,10 @@ export class ExamPage {
   protected readonly outrosTexto = signal('');
   protected readonly nomePaciente = signal('');
   protected readonly salvando = signal(false);
+  /** Fica `true` depois de salvar, até o usuário mexer na seleção ou no
+   *  texto de novo — trava o botão pra não duplicar o registro enquanto os
+   *  dados continuam na tela só pra permitir imprimir em seguida. */
+  protected readonly salvo = signal(false);
 
   protected readonly outros = computed(() =>
     this.outrosTexto()
@@ -73,11 +77,18 @@ export class ExamPage {
       else proximo.add(nome);
       return proximo;
     });
+    this.salvo.set(false);
+  }
+
+  protected editarOutros(valor: string): void {
+    this.outrosTexto.set(valor);
+    this.salvo.set(false);
   }
 
   protected limpar(): void {
     this.selecionados.set(new Set());
     this.outrosTexto.set('');
+    this.salvo.set(false);
     this.toast.add('Limpo', ToastType.SUCESS);
   }
 
@@ -105,8 +116,9 @@ export class ExamPage {
         `Exames vinculados ao paciente ${this.nomePaciente()}`,
         ToastType.SUCESS,
       );
-      this.selecionados.set(new Set());
-      this.outrosTexto.set('');
+      // Sem limpar o formulário: os dados continuam na tela pra dar tempo
+      // de imprimir a solicitação salva antes de começar a próxima.
+      this.salvo.set(true);
     } catch {
       this.toast.add(
         'Não foi possível vincular os exames ao paciente, tente novamente mais tarde',

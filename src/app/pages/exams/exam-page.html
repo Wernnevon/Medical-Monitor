@@ -47,7 +47,7 @@
         <textarea
           rows="4"
           [value]="outrosTexto()"
-          (input)="outrosTexto.set($any($event.target).value)"
+          (input)="editarOutros($any($event.target).value)"
         ></textarea>
       </label>
 
@@ -56,10 +56,10 @@
         @if (patientId()) {
           <app-button
             styleType="submit"
-            [disabled]="salvando() || !todosSelecionados().length"
+            [disabled]="salvando() || salvo() || !todosSelecionados().length"
             (pressed)="salvar()"
           >
-            {{ salvando() ? 'Salvando…' : 'Salvar' }}
+            {{ salvando() ? 'Salvando…' : salvo() ? 'Salvo' : 'Salvar' }}
           </app-button>
         }
       </div>

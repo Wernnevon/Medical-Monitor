@@ -16,14 +16,39 @@
 
   <div class="corpo">
     <section class="cartao">
-      <h2>Informe as medicações</h2>
+      <h2>Selecione as medicações</h2>
+      <div class="categorias">
+        @for (categoria of catalogo; track categoria.tipo) {
+          <div class="categoria" [class.categoria--aberta]="categoriaAberta() === categoria.tipo">
+            <button type="button" class="categoria-cabecalho" (click)="alternarCategoria(categoria.tipo)">
+              <span>{{ categoria.tipo }}</span>
+              <app-icon [name]="categoriaAberta() === categoria.tipo ? 'BsChevronUp' : 'BsChevronDown'" size="0.9rem" />
+            </button>
+            @if (categoriaAberta() === categoria.tipo) {
+              <div class="categoria-itens">
+                @for (nome of categoria.medicamentos; track nome) {
+                  <label class="item-checkbox">
+                    <input
+                      type="checkbox"
+                      [checked]="selecionados().has(nome)"
+                      (change)="alternarMedicamento(nome)"
+                    />
+                    {{ nome }}
+                  </label>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+
       <label class="medicamentos">
-        <span>Um medicamento por linha:</span>
+        <span>Outras medicações (uma por linha):</span>
         <textarea
-          rows="10"
+          rows="6"
           placeholder="Ex.: Dipirona 500mg — 1 comprimido a cada 6 horas"
           [value]="medicamentosTexto()"
-          (input)="medicamentosTexto.set($any($event.target).value)"
+          (input)="editarTexto($any($event.target).value)"
         ></textarea>
       </label>
 
@@ -32,10 +57,10 @@
         @if (patientId()) {
           <app-button
             styleType="submit"
-            [disabled]="salvando() || !medicamentos().length"
+            [disabled]="salvando() || salvo() || !medicamentos().length"
             (pressed)="salvar()"
           >
-            {{ salvando() ? 'Salvando…' : 'Salvar' }}
+            {{ salvando() ? 'Salvando…' : salvo() ? 'Salvo' : 'Salvar' }}
           </app-button>
         }
       </div>

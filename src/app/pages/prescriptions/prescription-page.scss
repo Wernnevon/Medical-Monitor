@@ -81,6 +81,51 @@
   }
 }
 
+.categorias {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+.categoria {
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-sm);
+  overflow: hidden;
+}
+
+.categoria-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--esp-2) var(--esp-3);
+  background: none;
+  border: none;
+  color: var(--cor-texto);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--cor-superficie-alt);
+  }
+}
+
+.categoria-itens {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--esp-1) var(--esp-3);
+  padding: var(--esp-2) var(--esp-3) var(--esp-3);
+}
+
+.item-checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  font-size: var(--texto-sm);
+  cursor: pointer;
+}
+
 .medicamentos {
   display: flex;
   flex-direction: column;
