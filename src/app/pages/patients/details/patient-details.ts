@@ -164,20 +164,29 @@ export class PatientDetails {
   private readonly alternarStatusExame = inject(ExamChangeStatus);
   private readonly alternarStatusReceita = inject(PrescriptionChangeStatus);
 
-  protected async alterarStatus(id: string | number): Promise<void> {
+  protected alterarStatus(id: string | number): void {
     const item = this.facade.historico().find((registro) => registro.id === id);
     if (!item) return;
 
-    try {
-      if (item.tipo === 'exame') {
-        await this.alternarStatusExame.changeStatus({ id: String(id) });
-      } else {
-        await this.alternarStatusReceita.changeStatus({ id: String(id) });
-      }
-      this.facade.reloadHistorico();
-    } catch {
-      this.toast.add('Não foi possível alterar o status', ToastType.ERROR);
-    }
+    const tipoNome = item.tipo === 'exame' ? 'Exame' : 'Receita';
+    this.popup.show({
+      data: {
+        title: `Alterar status de ${tipoNome}?`,
+        message: 'A coluna "Atualizado em" será atualizada com a data e hora atuais.',
+      },
+      onConfirm: async () => {
+        try {
+          if (item.tipo === 'exame') {
+            await this.alternarStatusExame.changeStatus({ id: String(id) });
+          } else {
+            await this.alternarStatusReceita.changeStatus({ id: String(id) });
+          }
+          this.facade.reloadHistorico();
+        } catch {
+          this.toast.add('Não foi possível alterar o status', ToastType.ERROR);
+        }
+      },
+    });
   }
 
   protected async salvarAnotacao(): Promise<void> {
