@@ -8,6 +8,27 @@ export type BloodPressureReading = {
   value: string;
 };
 
+export type GlycemiaReading = {
+  id: string;
+  measuredAt: string;
+  /** Valor da glicemia em mg/dL. */
+  value: string;
+};
+
+export type OxygenSaturationReading = {
+  id: string;
+  measuredAt: string;
+  /** Valor da saturação de oxigênio em %. */
+  value: string;
+};
+
+export type HeartRateReading = {
+  id: string;
+  measuredAt: string;
+  /** Valor da frequência cardíaca em bpm. */
+  value: string;
+};
+
 type Health = {
   healthInsurance: string;
   allergy?: string;
@@ -15,6 +36,9 @@ type Health = {
   height?: number;
   bloodType?: string;
   bloodPressureReadings?: BloodPressureReading[];
+  glycemiaReadings?: GlycemiaReading[];
+  oxygenSaturationReadings?: OxygenSaturationReading[];
+  heartRateReadings?: HeartRateReading[];
 };
 
 export default Health;

@@ -165,6 +165,24 @@
                       <dd>{{ u.value }} mmHg · {{ formatarDataHora(u.measuredAt) }}</dd>
                     </div>
                   }
+                  @if (ultimaGlicemia(); as u) {
+                    <div>
+                      <dt>Glicemia (última)</dt>
+                      <dd>{{ u.value }} mg/dL · {{ formatarDataHora(u.measuredAt) }}</dd>
+                    </div>
+                  }
+                  @if (ultimaSaturacao(); as u) {
+                    <div>
+                      <dt>Saturação de O2 (última)</dt>
+                      <dd>{{ u.value }}% · {{ formatarDataHora(u.measuredAt) }}</dd>
+                    </div>
+                  }
+                  @if (ultimaFrequenciaCardiaca(); as u) {
+                    <div>
+                      <dt>Frequência cardíaca (última)</dt>
+                      <dd>{{ u.value }} bpm · {{ formatarDataHora(u.measuredAt) }}</dd>
+                    </div>
+                  }
                 </dl>
                 @if (!paciente.health.weight && !paciente.health.height && !paciente.health.bloodType) {
                   <p class="paragrafo paragrafo--vazio">Nenhum dado clínico registrado.</p>
@@ -219,6 +237,180 @@
                             class="pressao-excluir"
                             aria-label="Excluir leitura"
                             (click)="excluirLeitura(paciente, leitura)"
+                          >
+                            <app-icon name="RiDeleteBin6Line" size="1rem" />
+                          </button>
+                        </li>
+                      }
+                    </ul>
+                  }
+                </div>
+
+                <div class="glicemia">
+                  <h3>Registrar Glicemia</h3>
+                  <div class="glicemia-campos">
+                    <label>
+                      <span>Data</span>
+                      <input
+                        type="date"
+                        [value]="glicemiaData()"
+                        (input)="glicemiaData.set($any($event.target).value)"
+                      />
+                    </label>
+                    <label>
+                      <span>Horário</span>
+                      <input
+                        type="time"
+                        [value]="glicemiaHora()"
+                        (input)="glicemiaHora.set($any($event.target).value)"
+                      />
+                    </label>
+                    <label>
+                      <span>Glicemia (mg/dL)</span>
+                      <input
+                        type="text"
+                        placeholder="120"
+                        inputmode="numeric"
+                        [value]="glicemiaValor()"
+                        (input)="onGlicemiaInput($event)"
+                      />
+                    </label>
+                    <app-button
+                      styleType="submit"
+                      [disabled]="registrandoGlicemia() || !glicemiaData() || !glicemiaHora() || !glicemiaValor()"
+                      (pressed)="registrarGlicemia(paciente)"
+                    >
+                      {{ registrandoGlicemia() ? 'Registrando…' : 'Registrar' }}
+                    </app-button>
+                  </div>
+
+                  @if (glycemiaReadings().length) {
+                    <ul class="glicemia-historico">
+                      @for (leitura of glycemiaReadings(); track leitura.id) {
+                        <li>
+                          <span>{{ formatarDataHora(leitura.measuredAt) }}</span>
+                          <strong>{{ leitura.value }} mg/dL</strong>
+                          <button
+                            type="button"
+                            class="glicemia-excluir"
+                            aria-label="Excluir leitura"
+                            (click)="excluirGlicemia(paciente, leitura)"
+                          >
+                            <app-icon name="RiDeleteBin6Line" size="1rem" />
+                          </button>
+                        </li>
+                      }
+                    </ul>
+                  }
+                </div>
+
+                <div class="saturacao">
+                  <h3>Registrar Saturação de Oxigênio</h3>
+                  <div class="saturacao-campos">
+                    <label>
+                      <span>Data</span>
+                      <input
+                        type="date"
+                        [value]="saturacaoData()"
+                        (input)="saturacaoData.set($any($event.target).value)"
+                      />
+                    </label>
+                    <label>
+                      <span>Horário</span>
+                      <input
+                        type="time"
+                        [value]="saturacaoHora()"
+                        (input)="saturacaoHora.set($any($event.target).value)"
+                      />
+                    </label>
+                    <label>
+                      <span>Saturação (%)</span>
+                      <input
+                        type="text"
+                        placeholder="98"
+                        inputmode="numeric"
+                        [value]="saturacaoValor()"
+                        (input)="onSaturacaoInput($event)"
+                      />
+                    </label>
+                    <app-button
+                      styleType="submit"
+                      [disabled]="registrandoSaturacao() || !saturacaoData() || !saturacaoHora() || !saturacaoValor()"
+                      (pressed)="registrarSaturacao(paciente)"
+                    >
+                      {{ registrandoSaturacao() ? 'Registrando…' : 'Registrar' }}
+                    </app-button>
+                  </div>
+
+                  @if (oxygenReadings().length) {
+                    <ul class="saturacao-historico">
+                      @for (leitura of oxygenReadings(); track leitura.id) {
+                        <li>
+                          <span>{{ formatarDataHora(leitura.measuredAt) }}</span>
+                          <strong>{{ leitura.value }}%</strong>
+                          <button
+                            type="button"
+                            class="saturacao-excluir"
+                            aria-label="Excluir leitura"
+                            (click)="excluirSaturacao(paciente, leitura)"
+                          >
+                            <app-icon name="RiDeleteBin6Line" size="1rem" />
+                          </button>
+                        </li>
+                      }
+                    </ul>
+                  }
+                </div>
+
+                <div class="frequencia">
+                  <h3>Registrar Frequência Cardíaca</h3>
+                  <div class="frequencia-campos">
+                    <label>
+                      <span>Data</span>
+                      <input
+                        type="date"
+                        [value]="frequenciaData()"
+                        (input)="frequenciaData.set($any($event.target).value)"
+                      />
+                    </label>
+                    <label>
+                      <span>Horário</span>
+                      <input
+                        type="time"
+                        [value]="frequenciaHora()"
+                        (input)="frequenciaHora.set($any($event.target).value)"
+                      />
+                    </label>
+                    <label>
+                      <span>Frequência Cardíaca (bpm)</span>
+                      <input
+                        type="text"
+                        placeholder="72"
+                        inputmode="numeric"
+                        [value]="frequenciaValor()"
+                        (input)="onFrequenciaInput($event)"
+                      />
+                    </label>
+                    <app-button
+                      styleType="submit"
+                      [disabled]="registrandoFrequencia() || !frequenciaData() || !frequenciaHora() || !frequenciaValor()"
+                      (pressed)="registrarFrequencia(paciente)"
+                    >
+                      {{ registrandoFrequencia() ? 'Registrando…' : 'Registrar' }}
+                    </app-button>
+                  </div>
+
+                  @if (heartRateReadings().length) {
+                    <ul class="frequencia-historico">
+                      @for (leitura of heartRateReadings(); track leitura.id) {
+                        <li>
+                          <span>{{ formatarDataHora(leitura.measuredAt) }}</span>
+                          <strong>{{ leitura.value }} bpm</strong>
+                          <button
+                            type="button"
+                            class="frequencia-excluir"
+                            aria-label="Excluir leitura"
+                            (click)="excluirFrequencia(paciente, leitura)"
                           >
                             <app-icon name="RiDeleteBin6Line" size="1rem" />
                           </button>

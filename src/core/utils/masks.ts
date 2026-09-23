@@ -40,13 +40,33 @@ export function mascaraPressao(valor: string): string {
   return `${digitos.slice(0, 3)}/${digitos.slice(3)}`;
 }
 
-export type NomeMascara = 'cpf' | 'rg' | 'telefone' | 'pressao';
+/** Glicemia em mg/dL — até 3 dígitos (0-999). */
+export function mascaraGlicemia(valor: string): string {
+  return valor.replace(/\D/g, '').slice(0, 3);
+}
+
+/** Saturação de oxigênio em % — até 3 dígitos, máximo 100. */
+export function mascaraSaturacao(valor: string): string {
+  const digitos = valor.replace(/\D/g, '').slice(0, 3);
+  const numero = parseInt(digitos, 10) || 0;
+  return numero > 100 ? '100' : digitos;
+}
+
+/** Frequência cardíaca em bpm — até 3 dígitos (0-999). */
+export function mascaraFrequenciaCardiaca(valor: string): string {
+  return valor.replace(/\D/g, '').slice(0, 3);
+}
+
+export type NomeMascara = 'cpf' | 'rg' | 'telefone' | 'pressao' | 'glicemia' | 'saturacao' | 'frequencia';
 
 export const MASCARAS: Record<NomeMascara, (valor: string) => string> = {
   cpf: mascaraCPF,
   rg: mascaraRG,
   telefone: mascaraTelefone,
   pressao: mascaraPressao,
+  glicemia: mascaraGlicemia,
+  saturacao: mascaraSaturacao,
+  frequencia: mascaraFrequenciaCardiaca,
 };
 
 /** Remove tudo que não for dígito. Útil para validar o conteúdo mascarado. */
