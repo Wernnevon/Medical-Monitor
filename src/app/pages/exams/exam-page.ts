@@ -13,28 +13,26 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Icon } from '@app/shared/components/icon/icon';
-import { Odontogram } from '@app/shared/components/odontogram/odontogram';
+import { Odontogram, dentesDaDenticao, type Denticao } from '@app/shared/components/odontogram/odontogram';
 import { AuthService } from '@app/shared/services/auth';
 import { PopupService } from '@app/shared/services/popup';
 import { ToastService, ToastType } from '@app/shared/services/toast';
 import { formatarNascimento, iniciais } from '@app/shared/utils/patient-format';
 import { getLocalDateInput } from '@core/utils/date-utils';
-import { CouncilType, ExamStatus, type Patient } from '@domain/entities';
+import { ExamStatus, type Patient } from '@domain/entities';
 import { ExamAdd, PatientFindById } from '@domain/tokens';
 import { LIMITE_OUTROS_EXAMES, type ExamState } from './exam-draft';
 import { ExamDraftStore } from './exam-draft-store';
-import { CATALOGO_EXAMES, type CategoriaExame } from './exam-catalog';
+import { catalogoDoConselho, denticaoDoOdontograma, type CategoriaExame } from './exam-catalog';
 import type { IconName } from '@app/shared/components/icon/icons';
 import { ExamPreview, type ExamPreviewItem } from './exam-preview';
 
 const CATEGORIA_TODOS = 'Todos';
-const CATEGORIA_ODONTOGRAMA = 'Odontograma';
 type Painel = {
   titulo: string;
   icone: IconName;
   grupos: CategoriaExame[];
   total: number;
-  odontograma: boolean;
 };
 
 function contar(grupos: CategoriaExame[]): number {
@@ -73,30 +71,31 @@ export class ExamPage {
   private readonly modal = viewChild<ElementRef<HTMLElement>>('modal');
   private readonly modalNovaSolicitacao = viewChild<ElementRef<HTMLElement>>('modalNovaSolicitacao');
 
-  protected readonly catalogo = CATALOGO_EXAMES;
   protected readonly limiteOutros = LIMITE_OUTROS_EXAMES;
   protected readonly todos = CATEGORIA_TODOS;
 
-  /** Odontograma só faz sentido pra quem de fato avalia dentição — os
-   *  demais especialistas nunca vão marcar dente nenhum ali. */
-  protected readonly ehDentista = computed(() => this.usuario()?.council?.type === CouncilType.CRO);
+  private readonly catalogoConselho = computed(() => catalogoDoConselho(this.usuario()?.council?.type));
+  protected readonly catalogo = computed(() => this.catalogoConselho().categorias);
+  /** Só preenchido para conselhos que não solicitam exames clínicos. */
+  protected readonly avisoConselho = computed(() => this.catalogoConselho().aviso);
 
   protected readonly categorias = computed<{ tipo: string; icone: IconName; total: number | null }[]>(() => [
-    ...this.catalogo.map((c) => ({ tipo: c.tipo, icone: c.icone, total: c.exames.length })),
-    ...(this.ehDentista() ? [{ tipo: CATEGORIA_ODONTOGRAMA, icone: 'LuSmile' as IconName, total: null }] : []),
+    ...this.catalogo().map((c) => ({ tipo: c.tipo, icone: c.icone, total: c.exames.length })),
   ]);
 
-  private readonly categoriaPorExame = new Map(
-    this.catalogo.flatMap((c) => c.exames.map((nome) => [nome, c.tipo] as const)),
+  private readonly categoriaPorExame = computed(
+    () => new Map(this.catalogo().flatMap((c) => c.exames.map((nome) => [nome, c.tipo] as const))),
   );
 
   protected readonly paciente = signal<Patient | null>(null);
   protected readonly categoriaAtiva = signal(CATEGORIA_TODOS);
   protected readonly busca = signal('');
   protected readonly selecionados = signal(new Set<string>());
-  /** Dentes marcados no odontograma, pela numeração FDI. O odontograma é
-   *  UM exame só, não um por dente — os dentes marcados são o detalhe
-   *  desse exame, não itens soltos na lista (ver `odontogramaItem`). */
+  /** Odontograma escolhido no catálogo — fica fora de `selecionados`
+   *  porque é exclusivo (um tipo por requisição) e carrega os dentes. */
+  protected readonly odontograma = signal<string | null>(null);
+  /** Dentes marcados no odontograma, pela numeração FDI: são o detalhe do
+   *  único item de odontograma, não exames soltos na lista. */
   protected readonly dentesSelecionados = signal(new Set<number>());
   protected readonly outrosTexto = signal('');
   protected readonly estado = signal<ExamState>('RASCUNHO');
@@ -125,8 +124,15 @@ export class ExamPage {
    *  marcados viram o detalhe desse único exame na pré-visualização
    *  ("Odontograma — Dentes: 16, 36"), não vira N exames separados. */
   protected readonly odontogramaItem = computed(() => {
+    const nome = this.odontograma();
+    if (!nome) return null;
     const dentes = [...this.dentesSelecionados()].sort((a, b) => a - b);
-    return dentes.length ? `Odontograma — Dentes: ${dentes.join(', ')}` : null;
+    return dentes.length ? `${nome} — Dentes: ${dentes.join(', ')}` : nome;
+  });
+
+  protected readonly denticao = computed(() => {
+    const nome = this.odontograma();
+    return nome ? denticaoDoOdontograma(nome) : null;
   });
 
   protected readonly todosSelecionados = computed(() => [
@@ -145,7 +151,7 @@ export class ExamPage {
 
     if (termo) {
       const minusculo = termo.toLowerCase();
-      const grupos = this.catalogo
+      const grupos = this.catalogo()
         .map((c) => ({ ...c, exames: c.exames.filter((n) => n.toLowerCase().includes(minusculo)) }))
         .filter((c) => c.exames.length);
       return {
@@ -153,42 +159,41 @@ export class ExamPage {
         icone: 'BsSearch',
         grupos,
         total: contar(grupos),
-        odontograma: false,
       };
-    }
-    if (categoria === CATEGORIA_ODONTOGRAMA) {
-      return { titulo: CATEGORIA_ODONTOGRAMA, icone: 'LuSmile', grupos: [], total: 0, odontograma: true };
     }
     if (categoria === CATEGORIA_TODOS) {
       return {
         titulo: 'Todos os exames',
         icone: 'LuFlaskConical',
-        grupos: this.catalogo,
-        total: contar(this.catalogo),
-        odontograma: false,
+        grupos: this.catalogo(),
+        total: contar(this.catalogo()),
       };
     }
-    const grupo = this.catalogo.find((c) => c.tipo === categoria)!;
-    return { titulo: grupo.tipo, icone: grupo.icone, grupos: [grupo], total: grupo.exames.length, odontograma: false };
+    const grupo = this.catalogo().find((c) => c.tipo === categoria)!;
+    return { titulo: grupo.tipo, icone: grupo.icone, grupos: [grupo], total: grupo.exames.length };
   });
 
   protected readonly selecionadosPorCategoria = computed(() => {
     const contagem = new Map<string, number>();
     for (const nome of this.selecionados()) {
-      const tipo = this.categoriaPorExame.get(nome);
+      const tipo = this.categoriaPorExame().get(nome);
       if (tipo) contagem.set(tipo, (contagem.get(tipo) ?? 0) + 1);
     }
-    if (this.dentesSelecionados().size) contagem.set(CATEGORIA_ODONTOGRAMA, 1);
+    const odontograma = this.odontograma();
+    const tipo = odontograma && this.categoriaPorExame().get(odontograma);
+    if (tipo) contagem.set(tipo, (contagem.get(tipo) ?? 0) + 1);
     return contagem;
   });
 
   protected readonly itensPreview = computed<ExamPreviewItem[]>(() => {
     const itens = [...this.selecionados()].map((nome) => ({
       nome,
-      categoria: this.categoriaPorExame.get(nome) ?? '',
+      categoria: this.categoriaPorExame().get(nome) ?? '',
     }));
-    const dentes = this.odontogramaItem();
-    if (dentes) itens.push({ nome: dentes, categoria: CATEGORIA_ODONTOGRAMA });
+    const odontograma = this.odontogramaItem();
+    if (odontograma) {
+      itens.push({ nome: odontograma, categoria: this.categoriaPorExame().get(this.odontograma()!) ?? '' });
+    }
     return itens;
   });
 
@@ -209,6 +214,7 @@ export class ExamPage {
     // sem isto, trocar de paciente sem rascunho salvo deixava na tela os
     // exames marcados (e não salvos) pro paciente anterior.
     this.selecionados.set(new Set());
+    this.odontograma.set(null);
     this.dentesSelecionados.set(new Set());
     this.outrosTexto.set('');
     if (!id) return;
@@ -216,9 +222,18 @@ export class ExamPage {
     this.findPatient.findById({ id }).then((paciente) => this.paciente.set(paciente));
 
     const salvo = this.rascunhos.load(id);
-    if (salvo && (salvo.selecionados.length || salvo.dentes.length || salvo.outrosTexto)) {
-      this.selecionados.set(new Set(salvo.selecionados));
-      this.dentesSelecionados.set(new Set(salvo.dentes));
+    if (salvo) {
+      const disponiveis = this.categoriaPorExame();
+      this.selecionados.set(
+        new Set(salvo.selecionados.filter((n) => disponiveis.has(n) && !denticaoDoOdontograma(n))),
+      );
+      // Rascunhos de antes do odontograma vir do catálogo não têm `odontograma`.
+      const odontograma = salvo.odontograma && disponiveis.has(salvo.odontograma) ? salvo.odontograma : null;
+      this.odontograma.set(odontograma);
+      if (odontograma) {
+        const validos = dentesDaDenticao(denticaoDoOdontograma(odontograma)!);
+        this.dentesSelecionados.set(new Set(salvo.dentes.filter((d) => validos.has(d))));
+      }
       this.outrosTexto.set(salvo.outrosTexto);
     }
   }
@@ -232,13 +247,44 @@ export class ExamPage {
     this.busca.set(valor);
   }
 
+  protected marcado(nome: string): boolean {
+    return this.selecionados().has(nome) || this.odontograma() === nome;
+  }
+
   protected alternarExame(nome: string): void {
+    const denticao = denticaoDoOdontograma(nome);
+    if (denticao) {
+      this.alternarOdontograma(nome, denticao);
+      return;
+    }
     this.selecionados.update((atual) => {
       const proximo = new Set(atual);
       if (proximo.has(nome)) proximo.delete(nome);
       else proximo.add(nome);
       return proximo;
     });
+    this.salvarRascunhoAutomaticamente();
+  }
+
+  /** Um odontograma por requisição: marcar outro troca o anterior, e os
+   *  dentes que não existem na nova dentição são descartados. */
+  private alternarOdontograma(nome: string, denticao: Denticao): void {
+    if (this.odontograma() === nome) {
+      this.odontograma.set(null);
+      this.dentesSelecionados.set(new Set());
+    } else {
+      const validos = dentesDaDenticao(denticao);
+      this.odontograma.set(nome);
+      this.dentesSelecionados.update((atual) => new Set([...atual].filter((d) => validos.has(d))));
+      afterNextRender(
+        () =>
+          document
+            .getElementById('titulo-odontograma')
+            ?.closest('section')
+            ?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }),
+        { injector: this.injector },
+      );
+    }
     this.salvarRascunhoAutomaticamente();
   }
 
@@ -262,6 +308,7 @@ export class ExamPage {
     if (!id || this.estado() !== 'RASCUNHO') return;
     this.rascunhos.save(id, {
       selecionados: [...this.selecionados()],
+      odontograma: this.odontograma(),
       dentes: [...this.dentesSelecionados()],
       outrosTexto: this.outrosTexto(),
     });
@@ -278,6 +325,7 @@ export class ExamPage {
       },
       onConfirm: () => {
         this.selecionados.set(new Set());
+        this.odontograma.set(null);
         this.dentesSelecionados.set(new Set());
         this.outrosTexto.set('');
         const id = this.patientId();

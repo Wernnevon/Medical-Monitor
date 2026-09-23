@@ -85,6 +85,13 @@
         </div>
       </header>
 
+      @if (avisoConselho(); as aviso) {
+        <p class="aviso-conselho" role="note">
+          <app-icon name="FiInfo" size="1.1rem" />
+          {{ aviso }}
+        </p>
+      }
+
       <label class="busca">
         <app-icon name="BsSearch" size="0.95rem" />
         <span class="sr-only">Buscar exame</span>
@@ -141,42 +148,55 @@
             <app-icon [name]="painel().icone" size="1.4rem" />
             <div>
               <h3 id="titulo-painel">{{ painel().titulo }}</h3>
-              @if (painel().odontograma) {
-                <p>Marque os dentes que devem ser avaliados.</p>
-              } @else {
-                <p>{{ painel().total }} {{ painel().total === 1 ? 'exame disponível' : 'exames disponíveis' }}</p>
-              }
+              <p>{{ painel().total }} {{ painel().total === 1 ? 'exame disponível' : 'exames disponíveis' }}</p>
             </div>
           </header>
 
           <div class="painel-lista">
-            @if (painel().odontograma) {
-              <div class="odontograma">
-                <app-odontogram [selecionados]="dentesSelecionados()" (denteToggle)="alternarDente($event)" />
-              </div>
-            } @else {
-              @for (grupo of painel().grupos; track grupo.tipo) {
-                @if (painel().grupos.length > 1) {
-                  <h4 class="grupo-titulo">{{ grupo.tipo }}</h4>
-                }
-                <ul class="exames exames--colunas">
-                  @for (nome of grupo.exames; track nome) {
-                    <li>
-                      <label class="exame" [class.exame--marcado]="selecionados().has(nome)">
-                        <input
-                          type="checkbox"
-                          [checked]="selecionados().has(nome)"
-                          [disabled]="emitida()"
-                          (change)="alternarExame(nome)"
-                        />
-                        <span>{{ nome }}</span>
-                      </label>
-                    </li>
-                  }
-                </ul>
-              } @empty {
-                <p class="sem-resultado">Nenhum exame encontrado. Se não estiver no catálogo, use "Outros exames" abaixo.</p>
+            @for (grupo of painel().grupos; track grupo.tipo) {
+              @if (painel().grupos.length > 1) {
+                <h4 class="grupo-titulo">{{ grupo.tipo }}</h4>
               }
+              <ul class="exames exames--colunas">
+                @for (nome of grupo.exames; track nome) {
+                  <li>
+                    <label class="exame" [class.exame--marcado]="marcado(nome)">
+                      <input
+                        type="checkbox"
+                        [checked]="marcado(nome)"
+                        [disabled]="emitida()"
+                        (change)="alternarExame(nome)"
+                      />
+                      <span>{{ nome }}</span>
+                    </label>
+                  </li>
+                }
+              </ul>
+              @if (odontograma(); as escolhido) {
+                @if (grupo.exames.includes(escolhido)) {
+                  <section class="odontograma" aria-labelledby="titulo-odontograma">
+                    <header class="odontograma-cabecalho">
+                      <h5 id="titulo-odontograma">{{ escolhido }}</h5>
+                      <p>
+                        @if (dentesSelecionados().size) {
+                          {{ dentesSelecionados().size }}
+                          {{ dentesSelecionados().size === 1 ? 'dente marcado' : 'dentes marcados' }}.
+                        } @else {
+                          Marque dentes específicos, se quiser — sem marcação, vale a arcada inteira.
+                        }
+                        Só um tipo de odontograma por requisição.
+                      </p>
+                    </header>
+                    <app-odontogram
+                      [selecionados]="dentesSelecionados()"
+                      [denticao]="denticao()!"
+                      (denteToggle)="emitida() ? null : alternarDente($event)"
+                    />
+                  </section>
+                }
+              }
+            } @empty {
+              <p class="sem-resultado">Nenhum exame encontrado. Se não estiver no catálogo, use "Outros exames" abaixo.</p>
             }
           </div>
         </div>

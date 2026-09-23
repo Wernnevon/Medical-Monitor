@@ -5,6 +5,8 @@
  */
 export type ExamDraftState = {
   selecionados: string[];
+  /** Nome do odontograma escolhido no catálogo, se houver. */
+  odontograma: string | null;
   dentes: number[];
   outrosTexto: string;
 };
@@ -14,5 +16,5 @@ export type ExamState = 'RASCUNHO' | 'EMITIDA';
 export const LIMITE_OUTROS_EXAMES = 500;
 
 export function rascunhoVazio(): ExamDraftState {
-  return { selecionados: [], dentes: [], outrosTexto: '' };
+  return { selecionados: [], odontograma: null, dentes: [], outrosTexto: '' };
 }

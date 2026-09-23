@@ -1,83 +1,38 @@
 <div class="odontograma">
-  <section class="arco">
-    <h4 class="arco-titulo">Arco superior</h4>
-    <div class="fileira">
-      <div class="quadrante">
-        @for (dente of superiorDireito; track dente) {
-          <button
-            type="button"
-            class="dente"
-            [class.dente--selecionado]="selecionados().has(dente)"
-            [attr.aria-pressed]="selecionados().has(dente)"
-            (click)="denteToggle.emit(dente)"
-          >
-            <span class="sr-only">Dente</span>
-            {{ dente }}
-            @if (selecionados().has(dente)) {
-              <app-icon class="dente-marca" name="AiOutlineCheckCircle" size="0.9rem" />
+  @for (arcada of arcadas(); track arcada.titulo) {
+    <div class="arcada">
+      @if (arcadas().length > 1) {
+        <h4 class="arcada-titulo">{{ arcada.titulo }}</h4>
+      }
+      @for (fileira of arcada.fileiras; track fileira.titulo) {
+        <section class="arco" [attr.aria-label]="fileira.titulo + ' — ' + arcada.titulo">
+          <h5 class="arco-titulo">{{ fileira.titulo }}</h5>
+          <div class="fileira">
+            @for (quadrante of [fileira.direita, fileira.esquerda]; track $index; let ultimo = $last) {
+              <div class="quadrante">
+                @for (dente of quadrante; track dente) {
+                  <button
+                    type="button"
+                    class="dente"
+                    [class.dente--selecionado]="selecionados().has(dente)"
+                    [attr.aria-pressed]="selecionados().has(dente)"
+                    (click)="denteToggle.emit(dente)"
+                  >
+                    <span class="sr-only">Dente</span>
+                    {{ dente }}
+                    @if (selecionados().has(dente)) {
+                      <app-icon class="dente-marca" name="AiOutlineCheckCircle" size="0.9rem" />
+                    }
+                  </button>
+                }
+              </div>
+              @if (!ultimo) {
+                <div class="linha-media" aria-hidden="true"></div>
+              }
             }
-          </button>
-        }
-      </div>
-      <div class="linha-media" aria-hidden="true"></div>
-      <div class="quadrante">
-        @for (dente of superiorEsquerdo; track dente) {
-          <button
-            type="button"
-            class="dente"
-            [class.dente--selecionado]="selecionados().has(dente)"
-            [attr.aria-pressed]="selecionados().has(dente)"
-            (click)="denteToggle.emit(dente)"
-          >
-            <span class="sr-only">Dente</span>
-            {{ dente }}
-            @if (selecionados().has(dente)) {
-              <app-icon class="dente-marca" name="AiOutlineCheckCircle" size="0.9rem" />
-            }
-          </button>
-        }
-      </div>
+          </div>
+        </section>
+      }
     </div>
-  </section>
-
-  <section class="arco">
-    <h4 class="arco-titulo">Arco inferior</h4>
-    <div class="fileira">
-      <div class="quadrante">
-        @for (dente of inferiorDireito; track dente) {
-          <button
-            type="button"
-            class="dente"
-            [class.dente--selecionado]="selecionados().has(dente)"
-            [attr.aria-pressed]="selecionados().has(dente)"
-            (click)="denteToggle.emit(dente)"
-          >
-            <span class="sr-only">Dente</span>
-            {{ dente }}
-            @if (selecionados().has(dente)) {
-              <app-icon class="dente-marca" name="AiOutlineCheckCircle" size="0.9rem" />
-            }
-          </button>
-        }
-      </div>
-      <div class="linha-media" aria-hidden="true"></div>
-      <div class="quadrante">
-        @for (dente of inferiorEsquerdo; track dente) {
-          <button
-            type="button"
-            class="dente"
-            [class.dente--selecionado]="selecionados().has(dente)"
-            [attr.aria-pressed]="selecionados().has(dente)"
-            (click)="denteToggle.emit(dente)"
-          >
-            <span class="sr-only">Dente</span>
-            {{ dente }}
-            @if (selecionados().has(dente)) {
-              <app-icon class="dente-marca" name="AiOutlineCheckCircle" size="0.9rem" />
-            }
-          </button>
-        }
-      </div>
-    </div>
-  </section>
+  }
 </div>
