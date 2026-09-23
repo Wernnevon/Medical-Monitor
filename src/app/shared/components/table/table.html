@@ -1,37 +1,5 @@
-<main class="table-container">
+<main class="table-container" [class.table-container--flat]="flat()">
   <div class="body">
-    <div class="header">
-      <div class="title">
-        <app-icon [name]="icon()" size="2.5rem" />
-        <label>{{ title() }}</label>
-      </div>
-      <div class="filters">
-        @for (filter of filters(); track filter.placeholder) {
-          @switch (filter.type) {
-            @case ('text') {
-              <app-text-search
-                [placeholder]="filter.placeholder"
-                (find)="filter.handle($event)"
-              />
-            }
-            @case ('radio') {
-              <app-radio-select
-                [placeholder]="filter.placeholder"
-                [data]="filter.options ?? []"
-                (selectionChange)="filter.handle($event)"
-              />
-            }
-          }
-        }
-        @if (showAdd()) {
-          <button type="button" class="add" (click)="add.emit()">
-            <app-icon name="FaPlus" />
-            {{ addLabel() }}
-          </button>
-        }
-      </div>
-    </div>
-
     @if (rows().length) {
       <div class="scroll">
         <table>
@@ -61,13 +29,30 @@
                     [style.text-align]="column.align ?? 'left'"
                   >
                     @switch (column.type) {
+                      @case ('stacked') {
+                        <div class="celula-empilhada">
+                          <strong>{{ row[column.key] }}</strong>
+                          @if (column.subtitleKey) {
+                            <span>{{ row[column.subtitleKey] }}</span>
+                          }
+                        </div>
+                      }
                       @case ('status') {
                         <small class="badge" [class]="'badge--' + tone(row[column.key])">
                           {{ row[column.key] }}
                         </small>
                       }
                       @case ('action') {
-                        <app-kebab-menu [rowId]="row['id']" [items]="kebabItems()" />
+                        @if (rowActionIcon() && !row['_semAcao']) {
+                          <button
+                            type="button"
+                            class="acao-linha"
+                            [attr.aria-label]="rowActionLabel()"
+                            (click)="$event.stopPropagation(); rowAction.emit(row['id'])"
+                          >
+                            <app-icon [name]="rowActionIcon()!" size="1.1rem" />
+                          </button>
+                        }
                       }
                       @default {
                         {{ row[column.key] }}
@@ -85,12 +70,14 @@
     }
   </div>
 
-  <app-pagination
-    [entityName]="pagination().entityName"
-    [page]="pagination().page"
-    [pageSize]="pagination().pageSize"
-    [totalPages]="pagination().totalPages"
-    [totalEntries]="pagination().totalEntries"
-    (pageChange)="pageChange.emit($event)"
-  />
+  @if (pagination(); as p) {
+    <app-pagination
+      [entityName]="p.entityName"
+      [page]="p.page"
+      [pageSize]="p.pageSize"
+      [totalPages]="p.totalPages"
+      [totalEntries]="p.totalEntries"
+      (pageChange)="pageChange.emit($event)"
+    />
+  }
 </main>

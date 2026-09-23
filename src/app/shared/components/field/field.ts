@@ -20,13 +20,21 @@ import { MASCARAS, type NomeMascara } from '@core/utils/masks';
   template: `
     <label class="campo" [class.campo--erro]="mostraErro()" [title]="dica()">
       <span class="rotulo">{{ rotulo() }}{{ obrigatorio() ? ' *' : '' }}</span>
-      <input
-        [formField]="campo()"
-        [type]="tipo()"
-        [attr.inputmode]="modo()"
-        [attr.aria-invalid]="mostraErro()"
-        (input)="aplicaMascara($event)"
-      />
+      @if (multilinha()) {
+        <textarea
+          [formField]="campo()"
+          rows="4"
+          [attr.aria-invalid]="mostraErro()"
+        ></textarea>
+      } @else {
+        <input
+          [formField]="campo()"
+          [type]="tipo()"
+          [attr.inputmode]="modo()"
+          [attr.aria-invalid]="mostraErro()"
+          (input)="aplicaMascara($event)"
+        />
+      }
       @if (mostraErro()) {
         <span class="erro" role="alert">{{ mensagem() }}</span>
       }
@@ -44,6 +52,9 @@ export class Field {
   readonly dica = input('');
   readonly mascara = input<NomeMascara | ''>('');
   readonly modo = input<string | null>(null);
+  /** Textarea em vez de input — a anamnese é o único campo do cadastro que
+   *  é texto livre e longo o bastante pra precisar de mais de uma linha. */
+  readonly multilinha = input(false);
 
   protected readonly estado = computed(() => this.campo()());
 

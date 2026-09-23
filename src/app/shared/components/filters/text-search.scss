@@ -6,25 +6,32 @@
 .bar {
   display: flex;
   align-items: center;
-  position: relative;
+  gap: var(--esp-2);
   width: 100%;
   min-width: 0;
-  border: 1px solid var(--cor-borda-forte);
-  border-radius: var(--raio-sm);
+  height: 2.75rem;
+  padding: 0 var(--esp-4);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-md);
+  background: var(--cor-superficie);
   color: var(--cor-texto-fraco);
   transition: border-color var(--transicao), color var(--transicao);
 
   &:focus-within {
-    color: var(--cor-acao);
-    border-color: var(--cor-acao);
+    color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+  }
+
+  app-icon {
+    flex-shrink: 0;
   }
 }
 
 input {
   flex: 1;
   min-width: 0;
-  height: 2.75rem;
-  padding: 0 var(--esp-8) 0 var(--esp-3);
+  height: 100%;
+  padding: 0;
   border: none;
   outline: none;
   background: none;
@@ -36,10 +43,4 @@ input {
   &::-webkit-search-cancel-button {
     display: none;
   }
-}
-
-app-icon {
-  position: absolute;
-  right: var(--esp-3);
-  pointer-events: none;
 }

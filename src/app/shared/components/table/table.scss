@@ -15,6 +15,21 @@
   overflow: hidden;
 }
 
+.table-container--flat {
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+
+  .scroll {
+    padding: 0;
+  }
+
+  thead th {
+    padding-top: 0;
+  }
+}
+
 .body {
   display: flex;
   flex-direction: column;
@@ -33,84 +48,33 @@
   font-size: var(--texto-lg);
 }
 
-.header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-4);
-  padding: var(--esp-4) var(--esp-4) 0;
-}
-
-.title {
-  display: flex;
-  align-items: center;
-  gap: var(--esp-3);
-  padding-bottom: var(--esp-3);
-  border-bottom: 1px solid var(--cor-borda);
-
-  label {
-    font-size: var(--texto-xl);
-    font-weight: var(--peso-medio);
-  }
-
-  app-icon {
-    color: var(--cor-acao);
-  }
-}
-
-/* Os filtros quebram em linhas quando não cabem, em vez de espremerem uns aos
-   outros ou estourarem o card. */
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  align-items: center;
-  gap: var(--esp-3);
-
-  app-radio-select,
-  app-text-search {
-    flex: 1 1 12rem;
-    min-width: 0;
-    max-width: 16rem;
-  }
-}
-
-.add {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--esp-2);
-  flex-shrink: 0;
-  padding: var(--esp-2) var(--esp-5);
-  border: none;
-  border-radius: var(--raio-pill);
-  background-color: var(--cor-acao);
-  color: var(--cor-texto-invertido);
-  font-size: var(--texto-lg);
-  font-weight: var(--peso-medio);
-  white-space: nowrap;
-  transition: background-color var(--transicao);
-
-  &:hover {
-    cursor: pointer;
-    background-color: var(--cor-acao-hover);
-  }
-
-  &:active {
-    transform: translateY(1px);
-  }
-}
-
 /* A tabela rola na horizontal dentro do próprio contêiner quando a tela é
-   estreita, em vez de empurrar a página inteira para o lado. */
+   estreita, em vez de empurrar a página inteira para o lado.
+   `padding-top: 0` é proposital: `position: sticky` gruda no topo do
+   padding-box do ancestral com scroll, não no topo do viewport visível —
+   com padding-top aqui, sobrava uma faixa acima do cabeçalho fixo por onde
+   as linhas de baixo apareciam ao rolar. A respiração de cima virou padding
+   do próprio `<th>`. */
 .scroll {
   flex: 1;
   min-height: 0;
   overflow: auto;
-  padding: var(--esp-4);
+  /* Sem isto, o navegador tenta "ancorar" a rolagem quando linhas são
+     inseridas acima da dobra (ex.: depois do seed de desenvolvimento
+     recarregar a lista), destacando o cabeçalho fixo de onde deveria estar. */
+  overflow-anchor: none;
+  padding: 0 var(--esp-4) var(--esp-4);
 }
 
+/* `table-layout: fixed` — sem isto, o navegador recalcula a largura de
+   cada coluna pelo conteúdo (`auto`), ignorando parcialmente os `width`
+   das colunas e deixando o cabeçalho sticky com colunas de largura
+   diferente das linhas do corpo, quebrando o alinhamento. Com `fixed`, as
+   larguras vêm só da primeira linha (o cabeçalho) e todo o resto segue. */
 table {
   width: 100%;
   min-width: 34rem;
+  table-layout: fixed;
   border-collapse: collapse;
   text-align: left;
 }
@@ -122,10 +86,21 @@ td {
   text-overflow: ellipsis;
 }
 
+/* Reticências só fazem sentido truncando texto. Numa célula de badge ou de
+   ícones de ação, a mesma regra "corta" o conteúdo não-textual e o
+   navegador ainda desenha o "…" por cima — parecendo um segundo kebab ao
+   lado do de verdade. */
+td:has(.badge),
+td:has(.acao-linha) {
+  overflow: visible;
+  text-overflow: clip;
+}
+
 thead th {
   position: sticky;
   top: 0;
   z-index: 1;
+  padding-top: var(--esp-4);
   background-color: var(--cor-superficie-forte);
   font-size: var(--texto-lg);
   font-weight: var(--peso-medio);
@@ -155,6 +130,42 @@ tbody tr {
   &.selecionada {
     background-color: var(--cor-acento-clara);
     border-left-color: var(--cor-primaria);
+  }
+}
+
+.acao-linha {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: var(--raio-sm);
+  background: none;
+  color: var(--cor-texto-fraco);
+
+  &:hover {
+    cursor: pointer;
+    color: var(--cor-primaria);
+    background-color: var(--cor-superficie-alt);
+  }
+}
+
+.celula-empilhada {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+
+  strong {
+    font-weight: var(--peso-medio);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  span {
+    font-size: var(--texto-xs);
+    color: var(--cor-texto-fraco);
   }
 }
 
@@ -197,22 +208,7 @@ tbody tr {
 }
 
 @media (max-width: 640px) {
-  .filters {
-    justify-content: stretch;
-
-    app-radio-select,
-    app-text-search {
-      flex-basis: 100%;
-      max-width: none;
-    }
-  }
-
-  .add {
-    width: 100%;
-    justify-content: center;
-  }
-
   .scroll {
-    padding: var(--esp-2);
+    padding: 0 var(--esp-2) var(--esp-2);
   }
 }

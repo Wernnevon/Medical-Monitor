@@ -1,12 +1,9 @@
 import { Component, input, output } from '@angular/core';
 import { Icon } from '../icon/icon';
 import type { IconName } from '../icon/icons';
-import { KebabMenu, type KebabItem } from '../kebab-menu/kebab-menu';
 import { Pagination } from '../pagination/pagination';
-import { RadioSelect } from '../filters/radio-select';
-import { TextSearch } from '../filters/text-search';
 
-export type ColumnType = 'text' | 'status' | 'action';
+export type ColumnType = 'text' | 'status' | 'action' | 'stacked';
 
 export type DataColumn = {
   name: string;
@@ -14,13 +11,9 @@ export type DataColumn = {
   type: ColumnType;
   width?: string;
   align?: 'left' | 'right' | 'center';
-};
-
-export type DataFilter = {
-  type: 'text' | 'radio';
-  placeholder: string;
-  options?: string[];
-  handle: (value: string) => void;
+  /** Só pro tipo `stacked`: chave da linha exibida como legenda, embaixo do
+   *  valor principal (ex.: CPF embaixo do nome). */
+  subtitleKey?: string;
 };
 
 export type TablePagination = {
@@ -35,36 +28,48 @@ export type TablePagination = {
 const STATUS_TONE: Record<string, 'positive' | 'negative'> = {
   Realizado: 'positive',
   Suspenso: 'positive',
+  Ativo: 'positive',
   'Em Andamento': 'negative',
   Administrando: 'negative',
+  Inativo: 'negative',
 };
 
+/**
+ * O grid de dados em si — cabeçalho de página, descrição e filtros vivem
+ * fora, direto na página (`app-page-header` / `app-list-filters`), soltos no
+ * fundo neutro como no protótipo. O que sobra aqui como card branco com
+ * sombra é só a grade de linhas e a paginação.
+ */
 @Component({
   selector: 'app-table',
-  imports: [Icon, KebabMenu, Pagination, RadioSelect, TextSearch],
+  imports: [Icon, Pagination],
   templateUrl: './table.html',
   styleUrl: './table.scss',
 })
 export class Table {
-  readonly icon = input<IconName>('HiOutlineUserGroup');
-  readonly title = input('Titulo');
   readonly columns = input.required<DataColumn[]>();
   readonly rows = input.required<Record<string, any>[]>();
-  readonly filters = input<DataFilter[]>([]);
-  readonly pagination = input.required<TablePagination>();
-  readonly kebabItems = input<KebabItem[]>([]);
-  readonly addLabel = input('Novo');
-  /** Mostra o botão de criação no cabeçalho. Telas sem fluxo de criação
-   *  ainda pronto (como as abas do paciente) escondem com `[showAdd]="false"`. */
-  readonly showAdd = input(true);
+  /** Ausente quando a listagem é pequena e vem inteira de uma vez (ex.: o
+   *  histórico do paciente) — o rodapé de paginação some nesse caso. */
+  readonly pagination = input<TablePagination | null>(null);
+  /** Ícone do botão de ação sempre visível na coluna `action` — leva pra
+   *  tela cheia de detalhes. O clique na linha, por sua vez, só atualiza a
+   *  prévia (quando `selectable` está ligado): são ações diferentes de
+   *  propósito, não a mesma coisa duas vezes. */
+  readonly rowActionIcon = input<IconName | null>(null);
+  readonly rowActionLabel = input('Ver detalhes');
   /** Habilita clique na linha — usado pela lista de pacientes para
-   *  alimentar o painel de acesso rápido sem precisar de uma coluna extra. */
+   *  atualizar o painel de acesso rápido sem navegar pra outra tela. */
   readonly selectable = input(false);
   readonly selectedId = input<string | number | null>(null);
+  /** Sem fundo, raio e sombra próprios — para quando a grade já vive dentro
+   *  de um card da página (ex.: "Últimos Atendimentos" no resumo do
+   *  paciente), evitando a moldura dupla. */
+  readonly flat = input(false);
 
   readonly pageChange = output<number>();
-  readonly add = output<void>();
   readonly rowSelect = output<string | number>();
+  readonly rowAction = output<string | number>();
 
   protected tone(value: unknown): string {
     return STATUS_TONE[String(value)] ?? 'negative';

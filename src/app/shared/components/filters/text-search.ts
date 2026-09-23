@@ -8,13 +8,13 @@ const DEBOUNCE_MS = 250;
   imports: [Icon],
   template: `
     <div class="bar">
+      <app-icon name="BsSearch" size="1.1rem" />
       <input
         type="search"
         [placeholder]="placeholder()"
         [attr.aria-label]="placeholder()"
         (input)="onInput($event)"
       />
-      <app-icon name="BsSearch" size="24" />
     </div>
   `,
   styleUrl: './text-search.scss',

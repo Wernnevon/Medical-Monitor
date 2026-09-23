@@ -17,16 +17,17 @@
   color: var(--cor-texto-suave);
 }
 
-input {
+input,
+textarea {
   width: 100%;
   min-width: 0;
-  height: 2.75rem;
   padding: 0 var(--esp-3);
   border: 1px solid var(--cor-borda-forte);
   border-radius: var(--raio-sm);
   background-color: var(--cor-superficie);
   color: var(--cor-texto);
   font-size: var(--texto-md);
+  font-family: inherit;
   transition: border-color var(--transicao);
 
   &:hover {
@@ -40,6 +41,16 @@ input {
   }
 }
 
+input {
+  height: 2.75rem;
+}
+
+textarea {
+  padding-top: var(--esp-2);
+  padding-bottom: var(--esp-2);
+  resize: vertical;
+}
+
 .erro {
   position: absolute;
   bottom: 0;
@@ -47,10 +58,14 @@ input {
   color: var(--cor-erro);
 }
 
-.campo--erro input {
-  border-color: var(--cor-erro);
+.campo--erro {
 
-  &:focus {
-    box-shadow: 0 0 0 3px var(--cor-erro-fundo);
+  input,
+  textarea {
+    border-color: var(--cor-erro);
+
+    &:focus {
+      box-shadow: 0 0 0 3px var(--cor-erro-fundo);
+    }
   }
 }
