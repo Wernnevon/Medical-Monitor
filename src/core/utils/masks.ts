@@ -33,12 +33,20 @@ export function mascaraTelefone(valor: string): string {
     .replace(/(\d{4,5})(\d{4})$/, '$1-$2');
 }
 
-export type NomeMascara = 'cpf' | 'rg' | 'telefone';
+/** Formata como NNN/NNN (ex.: 120/80), a notação usual de pressão arterial. */
+export function mascaraPressao(valor: string): string {
+  const digitos = valor.replace(/\D/g, '').slice(0, 6);
+  if (digitos.length <= 3) return digitos;
+  return `${digitos.slice(0, 3)}/${digitos.slice(3)}`;
+}
+
+export type NomeMascara = 'cpf' | 'rg' | 'telefone' | 'pressao';
 
 export const MASCARAS: Record<NomeMascara, (valor: string) => string> = {
   cpf: mascaraCPF,
   rg: mascaraRG,
   telefone: mascaraTelefone,
+  pressao: mascaraPressao,
 };
 
 /** Remove tudo que não for dígito. Útil para validar o conteúdo mascarado. */

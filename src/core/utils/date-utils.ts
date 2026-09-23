@@ -31,3 +31,24 @@ export function getStringToday(): string {
 export function nowTimestamp(): string {
   return new Date().toISOString();
 }
+
+/**
+ * Data e hora atuais no formato que os inputs `type="date"`/`type="time"`
+ * esperam, em horário local — não `toISOString()`, que é UTC e vira o dia
+ * errado pra quem está a oeste de Greenwich à noite (ex.: 22h no Brasil já é
+ * o dia seguinte em UTC).
+ */
+export function getLocalDateInput(): string {
+  const agora = new Date();
+  const ano = agora.getFullYear();
+  const mes = String(agora.getMonth() + 1).padStart(2, '0');
+  const dia = String(agora.getDate()).padStart(2, '0');
+  return `${ano}-${mes}-${dia}`;
+}
+
+export function getLocalTimeInput(): string {
+  const agora = new Date();
+  const hora = String(agora.getHours()).padStart(2, '0');
+  const minuto = String(agora.getMinutes()).padStart(2, '0');
+  return `${hora}:${minuto}`;
+}
