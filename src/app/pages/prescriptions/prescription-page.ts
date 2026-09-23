@@ -141,11 +141,6 @@ export class PrescriptionPage {
     this.salvarRascunhoAutomaticamente();
   }
 
-  /** Remover é uma ação decisiva, ao contrário de digitar — ao contrário do
-   *  resto do formulário, salva o rascunho na hora, exista um já salvo ou
-   *  não. Sem isso, remover um item some da tela mas reaparece na próxima
-   *  vez que o rascunho salvo for carregado, e o indicador do rodapé fica
-   *  parado no estado anterior — o que era exatamente o problema. */
   private salvarRascunhoAutomaticamente(): void {
     const id = this.patientId();
     if (!id || this.estado() !== 'RASCUNHO') {
@@ -156,7 +151,7 @@ export class PrescriptionPage {
       medicamentos: this.medicamentos(),
       orientacoesGerais: this.orientacoesGerais(),
     });
-    this.marcarSalvo();
+    this.marcarAlterado();
   }
 
   /** Troca de lugar com o de baixo — ou com o de cima, se já for o último. */
