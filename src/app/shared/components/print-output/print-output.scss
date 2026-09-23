@@ -126,6 +126,8 @@
 
 @media print {
   :host {
+    display: block !important;
+    width: 100% !important;
     height: auto;
   }
 
@@ -134,6 +136,7 @@
   }
 
   .folha {
+    width: 100%;
     box-shadow: none;
     height: auto;
     min-height: 0;

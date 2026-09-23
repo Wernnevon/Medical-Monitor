@@ -128,6 +128,12 @@
   }
 
   .corpo {
-    display: block;
+    display: block !important;
+  }
+
+  .saida {
+    flex: none !important;
+    width: 100% !important;
+    max-width: none !important;
   }
 }
