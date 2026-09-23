@@ -31,12 +31,12 @@ textarea {
   transition: border-color var(--transicao);
 
   &:hover {
-    border-color: var(--cor-acao);
+    border-color: var(--cor-marca-texto);
   }
 
   &:focus {
     outline: none;
-    border-color: var(--cor-acao);
+    border-color: var(--cor-marca-texto);
     box-shadow: 0 0 0 3px var(--cor-marca-suave);
   }
 }

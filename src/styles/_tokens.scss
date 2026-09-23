@@ -30,6 +30,14 @@
   --cor-marca: var(--cor-primaria);
   --cor-marca-suave: #eef1f8;
 
+  /* Variante de `--cor-primaria` para uso como texto/borda/contorno (nunca
+     como fundo). Em telas claras é a própria cor primária — mas no tema
+     escuro o navy quase preto não pode ir para primeiro plano sobre um
+     fundo já escuro, então essa variante ganha um azul mais claro só ali,
+     sem afetar os fundos de botão (que continuam usando `--cor-acao`
+     diretamente, com texto branco por cima). */
+  --cor-marca-texto: var(--cor-primaria);
+
   /* ---- Acento: dourado ----
      Só decorativo — ícones selecionados, divisores, hover de destaque,
      badges de identidade "premium". Nunca como fundo de botão com texto
@@ -134,4 +142,42 @@
   :root {
     --transicao: 0ms;
   }
+}
+
+/* ---- Tema escuro ----
+   Sobrescreve só as superfícies, texto e traços; marca, acento e cores de
+   estado permanecem — o dourado como acento já tem contraste validado
+   contra o navy, e as cores de estado são convenção de leitura fixa. */
+:root[data-theme='escuro'] {
+  /* Sem isto, os controles nativos do navegador (radio, checkbox, barra de
+     rolagem) continuam desenhados no esquema claro do SO, aparecendo como
+     um círculo branco sobre fundo branco mesmo com `accent-color` escolhido
+     à mão — `accent-color` pinta só o preenchimento marcado, não a base. */
+  color-scheme: dark;
+
+  --cor-fundo: #12161f;
+  --cor-superficie: #1a2030;
+  --cor-superficie-alt: #202739;
+  --cor-superficie-forte: #232b40;
+  --cor-superficie-hover: #2a3349;
+
+  --cor-marca-suave: #202a45;
+  --cor-marca-texto: #8fa8f2;
+  --cor-foco: #8fa8f2;
+  --cor-acento-clara: #3a3220;
+
+  --cor-texto: #e9ecf2;
+  --cor-texto-suave: #a7b0c2;
+  --cor-texto-fraco: #a7b0c2;
+
+  --cor-borda: #2c3448;
+  --cor-borda-forte: #4a5570;
+
+  --cor-sucesso-fundo: #113023;
+  --cor-erro-fundo: #3a1712;
+  --cor-alerta-fundo: #3a2c0a;
+
+  --sombra-sm: 0 1px 2px rgb(0 0 0 / 24%);
+  --sombra-md: 0 2px 8px rgb(0 0 0 / 28%);
+  --sombra-lg: 0 8px 24px rgb(0 0 0 / 36%);
 }

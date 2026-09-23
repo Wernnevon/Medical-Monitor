@@ -37,7 +37,7 @@
   text-decoration: none;
 
   &:hover {
-    color: var(--cor-primaria);
+    color: var(--cor-marca-texto);
   }
 }
 
@@ -56,7 +56,7 @@
   min-width: 0;
 
   app-icon {
-    color: var(--cor-primaria);
+    color: var(--cor-marca-texto);
   }
 
   h1 {
@@ -102,14 +102,14 @@
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio-sm);
   background: var(--cor-superficie);
-  color: var(--cor-primaria);
+  color: var(--cor-marca-texto);
   font-size: var(--texto-sm);
   font-weight: var(--peso-medio);
   text-decoration: none;
   white-space: nowrap;
 
   &:hover {
-    border-color: var(--cor-primaria);
+    border-color: var(--cor-marca-texto);
     background: var(--cor-marca-suave);
   }
 }
@@ -157,7 +157,7 @@
 
   app-icon {
     flex-shrink: 0;
-    color: var(--cor-primaria);
+    color: var(--cor-marca-texto);
   }
 
   div {
@@ -249,7 +249,7 @@
 
   &:focus {
     outline: none;
-    border-color: var(--cor-primaria);
+    border-color: var(--cor-marca-texto);
   }
 }
 
@@ -257,7 +257,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--esp-1);
-  color: var(--cor-primaria);
+  color: var(--cor-marca-texto);
   font-size: var(--texto-sm);
   font-weight: var(--peso-medio);
   text-decoration: none;
@@ -287,13 +287,13 @@
     cursor: pointer;
 
     &:hover {
-      color: var(--cor-primaria);
+      color: var(--cor-marca-texto);
     }
   }
 
   .subaba--ativa {
-    color: var(--cor-primaria);
-    border-bottom-color: var(--cor-primaria);
+    color: var(--cor-marca-texto);
+    border-bottom-color: var(--cor-marca-texto);
   }
 }
 
@@ -335,7 +335,7 @@
 
   &:focus {
     outline: none;
-    border-color: var(--cor-primaria);
+    border-color: var(--cor-marca-texto);
   }
 }
 
@@ -407,7 +407,7 @@
 
     &:focus {
       outline: none;
-      border-color: var(--cor-primaria);
+      border-color: var(--cor-marca-texto);
     }
   }
 }
@@ -486,7 +486,7 @@
     background-color: var(--cor-superficie-forte);
 
     app-icon {
-      color: var(--cor-acao-hover);
+      color: var(--cor-marca-texto);
     }
 
     label {
@@ -526,7 +526,7 @@
 
       &:focus {
         outline: none;
-        border-color: var(--cor-primaria);
+        border-color: var(--cor-marca-texto);
       }
     }
   }
@@ -564,7 +564,7 @@
 
   app-icon {
     flex-shrink: 0;
-    color: var(--cor-primaria);
+    color: var(--cor-marca-texto);
   }
 
   div {
@@ -610,7 +610,7 @@
 
     > app-icon:first-child {
       flex-shrink: 0;
-      color: var(--cor-primaria);
+      color: var(--cor-marca-texto);
     }
 
     > app-icon:last-child {

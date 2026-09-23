@@ -16,7 +16,12 @@ import { Icon } from '../icon/icon';
           <app-icon name="IoFilter" size="30" />
           <label>{{ selected() || placeholder() }}</label>
         </span>
-        <app-icon [name]="open() ? 'BsChevronUp' : 'BsChevronDown'" size="30" />
+        <app-icon
+          class="seta"
+          [class.seta--aberta]="open()"
+          name="BsChevronDown"
+          size="1.1rem"
+        />
       </button>
       <div class="body" [class.body--open]="open()" role="radiogroup">
         <span class="options">

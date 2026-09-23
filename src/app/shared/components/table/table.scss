@@ -129,7 +129,7 @@ tbody tr {
      azul, que passa com folga (16:1). */
   &.selecionada {
     background-color: var(--cor-acento-clara);
-    border-left-color: var(--cor-primaria);
+    border-left-color: var(--cor-marca-texto);
   }
 }
 
@@ -146,7 +146,7 @@ tbody tr {
 
   &:hover {
     cursor: pointer;
-    color: var(--cor-primaria);
+    color: var(--cor-marca-texto);
     background-color: var(--cor-superficie-alt);
   }
 }
@@ -214,7 +214,7 @@ tbody tr {
 
   &:hover,
   &:focus-visible {
-    outline: 2px solid var(--cor-primaria);
+    outline: 2px solid var(--cor-foco);
     outline-offset: 1px;
   }
 }

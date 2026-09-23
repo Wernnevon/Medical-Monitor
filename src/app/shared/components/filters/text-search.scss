@@ -18,8 +18,8 @@
   transition: border-color var(--transicao), color var(--transicao);
 
   &:focus-within {
-    color: var(--cor-primaria);
-    border-color: var(--cor-primaria);
+    color: var(--cor-marca-texto);
+    border-color: var(--cor-marca-texto);
   }
 
   app-icon {

@@ -1,4 +1,6 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { Icon } from '@app/shared/components/icon/icon';
+import { ThemeService } from '@app/shared/services/theme';
 
 const FORMATO_DATA: Intl.DateTimeFormatOptions = {
   weekday: 'short',
@@ -10,7 +12,7 @@ const FORMATO_DATA: Intl.DateTimeFormatOptions = {
 };
 
 /**
- * Barra fixa no topo do conteúdo, com a data/hora à direita.
+ * Barra fixa no topo do conteúdo, com o alternador de tema e a data/hora à direita.
  *
  * A busca global do protótipo saiu: não existe endpoint de busca
  * cross-entidade, só a busca por página já ligada ao domínio em cada
@@ -18,12 +20,26 @@ const FORMATO_DATA: Intl.DateTimeFormatOptions = {
  */
 @Component({
   selector: 'app-top-bar',
+  imports: [Icon],
   template: `
+    <button
+      type="button"
+      class="alterna-tema"
+      (click)="tema.alternar()"
+      [attr.aria-label]="ehEscuro() ? 'Ativar tema claro' : 'Ativar tema escuro'"
+      [attr.aria-pressed]="ehEscuro()"
+    >
+      <app-icon [name]="ehEscuro() ? 'HiOutlineMoon' : 'HiOutlineSun'" size="1.25rem" />
+    </button>
     <time class="agora" [attr.datetime]="isoAgora()">{{ agoraFormatada() }}</time>
   `,
   styleUrl: './top-bar.scss',
 })
 export class TopBar {
+  protected readonly tema = inject(ThemeService);
+
+  protected readonly ehEscuro = computed(() => this.tema.temaAtual() === 'escuro');
+
   private readonly agora = signal(new Date());
 
   protected readonly isoAgora = computed(() => this.agora().toISOString());

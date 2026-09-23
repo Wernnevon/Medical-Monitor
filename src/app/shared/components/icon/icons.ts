@@ -218,6 +218,17 @@ export const ICONS = {
     },
     inner: `<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>`,
   },
+  FiLogOut: {
+    attrs: {
+      'viewBox': '0 0 24 24',
+      'fill': 'none',
+      'stroke': 'currentColor',
+      'stroke-width': '2',
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round',
+    },
+    inner: `<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>`,
+  },
   IoMdInformationCircleOutline: {
     attrs: {
       'viewBox': '0 0 512 512',
@@ -242,5 +253,23 @@ export const ICONS = {
       'stroke-linejoin': 'round',
     },
     inner: `<polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>`,
+  },
+  HiOutlineSun: {
+    attrs: {
+      'fill': 'none',
+      'viewBox': '0 0 24 24',
+      'stroke-width': '2',
+      'stroke': 'currentColor',
+    },
+    inner: `<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-6.364-2.386 1.591-1.591M3 12h2.25m.386-6.364 1.591 1.591M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>`,
+  },
+  HiOutlineMoon: {
+    attrs: {
+      'fill': 'none',
+      'viewBox': '0 0 24 24',
+      'stroke-width': '2',
+      'stroke': 'currentColor',
+    },
+    inner: `<path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/>`,
   },
 } as const;

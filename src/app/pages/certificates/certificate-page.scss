@@ -30,7 +30,7 @@
   text-decoration: none;
 
   &:hover {
-    color: var(--cor-primaria);
+    color: var(--cor-marca-texto);
   }
 }
 
@@ -76,11 +76,13 @@
     padding: var(--esp-2) var(--esp-3);
     border: 1px solid var(--cor-borda);
     border-radius: var(--raio-sm);
+    background-color: var(--cor-superficie);
+    color: var(--cor-texto);
     font: inherit;
 
     &:focus {
       outline: none;
-      border-color: var(--cor-primaria);
+      border-color: var(--cor-marca-texto);
     }
   }
 }

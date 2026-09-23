@@ -30,7 +30,7 @@
   text-decoration: none;
 
   &:hover {
-    color: var(--cor-primaria);
+    color: var(--cor-marca-texto);
   }
 }
 
@@ -53,7 +53,7 @@
   gap: var(--esp-2);
   padding: var(--esp-1) var(--esp-3);
   background-color: var(--cor-marca-suave);
-  color: var(--cor-primaria);
+  color: var(--cor-marca-texto);
   border-radius: var(--raio-pill);
   font-size: var(--texto-sm);
 }
@@ -95,12 +95,14 @@
     padding: var(--esp-2) var(--esp-3);
     border: 1px solid var(--cor-borda);
     border-radius: var(--raio-sm);
+    background-color: var(--cor-superficie);
+    color: var(--cor-texto);
     font: inherit;
     resize: vertical;
 
     &:focus {
       outline: none;
-      border-color: var(--cor-primaria);
+      border-color: var(--cor-marca-texto);
     }
   }
 }

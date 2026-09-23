@@ -130,13 +130,13 @@
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio-sm);
   background: var(--cor-superficie);
-  color: var(--cor-primaria);
+  color: var(--cor-marca-texto);
   font-size: var(--texto-sm);
   font-weight: var(--peso-medio);
 
   &:hover {
     cursor: pointer;
-    border-color: var(--cor-primaria);
+    border-color: var(--cor-marca-texto);
     background: var(--cor-marca-suave);
   }
 }
@@ -202,7 +202,7 @@
 
   app-icon {
     flex-shrink: 0;
-    color: var(--cor-primaria);
+    color: var(--cor-marca-texto);
   }
 
   div {
@@ -233,7 +233,7 @@
   background: var(--cor-superficie-alt);
 
   app-icon {
-    color: var(--cor-primaria);
+    color: var(--cor-marca-texto);
     flex-shrink: 0;
   }
 
@@ -306,7 +306,7 @@
   padding: 0;
   border: none;
   background: none;
-  color: var(--cor-primaria);
+  color: var(--cor-marca-texto);
   font: inherit;
   font-size: var(--texto-sm);
   font-weight: var(--peso-medio);

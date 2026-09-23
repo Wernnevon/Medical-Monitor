@@ -27,7 +27,7 @@
   border-bottom: 1px solid var(--cor-borda);
 
   app-icon {
-    color: var(--cor-acao);
+    color: var(--cor-marca-texto);
   }
 
   h1 {
@@ -63,7 +63,7 @@
 
   &:not(:disabled):hover {
     cursor: pointer;
-    border-color: var(--cor-acao);
+    border-color: var(--cor-marca-texto);
   }
 
   &:disabled {
@@ -83,9 +83,9 @@
 }
 
 .etapa--atual {
-  border-color: var(--cor-acao);
+  border-color: var(--cor-marca-texto);
   background: var(--cor-marca-suave);
-  color: var(--cor-acao);
+  color: var(--cor-marca-texto);
 
   .numero {
     background: var(--cor-acao);
@@ -156,7 +156,7 @@
   background: none;
   padding: var(--esp-1) var(--esp-2);
   border-radius: var(--raio-sm);
-  color: var(--cor-acao);
+  color: var(--cor-marca-texto);
   font-size: var(--texto-sm);
   font-weight: var(--peso-medio);
 
