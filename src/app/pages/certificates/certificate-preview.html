@@ -1,0 +1,137 @@
+<div class="painel">
+  <div class="abas" role="tablist" aria-label="Visualização do atestado" (keydown)="navegarAbas($event)">
+    <button
+      id="aba-previa"
+      type="button"
+      role="tab"
+      class="aba"
+      aria-controls="painel-previa"
+      [attr.aria-selected]="aba() === 'previa'"
+      [attr.tabindex]="aba() === 'previa' ? 0 : -1"
+      (click)="selecionar('previa')"
+    >
+      <app-icon name="FiFileText" size="1rem" />
+      Pré-visualização
+    </button>
+    <button
+      id="aba-impressao"
+      type="button"
+      role="tab"
+      class="aba"
+      aria-controls="painel-impressao"
+      [attr.aria-selected]="aba() === 'impressao'"
+      [attr.tabindex]="aba() === 'impressao' ? 0 : -1"
+      (click)="selecionar('impressao')"
+    >
+      <app-icon name="FiPrinter" size="1rem" />
+      Impressão
+    </button>
+  </div>
+
+  <div
+    id="painel-impressao"
+    class="impressao"
+    role="tabpanel"
+    aria-labelledby="aba-impressao"
+    [hidden]="aba() !== 'impressao'"
+  >
+    <p>
+      O atestado sai em uma folha A4, com o timbrado, os dados do paciente e o espaço para
+      assinatura. Para gerar o PDF, escolha "Salvar como PDF" na janela de impressão.
+    </p>
+    <button type="button" class="botao-imprimir" (click)="imprimir.emit()">
+      <app-icon name="FiPrinter" size="1rem" />
+      Imprimir atestado
+    </button>
+  </div>
+
+  <article
+    id="painel-previa"
+    class="folha"
+    role="tabpanel"
+    aria-labelledby="aba-previa"
+    [hidden]="aba() !== 'previa'"
+  >
+    <img
+      class="marca-dagua"
+      ngSrc="/assets/logo_vittaly.svg"
+      width="130"
+      height="137"
+      alt=""
+      aria-hidden="true"
+      priority
+    />
+
+    <header class="marca">
+      <img class="logo" ngSrc="/assets/logo_vittaly.svg" width="130" height="137" alt="" priority />
+      <div class="marca-texto">
+        <span class="marca-nome">VITTALY</span>
+        <span class="marca-sub">CENTRO MÉDICO ODONTOLÓGICO</span>
+      </div>
+    </header>
+
+    <div class="profissional">
+      <strong>{{ nomeProfissional() }}</strong>
+      @if (especialidade()) {
+        <span>{{ especialidade() }}</span>
+      }
+      @if (conselho()) {
+        <span>{{ conselho() }}</span>
+      }
+    </div>
+
+    <h3 class="titulo-documento">Atestado médico</h3>
+
+    @if (form().nome.trim()) {
+      <div class="texto">
+        <p>Atestamos para os devidos fins que o(a) paciente:</p>
+        <p class="periodo"><strong>{{ form().nome }}</strong></p>
+        <p>
+          CPF: {{ form().cpf || '—' }} &nbsp;·&nbsp; Data de nascimento: {{ nascimento() || '—' }}
+          @if (form().convenio) {
+            &nbsp;·&nbsp; Convênio: {{ form().convenio }}
+          }
+        </p>
+
+        @if (tipo()?.atividades) {
+          <p>
+            foi atendido(a) neste serviço de saúde, necessitando de afastamento de suas
+            {{ tipo()!.atividades }} pelo período de:
+          </p>
+          <p class="periodo"><strong>{{ dias() || '___ dias' }}</strong></p>
+          @if (inicio()) {
+            <p>com início em {{ inicio() }}{{ fim() ? ' e término em ' + fim() : '' }}.</p>
+          }
+        } @else if (tipo()) {
+          <p>compareceu a este serviço de saúde para atendimento{{ inicio() ? ' na data de ' + inicio() : '' }}.</p>
+        } @else {
+          <p class="vazio">Selecione o tipo de atestado.</p>
+        }
+
+        @if (form().cid) {
+          <p class="campo"><strong>CID:</strong> {{ form().cid }}</p>
+        }
+        @if (form().justificativa) {
+          <p class="campo texto-livre"><strong>Justificativa:</strong> {{ form().justificativa }}</p>
+        }
+        @if (form().orientacoes) {
+          <p class="campo texto-livre"><strong>Orientações:</strong> {{ form().orientacoes }}</p>
+        }
+      </div>
+    } @else {
+      <p class="vazio">Informe o nome do paciente.</p>
+    }
+
+    <footer class="rodape">
+      <span class="data">{{ data }}, São João do Rio do Peixe - PB, CEP 58910-000</span>
+      <div class="assinatura">
+        <span class="assinatura-linha">
+          <strong>{{ nomeProfissional() }}</strong>
+          @if (conselho()) {
+            <span>{{ conselho() }}</span>
+          }
+        </span>
+      </div>
+    </footer>
+  </article>
+</div>

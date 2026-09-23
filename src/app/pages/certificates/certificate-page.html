@@ -1,94 +1,211 @@
-<div class="pagina-atestado">
-  <a class="voltar" routerLink="/pacientes">
-    <app-icon name="BsChevronLeft" size="1rem" />
-    Voltar para a lista de pacientes
-  </a>
+<div class="pagina">
+  <div class="principal">
+    <a class="voltar" routerLink="/pacientes">
+      <app-icon name="BsChevronLeft" size="0.9rem" />
+      Voltar para a lista de pacientes
+    </a>
 
-  <header class="cabecalho">
-    <h1>Atestado Médico</h1>
-  </header>
+    <h1>Emissão de Atestado</h1>
 
-  <div class="corpo">
-    <section class="cartao">
-      <h2>Dados do Paciente</h2>
+    <section class="cartao paciente" aria-labelledby="rotulo-paciente">
+      <span class="avatar" aria-hidden="true">
+        <app-icon name="HiOutlineUserCircle" size="1.75rem" />
+      </span>
 
-      <label class="item">
-        <span>Paciente</span>
-        <input
-          type="text"
-          [value]="form().patientName"
-          (input)="atualizar('patientName', $any($event.target).value)"
-        />
-      </label>
+      <div class="paciente-dados">
+        <div class="paciente-topo">
+          <label id="rotulo-paciente" for="busca-paciente">Paciente</label>
+          @if (paciente(); as p) {
+            <a class="ver-prontuario" [routerLink]="['/pacientes/detalhes', p.id]">
+              Ver prontuário
+              <app-icon name="FiExternalLink" size="0.9rem" />
+            </a>
+          }
+        </div>
 
-      <label class="item">
-        <span>Entidade Nosológica — CID</span>
-        <input
-          type="text"
-          [value]="form().cid"
-          (input)="atualizar('cid', $any($event.target).value)"
-        />
-      </label>
+        <div class="combobox">
+          <input
+            id="busca-paciente"
+            type="text"
+            role="combobox"
+            autocomplete="off"
+            aria-autocomplete="list"
+            aria-controls="lista-pacientes"
+            [attr.aria-expanded]="mostrarLista()"
+            [attr.aria-activedescendant]="ativo() >= 0 ? 'sugestao-' + ativo() : null"
+            placeholder="Digite o nome ou CPF do paciente…"
+            [value]="form().nome"
+            (input)="editarNome($any($event.target).value)"
+            (keydown)="teclaBusca($event)"
+            (blur)="fecharLista()"
+          />
+          <app-icon class="combobox-icone" name="BsSearch" size="0.9rem" />
 
-      <label class="item">
-        <span>Dias</span>
-        <input
-          type="number"
-          min="1"
-          [value]="form().days"
-          (input)="atualizar('days', $any($event.target).value)"
-        />
-      </label>
+          <ul id="lista-pacientes" role="listbox" aria-label="Pacientes encontrados" [hidden]="!mostrarLista()">
+            @for (p of sugestoes(); track p.id; let i = $index) {
+              <li
+                [id]="'sugestao-' + i"
+                role="option"
+                [attr.aria-selected]="ativo() === i"
+                (mousedown)="$event.preventDefault()"
+                (click)="escolher(p)"
+              >
+                <strong>{{ p.name }}</strong>
+                <span>{{ p.cpf }}</span>
+              </li>
+            } @empty {
+              <li class="sem-resultado" role="option" aria-disabled="true" aria-selected="false">
+                {{ buscando() ? 'Buscando…' : 'Nenhum paciente encontrado.' }}
+              </li>
+            }
+          </ul>
+        </div>
 
-      <label class="item">
-        <span>Data</span>
-        <input
-          type="date"
-          [value]="form().date"
-          (input)="atualizar('date', $any($event.target).value)"
-        />
-      </label>
-
-      <label class="item">
-        <span>Cidade</span>
-        <input
-          type="text"
-          [value]="form().city"
-          (input)="atualizar('city', $any($event.target).value)"
-        />
-      </label>
-
-      <label class="item">
-        <span>UF</span>
-        <input
-          type="text"
-          maxlength="2"
-          [value]="form().state"
-          (input)="atualizar('state', $any($event.target).value)"
-        />
-      </label>
-
-      <div class="acoes">
-        <app-button styleType="back" (pressed)="limpar()">Limpar</app-button>
+        <div class="paciente-meta">
+          <label class="campo">
+            <span>CPF</span>
+            <input
+              type="text"
+              inputmode="numeric"
+              placeholder="000.000.000-00"
+              [value]="form().cpf"
+              (input)="atualizar('cpf', $any($event.target).value)"
+            />
+          </label>
+          <label class="campo">
+            <span>Nascimento</span>
+            <input
+              type="date"
+              [value]="form().nascimento"
+              (input)="atualizar('nascimento', $any($event.target).value)"
+            />
+          </label>
+          <label class="campo">
+            <span>Convênio</span>
+            <input
+              type="text"
+              placeholder="Particular"
+              [value]="form().convenio"
+              (input)="atualizar('convenio', $any($event.target).value)"
+            />
+          </label>
+        </div>
       </div>
     </section>
 
-    <app-print-output class="saida">
-      @if (preenchido()) {
-        <p class="atestado-texto">
-          ATESTO para os devidos fins de DIREITO que o(a) Sr.(a)
-          <strong>{{ form().patientName.toUpperCase() || '__________________' }}</strong>
-          foi atendido(a) neste Nosocômio, portador(a) da entidade Nosológica-CID
-          <strong>{{ form().cid || '__________________' }}</strong>
-          devendo permanecer afastado(a) de suas atividades habituais pelo período de
-          <strong>{{ form().days }}</strong> dia(s).
-        </p>
-        <p class="atestado-data">
-          {{ form().city || 'Cidade' }}-{{ form().state || 'UF' }}, {{ form().date }}
-        </p>
-      } @else {
-        <p class="paragrafo paragrafo--vazio">Preencha os dados do paciente para gerar o atestado.</p>
-      }
-    </app-print-output>
+    <section class="cartao" aria-labelledby="titulo-dados">
+      <header class="secao-cabecalho">
+        <app-icon class="secao-icone" name="FiFileText" size="1.5rem" />
+        <h2 id="titulo-dados">Dados do Atestado</h2>
+      </header>
+
+      <div class="grade">
+        <label class="campo">
+          <span>Tipo de atestado <abbr title="obrigatório">*</abbr></span>
+          <select
+            required
+            (change)="atualizar('tipo', $any($event.target).value)"
+          >
+            <option value="" disabled [selected]="!form().tipo">Selecione o tipo de atestado</option>
+            @for (t of tipos; track t.valor) {
+              <option [value]="t.valor" [selected]="form().tipo === t.valor">{{ t.rotulo }}</option>
+            }
+          </select>
+        </label>
+
+        <fieldset class="campo">
+          <legend>{{ comparecimento() ? 'Data do atendimento' : 'Período de afastamento' }}</legend>
+          <div class="periodo">
+            <input
+              type="date"
+              aria-label="Data de início"
+              [value]="form().inicio"
+              (input)="editarInicio($any($event.target).value)"
+            />
+            @if (!comparecimento()) {
+              <span aria-hidden="true">até</span>
+              <input
+                type="date"
+                aria-label="Data de término"
+                [min]="form().inicio"
+                [value]="form().fim"
+                (input)="editarFim($any($event.target).value)"
+              />
+            }
+          </div>
+        </fieldset>
+
+        @if (!comparecimento()) {
+          <label class="campo">
+            <span>Quantidade de dias <abbr title="obrigatório">*</abbr></span>
+            <span class="com-sufixo">
+              <input
+                type="number"
+                min="1"
+                inputmode="numeric"
+                placeholder="Ex.: 2"
+                required
+                [value]="form().dias"
+                (input)="editarDias($any($event.target).value)"
+              />
+              <span class="sufixo" aria-hidden="true">dias</span>
+            </span>
+          </label>
+        }
+
+        <label class="campo">
+          <span>CID (opcional)</span>
+          <input
+            type="text"
+            placeholder="Ex.: M54.5"
+            [value]="form().cid"
+            (input)="atualizar('cid', $any($event.target).value.toUpperCase())"
+          />
+        </label>
+      </div>
+
+      <label class="campo">
+        <span>Justificativa / Observações</span>
+        <textarea
+          rows="4"
+          aria-describedby="contador-justificativa"
+          [attr.maxlength]="limite"
+          placeholder="Descreva o motivo do afastamento, recomendações e demais informações relevantes…"
+          [value]="form().justificativa"
+          (input)="atualizar('justificativa', $any($event.target).value)"
+        ></textarea>
+        <span class="contador" id="contador-justificativa">{{ form().justificativa.length }}/{{ limite }}</span>
+      </label>
+
+      <label class="campo">
+        <span>Orientações (opcional)</span>
+        <textarea
+          rows="3"
+          aria-describedby="contador-orientacoes"
+          [attr.maxlength]="limite"
+          placeholder="Instruções adicionais para o paciente, se houver…"
+          [value]="form().orientacoes"
+          (input)="atualizar('orientacoes', $any($event.target).value)"
+        ></textarea>
+        <span class="contador" id="contador-orientacoes">{{ form().orientacoes.length }}/{{ limite }}</span>
+      </label>
+
+      <footer class="barra-acoes">
+        <button type="button" class="botao-contorno" (click)="limpar()">
+          <app-icon name="RiDeleteBin6Line" size="1rem" />
+          Limpar
+        </button>
+        <button type="button" class="botao-principal" [disabled]="!podeImprimir()" (click)="imprimir()">
+          <app-icon name="FiPrinter" size="1rem" />
+          Imprimir atestado
+        </button>
+      </footer>
+    </section>
   </div>
+
+  <app-certificate-preview
+    class="previa"
+    [form]="form()"
+    (imprimir)="imprimir()"
+  />
 </div>
