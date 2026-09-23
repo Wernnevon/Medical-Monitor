@@ -1,6 +1,4 @@
-<app-breadcrumb [items]="breadcrumb()" />
-
-<div class="card">
+<div class="pagina-detalhes">
   @if (facade.loadingPatient() && !facade.patient()) {
     <div class="carregando">Carregando paciente…</div>
   } @else if (!facade.patient()) {
@@ -8,65 +6,93 @@
   } @else {
     @let paciente = facade.patient()!;
 
-    <header class="topo">
-      <div class="avatar">{{ paciente.name.charAt(0) }}</div>
-      <div class="identificacao">
-        <div class="nome-status">
-          <h1>{{ paciente.name }}</h1>
-          <span class="status">Ativo</span>
-        </div>
-        <p class="meta">
-          CPF {{ paciente.cpf }}
-          @if (idade() !== null) {
-            &nbsp;·&nbsp;{{ idade() }} anos
-          }
-        </p>
+    <a class="voltar" routerLink="/pacientes">
+      <app-icon name="BsChevronLeft" size="1rem" />
+      Voltar para a lista de pacientes
+    </a>
+
+    <header class="cabecalho">
+      <div class="identidade">
+        <app-icon name="HiOutlineUserCircle" size="1.75rem" />
+        <h1>{{ paciente.name }}</h1>
+        <span class="status">Ativo</span>
+      </div>
+      <div class="acoes-topo">
+        <a class="acao acao--principal" [routerLink]="['/pacientes/editar', id()]">
+          <app-icon name="FaUserEdit" />
+          Editar Dados
+        </a>
+        <app-kebab-menu [rowId]="paciente.id" [items]="kebabItems()" />
       </div>
     </header>
 
-    <nav class="abas">
-      <a
-        [routerLink]="['/pacientes/detalhes', id()]"
-        routerLinkActive="aba--ativa"
-        [routerLinkActiveOptions]="{ exact: true }"
-      >
-        Resumo
-      </a>
-      <a [routerLink]="['/pacientes/detalhes', id(), 'exames']" routerLinkActive="aba--ativa">
-        Exames
-      </a>
-      <a [routerLink]="['/pacientes/detalhes', id(), 'receitas']" routerLinkActive="aba--ativa">
-        Receitas
-      </a>
-      <a [routerLink]="['/pacientes/detalhes', id(), 'atestados']" routerLinkActive="aba--ativa">
-        Atestados
-      </a>
-      <a [routerLink]="['/pacientes/detalhes', id(), 'historico']" routerLinkActive="aba--ativa">
-        Histórico
-      </a>
-    </nav>
+    <p class="meta">
+      <span><app-icon name="RiFileUserFill" size="1rem" /> CPF {{ paciente.cpf }}</span>
+      @if (paciente.phone) {
+        <span><app-icon name="BsTelephone" size="1rem" /> {{ paciente.phone }}</span>
+      }
+    </p>
 
-    <div class="conteudo-aba">
-      @switch (aba()) {
-        @case ('resumo') {
-          <div class="resumo">
-            <div class="acoes-rapidas">
-              <a class="acao" [routerLink]="['/pacientes/detalhes', id(), 'exames']">
-                <app-icon name="BiTestTube" />
-                Ver exames
-              </a>
-              <a class="acao" [routerLink]="['/pacientes/detalhes', id(), 'receitas']">
-                <app-icon name="LuClipboardEdit" />
-                Ver receitas
-              </a>
-              <a class="acao acao--principal" [routerLink]="['/pacientes/editar', id()]">
-                <app-icon name="FaUserEdit" />
-                Editar dados
-              </a>
-            </div>
+    <div class="tiras">
+      @if (idade() !== null) {
+        <div class="tira">
+          <app-icon name="HiOutlineUserCircle" size="1.5rem" />
+          <div><span>Idade</span><strong>{{ idade() }} anos</strong></div>
+        </div>
+      }
+      @if (paciente.gender) {
+        <div class="tira">
+          <app-icon name="HiOutlineUserGroup" size="1.5rem" />
+          <div><span>Gênero</span><strong>{{ paciente.gender }}</strong></div>
+        </div>
+      }
+      @if (paciente.health.healthInsurance) {
+        <div class="tira">
+          <app-icon name="AiOutlineAudit" size="1.5rem" />
+          <div><span>Convênio</span><strong>{{ paciente.health.healthInsurance }}</strong></div>
+        </div>
+      }
+      @if (ultimoAtendimento(); as u) {
+        <div class="tira">
+          <app-icon name="BsClockHistory" size="1.5rem" />
+          <div><span>Último atendimento</span><strong>{{ formatar(u.data) }} · {{ u.titulo }}</strong></div>
+        </div>
+      }
+    </div>
 
-            <section class="secao">
-              <h2>Dados pessoais</h2>
+    <div class="corpo">
+      <div class="conteudo-aba">
+        <section class="cartao">
+          <h2>Prontuário</h2>
+          <p class="cartao-descricao">
+            Dados pessoais, anamnese e indicadores clínicos do paciente, tudo
+            num lugar só.
+          </p>
+          <nav class="subabas">
+            <button
+              type="button"
+              [class.subaba--ativa]="resumoAba() === 'pessoais'"
+              (click)="resumoAba.set('pessoais')"
+            >
+              Dados Pessoais
+            </button>
+            <button
+              type="button"
+              [class.subaba--ativa]="resumoAba() === 'anamnese'"
+              (click)="resumoAba.set('anamnese')"
+            >
+              Anamnese
+            </button>
+            <button
+              type="button"
+              [class.subaba--ativa]="resumoAba() === 'clinicos'"
+              (click)="resumoAba.set('clinicos')"
+            >
+              Dados Clínicos
+            </button>
+          </nav>
+          @switch (resumoAba()) {
+            @case ('pessoais') {
               <dl class="grade-campos">
                 <div><dt>Nome completo</dt><dd>{{ paciente.name }}</dd></div>
                 <div><dt>CPF</dt><dd>{{ paciente.cpf }}</dd></div>
@@ -76,106 +102,247 @@
                 <div><dt>Telefone</dt><dd>{{ paciente.phone || 'Não informado' }}</dd></div>
                 <div><dt>Nome do pai</dt><dd>{{ paciente.fatherName }}</dd></div>
                 <div><dt>Nome da mãe</dt><dd>{{ paciente.motherName }}</dd></div>
+                <div class="grade-campos-larga">
+                  <dt>Endereço</dt>
+                  <dd>
+                    {{ paciente.adress.street }}, {{ paciente.adress.number || 'S/N' }} —
+                    {{ paciente.adress.neighborhood }}, {{ paciente.adress.city }}
+                    @if (paciente.adress.complement) {
+                      ({{ paciente.adress.complement }})
+                    }
+                  </dd>
+                </div>
               </dl>
-            </section>
-
-            <section class="secao">
-              <h2>Endereço</h2>
-              <p class="paragrafo">
-                {{ paciente.adress.street }}, {{ paciente.adress.number || 'S/N' }} —
-                {{ paciente.adress.neighborhood }}, {{ paciente.adress.city }}
-                @if (paciente.adress.complement) {
-                  ({{ paciente.adress.complement }})
-                }
-              </p>
-            </section>
-
-            <section class="secao">
-              <h2>Convênio e saúde</h2>
-              <dl class="grade-campos">
-                <div>
-                  <dt>Convênio</dt>
-                  <dd>{{ paciente.health.healthInsurance || 'Não informado' }}</dd>
-                </div>
-                <div>
-                  <dt>Alergias</dt>
-                  <dd>{{ paciente.health.allergy || 'Não informado' }}</dd>
-                </div>
-                @if (paciente.health.weight) {
-                  <div><dt>Peso</dt><dd>{{ paciente.health.weight }} kg</dd></div>
-                }
-                @if (paciente.health.height) {
-                  <div><dt>Altura</dt><dd>{{ paciente.health.height }} cm</dd></div>
-                }
-              </dl>
-            </section>
-
-            @if (ultimoAtendimento(); as u) {
-              <section class="secao">
-                <h2>Último atendimento</h2>
-                <div class="ultimo-atendimento">
-                  <app-icon [name]="u.tipo === 'exame' ? 'BiTestTube' : 'LuClipboardEdit'" />
-                  <div>
-                    <strong>{{ u.titulo }}</strong>
-                    <span>{{ formatar(u.data) }} · {{ u.status }}</span>
-                  </div>
-                </div>
-              </section>
             }
-          </div>
-        }
-        @case ('exames') {
-          <app-table
-            title="Exames do paciente"
-            icon="BiTestTube"
-            [rows]="examRows()"
-            [columns]="examColumns"
-            [pagination]="examPagination()"
-            [showAdd]="false"
-            (pageChange)="facade.examPage.set($event)"
-          />
-        }
-        @case ('receitas') {
-          <app-table
-            title="Receitas do paciente"
-            icon="LuClipboardEdit"
-            [rows]="prescriptionRows()"
-            [columns]="prescriptionColumns"
-            [pagination]="prescriptionPagination()"
-            [showAdd]="false"
-            (pageChange)="facade.prescriptionPage.set($event)"
-          />
-        }
-        @case ('atestados') {
-          <div class="pendente">
-            <app-icon name="AiOutlineAudit" size="3rem" />
-            <h2>Atestados</h2>
-            <p>
-              O gerador de atestados do app anterior não guardava vínculo com o
-              paciente — era uma impressão avulsa. Emitir e listar atestados por
-              paciente é um recurso novo, ainda não construído.
-            </p>
-          </div>
-        }
-        @case ('historico') {
-          @if (facade.historico().length) {
-            <ul class="linha-do-tempo">
-              @for (item of facade.historico(); track item.titulo + item.data) {
-                <li>
-                  <app-icon [name]="item.tipo === 'exame' ? 'BiTestTube' : 'LuClipboardEdit'" />
-                  <div>
-                    <strong>{{ item.titulo }}</strong>
-                    <span>{{ formatar(item.data) }}</span>
+            @case ('anamnese') {
+              <div>
+                @if (paciente.health.allergy) {
+                  <span class="pilula pilula--alerta">Alergia: {{ paciente.health.allergy }}</span>
+                }
+                <label class="anamnese">
+                  <span class="anamnese-rotulo">Anamnese</span>
+                  <textarea
+                    rows="4"
+                    placeholder="Condições, observações e histórico clínico do paciente"
+                    [value]="anamneseRascunho()"
+                    (input)="anamneseRascunho.set($any($event.target).value)"
+                  ></textarea>
+                  @if (anamneseAlterada()) {
+                    <div class="anamnese-acoes">
+                      <button type="button" class="link" (click)="descartarAnamnese(paciente.anamnese)">
+                        Descartar
+                      </button>
+                      <app-button
+                        styleType="submit"
+                        [disabled]="salvandoAnamnese()"
+                        (pressed)="salvarAnamnese(paciente)"
+                      >
+                        {{ salvandoAnamnese() ? 'Salvando…' : 'Salvar anamnese' }}
+                      </app-button>
+                    </div>
+                  }
+                </label>
+              </div>
+            }
+            @case ('clinicos') {
+              <div>
+                <dl class="grade-campos">
+                  @if (paciente.health.weight) {
+                    <div><dt>Peso</dt><dd>{{ paciente.health.weight }} kg</dd></div>
+                  }
+                  @if (paciente.health.height) {
+                    <div><dt>Altura</dt><dd>{{ paciente.health.height }} cm</dd></div>
+                  }
+                  @if (imc()) {
+                    <div><dt>IMC</dt><dd>{{ imc() }} kg/m²</dd></div>
+                  }
+                  @if (paciente.health.bloodType) {
+                    <div><dt>Tipo Sanguíneo</dt><dd>{{ paciente.health.bloodType }}</dd></div>
+                  }
+                  @if (ultimaLeitura(); as u) {
+                    <div>
+                      <dt>Pressão arterial (última)</dt>
+                      <dd>{{ u.value }} mmHg · {{ formatarDataHora(u.measuredAt) }}</dd>
+                    </div>
+                  }
+                </dl>
+                @if (!paciente.health.weight && !paciente.health.height && !paciente.health.bloodType) {
+                  <p class="paragrafo paragrafo--vazio">Nenhum dado clínico registrado.</p>
+                }
+
+                <div class="pressao">
+                  <h3>Registrar Pressão Arterial</h3>
+                  <div class="pressao-campos">
+                    <label>
+                      <span>Data</span>
+                      <input
+                        type="date"
+                        [value]="pressaoData()"
+                        (input)="pressaoData.set($any($event.target).value)"
+                      />
+                    </label>
+                    <label>
+                      <span>Horário</span>
+                      <input
+                        type="time"
+                        [value]="pressaoHora()"
+                        (input)="pressaoHora.set($any($event.target).value)"
+                      />
+                    </label>
+                    <label>
+                      <span>Pressão (mmHg)</span>
+                      <input
+                        type="text"
+                        placeholder="120/80"
+                        inputmode="numeric"
+                        [value]="pressaoValor()"
+                        (input)="onPressaoInput($event)"
+                      />
+                    </label>
+                    <app-button
+                      styleType="submit"
+                      [disabled]="registrandoPressao() || !pressaoData() || !pressaoHora() || !pressaoValor()"
+                      (pressed)="registrarPressao(paciente)"
+                    >
+                      {{ registrandoPressao() ? 'Registrando…' : 'Registrar' }}
+                    </app-button>
                   </div>
-                  <small class="tipo tipo--{{ item.tipo }}">{{ item.status }}</small>
-                </li>
-              }
-            </ul>
-          } @else {
-            <p class="paragrafo">Nenhum exame ou receita registrado para este paciente.</p>
+
+                  @if (leituras().length) {
+                    <ul class="pressao-historico">
+                      @for (leitura of leituras(); track leitura.id) {
+                        <li>
+                          <span>{{ formatarDataHora(leitura.measuredAt) }}</span>
+                          <strong>{{ leitura.value }} mmHg</strong>
+                          <button
+                            type="button"
+                            class="pressao-excluir"
+                            aria-label="Excluir leitura"
+                            (click)="excluirLeitura(paciente, leitura)"
+                          >
+                            <app-icon name="RiDeleteBin6Line" size="1rem" />
+                          </button>
+                        </li>
+                      }
+                    </ul>
+                  }
+                </div>
+              </div>
+            }
           }
+        </section>
+
+        <section class="cartao">
+          <div class="cartao-cabecalho">
+            <h2>Últimos Atendimentos</h2>
+            <select
+              class="filtro-tipo"
+              aria-label="Filtrar por tipo"
+              [value]="historicoFiltro()"
+              (change)="historicoFiltro.set($any($event.target).value)"
+            >
+              <option value="todos">Todos</option>
+              <option value="exame">Exames</option>
+              <option value="receita">Receitas</option>
+            </select>
+          </div>
+          @if (historicoRows().length) {
+            <app-table
+              [rows]="historicoRows()"
+              [columns]="historicoColumns"
+              [flat]="true"
+              rowActionIcon="FiEdit"
+              rowActionLabel="Anotação"
+              (rowAction)="abrirAnotacao($event)"
+            />
+          } @else {
+            <p class="paragrafo paragrafo--vazio">Nenhum exame ou receita registrado para este paciente.</p>
+          }
+        </section>
+      </div>
+
+      <aside class="lateral">
+        @if (paciente.health.healthInsurance) {
+          <section class="cartao">
+            <h2>Convênio</h2>
+            <div class="convenio">
+              <app-icon name="AiOutlineAudit" size="1.5rem" />
+              <div>
+                <strong>{{ paciente.health.healthInsurance }}</strong>
+                <span>Plano titular</span>
+              </div>
+            </div>
+          </section>
         }
-      }
+
+        <section class="cartao">
+          <h2>Ações Rápidas</h2>
+          <div class="acoes-lista">
+            <a [routerLink]="['/exames']" [queryParams]="{ patientId: id() }">
+              <app-icon name="BiTestTube" />
+              <span>
+                <strong>Exames</strong>
+                <small>Solicitar novo exame</small>
+              </span>
+              <app-icon name="BsChevronRight" size="0.9rem" />
+            </a>
+            <a [routerLink]="['/receitas']" [queryParams]="{ patientId: id() }">
+              <app-icon name="LuClipboardEdit" />
+              <span>
+                <strong>Receitas</strong>
+                <small>Prescrever receita</small>
+              </span>
+              <app-icon name="BsChevronRight" size="0.9rem" />
+            </a>
+            <a [routerLink]="['/pacientes/editar', id()]">
+              <app-icon name="FaUserEdit" />
+              <span>
+                <strong>Editar Dados</strong>
+                <small>Atualizar cadastro</small>
+              </span>
+              <app-icon name="BsChevronRight" size="0.9rem" />
+            </a>
+          </div>
+        </section>
+      </aside>
     </div>
+
+    @if (anotacaoAberta()) {
+      <div class="anotacao-overlay" (click)="fecharAnotacao()">
+        <section
+          class="anotacao-modal"
+          role="dialog"
+          aria-modal="true"
+          [attr.aria-label]="'Anotação — ' + anotacaoExameNome()"
+          (click)="$event.stopPropagation()"
+        >
+          <header>
+            <app-icon name="FiEdit" size="24" />
+            <label>Anotação — {{ anotacaoExameNome() }}</label>
+            <button type="button" class="close" aria-label="Fechar" (click)="fecharAnotacao()">
+              <app-icon name="CgCloseO" size="24" />
+            </button>
+          </header>
+          <main>
+            <textarea
+              rows="6"
+              placeholder="Resultado, observações ou laudo deste exame"
+              [value]="anotacaoRascunho()"
+              (input)="anotacaoRascunho.set($any($event.target).value)"
+            ></textarea>
+          </main>
+          <footer>
+            <app-button styleType="back" (pressed)="fecharAnotacao()">Cancelar</app-button>
+            <app-button
+              styleType="submit"
+              [disabled]="salvandoAnotacao()"
+              (pressed)="salvarAnotacao()"
+            >
+              {{ salvandoAnotacao() ? 'Salvando…' : 'Salvar anotação' }}
+            </app-button>
+          </footer>
+        </section>
+      </div>
+    }
   }
 </div>

@@ -1,16 +1,13 @@
-import { Service, computed, inject, resource, signal } from '@angular/core';
-import type { ListPagination } from '@domain/use-cases';
+import { Service, inject, resource, signal } from '@angular/core';
 import {
   ExamListPagination,
   PatientFindById,
   PrescriptionListPagination,
 } from '@domain/tokens';
 
-const PAGE_SIZE = 10;
-
 /**
- * Estado da página de Detalhes do Paciente: o paciente em si e as listas
- * paginadas de exames e receitas vinculadas a ele.
+ * Estado da página de Detalhes do Paciente: o paciente em si e a linha do
+ * tempo mesclada de exames e receitas vinculadas a ele.
  *
  * Reaproveita `ExamListPagination`/`PrescriptionListPagination` — os mesmos
  * tokens que a listagem geral de exames/receitas vai usar quando essas
@@ -25,8 +22,6 @@ export class PatientDetailsFacade {
   private readonly prescriptionUseCase = inject(PrescriptionListPagination);
 
   readonly patientId = signal('');
-  readonly examPage = signal(1);
-  readonly prescriptionPage = signal(1);
 
   private readonly patientResource = resource({
     params: () => ({ id: this.patientId() }),
@@ -38,49 +33,9 @@ export class PatientDetailsFacade {
   readonly loadingPatient = this.patientResource.isLoading;
   readonly patientError = this.patientResource.error;
 
-  private readonly examsResource = resource({
-    params: () => ({ id: this.patientId(), page: this.examPage() }),
-    loader: ({ params }): Promise<ListPagination.Response<any>> =>
-      params.id
-        ? this.examUseCase.listPagination({
-            page: params.page,
-            pageSize: PAGE_SIZE,
-            filters: [{ key: 'patientId', value: params.id }],
-          })
-        : Promise.resolve({ entries: [], totalEntries: 0 }),
-    defaultValue: { entries: [], totalEntries: 0 },
-  });
-
-  private readonly prescriptionsResource = resource({
-    params: () => ({ id: this.patientId(), page: this.prescriptionPage() }),
-    loader: ({ params }): Promise<ListPagination.Response<any>> =>
-      params.id
-        ? this.prescriptionUseCase.listPagination({
-            page: params.page,
-            pageSize: PAGE_SIZE,
-            filters: [{ key: 'patientId', value: params.id }],
-          })
-        : Promise.resolve({ entries: [], totalEntries: 0 }),
-    defaultValue: { entries: [], totalEntries: 0 },
-  });
-
-  readonly exams = computed(() => this.examsResource.value().entries);
-  readonly examsTotal = computed(() => this.examsResource.value().totalEntries);
-  readonly examsTotalPages = computed(
-    () => Math.ceil(this.examsTotal() / PAGE_SIZE) || 1,
-  );
-
-  readonly prescriptions = computed(() => this.prescriptionsResource.value().entries);
-  readonly prescriptionsTotal = computed(
-    () => this.prescriptionsResource.value().totalEntries,
-  );
-  readonly prescriptionsTotalPages = computed(
-    () => Math.ceil(this.prescriptionsTotal() / PAGE_SIZE) || 1,
-  );
-
   /** Linha do tempo unificada: exames e receitas ordenados por data, mais
-   *  recente primeiro. Usada na aba Histórico. Busca até 200 de cada — não
-   *  há paginação própria aqui, é uma visão consolidada. */
+   *  recente primeiro. É a única listagem de exames/receitas da página —
+   *  busca até 200 de cada, sem paginação própria, como visão consolidada. */
   private readonly historicoResource = resource({
     params: () => ({ id: this.patientId() }),
     loader: async ({ params }) => {
@@ -92,12 +47,14 @@ export class PatientDetailsFacade {
       ]);
       const linhaDoTempo = [
         ...exames.entries.map((e: any) => ({
+          id: e.id,
           tipo: 'exame' as const,
           titulo: e.name,
           data: e.requisitionDate,
           status: e.status,
         })),
         ...receitas.entries.map((r: any) => ({
+          id: r.id,
           tipo: 'receita' as const,
           titulo: r.medicament,
           data: r.date,
@@ -110,4 +67,15 @@ export class PatientDetailsFacade {
   });
 
   readonly historico = this.historicoResource.value;
+
+  /** Força releitura do paciente após uma escrita externa (ex.: salvar a
+   *  anamnese), sem precisar recarregar o histórico junto. */
+  reloadPatient(): void {
+    this.patientResource.reload();
+  }
+
+  /** Força releitura do histórico após salvar uma anotação de exame. */
+  reloadHistorico(): void {
+    this.historicoResource.reload();
+  }
 }

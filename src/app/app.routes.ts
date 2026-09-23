@@ -13,25 +13,10 @@ import type { Routes } from '@angular/router';
  * leva a algum lugar e fica visível o que falta migrar. Conforme cada tela for
  * portada, troca-se o `loadComponent` e removem-se os `data`.
  */
-const pendente = (title: string, reference: string, crumbs: unknown[] = []) => ({
+const pendente = (title: string, reference: string) => ({
   loadComponent: () =>
     import('./pages/pending/pending-page').then((m) => m.PendingPage),
-  data: { title, reference, crumbs },
-});
-
-/**
- * Uma das 5 abas da página de Detalhes do Paciente. Todas carregam o mesmo
- * componente; a aba ativa chega como `route.data.aba`, ligada ao input
- * `aba` do componente pelo `withComponentInputBinding` — o mesmo mecanismo
- * que já entrega `:id`. Trocar de aba navega de verdade, então a URL e o
- * botão voltar do navegador continuam significando algo.
- */
-const detalhesAba = (aba: string) => ({
-  loadComponent: () =>
-    import('./pages/patients/details/patient-details').then(
-      (m) => m.PatientDetails,
-    ),
-  data: { aba },
+  data: { title, reference },
 });
 
 export const routes: Routes = [
@@ -59,31 +44,24 @@ export const routes: Routes = [
       },
       {
         path: 'detalhes/:id',
-        children: [
-          { path: '', ...detalhesAba('resumo') },
-          { path: 'exames', ...detalhesAba('exames') },
-          { path: 'receitas', ...detalhesAba('receitas') },
-          { path: 'atestados', ...detalhesAba('atestados') },
-          { path: 'historico', ...detalhesAba('historico') },
-        ],
+        loadComponent: () =>
+          import('./pages/patients/details/patient-details').then(
+            (m) => m.PatientDetails,
+          ),
       },
     ],
   },
   {
     path: 'receitas',
-    ...pendente('Receitas', 'Pages/Prescription', [
-      { label: 'Receitas', path: '' },
-    ]),
+    ...pendente('Receitas', 'Pages/Prescription'),
   },
   {
     path: 'exames',
-    ...pendente('Exames', 'Pages/Exame', [{ label: 'Exames', path: '' }]),
+    ...pendente('Exames', 'Pages/Exame'),
   },
   {
     path: 'atestados',
-    ...pendente('Atestados', 'Pages/Atestado', [
-      { label: 'Atestados', path: '' },
-    ]),
+    ...pendente('Atestados', 'Pages/Atestado'),
   },
   { path: '', pathMatch: 'full', redirectTo: 'pacientes' },
   { path: '**', redirectTo: 'pacientes' },
