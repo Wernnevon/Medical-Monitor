@@ -103,7 +103,10 @@
 }
 
 .corpo {
-  flex: 1;
+  /* Sem `flex: 1`: cresceria e consumiria todo o espaço livre antes do
+     `margin-top: auto` do rodapé conseguir empurrá-lo pra baixo — os dois
+     concorrem pelo mesmo espaço, e o auto margin só recebe o que sobrar. */
+  flex: 0 1 auto;
   min-height: 0;
   margin-top: var(--esp-3);
   overflow-y: auto;
@@ -114,10 +117,15 @@
   flex-direction: column;
   align-items: center;
   gap: var(--esp-1);
-  margin-top: var(--esp-4);
+  /* `margin-top: auto` e não só o `flex: 1` do `.corpo`: gruda no rodapé da
+     folha mesmo se o conteúdo acima for curto — o `.corpo` sozinho só
+     empurra o rodapé se ele tiver algo que valha a pena crescer. */
+  margin-top: auto;
+  padding-top: var(--esp-4);
   font-size: var(--texto-xs);
   color: var(--cor-texto-suave);
 }
+
 
 .linha-assinatura {
   width: 90%;
@@ -139,6 +147,14 @@
     width: 100%;
     box-shadow: none;
     height: auto;
-    min-height: 0;
+    /* Chão pro `margin-top: auto` do rodapé empurrar contra: sem essa
+       altura mínima, a folha encolhe pro tamanho do conteúdo e a
+       assinatura fica colada embaixo do texto em vez do rodapé da página.
+       `100vh` mapeia pra altura útil da página impressa no Chrome. */
+    min-height: 100vh;
+  }
+
+  .corpo {
+    overflow: visible;
   }
 }
