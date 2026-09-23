@@ -58,7 +58,9 @@ export class PrescriptionPage {
   private readonly injector = inject(Injector);
 
   private readonly botaoEmitir = viewChild<ElementRef<HTMLButtonElement>>('botaoEmitir');
+  private readonly botaoNovaReceita = viewChild<ElementRef<HTMLButtonElement>>('botaoNovaReceita');
   private readonly modal = viewChild<ElementRef<HTMLElement>>('modal');
+  private readonly modalNovaReceita = viewChild<ElementRef<HTMLElement>>('modalNovaReceita');
 
   private proximaChave = 1;
 
@@ -73,6 +75,7 @@ export class PrescriptionPage {
    *  emissão — antes disso, vazio é só "ainda não preenchido". */
   protected readonly tentouEmitir = signal(false);
   protected readonly modalAberto = signal(false);
+  protected readonly modalNovaReceitaAberto = signal(false);
   protected readonly emitindo = signal(false);
   protected readonly ultimaAtualizacao = signal<Date | null>(null);
   protected readonly temAlteracoesNaoSalvas = signal(false);
@@ -230,12 +233,44 @@ export class PrescriptionPage {
 
   protected fecharModalPorTeclado(): void {
     if (this.modalAberto() && !this.emitindo()) this.cancelarEmissao();
+    else if (this.modalNovaReceitaAberto()) this.cancelarNovaReceita();
+  }
+
+  protected solicitarNovaReceita(): void {
+    this.modalNovaReceitaAberto.set(true);
+    afterNextRender(
+      () =>
+        this.modalNovaReceita()
+          ?.nativeElement.querySelector<HTMLElement>('[data-foco-inicial]')
+          ?.focus(),
+      { injector: this.injector },
+    );
+  }
+
+  protected cancelarNovaReceita(): void {
+    this.modalNovaReceitaAberto.set(false);
+    this.botaoNovaReceita()?.nativeElement.focus();
+  }
+
+  /** Some não vincula à receita emitida: o prontuário já guarda o registro
+   *  anterior, então só reabrimos o rascunho pro próximo medicamento. */
+  protected confirmarNovaReceita(): void {
+    this.modalNovaReceitaAberto.set(false);
+    this.carregar(this.patientId());
+  }
+
+  protected prenderFoco(evento: KeyboardEvent): void {
+    this.prenderFocoEm(evento, this.modal()?.nativeElement);
+  }
+
+  protected prenderFocoNovaReceita(evento: KeyboardEvent): void {
+    this.prenderFocoEm(evento, this.modalNovaReceita()?.nativeElement);
   }
 
   /** Mantém o Tab dentro do modal enquanto ele estiver aberto. */
-  protected prenderFoco(evento: KeyboardEvent): void {
+  private prenderFocoEm(evento: KeyboardEvent, container: HTMLElement | undefined): void {
     if (evento.key !== 'Tab') return;
-    const focaveis = this.modal()?.nativeElement.querySelectorAll<HTMLElement>('button');
+    const focaveis = container?.querySelectorAll<HTMLElement>('button');
     if (!focaveis?.length) return;
     const primeiro = focaveis[0];
     const ultimo = focaveis[focaveis.length - 1];

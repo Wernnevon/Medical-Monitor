@@ -175,6 +175,15 @@
           <app-icon name="FiPrinter" size="1rem" />
           Imprimir
         </button>
+        <button
+          #botaoNovaReceita
+          type="button"
+          class="botao-contorno"
+          (click)="solicitarNovaReceita()"
+        >
+          <app-icon name="FiPlusCircle" size="1rem" />
+          Prescrever outro medicamento
+        </button>
         @if (paciente(); as p) {
           <a class="botao-principal" [routerLink]="['/pacientes/detalhes', p.id]">
             Voltar ao prontuário
@@ -256,6 +265,46 @@
           >
             <app-icon name="FiPrinter" size="1rem" />
             {{ emitindo() ? 'Emitindo…' : 'Emitir e imprimir' }}
+          </button>
+        </div>
+      </section>
+    </div>
+  }
+
+  @if (modalNovaReceitaAberto()) {
+    <div class="overlay" (click)="cancelarNovaReceita()">
+      <section
+        #modalNovaReceita
+        class="modal"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="modal-nova-titulo"
+        aria-describedby="modal-nova-descricao"
+        (click)="$event.stopPropagation()"
+        (keydown)="prenderFocoNovaReceita($event)"
+      >
+        <h2 id="modal-nova-titulo">Prescrever outro medicamento?</h2>
+        <div id="modal-nova-descricao">
+          <p>
+            A receita emitida para <strong>{{ paciente()?.name }}</strong> já está salva no
+            prontuário.
+          </p>
+          <p>
+            Depois de continuar, não será mais possível imprimir esta receita a partir desta tela —
+            um novo rascunho será aberto para o próximo medicamento.
+          </p>
+        </div>
+        <div class="modal-acoes">
+          <button type="button" class="botao-contorno" (click)="cancelarNovaReceita()">
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="botao-principal"
+            data-foco-inicial
+            (click)="confirmarNovaReceita()"
+          >
+            Continuar
           </button>
         </div>
       </section>
