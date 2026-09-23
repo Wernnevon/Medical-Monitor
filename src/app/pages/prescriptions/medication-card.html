@@ -234,7 +234,7 @@
 
       <div class="campo campo--quantidade">
         <div class="label-com-tooltip">
-          <label [for]="'medicamento-quantidade-' + id()">Quantidade a dispensar</label>
+          <label [for]="'medicamento-quantidade-' + id()">Quantidade</label>
           <button
             type="button"
             class="icone-info"
@@ -245,7 +245,7 @@
           >
             <app-icon name="FiInfo" size="0.9rem" />
           </button>
-          <app-tooltip [conteudo]="'Quanto o paciente deve comprar'" [visivel]="tooltipVisivel()['quantidade']" [id]="'dica-quantidade-' + id()"/>
+          <app-tooltip [conteudo]="'Total que o paciente deve comprar na farmácia'" [visivel]="tooltipVisivel()['quantidade']" [id]="'dica-quantidade-' + id()"/>
         </div>
         <input
           [id]="'medicamento-quantidade-' + id()"
