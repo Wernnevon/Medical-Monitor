@@ -98,7 +98,7 @@
       </div>
     </section>
 
-    <section class="cartao" aria-labelledby="titulo-dados">
+    <section class="cartao cartao-dados" aria-labelledby="titulo-dados">
       <header class="secao-cabecalho">
         <app-icon class="secao-icone" name="FiFileText" size="1.5rem" />
         <h2 id="titulo-dados">Dados do Atestado</h2>
@@ -169,7 +169,7 @@
         </label>
       </div>
 
-      <label class="campo">
+      <label class="campo campo-texto">
         <span>Justificativa / Observações</span>
         <textarea
           rows="4"
@@ -182,7 +182,7 @@
         <span class="contador" id="contador-justificativa">{{ form().justificativa.length }}/{{ limite }}</span>
       </label>
 
-      <label class="campo">
+      <label class="campo campo-texto">
         <span>Orientações (opcional)</span>
         <textarea
           rows="3"
