@@ -1,29 +1,31 @@
-import { Service } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import type { Exams } from '@domain/entities';
-import {
-  ConnectionType,
-  STORES,
-  fromRequest,
-  getConnection,
-} from '@infra/frameworks/indexed-connection';
+import { FIRESTORE } from '@infra/frameworks/firebase';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { backfilled } from '../stamp';
 
 @Service()
 export class ExamGetRepository {
+  private readonly firestore = inject(FIRESTORE);
+  private readonly collectionName = 'exams';
+
   async list(patientId: string): Promise<Exams[]> {
-    const db = await getConnection();
-    const store = db
-      .transaction(STORES.exams, ConnectionType.READONLY)
-      .objectStore(STORES.exams);
-    const exams = (await fromRequest(store.getAll())).map(backfilled);
-    return exams.filter((exam: Exams) => exam.patientId === patientId);
+    const q = query(
+      collection(this.firestore, this.collectionName),
+      where('patientId', '==', patientId),
+    );
+    const querySnapshot = await getDocs(q);
+    // Ordenado em memória: `where` + `orderBy` em campos diferentes exige
+    // índice composto, e sem ele a consulta falha e o histórico some.
+    return querySnapshot.docs
+      .map(doc => backfilled(doc.data() as Exams))
+      .sort((a, b) => (b.updatedAt ?? '').localeCompare(a.updatedAt ?? ''));
   }
 
   async findById(id: string): Promise<Exams> {
-    const db = await getConnection();
-    const store = db
-      .transaction(STORES.exams, ConnectionType.READONLY)
-      .objectStore(STORES.exams);
-    return backfilled(await fromRequest(store.get(id)));
+    const docRef = doc(this.firestore, this.collectionName, id);
+    const snap = await getDoc(docRef);
+    if (!snap.exists()) throw new Error('Exame não encontrado');
+    return backfilled(snap.data() as Exams);
   }
 }

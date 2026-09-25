@@ -69,6 +69,7 @@ export class PatientDetailsFacade {
   });
 
   readonly historico = this.historicoResource.value;
+  readonly loadingHistorico = this.historicoResource.isLoading;
 
   /** Força releitura do paciente após uma escrita externa (ex.: salvar a
    *  anamnese), sem precisar recarregar o histórico junto. */

@@ -1,56 +1,26 @@
-import { Service } from '@angular/core';
-import {
-  ConnectionType,
-  STORES,
-  fromRequest,
-  getConnection,
-} from '@infra/frameworks/indexed-connection';
+import { Service, inject } from '@angular/core';
+import { FIRESTORE } from '@infra/frameworks/firebase';
+import { doc, writeBatch, collection, query, where, getDocs } from 'firebase/firestore';
 
 @Service()
 export class PatientDeleteRepository {
-  /**
-   * Remove pacientes e, em cascata, seus exames e prescrições.
-   *
-   * Tudo corre numa única transação sobre as três stores: se qualquer passo
-   * falhar, o IndexedDB aborta o conjunto e nenhum registro órfão sobra.
-   */
-  async delete(ids: string[]): Promise<void> {
-    const db = await getConnection();
-    const transaction = db.transaction(
-      [STORES.patients, STORES.exams, STORES.prescriptions],
-      ConnectionType.READWRITE,
-    );
+  private readonly firestore = inject(FIRESTORE);
 
-    const patientStore = transaction.objectStore(STORES.patients);
-    const examStore = transaction.objectStore(STORES.exams);
-    const prescriptionStore = transaction.objectStore(STORES.prescriptions);
+  async delete(ids: string[]): Promise<void> {
+    const batch = writeBatch(this.firestore);
 
     for (const id of ids) {
-      await deleteByPatientIndex(examStore, id);
-      await deleteByPatientIndex(prescriptionStore, id);
-      await fromRequest(patientStore.delete(id));
+      batch.delete(doc(this.firestore, 'patients', id));
+      
+      const examsQuery = query(collection(this.firestore, 'exams'), where('patientId', '==', id));
+      const examsSnap = await getDocs(examsQuery);
+      examsSnap.docs.forEach(d => batch.delete(d.ref));
+
+      const presQuery = query(collection(this.firestore, 'prescriptions'), where('patientId', '==', id));
+      const presSnap = await getDocs(presQuery);
+      presSnap.docs.forEach(d => batch.delete(d.ref));
     }
+
+    await batch.commit();
   }
-}
-
-/** Varre o índice `patientId` de um store e apaga tudo que casar. */
-function deleteByPatientIndex(
-  store: IDBObjectStore,
-  patientId: string,
-): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const request = store.index('patientId').openCursor(patientId);
-
-    request.onerror = () => reject(request.error);
-    request.onsuccess = () => {
-      const cursor = request.result;
-      if (!cursor) {
-        resolve();
-        return;
-      }
-      const deletion = cursor.delete();
-      deletion.onerror = () => reject(deletion.error);
-      deletion.onsuccess = () => cursor.continue();
-    };
-  });
 }

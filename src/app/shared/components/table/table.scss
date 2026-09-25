@@ -48,6 +48,31 @@
   font-size: var(--texto-lg);
 }
 
+.table-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-3);
+  padding: var(--esp-8) var(--esp-4);
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-md);
+
+  &__spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--cor-borda);
+    border-top-color: var(--cor-marca-base);
+    border-radius: 50%;
+    animation: table-spin 0.8s linear infinite;
+  }
+}
+
+@keyframes table-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* A tabela rola na horizontal dentro do próprio contêiner quando a tela é
    estreita, em vez de empurrar a página inteira para o lado.
    `padding-top: 0` é proposital: `position: sticky` gruda no topo do
@@ -63,7 +88,9 @@
      inseridas acima da dobra (ex.: depois do seed de desenvolvimento
      recarregar a lista), destacando o cabeçalho fixo de onde deveria estar. */
   overflow-anchor: none;
-  padding: 0 var(--esp-4) var(--esp-4);
+  /* Sem padding lateral: o cabeçalho vai de borda a borda do card. A
+     respiração das laterais fica na primeira e na última célula. */
+  padding: 0 0 var(--esp-4);
 }
 
 /* `table-layout: fixed` — sem isto, o navegador recalcula a largura de
@@ -96,12 +123,38 @@ td:has(.acao-linha) {
   text-overflow: clip;
 }
 
+th:first-child,
+td:first-child {
+  padding-left: var(--esp-5);
+}
+
+th:last-child,
+td:last-child {
+  padding-right: var(--esp-5);
+}
+
+.table-container--flat {
+  th:first-child,
+  td:first-child {
+    padding-left: var(--esp-4);
+  }
+
+  th:last-child,
+  td:last-child {
+    padding-right: var(--esp-4);
+  }
+}
+
 thead th {
   position: sticky;
   top: 0;
   z-index: 1;
   padding-top: var(--esp-4);
   background-color: var(--cor-superficie-forte);
+  /* Com larguras em %, cada célula fixa termina em fração de pixel e
+     sobra uma fresta entre elas — aparece como uma linha vertical no
+     cabeçalho. A sombra de 1px à esquerda cobre a emenda. */
+  box-shadow: -1px 0 0 var(--cor-superficie-forte);
   font-size: var(--texto-lg);
   font-weight: var(--peso-medio);
 }

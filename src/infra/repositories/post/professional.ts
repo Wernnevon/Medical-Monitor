@@ -1,20 +1,21 @@
-import { Service } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import type { Professional } from '@domain/entities';
-import {
-  ConnectionType,
-  STORES,
-  fromRequest,
-  getConnection,
-} from '../../frameworks/indexed-connection';
-import { stamped } from '../stamp';
+import { FIRESTORE } from '@infra/frameworks/firebase';
+import { doc, writeBatch } from 'firebase/firestore';
 
 @Service()
 export class ProfessionalPostRepository {
+  private readonly firestore = inject(FIRESTORE);
+
   async save(professional: Professional): Promise<void> {
-    const db = await getConnection();
-    const store = db
-      .transaction(STORES.professionals, ConnectionType.READWRITE)
-      .objectStore(STORES.professionals);
-    await fromRequest(store.add(stamped(professional)));
+    const batch = writeBatch(this.firestore);
+    
+    const profRef = doc(this.firestore, 'professionals', professional.id);
+    batch.set(profRef, professional);
+    
+    const usernameRef = doc(this.firestore, 'usernames', professional.username);
+    batch.set(usernameRef, { uid: professional.id });
+    
+    await batch.commit();
   }
 }

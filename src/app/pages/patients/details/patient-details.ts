@@ -20,6 +20,8 @@ import {
   PatientDelete,
   PatientUpdate,
   PrescriptionChangeStatus,
+  TokenPatientAddReading,
+  TokenPatientRemoveReading,
 } from '@domain/tokens';
 import { PatientDetailsFacade } from './patient-details-facade';
 
@@ -78,6 +80,9 @@ export class PatientDetails {
   protected readonly ehProfissional = computed(
     () => this.auth.usuarioAtual()?.role === ProfessionalRole.PROFISSIONAL,
   );
+
+  private readonly addReading = inject(TokenPatientAddReading);
+  private readonly removeReading = inject(TokenPatientRemoveReading);
 
   protected readonly formatar = (data: unknown) =>
     data ? formmatDate(data as unknown as Date) : '—';
@@ -287,14 +292,10 @@ export class PatientDetails {
         measuredAt: `${data}T${hora}`,
         value: valor,
       };
-      await this.atualizar.update({
-        data: {
-          ...paciente,
-          health: {
-            ...paciente.health,
-            bloodPressureReadings: [...(paciente.health.bloodPressureReadings ?? []), leitura],
-          },
-        },
+      await this.addReading.add({
+        patientId: paciente.id,
+        kind: 'bloodPressureReadings',
+        reading: leitura,
       });
       this.pressaoData.set(getLocalDateInput());
       this.pressaoHora.set(getLocalTimeInput());
@@ -318,16 +319,10 @@ export class PatientDetails {
       },
       onConfirm: async () => {
         try {
-          await this.atualizar.update({
-            data: {
-              ...paciente,
-              health: {
-                ...paciente.health,
-                bloodPressureReadings: (paciente.health.bloodPressureReadings ?? []).filter(
-                  (l) => l.id !== leitura.id,
-                ),
-              },
-            },
+          await this.removeReading.remove({
+            patientId: paciente.id,
+            kind: 'bloodPressureReadings',
+            reading: leitura,
           });
           this.toast.add('Leitura removida', ToastType.SUCESS);
           this.facade.reloadPatient();
@@ -367,14 +362,10 @@ export class PatientDetails {
         measuredAt: `${data}T${hora}`,
         value: valor,
       };
-      await this.atualizar.update({
-        data: {
-          ...paciente,
-          health: {
-            ...paciente.health,
-            glycemiaReadings: [...(paciente.health.glycemiaReadings ?? []), leitura],
-          },
-        },
+      await this.addReading.add({
+        patientId: paciente.id,
+        kind: 'glycemiaReadings',
+        reading: leitura,
       });
       this.glicemiaData.set(getLocalDateInput());
       this.glicemiaHora.set(getLocalTimeInput());
@@ -398,16 +389,10 @@ export class PatientDetails {
       },
       onConfirm: async () => {
         try {
-          await this.atualizar.update({
-            data: {
-              ...paciente,
-              health: {
-                ...paciente.health,
-                glycemiaReadings: (paciente.health.glycemiaReadings ?? []).filter(
-                  (l) => l.id !== leitura.id,
-                ),
-              },
-            },
+          await this.removeReading.remove({
+            patientId: paciente.id,
+            kind: 'glycemiaReadings',
+            reading: leitura,
           });
           this.toast.add('Leitura removida', ToastType.SUCESS);
           this.facade.reloadPatient();
@@ -447,14 +432,10 @@ export class PatientDetails {
         measuredAt: `${data}T${hora}`,
         value: valor,
       };
-      await this.atualizar.update({
-        data: {
-          ...paciente,
-          health: {
-            ...paciente.health,
-            oxygenSaturationReadings: [...(paciente.health.oxygenSaturationReadings ?? []), leitura],
-          },
-        },
+      await this.addReading.add({
+        patientId: paciente.id,
+        kind: 'oxygenSaturationReadings',
+        reading: leitura,
       });
       this.saturacaoData.set(getLocalDateInput());
       this.saturacaoHora.set(getLocalTimeInput());
@@ -478,16 +459,10 @@ export class PatientDetails {
       },
       onConfirm: async () => {
         try {
-          await this.atualizar.update({
-            data: {
-              ...paciente,
-              health: {
-                ...paciente.health,
-                oxygenSaturationReadings: (paciente.health.oxygenSaturationReadings ?? []).filter(
-                  (l) => l.id !== leitura.id,
-                ),
-              },
-            },
+          await this.removeReading.remove({
+            patientId: paciente.id,
+            kind: 'oxygenSaturationReadings',
+            reading: leitura,
           });
           this.toast.add('Leitura removida', ToastType.SUCESS);
           this.facade.reloadPatient();
@@ -527,14 +502,10 @@ export class PatientDetails {
         measuredAt: `${data}T${hora}`,
         value: valor,
       };
-      await this.atualizar.update({
-        data: {
-          ...paciente,
-          health: {
-            ...paciente.health,
-            heartRateReadings: [...(paciente.health.heartRateReadings ?? []), leitura],
-          },
-        },
+      await this.addReading.add({
+        patientId: paciente.id,
+        kind: 'heartRateReadings',
+        reading: leitura,
       });
       this.frequenciaData.set(getLocalDateInput());
       this.frequenciaHora.set(getLocalTimeInput());
@@ -558,16 +529,10 @@ export class PatientDetails {
       },
       onConfirm: async () => {
         try {
-          await this.atualizar.update({
-            data: {
-              ...paciente,
-              health: {
-                ...paciente.health,
-                heartRateReadings: (paciente.health.heartRateReadings ?? []).filter(
-                  (l) => l.id !== leitura.id,
-                ),
-              },
-            },
+          await this.removeReading.remove({
+            patientId: paciente.id,
+            kind: 'heartRateReadings',
+            reading: leitura,
           });
           this.toast.add('Leitura removida', ToastType.SUCESS);
           this.facade.reloadPatient();

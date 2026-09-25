@@ -76,6 +76,7 @@ export class LocalClient implements Client {
     post: {
       'patient/list': (params) => this.patientPost.listPagination(params),
       'patient/save': (patient) => this.patientPost.save(patient),
+      'patient/addReading': (params) => this.patientPut.addReading(params),
       'exam/list': (params) => this.examPost.listPagination(params),
       'exam/save': (exam) => this.examPost.save(exam),
       'prescription/list': (params) =>
@@ -95,6 +96,7 @@ export class LocalClient implements Client {
     },
     delete: {
       'patient/delete': (ids) => this.patientDelete.delete(ids),
+      'patient/removeReading': (params) => this.patientPut.removeReading(params),
       'exam/delete': (ids) => this.examDelete.delete(ids),
       'prescription/delete': (ids) => this.prescriptionDelete.delete(ids),
     },

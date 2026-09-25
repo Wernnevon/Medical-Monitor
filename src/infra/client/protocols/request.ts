@@ -28,6 +28,7 @@ export type Url =
   | 'professional/findByUsername'
   // Post
   | 'patient/save'
+  | 'patient/addReading'
   | 'exam/save'
   | 'prescription/save'
   | 'professional/save'
@@ -39,6 +40,7 @@ export type Url =
   | 'prescription/changeStatus'
   // Delete
   | 'patient/delete'
+  | 'patient/removeReading'
   | 'exam/delete'
   | 'prescription/delete';
 

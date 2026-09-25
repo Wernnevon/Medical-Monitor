@@ -8,3 +8,5 @@ export * from './list-cities';
 export * from './list-insurances';
 export * from './list-pagination';
 export * from './update';
+export * from './patient-add-reading';
+export * from './patient-remove-reading';

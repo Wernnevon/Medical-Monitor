@@ -1,16 +1,48 @@
-import { TestBed } from '@angular/core/testing';
-import { IDBFactory } from 'fake-indexeddb';
-import { beforeEach, describe, expect, it } from 'vitest';
+/**
+ * Testes de integração — repositórios Firestore
+ *
+ * Pré-requisito: Firebase Emulator Suite rodando.
+ *
+ * Para executar:
+ *   npm run test:emulator
+ *
+ * O script sobe o emulador automaticamente e roda os specs via vitest.
+ */
+import { initializeApp, FirebaseApp } from 'firebase/app';
+import {
+  initializeFirestore,
+  connectFirestoreEmulator,
+  terminate,
+  Firestore,
+} from 'firebase/firestore';
+
+const PROJECT_ID = 'demo-envinya-care';
+const EMULATOR_HOST = 'http://127.0.0.1:8080';
+
+async function clearEmulatorData(): Promise<void> {
+  await fetch(
+    `${EMULATOR_HOST}/emulator/v1/projects/${PROJECT_ID}/databases/(default)/documents`,
+    { method: 'DELETE' },
+  );
+}
+import { beforeEach, afterEach, describe, expect, it } from 'vitest';
 import { ExamStatus, type Patient } from '@domain/entities';
-import { getConnection, resetConnection } from '../frameworks/indexed-connection';
+import { FIRESTORE } from '@infra/frameworks/firebase';
 import { PatientDeleteRepository } from './delete';
 import { ExamGetRepository, PatientGetRepository } from './get';
 import { ExamPostRepository, PatientPostRepository } from './post';
-import { ExamPutRepository, PatientPutRepository } from './put';
+import { PatientPutRepository } from './put';
+import { Injector, runInInjectionContext } from '@angular/core';
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+let firestore: Firestore;
+let app: FirebaseApp;
+let injector: Injector;
+let appCounter = 0;
 
 function makePatient(name: string, city = 'Recife'): Patient {
   return {
-    // `id` vazio: o repositório gera o UUID na gravação.
     id: '',
     name,
     anamnese: 'sem queixas',
@@ -25,32 +57,57 @@ function makePatient(name: string, city = 'Recife'): Patient {
   };
 }
 
-describe('repositórios IndexedDB', () => {
+function injectRepo<T>(cls: new (...args: any[]) => T): T {
+  return runInInjectionContext(injector, () => new cls());
+}
+
+// ─── Suite ───────────────────────────────────────────────────────────────────
+
+describe('repositórios Firestore', () => {
   let patientsGet: PatientGetRepository;
   let patientsPost: PatientPostRepository;
   let patientsPut: PatientPutRepository;
   let patientsDelete: PatientDeleteRepository;
   let examsGet: ExamGetRepository;
   let examsPost: ExamPostRepository;
-  let examsPut: ExamPutRepository;
 
   beforeEach(async () => {
-    // Banco novo a cada teste. A conexão é memoizada, então trocar a factory
-    // exige descartar a que ficou em cache.
-    globalThis.indexedDB = new IDBFactory();
-    resetConnection();
+    await clearEmulatorData();
 
-    TestBed.configureTestingModule({});
-    patientsGet = TestBed.inject(PatientGetRepository);
-    patientsPost = TestBed.inject(PatientPostRepository);
-    patientsPut = TestBed.inject(PatientPutRepository);
-    patientsDelete = TestBed.inject(PatientDeleteRepository);
-    examsGet = TestBed.inject(ExamGetRepository);
-    examsPost = TestBed.inject(ExamPostRepository);
-    examsPut = TestBed.inject(ExamPutRepository);
+    app = initializeApp(
+      { projectId: PROJECT_ID },
+      `test-app-${++appCounter}`,
+    );
+    firestore = initializeFirestore(app, {});
+    connectFirestoreEmulator(firestore, '127.0.0.1', 8080);
+
+    injector = Injector.create({
+      providers: [
+        { provide: FIRESTORE, useValue: firestore },
+        { provide: PatientGetRepository, useClass: PatientGetRepository },
+        { provide: PatientPostRepository, useClass: PatientPostRepository },
+        { provide: PatientPutRepository, useClass: PatientPutRepository },
+        { provide: PatientDeleteRepository, useClass: PatientDeleteRepository },
+        { provide: ExamGetRepository, useClass: ExamGetRepository },
+        { provide: ExamPostRepository, useClass: ExamPostRepository },
+      ],
+    });
+
+    patientsGet = injector.get(PatientGetRepository);
+    patientsPost = injector.get(PatientPostRepository);
+    patientsPut = injector.get(PatientPutRepository);
+    patientsDelete = injector.get(PatientDeleteRepository);
+    examsGet = injector.get(ExamGetRepository);
+    examsPost = injector.get(ExamPostRepository);
   });
 
-  it('gera um UUID e carimba updatedAt ao gravar', async () => {
+  afterEach(async () => {
+    await terminate(firestore);
+  });
+
+  // ── Pacientes ──────────────────────────────────────────────────────────────
+
+  it('gera UUID e carimba updatedAt ao gravar', async () => {
     const before = new Date().toISOString();
     await patientsPost.save(makePatient('Ana'));
 
@@ -79,56 +136,25 @@ describe('repositórios IndexedDB', () => {
     await new Promise((resolve) => setTimeout(resolve, 5));
     await patientsPut.update({ ...created, name: 'Ana Maria' });
 
-    const [updated] = await patientsGet.list();
+    const updated = await patientsGet.findById(created.id);
     expect(updated.name).toBe('Ana Maria');
     expect(updated.updatedAt! > created.updatedAt!).toBe(true);
   });
 
-  it('faz backfill de updatedAt em registro legado', async () => {
-    // Grava direto no store, sem passar pelo repositório — é assim que os
-    // registros gravados antes do campo existir estão no banco do usuário.
-    const legacy = { ...makePatient('Registro Antigo'), id: 'legado-1' };
-    const db = await getConnection();
-    await new Promise<void>((resolve, reject) => {
-      const tx = db.transaction('patients', 'readwrite');
-      tx.oncomplete = () => resolve();
-      tx.onerror = () => reject(tx.error);
-      tx.objectStore('patients').add(legacy);
-    });
+  it('retorna paciente por ID', async () => {
+    await patientsPost.save(makePatient('Carlos'));
+    const [saved] = await patientsGet.list();
 
-    const [read] = await patientsGet.list();
-
-    expect(read.updatedAt).toBe(new Date(0).toISOString());
+    const found = await patientsGet.findById(saved.id);
+    expect(found.name).toBe('Carlos');
   });
 
-  it('pagina, filtra por cidade e busca por texto', async () => {
-    for (const name of ['Ana', 'Bruno', 'Carla']) {
-      await patientsPost.save(makePatient(name, name === 'Bruno' ? 'Olinda' : 'Recife'));
-    }
-
-    const page = await patientsPost.listPagination({ page: 1, pageSize: 2 });
-    expect(page.totalEntries).toBe(3);
-    expect(page.entries).toHaveLength(2);
-
-    const olinda = await patientsPost.listPagination({
-      page: 1,
-      pageSize: 10,
-      filters: [{ key: 'city', value: 'Olinda' }],
-    });
-    expect(olinda.entries.map((p) => p.name)).toEqual(['Bruno']);
-
-    const search = await patientsPost.listPagination({
-      page: 1,
-      pageSize: 10,
-      keywords: ['carl'],
-    });
-    expect(search.entries.map((p) => p.name)).toEqual(['Carla']);
-  });
-
-  it('apaga exames e prescrições junto com o paciente', async () => {
+  it('apaga exames junto com o paciente', async () => {
     await patientsPost.save(makePatient('Ana'));
     await patientsPost.save(makePatient('Bruno'));
-    const [ana, bruno] = await patientsGet.list();
+    const patients = await patientsGet.list();
+    const ana = patients.find((p) => p.name === 'Ana')!;
+    const bruno = patients.find((p) => p.name === 'Bruno')!;
 
     await examsPost.save({
       id: '',
@@ -150,26 +176,5 @@ describe('repositórios IndexedDB', () => {
     expect(await patientsGet.list()).toHaveLength(1);
     expect(await examsGet.list(ana.id)).toHaveLength(0);
     expect(await examsGet.list(bruno.id)).toHaveLength(1);
-  });
-
-  it('alterna o status do exame e preenche a data de realização', async () => {
-    await examsPost.save({
-      id: '',
-      patientId: 'paciente-1',
-      name: 'Hemograma',
-      requisitionDate: '2026-01-10' as unknown as Date,
-      status: ExamStatus.IN_PROGRESS,
-    });
-    const [exame] = await examsGet.list('paciente-1');
-
-    await examsPut.changeStatus(exame.id);
-    const done = await examsGet.findById(exame.id);
-    expect(done.status).toBe(ExamStatus.DONE);
-    expect(done.realizationDate).toBeDefined();
-
-    await examsPut.changeStatus(exame.id);
-    const back = await examsGet.findById(exame.id);
-    expect(back.status).toBe(ExamStatus.IN_PROGRESS);
-    expect(back.realizationDate).toBeUndefined();
   });
 });

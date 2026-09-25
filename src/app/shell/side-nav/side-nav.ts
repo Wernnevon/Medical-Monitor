@@ -1,4 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Icon } from '@app/shared/components/icon/icon';
 import type { IconName } from '@app/shared/components/icon/icons';
@@ -11,11 +12,13 @@ type NavEntry = {
   icon: IconName;
 };
 
+// Todos da mesma família (Lucide, traço 2): misturar conjuntos deixava
+// pesos e cantos diferentes lado a lado no menu.
 const ENTRADAS: NavEntry[] = [
-  { path: '/pacientes', label: 'Pacientes', icon: 'HiOutlineUserGroup' },
-  { path: '/receitas', label: 'Receitas', icon: 'LuClipboardEdit' },
-  { path: '/exames', label: 'Exame', icon: 'BiTestTube' },
-  { path: '/atestados', label: 'Atestado', icon: 'AiOutlineAudit' },
+  { path: '/pacientes', label: 'Pacientes', icon: 'LuUsers' },
+  { path: '/receitas', label: 'Receitas', icon: 'LuPillBottle' },
+  { path: '/exames', label: 'Exames', icon: 'LuFlaskConical' },
+  { path: '/atestados', label: 'Atestados', icon: 'LuFileCheck' },
 ];
 
 const ROTULO_ROLE: Record<ProfessionalRole, string> = {
@@ -25,31 +28,49 @@ const ROTULO_ROLE: Record<ProfessionalRole, string> = {
 
 @Component({
   selector: 'app-side-nav',
-  imports: [RouterLink, RouterLinkActive, Icon],
+  imports: [NgOptimizedImage, RouterLink, RouterLinkActive, Icon],
   template: `
     <nav class="sidenav" aria-label="Navegação principal">
-      <div class="logo">
-        <img src="/assets/logo_vittaly.svg" alt="Vittaly" draggable="false" />
-      </div>
-      @for (entry of entries(); track entry.path) {
-        <a
-          class="link"
-          [routerLink]="entry.path"
-          routerLinkActive="link--active"
+      <div class="marca">
+        <img
+          ngSrc="/assets/logo_vittaly.svg"
+          width="130"
+          height="137"
+          priority
+          alt=""
           draggable="false"
-        >
-          <app-icon [name]="entry.icon" size="2rem" />
-          <span>{{ entry.label }}</span>
-        </a>
-      }
+        />
+        <span class="marca-nome">Vittaly</span>
+        <span class="marca-sub">Centro Médico Odontológico</span>
+      </div>
+      <div class="links">
+        @for (entry of entries(); track entry.path) {
+          <a
+            class="link"
+            [routerLink]="entry.path"
+            routerLinkActive="link--active"
+            ariaCurrentWhenActive="page"
+            draggable="false"
+          >
+            <app-icon [name]="entry.icon" size="1.375rem" />
+            <span>{{ entry.label }}</span>
+          </a>
+        }
+      </div>
       <div class="profissional">
-        <app-icon name="HiOutlineUserCircle" size="2rem" />
+        <span class="avatar" aria-hidden="true">{{ iniciais() }}</span>
         <span class="dados">
-          <span class="nome">{{ usuario()?.name || 'Convidado' }}</span>
-          <span class="role">{{ rotuloRole() }}</span>
+          <span class="nome">{{ usuario()?.name || 'Visitante' }}</span>
+          <span class="role">{{ descricao() }}</span>
         </span>
-        <button type="button" class="sair" aria-label="Sair" (click)="sair()">
-          <app-icon name="FiLogOut" size="1.4rem" />
+        <button
+          type="button"
+          class="sair"
+          aria-label="Sair da conta"
+          title="Sair da conta"
+          (click)="sair()"
+        >
+          <app-icon name="LuLogOut" size="1.25rem" />
         </button>
       </div>
     </nav>
@@ -64,9 +85,22 @@ export class SideNav {
   // projeto React usava para derivar a aba ativa a partir do pathname.
   protected readonly usuario = this.auth.usuarioAtual;
 
-  protected readonly rotuloRole = computed(
-    () => (this.usuario() ? ROTULO_ROLE[this.usuario()!.role] : ''),
-  );
+  /** Especialidade de quem a cadastrou; a função fica de reserva para o
+   *  assistente, que não tem especialidade. */
+  protected readonly descricao = computed(() => {
+    const usuario = this.usuario();
+    if (!usuario) return '';
+    return usuario.specialty?.trim() || ROTULO_ROLE[usuario.role];
+  });
+
+  /** Primeira letra do primeiro e do último nome: "Rafael Vieira" → "RV". */
+  protected readonly iniciais = computed(() => {
+    const partes = (this.usuario()?.name ?? '').trim().split(/\s+/).filter(Boolean);
+    if (!partes.length) return '?';
+    const primeira = partes[0][0];
+    const ultima = partes.length > 1 ? partes[partes.length - 1][0] : '';
+    return (primeira + ultima).toUpperCase();
+  });
 
   /** Assistente não prescreve, não solicita exame nem emite atestado — essas
    *  três entradas somem do menu em vez de aparecerem bloqueadas. */
@@ -76,8 +110,8 @@ export class SideNav {
       : ENTRADAS.filter((entrada) => entrada.path === '/pacientes'),
   );
 
-  protected sair(): void {
-    this.auth.sair();
-    this.router.navigate(['/entrar']);
+  protected async sair(): Promise<void> {
+    await this.auth.sair();
+    await this.router.navigate(['/entrar']);
   }
 }

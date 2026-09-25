@@ -1,18 +1,16 @@
-import { Service } from '@angular/core';
-import {
-  ConnectionType,
-  STORES,
-  fromRequest,
-  getConnection,
-} from '@infra/frameworks/indexed-connection';
+import { Service, inject } from '@angular/core';
+import { FIRESTORE } from '@infra/frameworks/firebase';
+import { doc, writeBatch } from 'firebase/firestore';
 
 @Service()
 export class ExamDeleteRepository {
+  private readonly firestore = inject(FIRESTORE);
+
   async delete(ids: string[]): Promise<void> {
-    const db = await getConnection();
-    const store = db
-      .transaction(STORES.exams, ConnectionType.READWRITE)
-      .objectStore(STORES.exams);
-    await Promise.all(ids.map((id) => fromRequest(store.delete(id))));
+    const batch = writeBatch(this.firestore);
+    for (const id of ids) {
+      batch.delete(doc(this.firestore, 'exams', id));
+    }
+    await batch.commit();
   }
 }

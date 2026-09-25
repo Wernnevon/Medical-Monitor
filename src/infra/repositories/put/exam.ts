@@ -1,51 +1,44 @@
 import { Service, inject } from '@angular/core';
-import { getStringToday } from '@core/utils/date-utils';
+import { getStringToday, nowTimestamp } from '@core/utils/date-utils';
 import { ExamStatus, type Exams } from '@domain/entities';
-import {
-  ConnectionType,
-  STORES,
-  fromRequest,
-  getConnection,
-} from '@infra/frameworks/indexed-connection';
-import { ExamGetRepository } from '../get';
+import { FIRESTORE } from '@infra/frameworks/firebase';
+import { doc, updateDoc, runTransaction, deleteField } from 'firebase/firestore';
 import { stamped } from '../stamp';
 
 @Service()
 export class ExamPutRepository {
-  // O original chamava `GetExam.prototype.findById(id)` — método solto no
-  // protótipo, sem instância. Só funcionava porque `findById` não usa `this`.
-  private readonly examGet = inject(ExamGetRepository);
+  private readonly firestore = inject(FIRESTORE);
 
   async update(exam: Exams): Promise<void> {
-    const db = await getConnection();
-    const store = db
-      .transaction(STORES.exams, ConnectionType.READWRITE)
-      .objectStore(STORES.exams);
-    await fromRequest(store.put(stamped(exam)));
+    const entity = stamped(exam);
+    const docRef = doc(this.firestore, 'exams', entity.id);
+    await updateDoc(docRef, { ...entity });
   }
 
   async changeStatus(id: string): Promise<void> {
-    const exam = await this.examGet.findById(id);
+    const docRef = doc(this.firestore, 'exams', id);
+    
+    await runTransaction(this.firestore, async (transaction) => {
+      const sfDoc = await transaction.get(docRef);
+      if (!sfDoc.exists()) {
+        throw new Error('Exame não existe!');
+      }
 
-    const next: Exams = {
-      ...exam,
-      status:
-        exam.status === ExamStatus.DONE
-          ? ExamStatus.IN_PROGRESS
-          : ExamStatus.DONE,
-    };
+      const exam = sfDoc.data() as Exams;
+      const novoStatus = exam.status === ExamStatus.DONE ? ExamStatus.IN_PROGRESS : ExamStatus.DONE;
+      
+      const updateData: any = {
+        status: novoStatus,
+        updatedAt: nowTimestamp()
+      };
 
-    if (next.status === ExamStatus.IN_PROGRESS) {
-      delete next.realizationDate;
-    } else {
-      // As datas são declaradas `Date` nas entidades mas trafegam como string
-      // "YYYY-MM-DD" em todo o app — é o que `formmatDate` espera receber e o
-      // que os inputs `type="date"` produzem. O cast preserva o comportamento
-      // atual; a tipagem será acertada junto com o port da camada de
-      // apresentação, onde todos os consumidores ficam visíveis.
-      next.realizationDate = getStringToday() as unknown as Date;
-    }
+      if (novoStatus === ExamStatus.IN_PROGRESS) {
+        updateData.realizationDate = deleteField();
+      } else {
+        updateData.realizationDate = getStringToday() as unknown as Date;
+      }
 
-    await this.update(next);
+      transaction.update(docRef, updateData);
+    });
   }
 }

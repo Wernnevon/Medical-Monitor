@@ -1,6 +1,11 @@
 <main class="table-container" [class.table-container--flat]="flat()">
   <div class="body">
-    @if (rows().length) {
+    @if (loading()) {
+      <div class="table-loading">
+        <div class="table-loading__spinner"></div>
+        <span>Carregando dados…</span>
+      </div>
+    } @else if (rows().length) {
       <div class="scroll">
         <table>
           <thead>

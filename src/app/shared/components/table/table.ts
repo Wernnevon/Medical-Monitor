@@ -54,6 +54,7 @@ const STATUS_TONE: Record<string, 'positive' | 'negative'> = {
 export class Table {
   readonly columns = input.required<DataColumn[]>();
   readonly rows = input.required<Record<string, any>[]>();
+  readonly loading = input(false);
   /** Ausente quando a listagem é pequena e vem inteira de uma vez (ex.: o
    *  histórico do paciente) — o rodapé de paginação some nesse caso. */
   readonly pagination = input<TablePagination | null>(null);

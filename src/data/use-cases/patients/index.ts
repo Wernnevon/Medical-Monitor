@@ -8,6 +8,8 @@ import {
   PatientListInsurance,
   PatientListPagination,
   PatientUpdate,
+  TokenPatientAddReading,
+  TokenPatientRemoveReading,
 } from '@domain/tokens';
 import type {
   Add,
@@ -17,6 +19,8 @@ import type {
   ListInsurance,
   ListPagination,
   Update,
+  PatientAddReading,
+  PatientRemoveReading,
 } from '@domain/use-cases';
 import { LocalClient } from '@infra/client/local-client';
 import { HTTPVerbs } from '@infra/frameworks/http-verbs';
@@ -136,6 +140,40 @@ export class LocalListInsurance extends PatientListInsurance {
         method: HTTPVerbs.GET,
         data: null,
         url: 'patient/listInsurances',
+      });
+    } catch (error) {
+      throw failed(error);
+    }
+  }
+}
+
+@Service({ autoProvided: false })
+export class LocalAddPatientReading extends TokenPatientAddReading {
+  private readonly client = inject(LocalClient);
+
+  async add(params: PatientAddReading.Params): Promise<void> {
+    try {
+      return await this.client.request({
+        method: HTTPVerbs.POST,
+        data: params,
+        url: 'patient/addReading',
+      });
+    } catch (error) {
+      throw failed(error);
+    }
+  }
+}
+
+@Service({ autoProvided: false })
+export class LocalRemovePatientReading extends TokenPatientRemoveReading {
+  private readonly client = inject(LocalClient);
+
+  async remove(params: PatientRemoveReading.Params): Promise<void> {
+    try {
+      return await this.client.request({
+        method: HTTPVerbs.DELETE,
+        data: params,
+        url: 'patient/removeReading',
       });
     } catch (error) {
       throw failed(error);

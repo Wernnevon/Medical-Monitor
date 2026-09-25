@@ -1,38 +1,38 @@
 import { Service, inject } from '@angular/core';
-import {
-  PrescriptionStatus,
-  type Prescription,
-} from '@domain/entities';
-import {
-  ConnectionType,
-  STORES,
-  fromRequest,
-  getConnection,
-} from '@infra/frameworks/indexed-connection';
-import { PrescriptionGetRepository } from '../get';
+import { PrescriptionStatus, type Prescription } from '@domain/entities';
+import { FIRESTORE } from '@infra/frameworks/firebase';
+import { doc, updateDoc, runTransaction } from 'firebase/firestore';
 import { stamped } from '../stamp';
+import { nowTimestamp } from '@core/utils/date-utils';
 
 @Service()
 export class PrescriptionPutRepository {
-  private readonly prescriptionGet = inject(PrescriptionGetRepository);
+  private readonly firestore = inject(FIRESTORE);
 
   async update(prescription: Prescription): Promise<void> {
-    const db = await getConnection();
-    const store = db
-      .transaction(STORES.prescriptions, ConnectionType.READWRITE)
-      .objectStore(STORES.prescriptions);
-    await fromRequest(store.put(stamped(prescription)));
+    const entity = stamped(prescription);
+    const docRef = doc(this.firestore, 'prescriptions', entity.id);
+    await updateDoc(docRef, { ...entity });
   }
 
   async changeStatus(id: string): Promise<void> {
-    const prescription = await this.prescriptionGet.findById(id);
+    const docRef = doc(this.firestore, 'prescriptions', id);
+    
+    await runTransaction(this.firestore, async (transaction) => {
+      const sfDoc = await transaction.get(docRef);
+      if (!sfDoc.exists()) {
+        throw new Error('Prescrição não existe!');
+      }
 
-    await this.update({
-      ...prescription,
-      status:
-        prescription.status === PrescriptionStatus.SUSPENDED
-          ? PrescriptionStatus.ADMINISTERING
-          : PrescriptionStatus.SUSPENDED,
+      const prescription = sfDoc.data() as Prescription;
+      const novoStatus = prescription.status === PrescriptionStatus.SUSPENDED 
+          ? PrescriptionStatus.ADMINISTERING 
+          : PrescriptionStatus.SUSPENDED;
+      
+      transaction.update(docRef, {
+        status: novoStatus,
+        updatedAt: nowTimestamp()
+      });
     });
   }
 }

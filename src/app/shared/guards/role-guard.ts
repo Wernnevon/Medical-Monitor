@@ -10,11 +10,14 @@ import { ProfessionalRole } from '@domain/entities';
  * exame nem emite atestado (ao menos até haver dispositivo conectado que
  * justifique abrir essas telas para ele).
  */
-export const professionalOnlyGuard: CanActivateFn = () => {
+export const professionalOnlyGuard: CanActivateFn = async () => {
   const auth = inject(AuthService);
   const router = inject(Router);
   const toast = inject(ToastService);
 
+  // O perfil carrega em segundo plano depois do bootstrap; num acesso direto
+  // pela URL ele pode ainda não ter chegado.
+  await auth.perfilCarregado();
   if (auth.usuarioAtual()?.role === ProfessionalRole.PROFISSIONAL) return true;
 
   toast.add('Esta área é exclusiva do profissional responsável', ToastType.WARNING);

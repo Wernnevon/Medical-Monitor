@@ -49,7 +49,6 @@ type Professional = Syncable & {
    *  preencher com o próprio registro no conselho, mas o assistente (que
    *  não tem conselho) precisa de algo para entrar também. */
   username: string;
-  passwordHash: string;
   phone?: string;
   role: ProfessionalRole;
   specialty?: string;

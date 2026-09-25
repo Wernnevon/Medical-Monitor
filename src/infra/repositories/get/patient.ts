@@ -1,21 +1,18 @@
-import { Service } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import type { Patient } from '@domain/entities';
-import {
-  ConnectionType,
-  STORES,
-  fromRequest,
-  getConnection,
-} from '@infra/frameworks/indexed-connection';
+import { FIRESTORE } from '@infra/frameworks/firebase';
+import { collection, doc, getDoc, getDocs, query } from 'firebase/firestore';
 import { backfilled } from '../stamp';
 
 @Service()
 export class PatientGetRepository {
+  private readonly firestore = inject(FIRESTORE);
+  private readonly collectionName = 'patients';
+
   private async readAll(): Promise<Patient[]> {
-    const db = await getConnection();
-    const store = db
-      .transaction(STORES.patients, ConnectionType.READONLY)
-      .objectStore(STORES.patients);
-    return (await fromRequest(store.getAll())).map(backfilled);
+    const q = query(collection(this.firestore, this.collectionName));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => backfilled(doc.data() as Patient));
   }
 
   async list(): Promise<Patient[]> {
@@ -23,11 +20,10 @@ export class PatientGetRepository {
   }
 
   async findById(id: string): Promise<Patient> {
-    const db = await getConnection();
-    const store = db
-      .transaction(STORES.patients, ConnectionType.READONLY)
-      .objectStore(STORES.patients);
-    return backfilled(await fromRequest(store.get(id)));
+    const docRef = doc(this.firestore, this.collectionName, id);
+    const snap = await getDoc(docRef);
+    if (!snap.exists()) throw new Error('Paciente não encontrado');
+    return backfilled(snap.data() as Patient);
   }
 
   async listCities(): Promise<string[]> {

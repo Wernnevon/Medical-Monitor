@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, effect, inject } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { AuthService } from '@app/shared/services/auth';
 import { SideNav } from './side-nav/side-nav';
 import { TopBar } from './top-bar/top-bar';
 
@@ -24,4 +25,16 @@ import { TopBar } from './top-bar/top-bar';
   `,
   styleUrl: './shell.scss',
 })
-export class Shell {}
+export class Shell {
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+
+  constructor() {
+    // O guard só roda na navegação. Se a sessão cair com a tela aberta —
+    // logout em outra aba, perfil inexistente descoberto depois do
+    // bootstrap — é aqui que a pessoa volta para o login.
+    effect(() => {
+      if (!this.auth.autenticado()) this.router.navigate(['/entrar']);
+    });
+  }
+}

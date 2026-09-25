@@ -7,6 +7,8 @@ import type {
   ListInsurance,
   ListPagination,
   Update,
+  PatientAddReading,
+  PatientRemoveReading,
 } from '../use-cases';
 
 /**
@@ -51,4 +53,12 @@ export abstract class PatientListCities implements ListCities {
 
 export abstract class PatientListInsurance implements ListInsurance {
   abstract listInsurance(): Promise<ListInsurance.Reponse>;
+}
+
+export abstract class TokenPatientAddReading implements PatientAddReading {
+  abstract add(params: PatientAddReading.Params): Promise<void>;
+}
+
+export abstract class TokenPatientRemoveReading implements PatientRemoveReading {
+  abstract remove(params: PatientRemoveReading.Params): Promise<void>;
 }

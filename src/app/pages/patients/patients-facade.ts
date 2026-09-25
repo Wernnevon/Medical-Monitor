@@ -54,6 +54,12 @@ export class PatientsFacade {
     () => Math.ceil(this.totalEntries() / this.pageSize()) || 1,
   );
   readonly isLoading = this.listing.isLoading;
+  /**
+   * Só a carga que troca o conteúdo (primeira vez, página, filtro, busca).
+   * Um `reload()` fica de fora: a lista atual continua na tela enquanto a
+   * nova chega, em vez de sumir atrás de um spinner a cada visita.
+   */
+  readonly carregandoLista = computed(() => this.listing.status() === 'loading');
   readonly error = this.listing.error;
 
   readonly cities = computed(() => unique(this.options.value().cities));

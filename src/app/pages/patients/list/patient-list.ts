@@ -84,10 +84,12 @@ type PatientRow = {
       heading="Pacientes"
       description="Gerencie o cadastro, histórico e documentos dos seus pacientes."
       icon="HiOutlineUserGroup"
+    />
+    <app-list-filters
+      [filters]="filters()"
       actionLabel="Novo Paciente"
       (action)="router.navigate(['/pacientes/novo'])"
     />
-    <app-list-filters [filters]="filters()" />
     @if (mostrarSeed()) {
       <button type="button" class="seed-dev" (click)="preencherComDadosFicticios()">
         <app-icon name="FaPlus" size="1rem" />
@@ -100,6 +102,7 @@ type PatientRow = {
           [rows]="rows()"
           [columns]="columns"
           [pagination]="pagination()"
+          [loading]="patients.carregandoLista()"
           rowActionIcon="HiOutlineEye"
           rowActionLabel="Ver detalhes"
           [selectable]="true"
@@ -211,6 +214,10 @@ export class PatientList {
   });
 
   constructor() {
+    // A fachada é singleton e guarda a última listagem. Sem reler ao abrir,
+    // quem voltava do cadastro — ou de outro aparelho — via a lista velha.
+    this.patients.reload();
+
     effect(() => {
       if (this.patients.error()) {
         this.toast.add('Erro ao carregar pacientes', ToastType.ERROR);

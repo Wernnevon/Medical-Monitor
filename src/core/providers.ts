@@ -15,6 +15,8 @@ import {
   LocalListInsurance,
   LocalListPaginationPatient,
   LocalUpdatePatient,
+  LocalAddPatientReading,
+  LocalRemovePatientReading,
 } from '@data/use-cases/patients';
 import {
   LocalAddPrescription,
@@ -43,6 +45,8 @@ import {
   PatientListInsurance,
   PatientListPagination,
   PatientUpdate,
+  TokenPatientAddReading,
+  TokenPatientRemoveReading,
   PrescriptionAdd,
   PrescriptionChangeStatus,
   PrescriptionDelete,
@@ -74,6 +78,8 @@ export const dataProviders: Provider[] = [
   { provide: PatientListPagination, useClass: LocalListPaginationPatient },
   { provide: PatientListCities, useClass: LocalListCities },
   { provide: PatientListInsurance, useClass: LocalListInsurance },
+  { provide: TokenPatientAddReading, useClass: LocalAddPatientReading },
+  { provide: TokenPatientRemoveReading, useClass: LocalRemovePatientReading },
 
   // Exames
   { provide: ExamAdd, useClass: LocalAddExam },
