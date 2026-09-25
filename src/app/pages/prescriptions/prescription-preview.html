@@ -36,9 +36,10 @@
     [hidden]="aba() !== 'impressao'"
   >
     <p>
-      A receita sai em uma folha A4, com o timbrado, os dados do paciente e o espaço para
+      A receita sai no papel escolhido abaixo, com o timbrado, os dados do paciente e o espaço para
       assinatura. Para gerar o PDF, escolha "Salvar como PDF" na janela de impressão.
     </p>
+    <app-paper-size-picker />
     <button type="button" class="botao-imprimir" (click)="imprimir.emit()">
       <app-icon name="FiPrinter" size="1rem" />
       Imprimir receita
@@ -52,95 +53,79 @@
     aria-labelledby="aba-previa"
     [hidden]="aba() !== 'previa'"
   >
-    <img
-      class="marca-dagua"
-      ngSrc="/assets/logo_vittaly.svg"
-      width="130"
-      height="137"
-      alt=""
-      aria-hidden="true"
-      priority
-    />
-
-    <header class="marca">
-      <img class="logo" ngSrc="/assets/logo_vittaly.svg" width="130" height="137" alt="" priority />
-      <div class="marca-texto">
-        <span class="marca-nome">VITTALY</span>
-        <span class="marca-sub">CENTRO MÉDICO ODONTOLÓGICO</span>
-      </div>
-    </header>
-
-    <div class="profissional">
-      <strong>{{ nomeProfissional() }}</strong>
-      @if (especialidade()) {
-        <span>{{ especialidade() }}</span>
-      }
-      @if (conselho()) {
-        <span>{{ conselho() }}</span>
-      }
-    </div>
-
-    <h3 class="titulo-documento">Receita médica</h3>
-
-    @if (paciente(); as p) {
-      <dl class="paciente">
-        <dt>Paciente:</dt>
-        <dd>{{ p.name }}</dd>
-        <dt>CPF:</dt>
-        <dd>{{ p.cpf }}</dd>
-        <dt>Data de nascimento:</dt>
-        <dd>{{ nascimento() }}</dd>
-        @if (p.health.healthInsurance) {
-          <dt>Convênio:</dt>
-          <dd>{{ p.health.healthInsurance }}</dd>
+    <app-letterhead>
+      <div class="profissional">
+        <strong>{{ nomeProfissional() }}</strong>
+        @if (especialidade()) {
+          <span>{{ especialidade() }}</span>
         }
-      </dl>
-    } @else {
-      <p class="vazio">Nenhum paciente selecionado.</p>
-    }
-
-    @if (itens().length) {
-      <ol class="medicamentos">
-        @for (item of itens(); track item.key) {
-          <li>
-            <strong>{{ item.nome }}</strong>
-            @if (item.resumo) {
-              <span>{{ item.resumo }}</span>
-            }
-            @if (item.posologia) {
-              <span>{{ item.posologia }}</span>
-            }
-            @if (item.orientacoes) {
-              <span>({{ item.orientacoes }})</span>
-            }
-          </li>
+        @if (conselho()) {
+          <span>{{ conselho() }}</span>
         }
-      </ol>
-    } @else {
-      <p class="vazio vazio--separado">Nenhum medicamento informado ainda.</p>
-    }
-
-    @if (orientacoes().length) {
-      <section class="orientacoes">
-        <h4>Orientações gerais:</h4>
-        <ul>
-          @for (linha of orientacoes(); track $index) {
-            <li>{{ linha }}</li>
-          }
-        </ul>
-      </section>
-    }
-
-    <footer class="rodape">
-      <span class="data">{{ data }}, São João do Rio do Peixe - PB, CEP 58910-000</span>
-      <div class="assinatura">
-        <span class="assinatura-linha">
-          <strong>{{ nomeProfissional() }}</strong>
-          @if (conselho()) {
-            <span>{{ conselho() }}</span>
-          }
-        </span>
       </div>
-    </footer>
+
+      <h3 class="titulo-documento">Receita médica</h3>
+
+      @if (paciente(); as p) {
+        <dl class="paciente">
+          <dt>Paciente:</dt>
+          <dd>{{ p.name }}</dd>
+          <dt>CPF:</dt>
+          <dd>{{ p.cpf }}</dd>
+          <dt>Data de nascimento:</dt>
+          <dd>{{ nascimento() }}</dd>
+          @if (p.health.healthInsurance) {
+            <dt>Convênio:</dt>
+            <dd>{{ p.health.healthInsurance }}</dd>
+          }
+        </dl>
+      } @else {
+        <p class="vazio">Nenhum paciente selecionado.</p>
+      }
+
+      @if (itens().length) {
+        <ol class="medicamentos">
+          @for (item of itens(); track item.key) {
+            <li>
+              <strong>{{ item.nome }}</strong>
+              @if (item.resumo) {
+                <span>{{ item.resumo }}</span>
+              }
+              @if (item.posologia) {
+                <span>{{ item.posologia }}</span>
+              }
+              @if (item.orientacoes) {
+                <span>({{ item.orientacoes }})</span>
+              }
+            </li>
+          }
+        </ol>
+      } @else {
+        <p class="vazio vazio--separado">Nenhum medicamento informado ainda.</p>
+      }
+
+      @if (orientacoes().length) {
+        <section class="orientacoes">
+          <h4>Orientações gerais:</h4>
+          <ul>
+            @for (linha of orientacoes(); track $index) {
+              <li>{{ linha }}</li>
+            }
+          </ul>
+        </section>
+      }
+
+      <footer class="rodape" assinatura>
+        <span class="data">{{ data }}, São João do Rio do Peixe - PB, CEP 58910-000</span>
+        <div class="assinatura">
+          <span class="assinatura-linha">
+            <strong>{{ nomeProfissional() }}</strong>
+            @if (conselho()) {
+              <span>{{ conselho() }}</span>
+            }
+          </span>
+        </div>
+      </footer>
+    </app-letterhead>
   </article>
 </div>

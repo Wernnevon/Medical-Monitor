@@ -1,0 +1,305 @@
+/* Cores da identidade (`_tokens.scss`), não as da foto do bloco impresso:
+   navy nas faixas e o dourado envelhecido do acento nos filetes e na marca
+   d'água. Tudo derivado de `--cor-primaria` e `--cor-acento`, que o tema
+   escuro não sobrescreve — `--cor-acento-clara` vira marrom escuro lá e
+   sujava a folha. A marca d'água é o dourado diluído a 50% no branco; o
+   texto suave foi escurecido aqui (#4f5868) para passar por cima dela com
+   5.19:1. */
+:host {
+  /* Medidas reais do papel e das faixas. As faixas têm altura fixa (e não
+     mínima) porque a impressão reserva exatamente esse espaço em cada
+     página — ver `.reserva-topo`/`.reserva-pe`. */
+  --papel-largura: 210mm;
+  --papel-altura: 297mm;
+  --timbrado-topo: 9.5rem;
+  --timbrado-pe: 6rem;
+
+  /* Recuo lateral compartilhado entre a marca no topo e o texto, para os
+     dois começarem na mesma linha vertical. */
+  --timbrado-recuo: var(--esp-8);
+
+  display: block;
+}
+
+/* A5 tem metade da área da A4, mas as medidas são em rem (tamanho físico
+   fixo): sem encolher, o timbrado ocuparia uma fatia grande demais. */
+:host(.a5) {
+  --papel-largura: 148mm;
+  --papel-altura: 210mm;
+  --timbrado-topo: 7.5rem;
+  --timbrado-pe: 5.25rem;
+  --timbrado-recuo: var(--esp-5);
+
+  .topo {
+    padding-top: var(--esp-3);
+  }
+
+  .marca-simbolo {
+    width: 1.75rem;
+  }
+
+  .marca-nome {
+    font-size: var(--texto-lg);
+  }
+
+  .contato {
+    font-size: 0.6rem;
+  }
+}
+
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--esp-2);
+  margin: 0 0 var(--esp-3);
+  padding: var(--esp-2) var(--esp-3);
+  border-left: 3px solid var(--cor-alerta);
+  border-radius: var(--raio-sm);
+  background-color: var(--cor-alerta-fundo);
+  color: var(--cor-texto);
+  font-size: var(--texto-sm);
+
+  app-icon {
+    margin-top: 0.15rem;
+    color: var(--cor-alerta);
+  }
+}
+
+.papel {
+  --timbrado-azul: var(--cor-primaria);
+  --timbrado-dourado: var(--cor-acento);
+  --timbrado-dourado-claro: color-mix(in srgb, var(--cor-acento) 45%, #fff);
+  --timbrado-marca-dagua: color-mix(in srgb, var(--cor-acento) 50%, #fff);
+
+  --cor-superficie: #fff;
+  --cor-texto: #1c2430;
+  --cor-texto-suave: #4f5868;
+  --cor-marca-texto: #071c55;
+  --cor-borda: #e4e7ec;
+  --cor-borda-forte: #7c89a0;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: var(--papel-largura);
+  min-height: var(--papel-altura);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-md);
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto);
+  font-size: var(--texto-sm);
+  overflow: hidden;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* Na tela a tabela de paginação não existe para o layout: o `.conteudo` e
+   a assinatura viram filhos diretos da folha. */
+.paginacao,
+.paginacao tbody,
+.paginacao tfoot,
+.paginacao tr,
+.paginacao td {
+  display: contents;
+}
+
+.paginacao thead,
+.reserva-pe {
+  display: none;
+}
+
+.assinatura-area {
+  position: relative;
+  flex-shrink: 0;
+  padding: 0 var(--timbrado-recuo) var(--esp-3);
+}
+
+.marca-dagua {
+  position: absolute;
+  right: -22%;
+  bottom: 3.5rem;
+  width: 72%;
+  aspect-ratio: 130.416 / 136.559;
+  background-color: var(--timbrado-marca-dagua);
+  mask: url('/assets/logo_vittaly.svg') center / contain no-repeat;
+  pointer-events: none;
+}
+
+.topo,
+.pe,
+.conteudo {
+  position: relative;
+}
+
+.onda {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.onda-azul {
+  fill: var(--timbrado-azul);
+}
+
+.onda-dourada {
+  fill: var(--timbrado-dourado);
+}
+
+.onda-clara {
+  fill: var(--timbrado-dourado-claro);
+}
+
+.topo {
+  display: flex;
+  flex-shrink: 0;
+  height: var(--timbrado-topo);
+  padding: var(--esp-4) var(--timbrado-recuo) 0;
+}
+
+.marca {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: flex-start;
+  color: #fff;
+}
+
+/* Mesma técnica do `app-logo`: o SVG branco vira máscara e a cor vem do
+   fundo. */
+.marca-simbolo {
+  width: 2.25rem;
+  aspect-ratio: 130.416 / 136.559;
+  background-color: currentColor;
+  mask: url('/assets/logo_vittaly.svg') center / contain no-repeat;
+}
+
+.marca-nome {
+  margin-top: var(--esp-1);
+  font-size: var(--texto-xl);
+  letter-spacing: 0.12em;
+  line-height: 1.1;
+}
+
+.marca-sub {
+  font-size: 0.575rem;
+  font-weight: var(--peso-forte);
+  letter-spacing: 0.04em;
+}
+
+.conteudo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: var(--esp-2) var(--timbrado-recuo) var(--esp-4);
+}
+
+.pe {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  height: var(--timbrado-pe);
+}
+
+.contato {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 0 var(--esp-4) var(--esp-3);
+  color: #fff;
+  font-size: var(--texto-xs);
+  font-style: normal;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.telefone {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+}
+
+@media print {
+  .aviso-regiao {
+    display: none;
+  }
+
+  .papel {
+    zoom: 1 !important;
+    display: block;
+    width: auto;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  /* Elementos fixos se repetem em toda página impressa. */
+  .topo,
+  .pe,
+  .marca-dagua {
+    position: fixed;
+  }
+
+  .topo {
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .pe {
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  /* `thead`/`tfoot` se repetem em toda página: reservam o espaço das faixas
+     fixas para o texto nunca passar por baixo delas. */
+  /* Numa folha só, a tabela ocupa a página inteira (`height` em tabela
+     funciona como altura mínima): o corpo estica e a assinatura desce até
+     o pé. Os 2px de folga evitam que arredondamento empurre uma segunda
+     página em branco. */
+  .paginacao {
+    position: relative;
+    display: table;
+    width: 100%;
+    height: calc(100vh - 2px);
+    border-collapse: collapse;
+  }
+
+  .paginacao thead {
+    display: table-header-group;
+  }
+
+  .paginacao tbody {
+    display: table-row-group;
+  }
+
+  .paginacao tfoot {
+    display: table-footer-group;
+  }
+
+  .paginacao tr {
+    display: table-row;
+  }
+
+  .paginacao td {
+    display: table-cell;
+    padding: 0;
+    vertical-align: top;
+  }
+
+  .reserva-topo {
+    height: var(--timbrado-topo);
+  }
+
+  .reserva-pe {
+    display: block;
+    height: var(--timbrado-pe);
+  }
+
+}

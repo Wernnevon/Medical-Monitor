@@ -1,6 +1,7 @@
-import { NgOptimizedImage } from '@angular/common';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { Icon } from '@app/shared/components/icon/icon';
+import { Letterhead } from '@app/shared/components/letterhead/letterhead';
+import { PaperSizePicker } from '@app/shared/components/paper-size-picker/paper-size-picker';
 import { nomeComTitulo } from '@app/shared/components/print-output/print-output';
 import { AuthService } from '@app/shared/services/auth';
 import { formatarNascimento } from '@app/shared/utils/patient-format';
@@ -21,7 +22,7 @@ const FORMATO_DATA: Intl.DateTimeFormatOptions = {
  */
 @Component({
   selector: 'app-certificate-preview',
-  imports: [Icon, NgOptimizedImage],
+  imports: [Icon, Letterhead, PaperSizePicker],
   templateUrl: './certificate-preview.html',
   styleUrl: './certificate-preview.scss',
 })

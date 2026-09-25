@@ -1,6 +1,7 @@
-import { NgOptimizedImage } from '@angular/common';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { Icon } from '@app/shared/components/icon/icon';
+import { Letterhead } from '@app/shared/components/letterhead/letterhead';
+import { PaperSizePicker } from '@app/shared/components/paper-size-picker/paper-size-picker';
 import { nomeComTitulo } from '@app/shared/components/print-output/print-output';
 import { AuthService } from '@app/shared/services/auth';
 import { formatarNascimento } from '@app/shared/utils/patient-format';
@@ -24,7 +25,7 @@ const FORMATO_DATA: Intl.DateTimeFormatOptions = {
  */
 @Component({
   selector: 'app-exam-preview',
-  imports: [Icon, NgOptimizedImage],
+  imports: [Icon, Letterhead, PaperSizePicker],
   templateUrl: './exam-preview.html',
   styleUrl: './exam-preview.scss',
 })
@@ -37,7 +38,7 @@ export class ExamPreview {
 
   private readonly usuario = inject(AuthService).usuarioAtual;
 
-  /** Até aqui a lista cabe numa folha A4 em uma coluna; acima, vai para duas. */
+  /** Acima disso a lista vai para duas colunas, para ocupar menos folhas. */
   protected readonly limiteUmaColuna = 10;
 
   protected readonly aba = signal<Aba>('previa');

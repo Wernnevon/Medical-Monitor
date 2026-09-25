@@ -1,0 +1,76 @@
+<div class="aviso-regiao" role="status">
+  @if (folhas() > 1) {
+    <p class="aviso">
+      <app-icon name="FiAlertTriangle" size="1rem" />
+      <span>
+        O conteúdo passou de uma folha {{ papel.tamanho() }} e vai ser impresso em
+        {{ folhas() }} folhas, com o timbrado repetido em cada uma.
+        @if (papel.tamanho() === 'A5') {
+          Para caber em uma folha só, escolha A4 na aba "Impressão".
+        }
+      </span>
+    </p>
+  }
+</div>
+
+<div #papelRef class="papel" [style.zoom]="escala()">
+  <div class="marca-dagua" aria-hidden="true"></div>
+
+  <header #topoRef class="topo">
+    <svg class="onda" viewBox="0 0 600 150" preserveAspectRatio="none" aria-hidden="true">
+      <path class="onda-clara" d="M0 0H600V132C440 94 220 124 0 150Z" />
+      <path class="onda-dourada" d="M0 0H600V126C440 88 220 118 0 145Z" />
+      <path class="onda-azul" d="M0 0H600V118C440 80 220 110 0 140Z" />
+    </svg>
+    <div class="marca">
+      <span class="marca-simbolo"></span>
+      <span class="marca-nome">VITTALY</span>
+      <span class="marca-sub">CENTRO MÉDICO ODONTOLÓGICO</span>
+    </div>
+  </header>
+
+  <!-- Na impressão, o cabeçalho e o rodapé desta tabela se repetem em cada
+       página: o `thead` reserva o espaço da faixa do topo, e o `tfoot` leva
+       a assinatura e reserva o espaço da faixa do pé — assim toda folha sai
+       assinável. Na tela a tabela some do layout (`display: contents`). -->
+  <table class="paginacao" role="presentation">
+    <thead>
+      <tr><td><div class="reserva-topo"></div></td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="conteudo">
+            <ng-content />
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>
+          <div #assinaturaRef class="assinatura-area">
+            <ng-content select="[assinatura]" />
+          </div>
+          <div class="reserva-pe"></div>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <footer #peRef class="pe">
+    <svg class="onda" viewBox="0 0 600 120" preserveAspectRatio="none" aria-hidden="true">
+      <path class="onda-clara" d="M0 0C200 16 420 26 600 14V120H0Z" />
+      <path class="onda-dourada" d="M0 7C200 23 420 33 600 21V120H0Z" />
+      <path class="onda-azul" d="M0 13C200 29 420 39 600 27V120H0Z" />
+    </svg>
+    <address class="contato">
+      <span>VITTALY - CENTRO MÉDICO ODONTOLÓGICO</span>
+      <span class="telefone">
+        <app-icon name="BsTelephone" size="0.8em" />
+        83 9 9604.8469
+      </span>
+      <span>Rua Lourival Ribeiro da Nóbrega, 11, Centro - São João do Rio do Peixe-PB</span>
+    </address>
+  </footer>
+</div>

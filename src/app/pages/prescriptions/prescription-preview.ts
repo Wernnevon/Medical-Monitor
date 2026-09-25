@@ -1,6 +1,7 @@
-import { NgOptimizedImage } from '@angular/common';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { Icon } from '@app/shared/components/icon/icon';
+import { Letterhead } from '@app/shared/components/letterhead/letterhead';
+import { PaperSizePicker } from '@app/shared/components/paper-size-picker/paper-size-picker';
 import { nomeComTitulo } from '@app/shared/components/print-output/print-output';
 import { AuthService } from '@app/shared/services/auth';
 import type { Patient } from '@domain/entities';
@@ -22,7 +23,7 @@ const FORMATO_DATA: Intl.DateTimeFormatOptions = {
  */
 @Component({
   selector: 'app-prescription-preview',
-  imports: [Icon, NgOptimizedImage],
+  imports: [Icon, Letterhead, PaperSizePicker],
   templateUrl: './prescription-preview.html',
   styleUrl: './prescription-preview.scss',
 })
