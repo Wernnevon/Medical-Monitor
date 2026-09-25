@@ -1,12 +1,17 @@
 <div class="pagina">
-  <div class="principal">
+  <div class="topo">
     <a class="voltar" routerLink="/pacientes">
       <app-icon name="BsChevronLeft" size="0.9rem" />
       Voltar para a lista de pacientes
     </a>
 
-    <h1>Emissão de Atestado</h1>
+    <header class="titulo">
+      <h1>Emissão de Atestado</h1>
+      <p>Busque o paciente, preencha o período de afastamento e imprima o atestado.</p>
+    </header>
+  </div>
 
+  <div class="principal">
     <section class="cartao paciente" aria-labelledby="rotulo-paciente">
       <span class="avatar" aria-hidden="true">
         <app-icon name="HiOutlineUserCircle" size="1.75rem" />

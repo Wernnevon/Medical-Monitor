@@ -1,11 +1,11 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { Icon } from '../icon/icon';
 import type { IconName } from '../icon/icons';
 
 /**
- * Cabeçalho de página: ícone + título + descrição, com o botão de ação à
- * direita — solto no fundo da página, e não dentro do card de dados, como
- * no protótipo. A listagem de pacientes foi a primeira a usar, mas o
+ * Cabeçalho de página: ícone + título + descrição — solto no fundo da
+ * página, e não dentro do card de dados, como no protótipo. A ação
+ * principal ("Novo Paciente") fica na barra de filtros, ver `ListFilters`. A listagem de pacientes foi a primeira a usar, mas o
  * formato se repete nas outras listagens (Exames, Receitas, Atestados).
  */
 @Component({
@@ -22,12 +22,6 @@ import type { IconName } from '../icon/icons';
           <p>{{ description() }}</p>
         }
       </div>
-      @if (actionLabel()) {
-        <button type="button" class="acao" (click)="action.emit()">
-          <app-icon name="FaPlus" />
-          {{ actionLabel() }}
-        </button>
-      }
     </div>
   `,
   styleUrl: './page-header.scss',
@@ -39,7 +33,4 @@ export class PageHeader {
    *  tooltip nativo do navegador no elemento hospedeiro. */
   readonly heading = input('');
   readonly description = input('');
-  readonly actionLabel = input('');
-
-  readonly action = output<void>();
 }

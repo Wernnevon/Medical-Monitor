@@ -26,10 +26,19 @@
   min-width: 0;
 }
 
+/* Trilha + título numa linha própria, por cima das duas colunas: assim o
+   card do paciente e a prévia começam na mesma linha do grid e ficam
+   alinhados sem depender de um deslocamento ajustado no olho. */
+.topo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+  grid-column: 1 / -1;
+}
+
 .previa {
   position: sticky;
   top: 0;
-  margin-top: 5.5rem;
 }
 
 /* ---- Trilha e título ---- */
@@ -373,6 +382,18 @@
   color: var(--cor-texto-suave);
 }
 
+/* Medicamentos: a parte que cresce e, no desktop, rola. Orientações e a
+   barra de ações ficam fixas embaixo. */
+.rolagem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+
+  > * {
+    flex-shrink: 0;
+  }
+}
+
 /* ---- Barra de ações ---- */
 
 .barra-acoes {
@@ -503,6 +524,53 @@
   margin-top: var(--esp-2);
 }
 
+
+/* ---- Desktop: rolagem só nos cards ----
+   Com a prévia ao lado, a página inteira rolando levava junto o título, o
+   paciente e os botões de emitir. Aqui a página fica parada na altura da
+   janela e só a área de edição rola; a prévia rola por conta própria se
+   não couber. Abaixo de 1100px a prévia desce e volta a rolar a página. */
+@media screen and (min-width: 1101px) {
+  /* `clip`, não `hidden`: um elemento `hidden` ainda rola por script, e o
+     `focus()` num campo novo rolava a página toda, escondendo os botões. */
+  :host {
+    overflow: clip;
+  }
+
+  .pagina {
+    height: 100%;
+    /* Linha explícita: a implícita é `auto`, cresce com o conteúdo e a
+       página voltava a rolar inteira com muitos itens. */
+    grid-template-rows: auto minmax(0, 1fr);
+    padding-bottom: 0;
+  }
+
+  .principal {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .previa {
+    display: block;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  .rolagem {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    /* Folga para a sombra e o contorno de foco dos cards não serem
+       cortados pela borda da área de rolagem. */
+    padding: 2px;
+    margin: -2px;
+  }
+
+  .principal > :not(.rolagem) {
+    flex-shrink: 0;
+  }
+}
+
 /* ---- Responsivo ---- */
 
 @media (max-width: 1100px) {
@@ -512,7 +580,6 @@
 
   .previa {
     position: static;
-    margin-top: 0;
   }
 }
 
@@ -540,6 +607,7 @@
     padding: 0;
   }
 
+  .topo,
   .principal,
   .overlay {
     display: none !important;
@@ -547,6 +615,5 @@
 
   .previa {
     position: static;
-    margin: 0;
   }
 }

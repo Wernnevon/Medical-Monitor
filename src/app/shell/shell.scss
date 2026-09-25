@@ -12,6 +12,8 @@
 }
 
 .content {
+  /* Referência para a barra do topo, que flutua sobre o respiro do conteúdo. */
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--esp-3);

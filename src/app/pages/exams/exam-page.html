@@ -1,5 +1,5 @@
 <div class="pagina">
-  <div class="principal">
+  <div class="topo">
     <nav class="trilha" aria-label="Trilha de navegação">
       <a class="voltar" routerLink="/pacientes" aria-label="Voltar para pacientes">
         <app-icon name="BsChevronLeft" size="0.9rem" />
@@ -31,7 +31,9 @@
         }
       </p>
     </header>
+  </div>
 
+  <div class="principal">
     <section class="cartao paciente" aria-label="Paciente">
       @if (paciente(); as p) {
         <span class="avatar" aria-hidden="true">{{ iniciais() }}</span>
@@ -85,119 +87,121 @@
         </div>
       </header>
 
-      @if (avisoConselho(); as aviso) {
-        <p class="aviso-conselho" role="note">
-          <app-icon name="FiInfo" size="1.1rem" />
-          {{ aviso }}
-        </p>
-      }
+      <div class="cartao-rolagem">
+        @if (avisoConselho(); as aviso) {
+          <p class="aviso-conselho" role="note">
+            <app-icon name="FiInfo" size="1.1rem" />
+            {{ aviso }}
+          </p>
+        }
 
-      <label class="busca">
-        <app-icon name="BsSearch" size="0.95rem" />
-        <span class="sr-only">Buscar exame</span>
-        <input
-          type="search"
-          placeholder="Buscar exame por nome…"
-          [value]="busca()"
-          (input)="editarBusca($any($event.target).value)"
-        />
-      </label>
+        <label class="busca">
+          <app-icon name="BsSearch" size="0.95rem" />
+          <span class="sr-only">Buscar exame</span>
+          <input
+            type="search"
+            placeholder="Buscar exame por nome…"
+            [value]="busca()"
+            (input)="editarBusca($any($event.target).value)"
+          />
+        </label>
 
-      <div class="selecao">
-        <nav class="categorias" aria-labelledby="titulo-categorias">
-          <h3 id="titulo-categorias">Categorias</h3>
-          <ul>
-            <li>
-              <button
-                type="button"
-                class="categoria"
-                [attr.aria-current]="!busca() && categoriaAtiva() === todos ? 'true' : null"
-                (click)="alternarCategoria(todos)"
-              >
-                <app-icon class="categoria-icone" name="LuFlaskConical" size="1.1rem" />
-                <span class="categoria-nome">{{ todos }}</span>
-              </button>
-            </li>
-            @for (categoria of categorias(); track categoria.tipo) {
+        <div class="selecao">
+          <nav class="categorias" aria-labelledby="titulo-categorias">
+            <h3 id="titulo-categorias">Categorias</h3>
+            <ul>
               <li>
                 <button
                   type="button"
                   class="categoria"
-                  [attr.aria-current]="!busca() && categoriaAtiva() === categoria.tipo ? 'true' : null"
-                  (click)="alternarCategoria(categoria.tipo)"
+                  [attr.aria-current]="!busca() && categoriaAtiva() === todos ? 'true' : null"
+                  (click)="alternarCategoria(todos)"
                 >
-                  <app-icon class="categoria-icone" [name]="categoria.icone" size="1.1rem" />
-                  <span class="categoria-nome">{{ categoria.tipo }}</span>
-                  @if (selecionadosPorCategoria().get(categoria.tipo); as n) {
-                    <span class="contagem contagem--selecionados" [attr.aria-label]="n + ' selecionados'">
-                      {{ n }}
-                    </span>
-                  } @else if (categoria.total !== null) {
-                    <span class="contagem" [attr.aria-label]="categoria.total + ' exames'">
-                      {{ categoria.total }}
-                    </span>
-                  }
+                  <app-icon class="categoria-icone" name="LuFlaskConical" size="1.1rem" />
+                  <span class="categoria-nome">{{ todos }}</span>
                 </button>
               </li>
-            }
-          </ul>
-        </nav>
-
-        <div class="painel-exames" role="group" aria-labelledby="titulo-painel">
-          <header class="painel-cabecalho">
-            <app-icon [name]="painel().icone" size="1.4rem" />
-            <div>
-              <h3 id="titulo-painel">{{ painel().titulo }}</h3>
-              <p>{{ painel().total }} {{ painel().total === 1 ? 'exame disponível' : 'exames disponíveis' }}</p>
-            </div>
-          </header>
-
-          <div class="painel-lista">
-            @for (grupo of painel().grupos; track grupo.tipo) {
-              @if (painel().grupos.length > 1) {
-                <h4 class="grupo-titulo">{{ grupo.tipo }}</h4>
+              @for (categoria of categorias(); track categoria.tipo) {
+                <li>
+                  <button
+                    type="button"
+                    class="categoria"
+                    [attr.aria-current]="!busca() && categoriaAtiva() === categoria.tipo ? 'true' : null"
+                    (click)="alternarCategoria(categoria.tipo)"
+                  >
+                    <app-icon class="categoria-icone" [name]="categoria.icone" size="1.1rem" />
+                    <span class="categoria-nome">{{ categoria.tipo }}</span>
+                    @if (selecionadosPorCategoria().get(categoria.tipo); as n) {
+                      <span class="contagem contagem--selecionados" [attr.aria-label]="n + ' selecionados'">
+                        {{ n }}
+                      </span>
+                    } @else if (categoria.total !== null) {
+                      <span class="contagem" [attr.aria-label]="categoria.total + ' exames'">
+                        {{ categoria.total }}
+                      </span>
+                    }
+                  </button>
+                </li>
               }
-              <ul class="exames exames--colunas">
-                @for (nome of grupo.exames; track nome) {
-                  <li>
-                    <label class="exame" [class.exame--marcado]="marcado(nome)">
-                      <input
-                        type="checkbox"
-                        [checked]="marcado(nome)"
-                        [disabled]="emitida()"
-                        (change)="alternarExame(nome)"
+            </ul>
+          </nav>
+
+          <div class="painel-exames" role="group" aria-labelledby="titulo-painel">
+            <header class="painel-cabecalho">
+              <app-icon [name]="painel().icone" size="1.4rem" />
+              <div>
+                <h3 id="titulo-painel">{{ painel().titulo }}</h3>
+                <p>{{ painel().total }} {{ painel().total === 1 ? 'exame disponível' : 'exames disponíveis' }}</p>
+              </div>
+            </header>
+
+            <div class="painel-lista">
+              @for (grupo of painel().grupos; track grupo.tipo) {
+                @if (painel().grupos.length > 1) {
+                  <h4 class="grupo-titulo">{{ grupo.tipo }}</h4>
+                }
+                <ul class="exames exames--colunas">
+                  @for (nome of grupo.exames; track nome) {
+                    <li>
+                      <label class="exame" [class.exame--marcado]="marcado(nome)">
+                        <input
+                          type="checkbox"
+                          [checked]="marcado(nome)"
+                          [disabled]="emitida()"
+                          (change)="alternarExame(nome)"
+                        />
+                        <span>{{ nome }}</span>
+                      </label>
+                    </li>
+                  }
+                </ul>
+                @if (odontograma(); as escolhido) {
+                  @if (grupo.exames.includes(escolhido)) {
+                    <section class="odontograma" aria-labelledby="titulo-odontograma">
+                      <header class="odontograma-cabecalho">
+                        <h5 id="titulo-odontograma">{{ escolhido }}</h5>
+                        <p>
+                          @if (dentesSelecionados().size) {
+                            {{ dentesSelecionados().size }}
+                            {{ dentesSelecionados().size === 1 ? 'dente marcado' : 'dentes marcados' }}.
+                          } @else {
+                            Marque dentes específicos, se quiser — sem marcação, vale a arcada inteira.
+                          }
+                          Só um tipo de odontograma por requisição.
+                        </p>
+                      </header>
+                      <app-odontogram
+                        [selecionados]="dentesSelecionados()"
+                        [denticao]="denticao()!"
+                        (denteToggle)="emitida() ? null : alternarDente($event)"
                       />
-                      <span>{{ nome }}</span>
-                    </label>
-                  </li>
+                    </section>
+                  }
                 }
-              </ul>
-              @if (odontograma(); as escolhido) {
-                @if (grupo.exames.includes(escolhido)) {
-                  <section class="odontograma" aria-labelledby="titulo-odontograma">
-                    <header class="odontograma-cabecalho">
-                      <h5 id="titulo-odontograma">{{ escolhido }}</h5>
-                      <p>
-                        @if (dentesSelecionados().size) {
-                          {{ dentesSelecionados().size }}
-                          {{ dentesSelecionados().size === 1 ? 'dente marcado' : 'dentes marcados' }}.
-                        } @else {
-                          Marque dentes específicos, se quiser — sem marcação, vale a arcada inteira.
-                        }
-                        Só um tipo de odontograma por requisição.
-                      </p>
-                    </header>
-                    <app-odontogram
-                      [selecionados]="dentesSelecionados()"
-                      [denticao]="denticao()!"
-                      (denteToggle)="emitida() ? null : alternarDente($event)"
-                    />
-                  </section>
-                }
+              } @empty {
+                <p class="sem-resultado">Nenhum exame encontrado. Se não estiver no catálogo, use "Outros exames" abaixo.</p>
               }
-            } @empty {
-              <p class="sem-resultado">Nenhum exame encontrado. Se não estiver no catálogo, use "Outros exames" abaixo.</p>
-            }
+            </div>
           </div>
         </div>
       </div>

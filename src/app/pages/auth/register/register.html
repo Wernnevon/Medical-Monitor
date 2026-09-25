@@ -1,7 +1,9 @@
+<app-theme-toggle class="tema" />
+
 <div class="card">
-  <img class="logo" src="/assets/logo_vittaly.svg" alt="Vittaly" draggable="false" />
+  <app-logo class="logo" />
   <h1>Criar conta</h1>
-  <p class="subtitulo">Cadastre seu acesso ao Medical Monitor.</p>
+  <p class="subtitulo">Cadastre seu acesso ao Envinya Care.</p>
 
   <form class="campos" (submit)="$event.preventDefault(); cadastrar()">
     <app-select

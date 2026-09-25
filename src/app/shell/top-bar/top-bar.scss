@@ -1,34 +1,19 @@
 :host {
+  /* Flutua no respiro superior do conteúdo em vez de ocupar uma linha
+     própria: como linha, deixava uma faixa vazia acima de toda página.
+     A altura acompanha o `padding-top` de `.content` (--esp-6), então a
+     barra nunca invade o cabeçalho da página logo abaixo. */
+  position: absolute;
+  top: var(--esp-2);
+  right: var(--esp-6);
+  z-index: 1;
   display: flex;
+  padding: 0;
   align-items: center;
   justify-content: flex-end;
   gap: var(--esp-3);
-  flex-shrink: 0;
-}
-
-.alterna-tema {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  padding: 0;
-  border: none;
-  border-radius: var(--raio-pill);
-  background: transparent;
-  color: var(--cor-texto-suave);
-  cursor: pointer;
-  transition: background-color var(--transicao), color var(--transicao);
-
-  &:hover {
-    background: var(--cor-superficie-hover);
-    color: var(--cor-texto);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--cor-foco);
-    outline-offset: 2px;
-  }
+  height: var(--esp-8);
+  --tema-toggle-tamanho: var(--esp-6);
 }
 
 .agora {
@@ -38,6 +23,14 @@
 }
 
 @media (max-width: 640px) {
+  /* No celular o respiro é de meio rem — não cabe nada ali. A barra volta
+     para o fluxo, só com o alternador de tema. */
+  :host {
+    position: static;
+    height: auto;
+    --tema-toggle-tamanho: 2.25rem;
+  }
+
   .agora {
     display: none;
   }

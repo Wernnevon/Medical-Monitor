@@ -1,6 +1,5 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { Icon } from '@app/shared/components/icon/icon';
-import { ThemeService } from '@app/shared/services/theme';
+import { Component, computed, signal } from '@angular/core';
+import { ThemeToggle } from '@app/shared/components/theme-toggle/theme-toggle';
 
 const FORMATO_DATA: Intl.DateTimeFormatOptions = {
   weekday: 'short',
@@ -20,26 +19,14 @@ const FORMATO_DATA: Intl.DateTimeFormatOptions = {
  */
 @Component({
   selector: 'app-top-bar',
-  imports: [Icon],
+  imports: [ThemeToggle],
   template: `
-    <button
-      type="button"
-      class="alterna-tema"
-      (click)="tema.alternar()"
-      [attr.aria-label]="ehEscuro() ? 'Ativar tema claro' : 'Ativar tema escuro'"
-      [attr.aria-pressed]="ehEscuro()"
-    >
-      <app-icon [name]="ehEscuro() ? 'HiOutlineMoon' : 'HiOutlineSun'" size="1.25rem" />
-    </button>
+    <app-theme-toggle />
     <time class="agora" [attr.datetime]="isoAgora()">{{ agoraFormatada() }}</time>
   `,
   styleUrl: './top-bar.scss',
 })
 export class TopBar {
-  protected readonly tema = inject(ThemeService);
-
-  protected readonly ehEscuro = computed(() => this.tema.temaAtual() === 'escuro');
-
   private readonly agora = signal(new Date());
 
   protected readonly isoAgora = computed(() => this.agora().toISOString());

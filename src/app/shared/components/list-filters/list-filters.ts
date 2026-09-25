@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
+import { Icon } from '../icon/icon';
 import { RadioSelect } from '../filters/radio-select';
 import { TextSearch } from '../filters/text-search';
 
@@ -13,11 +14,13 @@ export type DataFilter = {
  * Barra de filtros solta no fundo da página, acima do card de dados — como
  * no protótipo, que nunca desenha filtro dentro do card da tabela. A busca
  * por texto vem primeiro e ocupa mais espaço; os `radio` vêm depois, em
- * pílulas menores.
+ * pílulas menores. A ação principal da página, se houver, fecha a linha
+ * alinhada à direita — na mesma altura dos filtros, sem gastar uma linha
+ * só para ela no cabeçalho.
  */
 @Component({
   selector: 'app-list-filters',
-  imports: [RadioSelect, TextSearch],
+  imports: [Icon, RadioSelect, TextSearch],
   template: `
     <div class="filtros">
       @for (filter of filters(); track filter.placeholder) {
@@ -37,10 +40,19 @@ export type DataFilter = {
           }
         }
       }
+      @if (actionLabel()) {
+        <button type="button" class="acao" (click)="action.emit()">
+          <app-icon name="FaPlus" />
+          {{ actionLabel() }}
+        </button>
+      }
     </div>
   `,
   styleUrl: './list-filters.scss',
 })
 export class ListFilters {
   readonly filters = input<DataFilter[]>([]);
+  readonly actionLabel = input('');
+
+  readonly action = output<void>();
 }

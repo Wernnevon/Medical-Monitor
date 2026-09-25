@@ -1,5 +1,5 @@
 <div class="pagina">
-  <div class="principal">
+  <div class="topo">
     <nav class="trilha" aria-label="Trilha de navegação">
       <a class="voltar" routerLink="/pacientes" aria-label="Voltar para pacientes">
         <app-icon name="BsChevronLeft" size="0.9rem" />
@@ -31,7 +31,9 @@
         }
       </p>
     </header>
+  </div>
 
+  <div class="principal">
     <section class="cartao paciente" aria-label="Paciente">
       @if (paciente(); as p) {
         <span class="avatar" aria-hidden="true">{{ iniciais() }}</span>
@@ -76,57 +78,59 @@
       }
     </section>
 
-    <section class="cartao" aria-labelledby="titulo-medicamentos">
-      <header class="secao-cabecalho">
-        <app-icon class="secao-icone" name="LuPillBottle" size="1.6rem" />
-        <div>
-          <h2 id="titulo-medicamentos">Medicamentos</h2>
-          <p class="ajuda">
-            Um bloco para cada medicamento. Nome, dose e frequência
-            <span aria-hidden="true">*</span> são obrigatórios — o resto é opcional.
-          </p>
-        </div>
-        @if (!emitida()) {
-          <button type="button" class="botao-acento" (click)="adicionarMedicamento()">
-            <app-icon name="FaPlus" size="0.85rem" />
-            Adicionar medicamento
-          </button>
-        }
-      </header>
-
-      <div class="lista-medicamentos">
-        @for (item of medicamentos(); track item.key; let i = $index) {
-          <app-medication-card
-            [item]="item"
-            [indice]="i"
-            [expandido]="expandido() === item.key"
-            [mostrarErros]="tentouEmitir()"
-            [podeMover]="medicamentos().length > 1"
-            [somenteLeitura]="emitida()"
-            [podeSalvarRascunho]="!!patientId()"
-            (alterado)="alterarMedicamento(item.key, $event)"
-            (alternar)="alternar(item.key)"
-            (remover)="removerMedicamento(item.key)"
-            (mover)="moverMedicamento(i)"
-            (salvarRascunho)="salvarRascunho()"
-          />
-        }
-
-        @if (!emitida()) {
-          <div class="novo-item">
-            <span class="numero" aria-hidden="true">{{ medicamentos().length + 1 }}</span>
-            <button type="button" class="novo-item-botao" (click)="adicionarMedicamento()">
-              <app-icon class="novo-item-icone" name="FiPlusCircle" size="1.6rem" />
-              <span class="novo-item-texto">
-                <strong>Adicionar medicamento</strong>
-                <span>Nome, dose e frequência bastam pra começar.</span>
-              </span>
-              <app-icon name="BsChevronRight" size="0.9rem" />
-            </button>
+    <div #rolagem class="rolagem">
+      <section class="cartao" aria-labelledby="titulo-medicamentos">
+        <header class="secao-cabecalho">
+          <app-icon class="secao-icone" name="LuPillBottle" size="1.6rem" />
+          <div>
+            <h2 id="titulo-medicamentos">Medicamentos</h2>
+            <p class="ajuda">
+              Um bloco para cada medicamento. Nome, dose e frequência
+              <span aria-hidden="true">*</span> são obrigatórios — o resto é opcional.
+            </p>
           </div>
-        }
-      </div>
-    </section>
+          @if (!emitida()) {
+            <button type="button" class="botao-acento" (click)="adicionarMedicamento()">
+              <app-icon name="FaPlus" size="0.85rem" />
+              Adicionar medicamento
+            </button>
+          }
+        </header>
+
+        <div class="lista-medicamentos">
+          @for (item of medicamentos(); track item.key; let i = $index) {
+            <app-medication-card
+              [item]="item"
+              [indice]="i"
+              [expandido]="expandido() === item.key"
+              [mostrarErros]="tentouEmitir()"
+              [podeMover]="medicamentos().length > 1"
+              [somenteLeitura]="emitida()"
+              [podeSalvarRascunho]="!!patientId()"
+              (alterado)="alterarMedicamento(item.key, $event)"
+              (alternar)="alternar(item.key)"
+              (remover)="removerMedicamento(item.key)"
+              (mover)="moverMedicamento(i)"
+              (salvarRascunho)="salvarRascunho()"
+            />
+          }
+
+          @if (!emitida()) {
+            <div class="novo-item">
+              <span class="numero" aria-hidden="true">{{ medicamentos().length + 1 }}</span>
+              <button type="button" class="novo-item-botao" (click)="adicionarMedicamento()">
+                <app-icon class="novo-item-icone" name="FiPlusCircle" size="1.6rem" />
+                <span class="novo-item-texto">
+                  <strong>Adicionar medicamento</strong>
+                  <span>Nome, dose e frequência bastam pra começar.</span>
+                </span>
+                <app-icon name="BsChevronRight" size="0.9rem" />
+              </button>
+            </div>
+          }
+        </div>
+      </section>
+    </div>
 
     <section class="cartao" aria-labelledby="titulo-orientacoes">
       <header class="secao-cabecalho">

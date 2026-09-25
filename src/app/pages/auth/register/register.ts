@@ -1,6 +1,8 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { form, submit } from '@angular/forms/signals';
 import { Router, RouterLink } from '@angular/router';
+import { Logo } from '@app/shared/components/logo/logo';
+import { ThemeToggle } from '@app/shared/components/theme-toggle/theme-toggle';
 import { Button } from '@app/shared/components/button/button';
 import { Field } from '@app/shared/components/field/field';
 import { PasswordField } from '@app/shared/components/password-field/password-field';
@@ -13,7 +15,7 @@ import { registerSchema } from './register-form.schema';
 
 @Component({
   selector: 'app-register',
-  imports: [Button, Field, PasswordField, Select, RouterLink],
+  imports: [Logo, ThemeToggle, Button, Field, PasswordField, Select, RouterLink],
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })

@@ -26,10 +26,19 @@
   min-width: 0;
 }
 
+/* Trilha + título numa linha própria, por cima das duas colunas: assim o
+   card do paciente e a prévia começam na mesma linha do grid e ficam
+   alinhados sem depender de um deslocamento ajustado no olho. */
+.topo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+  grid-column: 1 / -1;
+}
+
 .previa {
   position: sticky;
   top: 0;
-  margin-top: 5.5rem;
 }
 
 /* ---- Trilha e título ---- */
@@ -253,6 +262,17 @@
 
 .cartao-exames {
   gap: var(--esp-4);
+}
+
+/* Busca e seleção: o miolo do card, entre o cabeçalho e "Outros exames". */
+.cartao-rolagem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+
+  > * {
+    flex-shrink: 0;
+  }
 }
 
 .aviso-conselho {
@@ -712,6 +732,85 @@
 
 /* ---- Responsivo ---- */
 
+
+/* ---- Desktop: rolagem só nos cards ----
+   Com a prévia ao lado, a página inteira rolando levava junto o título, o
+   paciente e os botões de emitir. Aqui a página fica parada na altura da
+   janela e só a área de edição rola; a prévia rola por conta própria se
+   não couber. Abaixo de 1100px a prévia desce e volta a rolar a página. */
+@media screen and (min-width: 1101px) {
+  /* `clip`, não `hidden`: um elemento `hidden` ainda rola por script, e o
+     `focus()` num campo novo rolava a página toda, escondendo os botões. */
+  :host {
+    overflow: clip;
+  }
+
+  .pagina {
+    height: 100%;
+    /* Linha explícita: a implícita é `auto`, cresce com o conteúdo e a
+       página voltava a rolar inteira com muitos itens. */
+    grid-template-rows: auto minmax(0, 1fr);
+    padding-bottom: 0;
+  }
+
+  .principal {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .previa {
+    display: block;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  .cartao-exames {
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* Busca fixa no topo; categorias e lista de exames rolam cada uma por
+     conta própria, lado a lado, sem levar a outra junto. */
+  .cartao-rolagem {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .selecao {
+    flex: 1 1 0;
+    min-height: 0;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .categorias {
+    overflow-y: auto;
+
+    h3 {
+      position: sticky;
+      top: calc(-1 * var(--esp-2));
+      z-index: 1;
+      margin: calc(-1 * var(--esp-2)) calc(-1 * var(--esp-2)) var(--esp-2);
+      padding: var(--esp-3) var(--esp-3) var(--esp-2);
+      background-color: var(--cor-superficie-alt);
+    }
+  }
+
+  .painel-exames {
+    min-height: 0;
+  }
+
+  .painel-lista {
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+  }
+
+  .outros,
+  .barra-acoes {
+    flex-shrink: 0;
+  }
+}
+
 @media (max-width: 1100px) {
   .pagina {
     grid-template-columns: minmax(0, 1fr);
@@ -719,7 +818,6 @@
 
   .previa {
     position: static;
-    margin-top: 0;
   }
 }
 
@@ -777,6 +875,7 @@
     padding: 0;
   }
 
+  .topo,
   .principal,
   .overlay {
     display: none !important;
@@ -784,6 +883,5 @@
 
   .previa {
     position: static;
-    margin: 0;
   }
 }

@@ -1,4 +1,5 @@
 :host {
+  position: relative;
   display: grid;
   place-items: center;
   width: 100%;
@@ -61,4 +62,11 @@ h1 {
     color: var(--cor-marca-texto);
     font-weight: var(--peso-medio);
   }
+}
+
+/* Fora do card, no canto — mesma posição da barra do app autenticado. */
+.tema {
+  position: absolute;
+  top: var(--esp-4);
+  right: var(--esp-4);
 }

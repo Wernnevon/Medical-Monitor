@@ -22,7 +22,56 @@
   }
 }
 
+.acao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  flex-shrink: 0;
+  /* Empurrado para a direita e com a mesma caixa dos filtros da linha:
+     2.75rem de controle + 1px de borda em cima e embaixo. */
+  align-self: stretch;
+  min-height: calc(2.75rem + 2px);
+  margin-left: auto;
+  padding: 0 var(--esp-5);
+  border: 1px solid var(--cor-acento-escura);
+  border-radius: var(--raio-md);
+  /* Dourado da marca com texto navy: é a única peça dourada da tela, então
+     puxa o olho sem gritar, e mantém ~8:1 de contraste nos dois temas — o
+     navy de `--cor-acao` sumia sobre o fundo escuro. */
+  background-color: var(--cor-acento);
+  color: var(--cor-primaria);
+  font-size: var(--texto-md);
+  font-weight: var(--peso-forte);
+  white-space: nowrap;
+  box-shadow: var(--sombra-md);
+  transition:
+    background-color var(--transicao),
+    box-shadow var(--transicao);
+
+  &:hover {
+    cursor: pointer;
+    background-color: #d9c7a6;
+    box-shadow: var(--sombra-lg);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: var(--sombra-sm);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cor-foco);
+    outline-offset: 2px;
+  }
+}
+
 @media (max-width: 640px) {
+  .acao {
+    width: 100%;
+    justify-content: center;
+  }
+
   .filtros {
     justify-content: stretch;
 

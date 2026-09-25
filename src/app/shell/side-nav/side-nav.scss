@@ -6,55 +6,91 @@
 }
 
 .sidenav {
+  /* Referência para o ramo decorativo, ancorado no rodapé da coluna. */
+  position: relative;
+  isolation: isolate;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: var(--esp-1);
-  padding: var(--esp-2) 0;
   overflow: hidden auto;
-  /* O fundo da aplicação passou a ser neutro, então a cor da marca vive
-     aqui: é o que mantém a identidade sem tingir a área de trabalho. */
-  background-color: var(--cor-marca);
+  /* O fundo da aplicação é neutro, então a cor da marca vive aqui. O
+     gradiente vai do navy um pouco mais claro no topo ao mais escuro no
+     rodapé, como no protótipo — os dois extremos mantêm o branco acima de
+     12:1, então o texto passa com folga em qualquer altura. */
+  background:
+    radial-gradient(120% 40% at 0% 0%, rgb(255 255 255 / 6%), transparent 70%),
+    linear-gradient(
+      180deg,
+      var(--cor-primaria-clara) 0%,
+      var(--cor-primaria) 45%,
+      var(--cor-primaria-escura) 100%
+    );
+  color: var(--cor-texto-invertido);
 
   @media print {
     display: none;
   }
 }
 
-.logo {
+.marca {
   display: flex;
-  justify-content: center;
-  padding: var(--esp-5) var(--esp-4) var(--esp-4);
+  flex-direction: column;
+  align-items: center;
+  padding: var(--esp-5) var(--esp-3) var(--esp-6);
+  text-align: center;
 
   img {
-    width: 100%;
-    max-width: 7rem;
+    width: 3.5rem;
+    height: auto;
   }
+}
+
+.marca-nome {
+  margin-top: var(--esp-2);
+  font-size: var(--texto-xl);
+  font-weight: var(--peso-corpo);
+  letter-spacing: 0.3em;
+  /* Compensa o espaçamento que sobra depois da última letra e desalinha o
+     texto do centro. */
+  margin-right: -0.3em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.marca-sub {
+  margin-top: var(--esp-1);
+  font-size: 0.6rem;
+  font-weight: var(--peso-medio);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
 }
 
 .link {
   display: flex;
   align-items: center;
-  gap: var(--esp-3);
-  /* Largura cheia: a área de clique cobre o item inteiro. No projeto React o
-     link tinha `width: 0` e quem recebia o clique era um <button> interno que
-     transbordava; sem esse botão a área clicável encolhia para o padding.
-     É o fundo, e não a largura, que distingue o item ativo. */
+  gap: var(--esp-4);
+  /* Largura cheia: a área de clique cobre o item inteiro e o fundo do item
+     ativo vira uma faixa de ponta a ponta, como no protótipo. */
   width: 100%;
-  padding: var(--esp-3) var(--esp-4);
-  border-right: 4px solid transparent;
+  padding: var(--esp-3) var(--esp-5);
   background-color: transparent;
   color: var(--cor-texto-invertido);
   text-decoration: none;
-  text-transform: uppercase;
-  font-size: var(--texto-lg);
-  font-weight: var(--peso-corpo);
+  font-size: var(--texto-md);
+  font-weight: var(--peso-medio);
   white-space: nowrap;
-  transition: background-color var(--transicao), border-color var(--transicao);
+  transition: background-color var(--transicao);
 
   &:hover {
-    background-color: rgb(255 255 255 / 10%);
+    background-color: rgb(255 255 255 / 8%);
   }
 
   &:focus-visible {
@@ -64,14 +100,39 @@
 }
 
 .link--active {
-  background-color: rgb(255 255 255 / 16%);
-  border-right-color: var(--cor-texto-invertido);
-  font-weight: var(--peso-medio);
+  background: linear-gradient(
+    90deg,
+    rgb(255 255 255 / 22%),
+    rgb(255 255 255 / 12%)
+  );
+  font-weight: var(--peso-forte);
+
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+/* Ramo decorativo do protótipo. Vai como fundo de um pseudo-elemento, e não
+   como <img>: é puro enfeite, então fica fora da árvore de acessibilidade e
+   não recebe clique. O arquivo é estático e fica no cache do navegador. */
+.sidenav::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  /* Deslocado para fora da coluna: o caule nasce da borda esquerda, como
+     no protótipo, em vez de brotar do rodapé. */
+  left: -3.5rem;
+  bottom: 6rem;
+  width: 18rem;
+  /* Mesma proporção do viewBox do SVG, para o `contain` não sobrar faixa. */
+  aspect-ratio: 253 / 339;
+  max-height: 55%;
+  background: url('/assets/ramo.svg') left bottom / contain no-repeat;
+  pointer-events: none;
 }
 
 /* Fica preso ao fim da coluna via margin-top: auto — não importa quantos
-   itens o menu acima tenha, o ícone do profissional sempre ancora embaixo,
-   como no protótipo. */
+   itens o menu acima tenha, o bloco do profissional sempre ancora embaixo. */
 .profissional {
   display: flex;
   align-items: center;
@@ -79,14 +140,21 @@
   margin-top: auto;
   padding: var(--esp-4);
   border-top: 1px solid rgb(255 255 255 / 12%);
-  color: var(--cor-texto-invertido);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background-color: rgb(255 255 255 / 16%);
   font-size: var(--texto-md);
   font-weight: var(--peso-medio);
-
-  app-icon {
-    flex-shrink: 0;
-    opacity: 0.85;
-  }
+  letter-spacing: 0.02em;
 }
 
 .dados {
@@ -105,7 +173,7 @@
 .role {
   font-size: var(--texto-xs);
   font-weight: var(--peso-corpo);
-  color: rgb(255 255 255 / 70%);
+  color: rgb(255 255 255 / 75%);
 }
 
 .sair {
@@ -134,11 +202,37 @@
   }
 }
 
+/* Texto só para leitor de tela, reaproveitado nos breakpoints menores. */
+@mixin sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* Tablet: só os ícones. O rótulo sai do fluxo mas continua legível por
    leitores de tela. */
 @media (max-width: 1024px) {
-  .logo {
-    padding: var(--esp-3) var(--esp-2);
+  .marca {
+    padding: var(--esp-4) var(--esp-2);
+
+    img {
+      width: 2.5rem;
+    }
+  }
+
+  .marca-nome,
+  .marca-sub,
+  .link span {
+    @include sr-only;
+  }
+
+  .sidenav::before {
+    display: none;
   }
 
   .link {
@@ -146,31 +240,24 @@
     padding: var(--esp-3) 0;
   }
 
-  .link span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
   .profissional {
-    justify-content: center;
+    flex-direction: column;
+    gap: var(--esp-2);
     padding: var(--esp-3) 0;
 
-    span {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      margin: -1px;
-      padding: 0;
-      overflow: hidden;
-      clip-path: inset(50%);
-      white-space: nowrap;
+    .dados {
+      @include sr-only;
     }
+  }
+
+  .avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: var(--texto-sm);
+  }
+
+  .sair {
+    margin-left: 0;
   }
 }
 
@@ -179,25 +266,27 @@
 @media (max-width: 640px) {
   .sidenav {
     flex-direction: row;
-    gap: 0;
-    padding: 0;
     padding-bottom: env(safe-area-inset-bottom, 0);
+    background: var(--cor-primaria);
     box-shadow: var(--sombra-lg);
   }
 
-  .logo {
-    display: none;
-  }
-
+  .marca,
   .profissional {
     display: none;
   }
 
+  .links {
+    flex: 1;
+    flex-direction: row;
+    gap: 0;
+  }
+
   .link {
+    flex: 1;
     flex-direction: column;
     gap: var(--esp-1);
     padding: var(--esp-2) var(--esp-1);
-    border-right: none;
     border-top: 3px solid transparent;
     font-size: var(--texto-xs);
   }
@@ -213,7 +302,6 @@
   }
 
   .link--active {
-    border-right-color: transparent;
     border-top-color: var(--cor-texto-invertido);
   }
 }

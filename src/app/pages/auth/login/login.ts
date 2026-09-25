@@ -1,6 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { required, schema, form, submit } from '@angular/forms/signals';
 import { Router, RouterLink } from '@angular/router';
+import { Logo } from '@app/shared/components/logo/logo';
+import { ThemeToggle } from '@app/shared/components/theme-toggle/theme-toggle';
 import { Button } from '@app/shared/components/button/button';
 import { Field } from '@app/shared/components/field/field';
 import { PasswordField } from '@app/shared/components/password-field/password-field';
@@ -18,7 +20,7 @@ const loginSchema = schema<LoginForm>((f) => {
 
 @Component({
   selector: 'app-login',
-  imports: [Button, Field, PasswordField, RouterLink],
+  imports: [Logo, ThemeToggle, Button, Field, PasswordField, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })

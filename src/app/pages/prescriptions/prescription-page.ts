@@ -61,6 +61,7 @@ export class PrescriptionPage {
   private readonly botaoNovaReceita = viewChild<ElementRef<HTMLButtonElement>>('botaoNovaReceita');
   private readonly modal = viewChild<ElementRef<HTMLElement>>('modal');
   private readonly modalNovaReceita = viewChild<ElementRef<HTMLElement>>('modalNovaReceita');
+  private readonly rolagem = viewChild<ElementRef<HTMLElement>>('rolagem');
 
   private proximaChave = 1;
 
@@ -142,7 +143,7 @@ export class PrescriptionPage {
     this.medicamentos.update((atual) => [...atual, medicamentoVazio(key)]);
     this.expandido.set(key);
     this.marcarAlterado();
-    this.focarDepoisDeRenderizar(`medicamento-nome-${key}`);
+    this.focarDepoisDeRenderizar(`medicamento-nome-${key}`, { rolarAteOFim: true });
   }
 
   protected removerMedicamento(key: string): void {
@@ -325,7 +326,22 @@ export class PrescriptionPage {
     this.focarDepoisDeRenderizar(`medicamento-${campo}-${invalido.key}`);
   }
 
-  private focarDepoisDeRenderizar(id: string): void {
-    afterNextRender(() => document.getElementById(id)?.focus(), { injector: this.injector });
+  private focarDepoisDeRenderizar(id: string, { rolarAteOFim = false } = {}): void {
+    afterNextRender(
+      () => {
+        const campo = document.getElementById(id);
+        const area = this.rolagem()?.nativeElement;
+        if (rolarAteOFim && area) {
+          // Medicamento novo entra no fim da lista: desce tudo, para o card
+          // inteiro e o "Adicionar medicamento" logo abaixo ficarem à vista.
+          campo?.focus({ preventScroll: true });
+          const suave = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+          area.scrollTo({ top: area.scrollHeight, behavior: suave ? 'smooth' : 'auto' });
+        } else {
+          campo?.focus();
+        }
+      },
+      { injector: this.injector },
+    );
   }
 }
