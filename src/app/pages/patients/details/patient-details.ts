@@ -9,9 +9,8 @@ import { AuthService } from '@app/shared/services/auth';
 import { PopupService } from '@app/shared/services/popup';
 import { ToastService, ToastType } from '@app/shared/services/toast';
 import { Table, type DataColumn } from '@app/shared/components/table/table';
-import { getAge, formmatDate, getLocalDateInput, getLocalTimeInput } from '@core/utils/date-utils';
-import { mascaraPressao, mascaraGlicemia, mascaraSaturacao, mascaraFrequenciaCardiaca } from '@core/utils/masks';
-import type { BloodPressureReading, GlycemiaReading, OxygenSaturationReading, HeartRateReading, Exams, Patient } from '@domain/entities';
+import { getAge, formmatDate } from '@core/utils/date-utils';
+import type { Exams, Patient } from '@domain/entities';
 import { ProfessionalRole } from '@domain/entities';
 import {
   ExamChangeStatus,
@@ -20,9 +19,8 @@ import {
   PatientDelete,
   PatientUpdate,
   PrescriptionChangeStatus,
-  TokenPatientAddReading,
-  TokenPatientRemoveReading,
 } from '@domain/tokens';
+import { ClinicalData } from './clinical-data/clinical-data';
 import { PatientDetailsFacade } from './patient-details-facade';
 
 /**
@@ -54,7 +52,7 @@ const HISTORICO_COLUMNS: DataColumn[] = [
  */
 @Component({
   selector: 'app-patient-details',
-  imports: [Button, Icon, KebabMenu, RouterLink, Select, Table],
+  imports: [Button, ClinicalData, Icon, KebabMenu, RouterLink, Select, Table],
   // Instância própria por navegação, mesmo a classe sendo `@Service()`
   // (`providedIn: 'root'`, singleton por padrão): sem isso, voltar pra cá
   // pro MESMO paciente (ex.: depois de registrar uma receita em `/receitas`)
@@ -80,9 +78,6 @@ export class PatientDetails {
   protected readonly ehProfissional = computed(
     () => this.auth.usuarioAtual()?.role === ProfessionalRole.PROFISSIONAL,
   );
-
-  private readonly addReading = inject(TokenPatientAddReading);
-  private readonly removeReading = inject(TokenPatientRemoveReading);
 
   protected readonly formatar = (data: unknown) =>
     data ? formmatDate(data as unknown as Date) : '—';
@@ -128,15 +123,6 @@ export class PatientDetails {
   );
 
   protected readonly historicoColumns = HISTORICO_COLUMNS;
-
-  /** IMC calculado — peso/altura já existem no cadastro, então não é dado
-   *  inventado, só uma conta em cima do que o paciente informou. */
-  protected readonly imc = computed(() => {
-    const { weight, height } = this.facade.patient()?.health ?? {};
-    if (!weight || !height) return null;
-    const metros = height / 100;
-    return (weight / (metros * metros)).toFixed(1);
-  });
 
   /**
    * Anotação de exame — reaproveita o campo `diagnosis` que já existe na
@@ -220,327 +206,6 @@ export class PatientDetails {
     } finally {
       this.salvandoAnotacao.set(false);
     }
-  }
-
-  /**
-   * Registro de pressão arterial — o paciente não tinha esse dado antes;
-   * agora vira um histórico de verdade, com data e horário de cada aferição,
-   * em vez de um valor único e estático.
-   */
-  protected readonly leituras = computed(() =>
-    [...(this.facade.patient()?.health.bloodPressureReadings ?? [])].sort((a, b) =>
-      b.measuredAt.localeCompare(a.measuredAt),
-    ),
-  );
-
-  protected readonly ultimaLeitura = computed(() => this.leituras()[0] ?? null);
-
-  /** `measuredAt` chega como `AAAA-MM-DDTHH:MM`, produzido pelos próprios
-   *  inputs de data/hora — só reordena pro formato brasileiro pra exibição. */
-  protected formatarDataHora(measuredAt: string): string {
-    const [data, hora] = measuredAt.split('T');
-    const [ano, mes, dia] = data.split('-');
-    return `${dia}/${mes}/${ano} ${hora}`;
-  }
-
-  // Começa preenchido com a data/hora atuais — a aferição normalmente
-  // acontece na hora de registrar, então digitar isso toda vez seria atrito
-  // sem propósito; quem estiver registrando algo passado ainda pode editar.
-  protected readonly pressaoData = signal(getLocalDateInput());
-  protected readonly pressaoHora = signal(getLocalTimeInput());
-  protected readonly pressaoValor = signal('');
-  protected readonly registrandoPressao = signal(false);
-
-  protected onPressaoInput(evento: Event): void {
-    const alvo = evento.target as HTMLInputElement;
-    const formatado = mascaraPressao(alvo.value);
-    alvo.value = formatado;
-    this.pressaoValor.set(formatado);
-  }
-
-  protected onGlicemiaInput(evento: Event): void {
-    const alvo = evento.target as HTMLInputElement;
-    const formatado = mascaraGlicemia(alvo.value);
-    alvo.value = formatado;
-    this.glicemiaValor.set(formatado);
-  }
-
-  protected onSaturacaoInput(evento: Event): void {
-    const alvo = evento.target as HTMLInputElement;
-    const formatado = mascaraSaturacao(alvo.value);
-    alvo.value = formatado;
-    this.saturacaoValor.set(formatado);
-  }
-
-  protected onFrequenciaInput(evento: Event): void {
-    const alvo = evento.target as HTMLInputElement;
-    const formatado = mascaraFrequenciaCardiaca(alvo.value);
-    alvo.value = formatado;
-    this.frequenciaValor.set(formatado);
-  }
-
-  protected async registrarPressao(paciente: Patient): Promise<void> {
-    const data = this.pressaoData();
-    const hora = this.pressaoHora();
-    const valor = this.pressaoValor().trim();
-    if (!data || !hora || !valor) return;
-
-    this.registrandoPressao.set(true);
-    try {
-      const leitura: BloodPressureReading = {
-        id: crypto.randomUUID(),
-        measuredAt: `${data}T${hora}`,
-        value: valor,
-      };
-      await this.addReading.add({
-        patientId: paciente.id,
-        kind: 'bloodPressureReadings',
-        reading: leitura,
-      });
-      this.pressaoData.set(getLocalDateInput());
-      this.pressaoHora.set(getLocalTimeInput());
-      this.pressaoValor.set('');
-      this.toast.add('Pressão arterial registrada', ToastType.SUCESS);
-      this.facade.reloadPatient();
-    } catch {
-      this.toast.add('Não foi possível registrar a pressão arterial', ToastType.ERROR);
-    } finally {
-      this.registrandoPressao.set(false);
-    }
-  }
-
-  protected excluirLeitura(paciente: Patient, leitura: BloodPressureReading): void {
-    this.popup.show({
-      data: {
-        title: 'Excluir leitura?',
-        message: `Remover o registro de pressão arterial de ${this.formatarDataHora(
-          leitura.measuredAt,
-        )}? Não há como desfazer esta ação!`,
-      },
-      onConfirm: async () => {
-        try {
-          await this.removeReading.remove({
-            patientId: paciente.id,
-            kind: 'bloodPressureReadings',
-            reading: leitura,
-          });
-          this.toast.add('Leitura removida', ToastType.SUCESS);
-          this.facade.reloadPatient();
-        } catch {
-          this.toast.add('Não foi possível remover a leitura', ToastType.ERROR);
-        }
-      },
-    });
-  }
-
-  /**
-   * Glicemia — histórico de medições de glicose no sangue.
-   */
-  protected readonly glycemiaReadings = computed(() =>
-    [...(this.facade.patient()?.health.glycemiaReadings ?? [])].sort((a, b) =>
-      b.measuredAt.localeCompare(a.measuredAt),
-    ),
-  );
-
-  protected readonly ultimaGlicemia = computed(() => this.glycemiaReadings()[0] ?? null);
-
-  protected readonly glicemiaData = signal(getLocalDateInput());
-  protected readonly glicemiaHora = signal(getLocalTimeInput());
-  protected readonly glicemiaValor = signal('');
-  protected readonly registrandoGlicemia = signal(false);
-
-  protected async registrarGlicemia(paciente: Patient): Promise<void> {
-    const data = this.glicemiaData();
-    const hora = this.glicemiaHora();
-    const valor = this.glicemiaValor().trim();
-    if (!data || !hora || !valor) return;
-
-    this.registrandoGlicemia.set(true);
-    try {
-      const leitura: GlycemiaReading = {
-        id: crypto.randomUUID(),
-        measuredAt: `${data}T${hora}`,
-        value: valor,
-      };
-      await this.addReading.add({
-        patientId: paciente.id,
-        kind: 'glycemiaReadings',
-        reading: leitura,
-      });
-      this.glicemiaData.set(getLocalDateInput());
-      this.glicemiaHora.set(getLocalTimeInput());
-      this.glicemiaValor.set('');
-      this.toast.add('Glicemia registrada', ToastType.SUCESS);
-      this.facade.reloadPatient();
-    } catch {
-      this.toast.add('Não foi possível registrar a glicemia', ToastType.ERROR);
-    } finally {
-      this.registrandoGlicemia.set(false);
-    }
-  }
-
-  protected excluirGlicemia(paciente: Patient, leitura: GlycemiaReading): void {
-    this.popup.show({
-      data: {
-        title: 'Excluir leitura?',
-        message: `Remover o registro de glicemia de ${this.formatarDataHora(
-          leitura.measuredAt,
-        )}? Não há como desfazer esta ação!`,
-      },
-      onConfirm: async () => {
-        try {
-          await this.removeReading.remove({
-            patientId: paciente.id,
-            kind: 'glycemiaReadings',
-            reading: leitura,
-          });
-          this.toast.add('Leitura removida', ToastType.SUCESS);
-          this.facade.reloadPatient();
-        } catch {
-          this.toast.add('Não foi possível remover a leitura', ToastType.ERROR);
-        }
-      },
-    });
-  }
-
-  /**
-   * Saturação de oxigênio — histórico de medições de O2.
-   */
-  protected readonly oxygenReadings = computed(() =>
-    [...(this.facade.patient()?.health.oxygenSaturationReadings ?? [])].sort((a, b) =>
-      b.measuredAt.localeCompare(a.measuredAt),
-    ),
-  );
-
-  protected readonly ultimaSaturacao = computed(() => this.oxygenReadings()[0] ?? null);
-
-  protected readonly saturacaoData = signal(getLocalDateInput());
-  protected readonly saturacaoHora = signal(getLocalTimeInput());
-  protected readonly saturacaoValor = signal('');
-  protected readonly registrandoSaturacao = signal(false);
-
-  protected async registrarSaturacao(paciente: Patient): Promise<void> {
-    const data = this.saturacaoData();
-    const hora = this.saturacaoHora();
-    const valor = this.saturacaoValor().trim();
-    if (!data || !hora || !valor) return;
-
-    this.registrandoSaturacao.set(true);
-    try {
-      const leitura: OxygenSaturationReading = {
-        id: crypto.randomUUID(),
-        measuredAt: `${data}T${hora}`,
-        value: valor,
-      };
-      await this.addReading.add({
-        patientId: paciente.id,
-        kind: 'oxygenSaturationReadings',
-        reading: leitura,
-      });
-      this.saturacaoData.set(getLocalDateInput());
-      this.saturacaoHora.set(getLocalTimeInput());
-      this.saturacaoValor.set('');
-      this.toast.add('Saturação de oxigênio registrada', ToastType.SUCESS);
-      this.facade.reloadPatient();
-    } catch {
-      this.toast.add('Não foi possível registrar a saturação de oxigênio', ToastType.ERROR);
-    } finally {
-      this.registrandoSaturacao.set(false);
-    }
-  }
-
-  protected excluirSaturacao(paciente: Patient, leitura: OxygenSaturationReading): void {
-    this.popup.show({
-      data: {
-        title: 'Excluir leitura?',
-        message: `Remover o registro de saturação de oxigênio de ${this.formatarDataHora(
-          leitura.measuredAt,
-        )}? Não há como desfazer esta ação!`,
-      },
-      onConfirm: async () => {
-        try {
-          await this.removeReading.remove({
-            patientId: paciente.id,
-            kind: 'oxygenSaturationReadings',
-            reading: leitura,
-          });
-          this.toast.add('Leitura removida', ToastType.SUCESS);
-          this.facade.reloadPatient();
-        } catch {
-          this.toast.add('Não foi possível remover a leitura', ToastType.ERROR);
-        }
-      },
-    });
-  }
-
-  /**
-   * Frequência cardíaca — histórico de medições de batimentos cardíacos.
-   */
-  protected readonly heartRateReadings = computed(() =>
-    [...(this.facade.patient()?.health.heartRateReadings ?? [])].sort((a, b) =>
-      b.measuredAt.localeCompare(a.measuredAt),
-    ),
-  );
-
-  protected readonly ultimaFrequenciaCardiaca = computed(() => this.heartRateReadings()[0] ?? null);
-
-  protected readonly frequenciaData = signal(getLocalDateInput());
-  protected readonly frequenciaHora = signal(getLocalTimeInput());
-  protected readonly frequenciaValor = signal('');
-  protected readonly registrandoFrequencia = signal(false);
-
-  protected async registrarFrequencia(paciente: Patient): Promise<void> {
-    const data = this.frequenciaData();
-    const hora = this.frequenciaHora();
-    const valor = this.frequenciaValor().trim();
-    if (!data || !hora || !valor) return;
-
-    this.registrandoFrequencia.set(true);
-    try {
-      const leitura: HeartRateReading = {
-        id: crypto.randomUUID(),
-        measuredAt: `${data}T${hora}`,
-        value: valor,
-      };
-      await this.addReading.add({
-        patientId: paciente.id,
-        kind: 'heartRateReadings',
-        reading: leitura,
-      });
-      this.frequenciaData.set(getLocalDateInput());
-      this.frequenciaHora.set(getLocalTimeInput());
-      this.frequenciaValor.set('');
-      this.toast.add('Frequência cardíaca registrada', ToastType.SUCESS);
-      this.facade.reloadPatient();
-    } catch {
-      this.toast.add('Não foi possível registrar a frequência cardíaca', ToastType.ERROR);
-    } finally {
-      this.registrandoFrequencia.set(false);
-    }
-  }
-
-  protected excluirFrequencia(paciente: Patient, leitura: HeartRateReading): void {
-    this.popup.show({
-      data: {
-        title: 'Excluir leitura?',
-        message: `Remover o registro de frequência cardíaca de ${this.formatarDataHora(
-          leitura.measuredAt,
-        )}? Não há como desfazer esta ação!`,
-      },
-      onConfirm: async () => {
-        try {
-          await this.removeReading.remove({
-            patientId: paciente.id,
-            kind: 'heartRateReadings',
-            reading: leitura,
-          });
-          this.toast.add('Leitura removida', ToastType.SUCESS);
-          this.facade.reloadPatient();
-        } catch {
-          this.toast.add('Não foi possível remover a leitura', ToastType.ERROR);
-        }
-      },
-    });
   }
 
   /**

@@ -1,0 +1,76 @@
+<section class="registro" aria-labelledby="registro-titulo">
+  <h3 id="registro-titulo">Registrar medida</h3>
+
+  <form novalidate (submit)="registrar($event)">
+    <fieldset class="tipos">
+      <legend>Tipo de medida</legend>
+      <div class="segmentos">
+        @for (item of tipos; track item.kind) {
+          <label class="segmento" [class.segmento--ativo]="item.kind === tipo()">
+            <input
+              type="radio"
+              name="tipo-medida"
+              class="sr-only"
+              [value]="item.kind"
+              [checked]="item.kind === tipo()"
+              (change)="selecionarTipo(item.kind)"
+            />
+            {{ item.shortLabel }}
+          </label>
+        }
+      </div>
+    </fieldset>
+
+    <div class="campos">
+      <label class="campo">
+        <span class="rotulo">Data</span>
+        <input
+          type="date"
+          [formField]="formulario.data"
+          [attr.aria-invalid]="!!erro(formulario.data)"
+          [attr.aria-describedby]="erro(formulario.data) ? 'medida-erro-data' : null"
+        />
+        @if (erro(formulario.data); as mensagem) {
+          <span class="erro" id="medida-erro-data">{{ mensagem }}</span>
+        }
+      </label>
+
+      <label class="campo">
+        <span class="rotulo">Horário</span>
+        <input
+          type="time"
+          [formField]="formulario.hora"
+          [attr.aria-invalid]="!!erro(formulario.hora)"
+          [attr.aria-describedby]="erro(formulario.hora) ? 'medida-erro-hora' : null"
+        />
+        @if (erro(formulario.hora); as mensagem) {
+          <span class="erro" id="medida-erro-hora">{{ mensagem }}</span>
+        }
+      </label>
+
+      <label class="campo campo--valor">
+        <span class="rotulo">{{ tipoAtual().label }}</span>
+        <span class="com-unidade" [class.com-unidade--erro]="!!erro(formulario.valor)">
+          <input
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            [placeholder]="tipoAtual().placeholder"
+            [formField]="formulario.valor"
+            [attr.aria-invalid]="!!erro(formulario.valor)"
+            [attr.aria-describedby]="erro(formulario.valor) ? 'medida-erro-valor' : null"
+            (input)="aplicarMascara($event)"
+          />
+          <span class="unidade">{{ tipoAtual().unit }}</span>
+        </span>
+        @if (erro(formulario.valor); as mensagem) {
+          <span class="erro" id="medida-erro-valor">{{ mensagem }}</span>
+        }
+      </label>
+
+      <app-button class="enviar" type="submit" [disabled]="formulario().submitting()">
+        {{ formulario().submitting() ? 'Registrando…' : 'Registrar medida' }}
+      </app-button>
+    </div>
+  </form>
+</section>

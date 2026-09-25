@@ -1,0 +1,51 @@
+<section class="historico" aria-labelledby="historico-titulo">
+  <header class="topo">
+    <h3 id="historico-titulo">Histórico de medidas</h3>
+    <div class="filtros">
+      <app-select
+        class="filtro"
+        [campo]="filtroForm.tipo"
+        rotulo="Filtrar por medida"
+        [options]="tipoOpcoes"
+      />
+      <app-select
+        class="filtro"
+        [campo]="filtroForm.periodo"
+        rotulo="Filtrar por período"
+        [options]="periodoOpcoes"
+      />
+    </div>
+  </header>
+
+  @if (!linhas().length) {
+    <p class="vazio">Nenhuma medida registrada ainda.</p>
+  } @else if (!filtradas().length) {
+    <p class="vazio">Nenhuma medida para os filtros selecionados.</p>
+  } @else {
+    <div class="colunas" aria-hidden="true">
+      <span>Data e hora</span>
+      <span>Medida</span>
+      <span>Valor</span>
+    </div>
+    <ol class="lista">
+      @for (linha of filtradas(); track linha.reading.id) {
+        <li class="linha">
+          <time class="quando" [attr.datetime]="linha.reading.measuredAt">
+            {{ linha.data }} · {{ linha.hora }}
+          </time>
+          <span class="medida">{{ linha.type.label }}</span>
+          <strong class="valor">{{ linha.valor }}</strong>
+          <button
+            type="button"
+            class="excluir"
+            [attr.aria-label]="'Excluir ' + linha.type.label + ' de ' + linha.data + ' ' + linha.hora"
+            (click)="excluir(linha)"
+          >
+            <app-icon name="RiDeleteBin6Line" size="1rem" />
+          </button>
+        </li>
+      }
+    </ol>
+  }
+</section>
+

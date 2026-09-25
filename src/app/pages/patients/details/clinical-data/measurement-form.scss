@@ -1,0 +1,222 @@
+:host {
+  display: block;
+  container-type: inline-size;
+}
+
+/* Único bloco emoldurado da seção: é a área de ação, então ganha contorno
+   pra se separar do resumo (acima) e do histórico (abaixo), que são leitura. */
+.registro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+  padding: var(--esp-4) var(--esp-5) var(--esp-5);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-md);
+}
+
+h3 {
+  margin: 0;
+  font-size: var(--texto-md);
+  font-weight: var(--peso-forte);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+}
+
+%rotulo {
+  color: var(--cor-texto-fraco);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-medio);
+}
+
+.tipos {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+
+  legend {
+    @extend %rotulo;
+    margin-bottom: var(--esp-2);
+    padding: 0;
+  }
+}
+
+/* Controle segmentado sobre radios nativos: setas do teclado, seleção única
+   e leitura como grupo vêm de graça do navegador. */
+.segmentos {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--esp-1);
+  padding: var(--esp-1);
+  border-radius: var(--raio-md);
+  background: var(--cor-superficie-alt);
+}
+
+.segmento {
+  position: relative;
+  padding: var(--esp-2) var(--esp-4);
+  border-radius: var(--raio-sm);
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--transicao),
+    color var(--transicao);
+
+  &:hover {
+    color: var(--cor-marca-texto);
+  }
+
+  &:has(input:focus-visible) {
+    outline: 2px solid var(--cor-foco);
+    outline-offset: 2px;
+  }
+}
+
+.segmento--ativo {
+  background: var(--cor-superficie);
+  color: var(--cor-marca-texto);
+  box-shadow: var(--sombra-sm);
+}
+
+.campos {
+  display: grid;
+  grid-template-columns: minmax(9rem, 1fr) minmax(7rem, 0.7fr) minmax(10rem, 1fr) auto;
+  align-items: start;
+  gap: var(--esp-3) var(--esp-4);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+  min-width: 0;
+}
+
+.rotulo {
+  @extend %rotulo;
+}
+
+%caixa {
+  height: 2.5rem;
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio-sm);
+  background: var(--cor-superficie);
+  transition: border-color var(--transicao);
+}
+
+input {
+  width: 100%;
+  min-width: 0;
+  padding: 0 var(--esp-3);
+  color: var(--cor-texto);
+  font: inherit;
+  font-size: var(--texto-sm);
+}
+
+.campo > input {
+  @extend %caixa;
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--cor-marca-texto);
+    box-shadow: 0 0 0 1px var(--cor-marca-texto);
+  }
+
+  &[aria-invalid='true'] {
+    border-color: var(--cor-erro);
+  }
+}
+
+/* Input + unidade numa caixa só; o foco é desenhado na caixa inteira. */
+.com-unidade {
+  @extend %caixa;
+  display: flex;
+  align-items: center;
+
+  input {
+    height: 100%;
+    border: none;
+    background: none;
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  &:focus-within {
+    border-color: var(--cor-marca-texto);
+    box-shadow: 0 0 0 1px var(--cor-marca-texto);
+  }
+}
+
+.com-unidade--erro {
+  border-color: var(--cor-erro);
+}
+
+.unidade {
+  flex-shrink: 0;
+  padding-right: var(--esp-3);
+  color: var(--cor-texto-fraco);
+  font-size: var(--texto-sm);
+}
+
+.erro {
+  color: var(--cor-erro);
+  font-size: var(--texto-xs);
+}
+
+/* Alinha o botão à linha dos inputs, não à dos rótulos — com `align-items:
+   start`, uma mensagem de erro não empurra o botão pra baixo. */
+.enviar {
+  padding-top: calc(var(--texto-xs) * var(--altura-linha) + var(--esp-1));
+}
+
+@container (max-width: 40rem) {
+  .campos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .campo--valor {
+    grid-column: 1 / -1;
+  }
+
+  .enviar {
+    grid-column: 1 / -1;
+    justify-self: end;
+    padding-top: 0;
+  }
+}
+
+@container (max-width: 26rem) {
+  .registro {
+    padding: var(--esp-4);
+  }
+
+  .segmentos {
+    display: flex;
+  }
+
+  .segmento {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  .campos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .enviar {
+    justify-self: stretch;
+
+    ::ng-deep .btn {
+      width: 100%;
+    }
+  }
+}
