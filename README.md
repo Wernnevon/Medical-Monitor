@@ -11,6 +11,15 @@ paridade ser atingida.
 
 Requer Node 22.22.3+ (o `.nvmrc` fixa a versão usada no projeto).
 
+Os arquivos de ambiente não são versionados (têm a config do Firebase). Antes
+do primeiro `npm start`, crie os dois a partir do modelo e preencha com os dados
+do projeto no console do Firebase:
+
+```bash
+cp src/environments/environment.example.ts src/environments/environment.ts
+cp src/environments/environment.example.ts src/environments/environment.development.ts
+```
+
 ```bash
 nvm use
 npm install

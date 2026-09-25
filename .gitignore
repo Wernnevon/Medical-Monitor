@@ -29,7 +29,9 @@ yarn-error.log*
 # Ambiente e segredos
 .env
 .env.*
-!.env.example
+# Config do Firebase fica só local; o modelo é o environment.example.ts
+src/environments/*
+!src/environments/environment.example.ts
 *.pem
 *.key
 *.p12
