@@ -188,9 +188,9 @@
                   <p class="paragrafo paragrafo--vazio">Nenhum dado clínico registrado.</p>
                 }
 
-                <div class="pressao">
+                <div class="medicao">
                   <h3>Registrar Pressão Arterial</h3>
-                  <div class="pressao-campos">
+                  <div class="medicao-campos">
                     <label>
                       <span>Data</span>
                       <input
@@ -227,14 +227,14 @@
                   </div>
 
                   @if (leituras().length) {
-                    <ul class="pressao-historico">
+                    <ul class="medicao-historico">
                       @for (leitura of leituras(); track leitura.id) {
                         <li>
                           <span>{{ formatarDataHora(leitura.measuredAt) }}</span>
                           <strong>{{ leitura.value }} mmHg</strong>
                           <button
                             type="button"
-                            class="pressao-excluir"
+                            class="medicao-excluir"
                             aria-label="Excluir leitura"
                             (click)="excluirLeitura(paciente, leitura)"
                           >
@@ -246,9 +246,9 @@
                   }
                 </div>
 
-                <div class="glicemia">
+                <div class="medicao">
                   <h3>Registrar Glicemia</h3>
-                  <div class="glicemia-campos">
+                  <div class="medicao-campos">
                     <label>
                       <span>Data</span>
                       <input
@@ -285,14 +285,14 @@
                   </div>
 
                   @if (glycemiaReadings().length) {
-                    <ul class="glicemia-historico">
+                    <ul class="medicao-historico">
                       @for (leitura of glycemiaReadings(); track leitura.id) {
                         <li>
                           <span>{{ formatarDataHora(leitura.measuredAt) }}</span>
                           <strong>{{ leitura.value }} mg/dL</strong>
                           <button
                             type="button"
-                            class="glicemia-excluir"
+                            class="medicao-excluir"
                             aria-label="Excluir leitura"
                             (click)="excluirGlicemia(paciente, leitura)"
                           >
@@ -304,9 +304,9 @@
                   }
                 </div>
 
-                <div class="saturacao">
+                <div class="medicao">
                   <h3>Registrar Saturação de Oxigênio</h3>
-                  <div class="saturacao-campos">
+                  <div class="medicao-campos">
                     <label>
                       <span>Data</span>
                       <input
@@ -343,14 +343,14 @@
                   </div>
 
                   @if (oxygenReadings().length) {
-                    <ul class="saturacao-historico">
+                    <ul class="medicao-historico">
                       @for (leitura of oxygenReadings(); track leitura.id) {
                         <li>
                           <span>{{ formatarDataHora(leitura.measuredAt) }}</span>
                           <strong>{{ leitura.value }}%</strong>
                           <button
                             type="button"
-                            class="saturacao-excluir"
+                            class="medicao-excluir"
                             aria-label="Excluir leitura"
                             (click)="excluirSaturacao(paciente, leitura)"
                           >
@@ -362,9 +362,9 @@
                   }
                 </div>
 
-                <div class="frequencia">
+                <div class="medicao">
                   <h3>Registrar Frequência Cardíaca</h3>
-                  <div class="frequencia-campos">
+                  <div class="medicao-campos">
                     <label>
                       <span>Data</span>
                       <input
@@ -401,14 +401,14 @@
                   </div>
 
                   @if (heartRateReadings().length) {
-                    <ul class="frequencia-historico">
+                    <ul class="medicao-historico">
                       @for (leitura of heartRateReadings(); track leitura.id) {
                         <li>
                           <span>{{ formatarDataHora(leitura.measuredAt) }}</span>
                           <strong>{{ leitura.value }} bpm</strong>
                           <button
                             type="button"
-                            class="frequencia-excluir"
+                            class="medicao-excluir"
                             aria-label="Excluir leitura"
                             (click)="excluirFrequencia(paciente, leitura)"
                           >

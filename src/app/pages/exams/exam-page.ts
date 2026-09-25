@@ -51,7 +51,7 @@ const ERRO_EMISSAO =
   selector: 'app-exam-page',
   imports: [Icon, Odontogram, ExamPreview, RouterLink],
   templateUrl: './exam-page.html',
-  styleUrl: './exam-page.scss',
+  styleUrls: ['../../shared/styles/emissao-page.scss', './exam-page.scss'],
   host: { '(document:keydown.escape)': 'fecharModalPorTeclado()' },
 })
 export class ExamPage {

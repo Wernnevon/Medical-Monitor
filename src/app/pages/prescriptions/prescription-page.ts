@@ -45,7 +45,7 @@ const ERRO_EMISSAO =
   selector: 'app-prescription-page',
   imports: [Icon, MedicationCard, PrescriptionPreview, RouterLink],
   templateUrl: './prescription-page.html',
-  styleUrl: './prescription-page.scss',
+  styleUrls: ['../../shared/styles/emissao-page.scss', './prescription-page.scss'],
   host: { '(document:keydown.escape)': 'fecharModalPorTeclado()' },
 })
 export class PrescriptionPage {
