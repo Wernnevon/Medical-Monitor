@@ -20,6 +20,11 @@ cp src/environments/environment.example.ts src/environments/environment.ts
 cp src/environments/environment.example.ts src/environments/environment.development.ts
 ```
 
+No deploy (Vercel), os arquivos são gerados no `prebuild` a partir das variáveis
+`FIREBASE_API_KEY`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_PROJECT_ID`,
+`FIREBASE_STORAGE_BUCKET`, `FIREBASE_MESSAGING_SENDER_ID` e `FIREBASE_APP_ID`
+(ver [scripts/gerar-environments.mjs](scripts/gerar-environments.mjs)).
+
 ```bash
 nvm use
 npm install
